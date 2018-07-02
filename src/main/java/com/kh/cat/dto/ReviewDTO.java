@@ -6,7 +6,7 @@ public class ReviewDTO {
 	private int review_idx;
 	private int store_idx;
 	private String id;
-	private String review_star;
+	private double review_star;
 	private String review_content;
 	private int review_likeCnt;
 	private Date review_date;
@@ -30,10 +30,10 @@ public class ReviewDTO {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getReview_star() {
+	public double getReview_star() {
 		return review_star;
 	}
-	public void setReview_star(String review_star) {
+	public void setReview_star(double review_star) {
 		this.review_star = review_star;
 	}
 	public String getReview_content() {

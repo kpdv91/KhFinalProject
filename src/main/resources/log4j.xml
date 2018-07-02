@@ -16,12 +16,12 @@
 	</logger>
 	
 	<!-- SQL LOGGER -->
-	<logger name="jdbc.sqltiming">
+	<logger name="jdbc.sqltiming" additivity="false">
 		<level value="info" />
 		<appender-ref ref="console"/>
 	</logger>
 	
-	<logger name="jdbc.connection">
+	<logger name="jdbc.connection" additivity="false">
 		<level value="info" />
 		<appender-ref ref="console"/>
 	</logger>

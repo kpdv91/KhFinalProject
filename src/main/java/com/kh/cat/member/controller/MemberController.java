@@ -15,5 +15,5 @@ public class MemberController {
 	public String home() {
 		return "main";
 	}
-	
+
 }

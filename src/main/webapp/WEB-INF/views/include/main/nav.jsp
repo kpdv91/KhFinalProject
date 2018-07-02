@@ -25,7 +25,7 @@
                 <button>검색</button>
         	</div>
         </li>
-		<li><a href="#">게시판</a></li>
+		<li><a href="boardList">게시판</a></li>
 		<c:if test="${ sessionScope.user == null}">
 			<li><a href="#">로그인</a></li>
 			<li><a href="#">회원가입</a></li>

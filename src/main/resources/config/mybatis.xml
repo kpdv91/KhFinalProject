@@ -7,13 +7,13 @@
 
 	<!-- data source -->	
 	<!-- 
-		테스트 DB	: localhost:1521:xe
-		상용 DB		: 재욱형
+		테스트 DB	: localhost
+		상용 DB		: 192.168.30.40
 	 -->
 	<bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="net.sf.log4jdbc.DriverSpy"/>
-		<property name="url" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:xe"/>
-		<property name="username" value="web_user"/>
+		<property name="url" value="jdbc:log4jdbc:oracle:thin:@192.168.30.40:1521:xe"/>
+		<property name="username" value="final"/>
 		<property name="password" value="pass"/>
 	</bean>
 

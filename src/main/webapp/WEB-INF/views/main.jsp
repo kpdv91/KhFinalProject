@@ -12,6 +12,7 @@
 	</head>
 	<body>
 		메인페이지
+		<a href="boardWrite">게시판</a>
 	</body>
 	<script>
 	</script>

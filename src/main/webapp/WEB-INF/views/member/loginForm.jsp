@@ -53,12 +53,14 @@
            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input onclick ="join()" type="button" value="회원가입">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
            <input type="button" value="ID 찾기">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
             <input type="button" value="PW 찾기">
+            <input type="submit" value="login"/>
            </td>
          </tr>
    </table>
 </div>
 </body>
 <script>
+ 
 function join() {
 	location.href="JoinForm.html";
 };
@@ -90,5 +92,6 @@ $("#loginBtn").click(function(){
 		}
 	});
 });
+ 
 </script>
 </html>

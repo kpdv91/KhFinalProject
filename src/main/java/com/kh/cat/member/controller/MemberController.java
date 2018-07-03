@@ -20,10 +20,7 @@ public class MemberController {
 	@Autowired MemberService memberService;
 	
 	
-	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public String home() {
-		return "main";
-	}
+	
 	
 	@RequestMapping(value = "/loginForm", method = RequestMethod.GET)
 	public String loginForm() {

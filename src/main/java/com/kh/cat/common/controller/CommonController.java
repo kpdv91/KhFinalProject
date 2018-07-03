@@ -12,7 +12,7 @@ public class CommonController {
 	private static final Logger logger = LoggerFactory.getLogger(CommonController.class);
 
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public String home() {
+	public String main() {
 		return "main";
 	}
 }

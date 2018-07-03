@@ -42,4 +42,9 @@ public class CommonController {
 		logger.info("msg : {}",msg);		
 		return commonservice.sendlist(params);
 	}
+	@RequestMapping(value = "/sendMessage")
+	public String sendMessage() {
+		logger.info("메세지 보내기 페이지 이동");		
+		return "timeline/timeline_sendMessage";
+	}
 }

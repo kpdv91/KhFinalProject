@@ -204,7 +204,7 @@
 		list.forEach(function(item, idx){
 			content += "<tr>"
 			content +="<td>"+item.dm_id+"</td>"
-			content +="<td>"+item.dm_content+"</td>"
+			content +="<td><a href='/dmdetail?idx"+item.dm_idx+"'>"+item.dm_content+"</a></td>"
 			var date = new Date(item.dm_date);			
 			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
 			content += "</tr>"			
@@ -217,13 +217,16 @@
 		list.forEach(function(item, idx){
 			content += "<tr>"
 			content +="<td>"+item.id+"</td>"
-			content +="<td>"+item.dm_content+"</td>"
-			var date = new Date(item.dm_date);			
+			content +="<td><a href='/dmdetail?idx"+item.dm_idx+"'>"+item.dm_content+"</a></td>"
+			var date = new Date(item.dm_date);	
 			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
 			content += "</tr>"			
-		});		
+		});
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
 	}
+	$("#dm").click(function(e){
+		var myWin= window.open("./sendMessage","메세지보내기","width=500,height=500");
+	})
 	</script>
 </html>

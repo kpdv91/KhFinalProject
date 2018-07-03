@@ -7,30 +7,56 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <style>
-	table,th,td{
-		border : 1px solid black;
+    div{
+        border: solid 2px navy;
+        width: 380px;
+        padding: 5%;
+        margin-top: 7%;
+        position: absolute;
+    
+        margin: -150px 0 0 -75px;
+        top: 50%;
+        left: 40%;      
+    }
+    table,th,td{
 		border-collapse: collapse;
+        padding: 5px;     
 	}
+    #loginBtn{
+        background-color: #088A85;
+        color: aliceblue;
+        padding-top: 21px;
+        padding-bottom: 21px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    input[type=button] { 
+        border:solid 1px blue;
+        margin-right: 
+    }    
 	</style>
 </head>
 <body>
-<table>
+<div>
+    <table>
    	     <tr>
-            <th>아이디 : </th>
+            <td>아 이 디 &nbsp : </td>
             <td><input type="text" id="userId" placeholder="아이디"></td>
             <td rowspan="2"><input id="loginBtn" type="button" value="로그인"></td>
          </tr>
          <tr>
-            <th>비밀번호 : </th>
+            <td>비밀번호&nbsp&nbsp: </td>
             <td><input type="password" id="userPw" placeholder="비밀번호"></td>            
          </tr>
          <tr>
            <td colspan="3">
-           <input onclick ="join()" type="button" value="회원가입">
-           <input type="button" value="ID/PW 찾기">
+           &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input onclick ="join()" type="button" value="회원가입">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+           <input type="button" value="ID 찾기">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <input type="button" value="PW 찾기">
            </td>
          </tr>
    </table>
+</div>
 </body>
 <script>
 function join() {
@@ -52,9 +78,9 @@ $("#loginBtn").click(function(){
 		dataType:"json",
 		success:function(data){//인자 값은 서버에서 주는 메시지
 			console.log(data);
-			if(data.success=="관리자"){
+			if(data.success){
 				alert("로그인에 성공 했습니다.");	
-				location.href="main.html";
+				location.href="main.jsp";
 			}else{
 				alert("로그인에 실패 했습니다.");
 			}

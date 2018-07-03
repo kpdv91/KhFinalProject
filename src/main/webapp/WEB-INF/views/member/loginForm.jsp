@@ -78,9 +78,9 @@ $("#loginBtn").click(function(){
 		dataType:"json",
 		success:function(data){//인자 값은 서버에서 주는 메시지
 			console.log(data);
-			if(data.success=="관리자"){
+			if(data.success){
 				alert("로그인에 성공 했습니다.");	
-				location.href="main.html";
+				location.href="main.jsp";
 			}else{
 				alert("로그인에 실패 했습니다.");
 			}

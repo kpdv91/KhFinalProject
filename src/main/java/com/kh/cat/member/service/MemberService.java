@@ -2,6 +2,8 @@ package com.kh.cat.member.service;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,13 +21,13 @@ public class MemberService {
 	MemberInter inter;
 	
 	
-	public ModelAndView login(HashMap<String, String> params) {
+	public ModelAndView login(HashMap<String, String> params, HttpSession session) {
 		logger.info("login 서비스 요청");
 		inter = sqlSession.getMapper(MemberInter.class);
 		
 		String id = params.get("id");
 		String pw = params.get("pw");
-		
+		session.setAttribute("userId", id);
 		logger.info("아이디 : "+id+" / 비밀번호 : "+pw);
 		
 		String result = inter.login(id, pw);
@@ -34,7 +36,7 @@ public class MemberService {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("success", result);
-		mav.setViewName("member/loginForm");
+		mav.setViewName("main.jsp");
 		return mav;
 	}
 

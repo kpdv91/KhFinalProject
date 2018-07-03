@@ -36,22 +36,6 @@
 	#nav button{width: 50px; height: 100%; border: 0px; background-color: #1b5ac2; outline: none; float: right; color:#ffffff;}
 </style>
 <nav id="nav">
-<<<<<<< HEAD
-	<ul>
-		<li id="logo"><img alt="logo" src="resources/img/logo/logo_cat.png"></li>
-		<li>
-            <div id="search">
-                <input type="text"/>
-                <button>검색</button>
-        	</div>
-        </li>
-		<li><a href="boardList">게시판</a></li>
-		<c:if test="${ sessionScope.user == null}">
-			<li><a href="member/loginForm">로그인</a></li>
-			<li><a href="#">회원가입</a></li>
-		</c:if>
-	</ul>
-=======
 	<div id="mainFrame">
 		<div id="logoBox">
 			<img alt="logo" src="resources/img/logo/logo_cat.png"></li>
@@ -70,5 +54,4 @@
 			</ul>
 		</div>
 	</div>
->>>>>>> d9db57f96f089740341078f3e8221f3913475de5
 </nav>

@@ -10,15 +10,13 @@
 			#div1 {
 				height : 180px;
 				width : 180px;
-				float : left;
-                
+				float : left;              
 			}
 			#profile {
 				height : 150px;
 				width : 150px;
 				border : 1px solid black;
-				text-align: center;
-                
+				text-align: center;       
 			}
             button {
                 margin-top: 5px;

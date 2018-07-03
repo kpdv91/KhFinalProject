@@ -34,7 +34,7 @@ public class MemberService {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("success", result);
-		mav.setViewName("loginForm");
+		mav.setViewName("member/loginForm");
 		return mav;
 	}
 

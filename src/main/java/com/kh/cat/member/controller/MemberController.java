@@ -28,7 +28,7 @@ public class MemberController {
 	@RequestMapping(value = "/loginForm", method = RequestMethod.GET)
 	public String loginForm() {
 		logger.info("loginForm 페이지 요청");
-		return "loginForm";
+		return "member/loginForm";
 	}
 	
 	@RequestMapping(value = "/login")

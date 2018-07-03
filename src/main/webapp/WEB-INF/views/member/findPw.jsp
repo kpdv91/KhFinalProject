@@ -12,7 +12,7 @@
         padding: 5%;
         margin-top: 7%;
         position: absolute;
-        background-color: #163D7B;
+        background-color: #163D7B;    
         margin: -150px 0 0 -75px;
         top: 50%;
         left: 40%;      
@@ -32,9 +32,13 @@
 <body>
 <div>
     <table>
+         <tr>
+            <td>아이디 &nbsp : </td>
+            <td><input type="text" id="userId" placeholder="아이디"></td>
+         </tr>   
    	     <tr>
             <td>이름 &nbsp&nbsp&nbsp&nbsp : </td>
-            <td><input type="text" id="userId" placeholder="이름"></td>
+            <td><input type="text" id="userName" placeholder="이름"></td>
          </tr>
          <tr>
             <td>이메일 &nbsp&nbsp: </td>
@@ -47,7 +51,7 @@
             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            &nbsp&nbsp&nbsp&nbsp
+            &nbsp&nbsp&nbsp&nbsp&nbsp
            <input type="button" value="찾기">
            </td>
          </tr>

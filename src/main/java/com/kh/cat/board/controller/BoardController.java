@@ -21,32 +21,42 @@ public class BoardController {
 	
 	
 	//게시판 리스트
-	@RequestMapping(value = "/boardList", method = RequestMethod.GET)
+	@RequestMapping(value = "/boardList")
 	public ModelAndView boardList() {
 		logger.info("boardList 요청");
 		return boardService.boardList();
 	}
 	
 	//게시판 작성하기 페이지 이동
-	@RequestMapping(value = "/boardWritePage", method = RequestMethod.GET)
+	@RequestMapping(value = "/boardWritePage")
 	public String boardWritePage() {
 		logger.info("boardWritePage 요청");
 		return "board/boardWrite";
 	}
 	
-	//게시판 작성하기 페이지 이동
-	@RequestMapping(value = "/boardWrite", method = RequestMethod.GET)
+	/*//게시판 상세보기 페이지 이동
+	@RequestMapping(value = "/boardDetailPage")
+	public String boardDetailPage() {
+		logger.info("boardDetailPage 요청");
+		return "board/boardDetail";
+	}*/
+	
+	
+	//게시판 작성하기
+	@RequestMapping(value = "/boardWrite")
 	public ModelAndView boardWrite(@RequestParam HashMap<String, String> params) {
 		logger.info("boardWrite 요청");
-		
-		String id = params.get("user_name");
-		String subject = params.get("board_subject");
-		String content = params.get("board_content");
-		
-		logger.info("id : {}",id);
-		logger.info("subject : {}",subject);
-		logger.info("content : {}",content);
 		return boardService.boardWrite(params);
 	}
+	
+	//게시판 상세보기
+	@RequestMapping(value = "/boardDetail")
+	public ModelAndView boardDetail(@RequestParam("idx") String idx) {
+		logger.info("boardDetail 요청");
+		logger.info("idx : {}", idx);
+		return boardService.boardDetail(idx);
+	}
+	
+	
 	
 }

@@ -38,6 +38,7 @@
 </head>
 <body>
 <div>
+	<form action="login" method="post">
     <table>
    	     <tr>
             <td>아 이 디 &nbsp : </td>
@@ -57,10 +58,11 @@
            </td>
          </tr>
    </table>
+   </form>
 </div>
 </body>
 <script>
- 
+/*  
 function join() {
 	location.href="JoinForm.html";
 };
@@ -92,6 +94,6 @@ $("#loginBtn").click(function(){
 		}
 	});
 });
- 
+  */
 </script>
 </html>

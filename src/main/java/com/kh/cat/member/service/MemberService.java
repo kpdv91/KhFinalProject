@@ -21,7 +21,7 @@ public class MemberService {
 	MemberInter inter;
 	
 	
-	public ModelAndView login(HashMap<String, String> params, HttpSession session) {
+	/*public ModelAndView login(HashMap<String, String> params, HttpSession session) {
 		logger.info("login 서비스 요청");
 		inter = sqlSession.getMapper(MemberInter.class);
 		
@@ -36,6 +36,24 @@ public class MemberService {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("success", result);
+		mav.setViewName("main");
+		return mav;
+	}*/
+	
+	public ModelAndView login(HashMap<String, String> params, HttpSession session) {
+		logger.info("login 서비스 요청");
+		inter = sqlSession.getMapper(MemberInter.class);
+		
+		String id = params.get("id");
+		String pw = params.get("pw");
+		session.setAttribute("userId", id);
+		logger.info("아이디 : "+id+" / 비밀번호 : "+pw);
+		
+		int success = inter.login(id, pw);
+		logger.info(""+success);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("success", success);
 		mav.setViewName("main");
 		return mav;
 	}

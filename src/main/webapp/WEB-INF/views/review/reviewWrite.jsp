@@ -34,7 +34,7 @@
         #hash{
             margin-right: 5px;
         }
-        #hashtag{
+        .hashTag{
             border: 2px solid #33aaaaff;
             font-size: 14px;
             width: 100px;            
@@ -49,8 +49,9 @@
         }
         #reviewPhoto{
             width: 80px;
+            margin-top: 10px;
         }
-        #photo{
+        #editable{
             width: 100px;
             height: 100px;
             border: 1px solid black; 
@@ -58,41 +59,64 @@
             margin-right: 16px;
             margin-bottom: 5px;
         }
+        #userName{
+        	height: 30px;
+        	border: 0px;
+        	font-size: 15px;
+        }
+       .div{
+       	height: 100px;
+       }
+       #tag{
+       	width: 600px;
+       	height: auto;
+       	overflow: hidden;
+       }
     </style>
 	</head>
 	<body>
 	<form>
-    상호명 : <input type="text"/><button><img src="search.png"></button><br/>
-    작성자 : 홍길동<br/>
+    상호명 : <input type="text"/><button><img src="resources/img/search.png"></button><br/><br/>
+    작성자 : <input id="userName" type="text" value="홍길동" readonly/><br/>
     별점 : <jsp:include page="star.jsp"></jsp:include><br/>
     내용<br/>
     <textarea></textarea><br/><br/>
     
     해시태그 : <input id="hash" type="text"/><input id="add" type="button" value="추가"/><br/>
-    <div id="hashtag">#해시태그</div>
-    <div id="hashtag">#해시태그</div>
-    <div id="hashtag">#해시태그</div>
-    <div id="hashtag">#해시태그</div>
-    <div id="hashtag">#해시태그</div>
-    <br/><br/><br/>
-    
-    <input id="reviewPhoto" type="button" value="사진 추가"/><br/><br/>
-    <div id="photo">사진</div>
-    <div id="photo">사진</div>
-    <div id="photo">사진</div>
-    <div id="photo">사진</div>
-    <div id="photo">사진</div>
-    <div id="photo">사진</div>
-    <div id="photo">사진</div>
-    <div id="photo">사진</div>
-    <div id="photo">사진</div>
-    <div id="photo">사진</div>
-    
-    
+    <div id="tag"></div>
+
+
+	<div id="rePhoto">
+    <input id="reviewPhoto" type="button" value="사진 추가" onclick="fileUp()"/><br/><br/>
+    <div id="editable" contenteditable="true"></div>
+    </div>
     
     </form>
 	</body>
 	<script>
-
+	var div = "";//div 추가 변수
+	var i=0; 
+	var hashtagArr = new Array();//해시태그 내용 담을 배열
+	
+	//해시태그 추가 버튼시 div 생성
+	$("#add").click(function(){
+		console.log("click!");
+		if($("#hash").val() != ""){
+		div = "<div class='hashTag' id='hashtag"+i+"'>#"+$("#hash").val()+"</div>";		
+		$("#tag").append(div);	
+		hashtagArr[i] = $("#hash").val();
+		i++;
+		$("#hash").val("");
+		}
+		console.log(hashtagArr);
+		console.log($("#starScore").text());
+	});
+	
+	//사진추가 새창
+	function fileUp(){
+		//fileUpload 새창을 띄운다.
+		var myWin = window.open("./uploadForm","File Upload","width=400, height=100");
+		
+	}
 	</script>
 </html>

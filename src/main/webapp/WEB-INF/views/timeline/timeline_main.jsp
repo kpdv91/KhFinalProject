@@ -56,6 +56,8 @@
 		</div>
 	</body>
 	<script>
+	var userid = "${sessionScope.userId}";
+	console.log(userid);
 	$(".userdetail").click(function(e) {
 		console.log("상세정보");
 		//var p_no=${place_no};
@@ -143,7 +145,7 @@
 				url:"./receivelist",
 				type:"get",
 				data:{
-					id : 'user'
+					id : userid
 				},
 				dataType:"json",
 				success:function(d){
@@ -165,7 +167,7 @@
 			url:"./sendlist",
 			type:"get",
 			data:{
-				id : 'user'
+				id : userid
 			},
 			dataType:"json",
 			success:function(d){
@@ -186,7 +188,7 @@
 			url:"./receivelist",
 			type:"get",
 			data:{
-				id : 'user'
+				id : userid
 			},
 			dataType:"json",
 			success:function(d){
@@ -203,7 +205,8 @@
 			content += "<tr>"
 			content +="<td>"+item.dm_id+"</td>"
 			content +="<td>"+item.dm_content+"</td>"
-			content +="<td>"+item.dm_date+"</td>"
+			var date = new Date(item.dm_date);			
+			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
 			content += "</tr>"			
 		});		
 		$("#list").empty();
@@ -215,7 +218,8 @@
 			content += "<tr>"
 			content +="<td>"+item.id+"</td>"
 			content +="<td>"+item.dm_content+"</td>"
-			content +="<td>"+item.dm_date+"</td>"
+			var date = new Date(item.dm_date);			
+			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
 			content += "</tr>"			
 		});		
 		$("#list").empty();

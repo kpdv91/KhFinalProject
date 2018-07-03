@@ -3,7 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace=연결되는 인터페이스 -->    
-<mapper namespace="com.kh.cat.board.dao.Boardmapper">
+<mapper namespace="com.kh.cat.board.dao.BoardInter">
 	<!-- 글쓰기(등록된 글의 idx 컬럼을 반환해야한다.(몇가지 옵션이 필요하다.)) -->
 	<!-- 
 		parameterType 지정 (파라메터로 사용될 dto(bean))
@@ -11,7 +11,15 @@
 		keyProperty = "idx" (키가 될 필드(dto변수))
 		keyColumn = "idx" (키가 저장될 DB 컬럼)
 	-->
-
+	<insert id="boardWrite" parameterType="board" useGeneratedKeys="true" keyProperty="board_idx" keyColumn="board_idx">
+		INSERT INTO board(board_idx, id, board_subject, board_content, board_cate, board_date)
+			VALUES(seq_board.NEXTVAL, #{id}, #{board_subject}, #{board_content}, #{board_cate}, SYSDATE)
+	</insert>
+	
+	<select id="boardDetail" resultType="board">
+		SELECT board_idx, id, board_subject, board_content, board_cate, board_date 
+			FROM board WHERE board_idx = #{board_idx}
+	</select>
 </mapper>
 
 

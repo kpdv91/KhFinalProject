@@ -2,6 +2,8 @@ package com.kh.cat.member.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +21,16 @@ public class MemberController {
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	@Autowired MemberService memberService;
 	
-	
-	
-	
 	@RequestMapping(value = "/loginForm", method = RequestMethod.GET)
 	public String loginForm() {
 		logger.info("loginForm 페이지 요청");
-		return "loginForm";
+		return "member/loginForm";
 	}
 	
 	@RequestMapping(value = "/login")
-	public ModelAndView login(@RequestParam HashMap<String, String> params) {
+	public ModelAndView login(@RequestParam HashMap<String, String> params, HttpSession session) {
 		logger.info("login 요청");
-		return memberService.login(params);
+		return memberService.login(params,session);
 	}
 	
 

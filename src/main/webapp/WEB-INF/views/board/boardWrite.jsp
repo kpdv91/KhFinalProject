@@ -37,7 +37,7 @@
                         </select>
                     </td>
 					<th>작성자</th>
-					<td><span id="user_name"></span></td>
+					<td><span id="user_name">관리자</span></td>
 				</tr>
                 <tr>
                     <th>제목</th>
@@ -55,17 +55,20 @@
 		$("#write").click(function () {
 			$.ajax({
 				type : "post",
-				url : "./write",
+				url : "./boardWrite",
 				data : {
 					cate : $("#category").val(),
-					id : $("#user_name").val(),
+					id : $("#user_name").html(),
 					subject : $("#board_subject").val(),
-					content : $("board_content").val()
+					content : $("#board_content").val()
 				},
 				dataType : "json",
 				success : function (data) {
-					if(data.success){
+					console.log(data);
+					if(data.success>0){
+						console.log(data.success);
 						alert("글쓰기 성공");
+						location.href="./boardDetail?idx="+data.success
 					}else{
 						alert("글쓰기 실패");
 					}
@@ -73,8 +76,6 @@
 				error : function (error) {
 					
 				}
-				
-				
 			});
 		});
 	</script>

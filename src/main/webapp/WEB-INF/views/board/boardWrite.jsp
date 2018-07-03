@@ -54,6 +54,26 @@
 	<script>
 		$("#write").click(function () {
 			$.ajax({
+				type : "post",
+				url : "./write",
+				data : {
+					cate : $("#category").val(),
+					id : $("#user_name").val(),
+					subject : $("#board_subject").val(),
+					content : $("board_content").val()
+				},
+				dataType : "json",
+				success : function (data) {
+					if(data.success){
+						alert("글쓰기 성공");
+					}else{
+						alert("글쓰기 실패");
+					}
+				},
+				error : function (error) {
+					
+				}
+				
 				
 			});
 		});

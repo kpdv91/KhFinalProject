@@ -1,15 +1,24 @@
 package com.kh.cat.review.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.kh.cat.review.service.ReviewService;
 
 @Controller
 public class ReviewController {
 
 	private static final Logger logger = LoggerFactory.getLogger(ReviewController.class);
+	
+	@Autowired ReviewService service;
 	
 	@RequestMapping(value = "/timeline", method = RequestMethod.GET)
 	public String timeline() {
@@ -21,5 +30,18 @@ public class ReviewController {
 	public String reviewWritePage() {
 		System.out.println("리뷰 작성 페이지 요청");
 		return "review/reviewWrite";
+	}
+	
+	@RequestMapping(value = "/uploadForm")
+	public String uploadForm() {
+		logger.info("파일 업로드 페이지 이동");
+		return "review/uploadForm";
+	}
+	
+	@RequestMapping(value = "/fileupload", method = RequestMethod.POST)
+	public ModelAndView fileupload(MultipartFile file, HttpSession session) {
+		System.out.println("파일 업로드 요청");
+		String root = session.getServletContext().getRealPath("/");
+		return service.upload(file,root);
 	}
 }

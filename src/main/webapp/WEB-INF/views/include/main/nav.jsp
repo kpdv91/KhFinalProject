@@ -27,7 +27,7 @@
         </li>
 		<li><a href="boardList">게시판</a></li>
 		<c:if test="${ sessionScope.user == null}">
-			<li><a href="loginForm">로그인</a></li>
+			<li><a href="member/loginForm">로그인</a></li>
 			<li><a href="#">회원가입</a></li>
 		</c:if>
 	</ul>

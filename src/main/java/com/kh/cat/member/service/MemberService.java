@@ -36,7 +36,7 @@ public class MemberService {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("success", result);
-		mav.setViewName("main.jsp");
+		mav.setViewName("main");
 		return mav;
 	}
 

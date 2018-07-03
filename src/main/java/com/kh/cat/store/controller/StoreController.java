@@ -11,9 +11,16 @@ public class StoreController {
 
 	private static final Logger logger = LoggerFactory.getLogger(StoreController.class);
 	
+	//가게등록 페이지 이동
 	@RequestMapping(value = "/storeRegistForm", method = RequestMethod.GET)
 	public String storeRegistForm() {
 		return "store/storeRegistForm";
 	}
 	
+	//대표사진 등록 페이지 이동
+	@RequestMapping(value = "/sPhotoUpload", method = RequestMethod.GET)
+	public String sPhotoUpload() {
+		logger.info("대표사진 올리기");
+		return "store/sPhotoUpload";
+	}
 }

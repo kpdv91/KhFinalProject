@@ -16,4 +16,10 @@ public class ReviewController {
 		System.out.println("타임라인 요청");
 		return "timeline/timeline_main";
 	}
+	
+	@RequestMapping(value = "/reviewWritePage")
+	public String reviewWritePage() {
+		System.out.println("리뷰 작성 페이지 요청");
+		return "review/reviewWrite";
+	}
 }

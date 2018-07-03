@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<<<<<<< HEAD
+<nav id="nav">
+	
+=======
 <style>
 	#nav{ background-color: navy; padding:5px; width:100%; height: 100px;}
 	#nav ul li{list-style: none;  display: inline;}
@@ -31,4 +35,5 @@
 			<li><a href="#">회원가입</a></li>
 		</c:if>
 	</ul>
+>>>>>>> 1df6369cad69cb7c0f35103bdad499c9230d3a60
 </nav>

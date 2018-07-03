@@ -18,10 +18,7 @@ public class MemberController {
 
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	@Autowired MemberService memberService;
-	
-	
-	
-	
+
 	@RequestMapping(value = "/loginForm", method = RequestMethod.GET)
 	public String loginForm() {
 		logger.info("loginForm 페이지 요청");

@@ -68,7 +68,7 @@
 					if(data.success>0){
 						console.log(data.success);
 						alert("글쓰기 성공");
-						//location.href="./board/boardDetail?idx="+data.success
+						location.href="./boardDetail?idx="+data.success
 					}else{
 						alert("글쓰기 실패");
 					}
@@ -76,8 +76,6 @@
 				error : function (error) {
 					
 				}
-				
-				
 			});
 		});
 	</script>

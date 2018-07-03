@@ -7,6 +7,6 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class AdminController {
 
-	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+	private Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
 }

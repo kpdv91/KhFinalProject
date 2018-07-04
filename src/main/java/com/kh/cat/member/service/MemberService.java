@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.cat.dto.MemberDTO;
 import com.kh.cat.member.dao.MemberInter;
 
 
@@ -44,6 +45,32 @@ public class MemberService {
 		mav.addObject("msg", msg);//모델에 들어갈 내용
 		mav.setViewName(page);//반환 페이지
 		
+		return mav;
+	}
+
+	public ModelAndView join(HashMap<String, String> map) {
+		
+		inter = sqlSession.getMapper(MemberInter.class);
+		/*map -> dto*/
+		MemberDTO dto = new MemberDTO();
+		dto.setId(map.get("userId"));
+		dto.setPw(map.get("userPw"));
+		dto.setName(map.get("userName"));
+		dto.setEmail(map.get("userEmail"));
+		
+		int success = inter.join(dto);
+		logger.info("결과값 : {}",success);
+		String page ="joinForm";
+		String msg = "회원가입에 실패 했습니다.";
+		
+		if(success == 1) {
+			page ="main";
+			msg = "회원가입에 성공 했습니다.";
+		}
+		//Model + view 한꺼번에 담을 수 있다.
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("msg",msg);//모델에 들어갈 내용
+		mav.setViewName(page);//반환 페이지 내용
 		return mav;
 	}
 	

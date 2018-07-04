@@ -12,9 +12,9 @@
             }
             
             div{
-                border: solid 2px navy;
+                border: solid 2px navy; 
                 width: 380px;
-                padding: 5%;
+                padding: 4%;
                 margin-top: 7%;
                 /*position: absolute;*/
 
@@ -23,8 +23,8 @@
                 left: 40%;      */
     }
 			#div1 {
-				height : 180px;
-				width : 180px;
+				height : 150px;
+				width : 150px;
 				float : left;              
 			}
             #div2 {
@@ -50,6 +50,7 @@
 		</style>
 	</head>
 	<body>
+		<form action="join" method="post">
 		<div id="div1" >
 			<div id="profile" style='display:table-cell;vertical-align:middle'/>
 				
@@ -62,49 +63,73 @@
         <table>
         <tr>
             <th>아이디 : </th>
-            <td><input type="text" id="userId" placeholder="아이디"></td>
+            <td><input type="text" id="userId" name="userId" placeholder="아이디"></td>
             <td><button>중복체크</button></td>
             <td id="idChk">아이디가 중복 되었습니다.</td>
          </tr>
          <tr>
             <th>비밀번호 : </th>
-            <td><input type="password" id="userPw" placeholder="비밀번호"></td>
+            <td><input type="password" id="userPw" name="userPw" placeholder="비밀번호" ></td>
          </tr>
          <tr>
             <th>비밀번호확인 : </th>
-            <td><input type="password" id="userPwChk" placeholder="비밀번호확인"></td>            
+            <td><input type="password" id="userPwChk" name="userPwChk" placeholder="비밀번호확인" onkeyup="chk2()"></td>           
          </tr>
          <tr>
-            <td id="confirmPw" colspan="2">비밀번호 일치 여부</td>           
+          
+            <td id="confirmPw" colspan="2"><span></span></td>           
          </tr>   
          <th>이름 : </th>
-            <td><input type="text" id="userId" placeholder="이름"></td>
+            <td><input type="text" id="userName" name="userName" placeholder="이름"></td>
          <tr>
             <th>이메일 : </th>
-            <td><input type="email" id="userEmail" placeholder="이메일"></td>
+            <td><input type="email" id="userEmail" name="userEmail" placeholder="이메일"></td>
          </tr>
          <th>핸드폰번호</th>
         <td>
-            <input name="hp1" type="text" class="frm_input tel" size="3" maxlength="3" placeholder="01X"/>-
-            <input name="hp2" type="text" class="frm_input tel" size="3" maxlength="4" placeholder="XXXX"/>-
-            <input name="hp3" type="text" class="frm_input tel" size="3" maxlength="4" placeholder="XXXX"/>
+            <input id="hp1" name="hp1" type="text" class="frm_input tel" size="3" maxlength="3" placeholder="01X"/>-
+            <input id="hp2" name="hp2" type="text" class="frm_input tel" size="3" maxlength="4" placeholder="XXXX"/>-
+            <input id="hp3" name="hp3" type="text" class="frm_input tel" size="3" maxlength="4" placeholder="XXXX"/>
+            <button type="button" id="test" onclick="hap()">테스트</button>
         </td>
         <tr>
             <td></td>
             
             <td>
-                <button id="confirm">취소</button>
-                <button id="leave">가입</button>
+                <button id="cancel" onclick="">취소</button>
+                <button id="joinId">가입</button>
             </td>
         </tr>
         </div>
 	</table>
-        <!--<div id="bottom">
-            <button id="confirm">취소</button>
-            <button id="leave">가입</button>
-		</div>-->
+	</form>
 	</body>
 	<script>
-
+		$("#join").click(function () {
+			location.href = "./loginForm";
+		});
+		
+		var txt=document.getElementsByTagName("input");
+	    var ms=document.querySelector("span");
+    
+	    function chk2(){
+	        //두 인풋의 일치여부 확인	      	  	        
+	        var scd=txt[1].value;
+	        var thd=txt[2].value;
+	        
+	        //일치 여부 확인후 출력
+	        if(scd==thd){
+	            ms.innerHTML="비밀번호가 일치합니다";
+	            ms.style.color="green";
+	        }else{
+	            ms.innerHTML="비밀번호가 일치하지않습니다.";
+	            ms.style.color="red";
+	        }
+	    }
+	 
+	    function hap(){
+	    	var phone = $("#hp1").val()+"-"+$("#hp2").val()+"-"+$("#hp3").val();
+	    	console.log(phone);
+	    }
 	</script>
 </html>

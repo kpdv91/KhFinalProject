@@ -139,7 +139,7 @@
 	    	$("#likestore").css("background-color","lightgray");
 	    	$("#likestore").css("color","black");
 		}			
-		$("#content").load(page,function(res, stat) {  /* $("#area").html(res) */  });
+		$("#content").load(page,function(res, stat) {});
 		if(page=="resources/timelinehtml/messagebox.html"){
 			$.ajax({
 				url:"./receivelist",
@@ -204,7 +204,7 @@
 		list.forEach(function(item, idx){
 			content += "<tr>"
 			content +="<td>"+item.dm_id+"</td>"
-			content +="<td><a href='/dmdetail?idx"+item.dm_idx+"'>"+item.dm_content+"</a></td>"
+			content +="<td id='"+item.dm_idx+"' onclick='receivedetail(id)'>"+item.dm_content+"</td>"
 			var date = new Date(item.dm_date);			
 			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
 			content += "</tr>"			
@@ -217,7 +217,7 @@
 		list.forEach(function(item, idx){
 			content += "<tr>"
 			content +="<td>"+item.id+"</td>"
-			content +="<td><a href='/dmdetail?idx"+item.dm_idx+"'>"+item.dm_content+"</a></td>"
+			content +="<td id='"+item.dm_idx+"' onclick='senddetail(id)'>"+item.dm_content+"</td>"
 			var date = new Date(item.dm_date);	
 			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
 			content += "</tr>"			
@@ -228,5 +228,43 @@
 	$("#dm").click(function(e){
 		var myWin= window.open("./sendMessage","메세지보내기","width=500,height=500");
 	})
+	function receivedetail(e){
+		console.log(e);
+		$("#content").empty();
+		 $.ajax({
+			url:"./receivedetail",
+			type:"get",
+			data:{
+				idx : e
+			},
+			dataType:"json",
+			success:function(d){
+				page="resources/timelinehtml/receivedetail.html"
+				$("#content").load(page,{id:e.target.id},function(res, stat) {});
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	};
+	function senddetail(e){
+		console.log(e);
+		//$("#content").empty();
+		/* $.ajax({
+			url:"./receivedetail",
+			type:"get",
+			data:{
+				id : e.target.id
+			},
+			dataType:"json",
+			success:function(d){
+				page="resources/timelinehtml/receivedetail.html"
+				$("#content").load(page,{id:e.target.id},function(res, stat) {});
+			},
+			error:function(e){
+				console.log(e);
+			}
+		}); */
+	};
 	</script>
 </html>

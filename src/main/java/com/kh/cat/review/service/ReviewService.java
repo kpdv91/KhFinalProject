@@ -121,5 +121,14 @@ public class ReviewService {
 		mav.setViewName("review/reviewList");
 		return mav;
 	}
+	public HashMap<String, Object> revStoreSearch(String params) {
+		
+		logger.info("가게 검색 리스트 요청");
+		inter = sqlSession.getMapper(ReviewInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("list", inter.storeList(params));
+		
+		return map;
+	}
 
 }

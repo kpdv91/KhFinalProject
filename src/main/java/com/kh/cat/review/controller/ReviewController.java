@@ -68,6 +68,13 @@ public class ReviewController {
 		return service.write(hash_tag, review_photo, map);
 	}
 	
+	@RequestMapping(value = "/revStoreSearch")
+	public @ResponseBody HashMap<String, Object> revStoreSearch(@RequestParam String params) {
+		logger.info("가게 리스트 요청");
+		logger.info(params);
+		return service.revStoreSearch(params);
+	}
+	
 	/*@RequestMapping(value= "/reviewWrite")
 	public ModelAndView wirte(@RequestParam HashMap<String, Object> hash_tag) {
 		logger.info("글쓰기 요청");	

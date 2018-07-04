@@ -31,6 +31,10 @@
 	 		VALUES(#{param1},#{param2})
 	 </insert>
 	 
+	 <select id="storeList" resultType="store">
+	 	SELECT store_idx, store_name, store_addr 
+	 	FROM store WHERE store_name LIKE '%'|| #{param1}||'%'
+	 </select>
 	 
 	
 </mapper>

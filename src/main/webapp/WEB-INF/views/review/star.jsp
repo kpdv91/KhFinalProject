@@ -88,9 +88,12 @@ star-input>.input.focus{
         <input type="radio" name="star-input" value="4.5" id="p4.5"><label for="p4.5">4.5</label>
         <input type="radio" name="star-input" value="5.0" id="p5.0"><label for="p5.0">5.0</label>
   	</span>
-  	<output for="star-input"><b id="starScore">0</b>점</output>						
+  	<output for="star-input"><b name="review_star" id="starScore">0</b>점</output>						
 </span>
 <script src="resources/js/jquery-1.11.3.min.js"></script>
 <script src="resources/js/star.js"></script>
 </body>
+<script>
+
+</script>
 </html>

@@ -18,7 +18,7 @@
             input#board_subject{width: 100%; height: 100%;}
             textarea#board_content{resize: none; width: 100%; height: 100%;}
             
-            button#delete{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 367px; left: 377px;} 
+            button#exit{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 367px; left: 377px;} 
             button#update{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 367px; left: 432px;}
     
 		</style>
@@ -34,6 +34,7 @@
                     </td>
 					<th>작성자</th>
 					<td>
+						<input type="hidden" id="board_idx" value="${dto.board_idx }"/> 
 						<span id="user_name">${dto.id }</span>
 					</td>
 					<th>작성날짜</th>
@@ -43,23 +44,46 @@
 				</tr>
                 <tr>
                     <th>제목</th>
-                    <td colspan="5">${dto.board_subject }</td>
+                    <td colspan="5"><input type="text" id="board_subject" value="${dto.board_subject }"/></td>
                 </tr>
                 <tr>
-                    <td colspan="6"><textarea rows="15" id="board_content" readonly="readonly">${dto.board_content }</textarea></td>
+                    <td colspan="6"><textarea rows="15" id="board_content">${dto.board_content }</textarea></td>
                 </tr>
 			</table>
-            <button id="delete">삭제</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="exit">취소</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button id="update">수정</button>
 		</div>
 	</body>
 	<script>
 		$("#update").click(function () {
-			location.href="./update?idx="+${dto.board_idx};
+			$.ajax({
+				type : "post",
+				url : "./boardUpdate",
+				data : {
+					idx : $("#board_idx").val(),
+					/* cate : $("#category").val(), */
+					/* id : $("#user_name").html(), */
+					subject : $("#board_subject").val(),
+					content : $("#board_content").val()
+				},
+				dataType : "json",
+				success : function (data) {
+					if(data.success>0){
+						console.log(data.success);
+						alert("수정 성공");
+						location.href="./boardDetail?idx="+data.success;
+					}else{
+						alert("실패 실패");
+					}
+				},
+				error : function (error) {
+					console.log(error);
+				}
+			});
 		});
 		
-		$("#delete").click(function () {
-			
+		$("#exit").click(function () {
+			history.back();
 		});
 	</script>
 </html>

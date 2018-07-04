@@ -37,34 +37,43 @@
 	</style>
 </head>
 <body>
+
+<form action="login" method="post">
 <div>
+	
     <table>
    	     <tr>
             <td>아 이 디 &nbsp : </td>
-            <td><input type="text" id="userId" placeholder="아이디"></td>
-            <td rowspan="2"><input id="loginBtn" type="button" value="로그인"></td>
+            <td><input type="text" name="id" placeholder="아이디"></td>
+            <td rowspan="2"> <input id="loginBtn" type="submit" value="로그인"> <!-- <button>로그인</button> --></td>
          </tr>
          <tr>
             <td>비밀번호&nbsp&nbsp: </td>
-            <td><input type="password" id="userPw" placeholder="비밀번호"></td>            
+            <td><input type="password" name="pw" placeholder="비밀번호"></td>            
          </tr>
          <tr>
            <td colspan="3">
-           &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input onclick ="join()" type="button" value="회원가입">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+           &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <input onclick ="join()" type="button" value="회원가입"> <!-- <button id="join">회원가입</button> -->&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
            <input type="button" value="ID 찾기">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
             <input type="button" value="PW 찾기">
-            <input type="submit" value="login"/>
            </td>
          </tr>
    </table>
+   
 </div>
+</form>
 </body>
 <script>
- 
-function join() {
-	location.href="JoinForm.html";
-};
-$("#loginBtn").click(function(){
+
+/* $("#join").click(function () {
+	location.href = "./joinForm";
+}); */
+
+
+ function join() {
+	location.href="./joinForm";
+}; 
+/* $("#loginBtn").click(function(){
 	console.log("클릭");
 	//키와 값으로 복수개가 들어간다.
 	//type: [post|get], url: 어디로 보낼 것인가? 
@@ -91,7 +100,7 @@ $("#loginBtn").click(function(){
 			console.log(err)
 		}
 	});
-});
- 
+}); */
+
 </script>
 </html>

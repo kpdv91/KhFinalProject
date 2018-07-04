@@ -24,10 +24,10 @@
 	if(filePath != ""){
 		var content="";//img 태그
 		var elem = window.opener.document.getElementById("editable");
-		content += "<img width='100' height='100' src='${path}'/><br/>";
+		content += "<div id='imgDiv'><img width='100' height='100' src='${path}'/></br>";
 		content += "<input id='${path}' type='button' value='삭제' onclick='del(this)' />"
-		content += "<br/>";
-		elem.innerHTML += content;
+		content += "</div>";
+		elem.innerHTML += content; 
 		self.close();
 	}
 </script>

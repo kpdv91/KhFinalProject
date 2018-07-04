@@ -18,7 +18,7 @@
             input#board_subject{width: 100%; height: 100%;}
             textarea#board_content{resize: none; width: 100%; height: 100%;}
             
-            button#exit{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 367px; left: 377px;} 
+            button#delete{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 367px; left: 377px;} 
             button#update{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 367px; left: 432px;}
     
 		</style>
@@ -49,17 +49,17 @@
                     <td colspan="6"><textarea rows="15" id="board_content" readonly="readonly">${dto.board_content }</textarea></td>
                 </tr>
 			</table>
-            <button id="exit">취소</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="delete">삭제</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button id="update">수정</button>
 		</div>
 	</body>
 	<script>
 		$("#update").click(function () {
-			location.href = "./boardupdateForm?idx="+${dto.board_idx};
+			location.href="./update?idx="+${dto.board_idx};
 		});
 		
-		$("#exit").click(function () {
-			history.back();
+		$("#delete").click(function () {
+			
 		});
 	</script>
 </html>

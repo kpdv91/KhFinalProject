@@ -11,7 +11,7 @@
             height: 21px;
             vertical-align: middle;
         }
-        img{
+        #reviewSearch{
             width: 15px;
             height: 15px;
             
@@ -37,10 +37,11 @@
         .hashTag{
             border: 2px solid #33aaaaff;
             font-size: 14px;
-            width: 100px;            
+            width: auto;            
             text-align: center; 
             float: left;
             margin: 5px;
+            padding-left: 10px;
         }
         form{
             text-align: center;
@@ -51,14 +52,7 @@
             width: 80px;
             margin-top: 10px;
         }
-        #editable{
-            width: 100px;
-            height: 100px;
-            border: 1px solid black; 
-            float: left;
-            margin-right: 16px;
-            margin-bottom: 5px;
-        }
+       
         #userName{
         	height: 30px;
         	border: 0px;
@@ -67,16 +61,36 @@
        .div{
        	height: 100px;
        }
-       #tag{
+       #tag,#editable{
        	width: 600px;
        	height: auto;
        	overflow: hidden;
+       }
+       #imgDiv{
+       	float: left; 
+       	margin-left: 10px;
+       }
+       /* #editable{
+       	width: 600px;
+       	height: auto;
+       	overflow: hidden;
+       } */
+       .hashDel{
+       	width: 20px;
+       	background-color: #33aaaaff;
+        outline: 0px;
+        border: 0px;
+        color: white;
+        float:right;
+        text-align: center;
+        font-size: 15px;
+        margin-left: 10px;
        }
     </style>
 	</head>
 	<body>
 	<form>
-    상호명 : <input type="text"/><button><img src="resources/img/search.png"></button><br/><br/>
+    상호명 : <input type="text"/><button><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/>
     작성자 : <input id="userName" type="text" value="홍길동" readonly/><br/>
     별점 : <jsp:include page="star.jsp"></jsp:include><br/>
     내용<br/>
@@ -88,29 +102,36 @@
 
 	<div id="rePhoto">
     <input id="reviewPhoto" type="button" value="사진 추가" onclick="fileUp()"/><br/><br/>
-    <div id="editable" contenteditable="true"></div>
+    <div id="editable"></div>
     </div>
     
     </form>
 	</body>
 	<script>
 	var div = "";//div 추가 변수
-	var i=0; 
-	var hashtagArr = new Array();//해시태그 내용 담을 배열
+	
+	
 	
 	//해시태그 추가 버튼시 div 생성
 	$("#add").click(function(){
-		console.log("click!");
 		if($("#hash").val() != ""){
-		div = "<div class='hashTag' id='hashtag"+i+"'>#"+$("#hash").val()+"</div>";		
+		div = "<div class='hashTag'>#"+$("#hash").val()+
+		"<button onclick='hashDel(this)' class='hashDel'>-</button><input type='hidden' name='hashTag' value='"+$("#hash").val()+"'/></div>";		
 		$("#tag").append(div);	
-		hashtagArr[i] = $("#hash").val();
-		i++;
+		//hashtagArr[i] = $("#hash").val();
+		//i++;
 		$("#hash").val("");
 		}
-		console.log(hashtagArr);
-		console.log($("#starScore").text());
+		
 	});
+	
+	function hashDel(elem){
+		//var sp = elem.id.split("_")[1];
+		console.log(elem.parentNode);
+		//delete hashtagArr[sp];
+		elem.parentNode.remove();
+		$(elem).remove();
+	}
 	
 	//사진추가 새창
 	function fileUp(){
@@ -118,5 +139,29 @@
 		var myWin = window.open("./uploadForm","File Upload","width=400, height=100");
 		
 	}
+	
+	//사진 삭제시 초기화가 되지 않기 위해 Ajax 사용
+	function del(elem){
+		var fileName = elem.id.split("/")[2];
+		console.log(fileName);
+		$.ajax({
+			url : "./fileDel",
+			type : "get",
+			data : {"fileName":fileName},
+			success : function(data){
+				console.log(data);
+				if(data.success == 1){
+					//이미지 삭제
+					$(elem).prev().prev().remove();
+					//버튼 삭제
+					$(elem).remove();
+				}
+			},
+			error : function(e){
+				console.log(e);
+			}
+		});
+	}
+	
 	</script>
 </html>

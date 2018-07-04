@@ -28,10 +28,27 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/login")
-	public ModelAndView login(@RequestParam HashMap<String, String> params, HttpSession session) {
+	public ModelAndView loginConfirmPage (@RequestParam HashMap<String, String> params,HttpSession session) {
 		logger.info("login 요청");
-		return memberService.login(params,session);
+		return memberService.login(params, session);
 	}
+	
+	
+	/*@RequestMapping(value = "/login")
+	public ModelAndView login(@RequestParam HashMap<String, String> params) {
+		logger.info("login 요청");
+		return memberService.login(params);
+	}*/
+	
+	/*@RequestMapping(value = "/login")
+	public String login(@RequestParam("id") String id,@RequestParam("pw") String pw,HttpSession session) {
+		logger.info("로그인 요청");
+		if(memberService.login(id,pw)) {
+			session.setAttribute("loginId", id);
+		}
+		//return "redirect:/list";
+		return "main";
+	}*/
 	
 
 

@@ -24,6 +24,13 @@ public class CommonController {
 	public String main() {
 		return "main";
 	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public String search() {
+		logger.info("검색 페이지 이동");		
+		return "include/common/search";
+	}
+	
 	@RequestMapping(value = "/receivelist")
 	public @ResponseBody HashMap<String, Object> receivelist(@RequestParam Map<String,String> params) {
 		logger.info("받은 메세지 확인");

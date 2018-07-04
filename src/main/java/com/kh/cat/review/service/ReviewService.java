@@ -55,5 +55,24 @@ public class ReviewService {
 		
 		return mav;
 	}
+	public HashMap<String, Integer> fileDel(String root, String fileName) {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		int success = 0;
+		String fullPath = root + "resources/upload/"+fileName;
+		File file = new File(fullPath);
+		if(file.exists()) {
+			logger.info("삭제할 파일이 존재 : "+file);
+			file.delete();
+		}else {
+			logger.info("이미 삭제된 사진");
+		}
+		if(fileList.get(fileName) != null) {
+			fileList.remove(fileName);//리스트 삭제
+			logger.info("삭제 후 남은 파일 갯수 : {}",fileList.size());
+			success = 1;
+		}
+		map.put("success", success);
+		return map;
+	}
 
 }

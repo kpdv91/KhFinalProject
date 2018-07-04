@@ -20,12 +20,18 @@
 		<div id="tableDiv">
 			<button id="write">작성하기</button> 
 			<table>
-				<tr>
-					<th>번호</th>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>작성날짜</th>
-				</tr>
+				<thead>
+					<tr>
+						<th>번호</th>
+						<th>분류</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>작성날짜</th>
+					</tr>
+				</thead>
+				<tbody id="list">
+					
+				</tbody>
 			</table>
 		</div>
 	</body>
@@ -33,5 +39,42 @@
 		$("#write").click(function () {
 			location.href="boardWritePage";
 		});
+		
+		$(document).ready(function() {
+			$.ajax({
+				type : "post",
+				url : "./boardList",
+				dataType : "json",
+				success : function (data) {
+					console.log(data);
+					printList(data.list);
+					if(data.list != null){
+						printList(data.list);
+					}
+				},
+				error : function (error) {
+					console.log(error);
+				}
+			});
+		});
+		
+		//받아온 리스트
+		function printList(list) {
+			console.log("리스트 어팬드 여부");
+			var content = "";
+			list.forEach(function(item, idx) {
+				content += "<tr>";
+				content += "<td>"+item.board_idx+"</td>";
+				content += "<td>"+item.board_cate+"</td>";
+				content += "<td>"+item.board_subject+"</td>";
+				content += "<td>"+item.id+"</td>";
+				var date = new Date(item.board_date);
+				content += "<td>"+date.toLocaleDateString("ko-KR")+"</td>";
+				content += "<td><a href='#'>삭제</a></td>";
+				content += "</tr>";
+			});
+			$("#list").empty();
+			$("#list").append(content);
+		}
 	</script>
 </html>

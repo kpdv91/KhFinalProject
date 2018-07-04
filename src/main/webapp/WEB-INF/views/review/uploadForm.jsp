@@ -26,7 +26,7 @@
 		var elem = window.opener.document.getElementById("editable");
 		content += "<div id='imgDiv'><img width='100' height='100' src='${path}'/></br>";
 		content += "<input id='${path}' type='button' value='삭제' onclick='del(this)' />"
-		content += "</div>";
+		content += "</div><input type='hidden' name='review_photo' value='${path}'/>";
 		elem.innerHTML += content; 
 		self.close();
 	}

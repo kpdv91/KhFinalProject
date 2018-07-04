@@ -11,7 +11,15 @@ public class ReviewDTO {
 	private int review_likeCnt;
 	private Date review_date;
 	private String profile;
+	private String review_storeName;
 	
+	
+	public String getReview_storeName() {
+		return review_storeName;
+	}
+	public void setReview_storeName(String review_storeName) {
+		this.review_storeName = review_storeName;
+	}
 	public int getReview_idx() {
 		return review_idx;
 	}

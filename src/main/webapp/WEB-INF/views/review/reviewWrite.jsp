@@ -27,7 +27,18 @@
             color: white;
             border-radius: 7px;
             width: 50px;
-            height: 25px;
+            height: 27px;
+            outline: 0px;
+            border: 0px;
+        }
+        #write{
+        vertical-align: middle;
+            padding: 0px 5px;
+            background-color: #33aaaaff;
+            color: white;
+            border-radius: 7px;
+            width: 80px;
+            height: 27px;
             outline: 0px;
             border: 0px;
         }
@@ -40,7 +51,8 @@
             width: auto;            
             text-align: center; 
             float: left;
-            margin: 5px;
+            margin-left: 20px;
+            margin-top: 10px;
             padding-left: 10px;
         }
         form{
@@ -50,7 +62,8 @@
         }
         #reviewPhoto{
             width: 80px;
-            margin-top: 10px;
+            margin-top: 20px;
+            margin-right: 315px;
         }
        
         #userName{
@@ -68,7 +81,7 @@
        }
        #imgDiv{
        	float: left; 
-       	margin-left: 10px;
+       	margin-left: 20px;
        }
        /* #editable{
        	width: 600px;
@@ -86,37 +99,53 @@
         font-size: 15px;
         margin-left: 10px;
        }
+       #userId{
+       	border: 0px;
+       	font-size: 15px;
+       	
+       }
     </style>
 	</head>
 	<body>
-	<form>
-    상호명 : <input type="text"/><button><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/>
-    작성자 : <input id="userName" type="text" value="홍길동" readonly/><br/>
+	<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
+	<br/><br/><br/>
+	<form id="sendForm" action="reviewWrite">
+	작성자 : <input id="userId" name="id" type="text" value="관리자" readonly/><br/><br/>
+    상호명 : <input type="text" name="review_storeName"/><button><img id="reviewSearch" src="resources/img/search.png"></button><br/>
+    
     별점 : <jsp:include page="star.jsp"></jsp:include><br/>
     내용<br/>
-    <textarea></textarea><br/><br/>
+    <textarea name="review_content"></textarea><br/><br/>
     
     해시태그 : <input id="hash" type="text"/><input id="add" type="button" value="추가"/><br/>
+    
     <div id="tag"></div>
+    
 
 
 	<div id="rePhoto">
     <input id="reviewPhoto" type="button" value="사진 추가" onclick="fileUp()"/><br/><br/>
+    <input type="hidden" name="review_photo"/>
     <div id="editable"></div>
-    </div>
-    
+    </div><br/><br/>
+    <button id="write">작성하기</button>
     </form>
 	</body>
 	<script>
 	var div = "";//div 추가 변수
 	
-	
+	$("#write").click(function(){
+		//해시태그 삭제버튼 제거
+		
+		$("#sendForm").submit();
+	});
 	
 	//해시태그 추가 버튼시 div 생성
 	$("#add").click(function(){
 		if($("#hash").val() != ""){
-		div = "<div class='hashTag'>#"+$("#hash").val()+
-		"<button onclick='hashDel(this)' class='hashDel'>-</button><input type='hidden' name='hashTag' value='"+$("#hash").val()+"'/></div>";		
+		div = "<div class='hashTag' id='hashTag'>#"+$("#hash").val()+
+		"<button onclick='hashDel(this)' class='hashDel'>-</button>"+
+		"<input type='hidden' name='hash_tag' value='"+$("#hash").val()+"'/></div>";		
 		$("#tag").append(div);	
 		//hashtagArr[i] = $("#hash").val();
 		//i++;

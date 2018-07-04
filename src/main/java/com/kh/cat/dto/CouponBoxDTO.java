@@ -1,9 +1,39 @@
 package com.kh.cat.dto;
 
+import java.sql.Date;
+
 public class CouponBoxDTO {
 	private int couponBox_code;
 	private String id;
+	private long couponBox_price;
+	private String couponBox_name;
+	private Date couponBox_date;
+	private int couponBox_use;
 	
+	public long getCouponBox_price() {
+		return couponBox_price;
+	}
+	public void setCouponBox_price(long couponBox_price) {
+		this.couponBox_price = couponBox_price;
+	}
+	public String getCouponBox_name() {
+		return couponBox_name;
+	}
+	public void setCouponBox_name(String couponBox_name) {
+		this.couponBox_name = couponBox_name;
+	}
+	public Date getCouponBox_date() {
+		return couponBox_date;
+	}
+	public void setCouponBox_date(Date couponBox_date) {
+		this.couponBox_date = couponBox_date;
+	}
+	public int getCouponBox_use() {
+		return couponBox_use;
+	}
+	public void setCouponBox_use(int couponBox_use) {
+		this.couponBox_use = couponBox_use;
+	}
 	public int getCouponBox_code() {
 		return couponBox_code;
 	}

@@ -1,5 +1,6 @@
 package com.kh.cat.board.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
@@ -21,21 +22,24 @@ public class BoardService {
 	BoardInter inter;
 	
 	//게시판 리스트
-	public ModelAndView boardList() {
+	public @ResponseBody HashMap<String, Object> boardList() {
 		logger.info("boardList 서비스 요청");
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("board/boardList");
-		return mav;
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		inter = sqlSession.getMapper(BoardInter.class);
+		ArrayList<BoardDTO> list = inter.boardList();
+		logger.info("리스트 확인 : " +list); 
+		map.put("list", list);
+		
+		return map;
 	}
 
 	//게시판 작성
 	public @ResponseBody HashMap<String, Object> boardWrite(HashMap<String, String> params) {
 		logger.info("boardWrite 서비스 요청");
-		/*ModelAndView mav = new ModelAndView();
-		*/
+
 		HashMap<String, Object> map = new HashMap<String,Object>();
 		BoardDTO dto = new BoardDTO();
-		int result = 0;
+		
 		String cate = params.get("cate");
 		String id = params.get("id");
 		String subject = params.get("subject");
@@ -52,13 +56,13 @@ public class BoardService {
 		dto.setBoard_content(content);
 		
 		inter = sqlSession.getMapper(BoardInter.class);
+		
+		int result = 0;
 		result = inter.boardWrite(dto);
 		logger.info("result check : "+result);
-		String page = "redirect:/boardWrite";
 		
 		if(result > 0) {
 			map.put("success",dto.getBoard_idx());
-			page = "redirect:/boardDetail?idx="+dto.getBoard_idx();
 		}
 		logger.info("idx : {}", dto.getBoard_idx());
 		return map;
@@ -73,7 +77,6 @@ public class BoardService {
 		BoardDTO dto = inter.boardDetail(idx);
 		logger.info("idx : {}",idx);
 		String page = "board/boardDetail";
-		System.out.println(page);
 		
 		mav.addObject("dto", dto);
 		mav.setViewName(page);
@@ -89,8 +92,49 @@ public class BoardService {
 		BoardDTO dto = inter.boardDetail(idx);
 		
 		mav.addObject("dto", dto);
-		mav.setViewName("./board/updateForm?idx="+idx);
+		mav.setViewName("board/updateForm");
 		return mav;
+	}
+
+	//수정 수정하기
+	public HashMap<String, Object> boardUpdate(HashMap<String, String> params) {
+		logger.info("boardUpdate 서비스 요청");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		BoardDTO dto = new BoardDTO();
+		String idx = params.get("idx");
+		String subject = params.get("subject");
+		String content = params.get("content");
+		
+		logger.info("idx : {}", idx);
+		logger.info("subject : {}", subject);
+		logger.info("content : {}", content);
+		
+		dto.setBoard_idx(Integer.parseInt(idx));
+		dto.setBoard_subject(subject);
+		dto.setBoard_content(content);
+		
+		inter = sqlSession.getMapper(BoardInter.class);
+		int result = 0;
+		result = inter.boardUpdate(dto);
+		
+		if(result > 0) {
+			map.put("success", dto.getBoard_idx());
+		}
+		return map;
+	}
+
+	public HashMap<String, Object> boardDelete(int idx) {
+		logger.info("boardDelete 서비스 요청");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		inter = sqlSession.getMapper(BoardInter.class);
+		int result = 0;
+		result = inter.boardDelete(idx);
+		
+		if(result > 0) {
+			map.put("success", result);
+		}
+		return map;
 	}
 
 }

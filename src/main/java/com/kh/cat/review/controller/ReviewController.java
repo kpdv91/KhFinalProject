@@ -69,7 +69,7 @@ public class ReviewController {
 	}
 	
 	@RequestMapping(value = "/revStoreSearch")
-	public @ResponseBody HashMap<String, Object> revStoreSearch(@RequestParam String params) {
+	public @ResponseBody HashMap<String, Object> revStoreSearch(@RequestParam("review_storeName") String params) {
 		logger.info("가게 리스트 요청");
 		logger.info(params);
 		return service.revStoreSearch(params);

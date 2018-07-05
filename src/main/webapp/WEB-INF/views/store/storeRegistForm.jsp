@@ -8,7 +8,9 @@
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>가게 등록</title>
 		<style>
-		
+		table,tr,td,th{
+			border: solid 1px black;
+		}
 		</style>
 	</head>
 	<body>
@@ -19,7 +21,7 @@
 					<th>대표사진</th>
 					<td>
 						<input type="file" id="sPhoto" name="store_photo" accept=".jpg,.jpeg,.png,.gif,.bmp"/>
-						<input type="button" onclick="storeD()" value="취소">
+						<input type="button" onclick="storeD()" value="초기화">
 					</td>
 				</tr>
 				<tr>
@@ -68,21 +70,31 @@
 					<td><input type="text" name="store_rest"/></td>
 				</tr>
 				<tr>
-					<th>해쉬태그</th>
+					<th rowspan="2">해쉬태그</th>
 					<td>
 						<input type="text" id="tag" name="store_tag"/>
 						<input type="button" onclick="tagAdd()" value="추가">
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2">
+					<td>
 					<div id="tags">
 					</div>
 					</td>
 				</tr>
 				<tr>
-					<th>메뉴판 사진</th>
-					<td><input type="text" name="store_menu"/></td>
+					<th rowspan="2">메뉴판 사진</th>
+					<td>
+						<input type="button" onclick="menuPhotoUp()" value="사진 추가">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<!-- div에서 내용을 받아 보여준다 -->
+						<div id="editable"></div>
+						<!-- 전송은 hidden에 담아서 한다 -->
+						<input id="contentForm" type="hidden" name="content"/>
+					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
@@ -121,7 +133,6 @@
 		}catch (e) {
 			storeD();
 		}
-
 	return false;
 	};
 	
@@ -134,6 +145,46 @@
 	
 	var hTag;
 	var tagList = [];
+	//해쉬 태그 추가
+	function tagAdd() {
+		hTag = $("#tag").val();
+		if(hTag==""){
+			alert("태그 내용을 입력해주세요.");
+		}else{
+			tagList.push(hTag);
+			var cnt =0;
+			for (var i = 0; i < tagList.length; i++) {
+		        if (tagList[i] == hTag) {
+		        	cnt++;
+		        }
+			}
+			
+			if(tagList.length>=11){
+				tagList.pop();
+				alert("태그는 최대 10개입니다.");
+			}else if(cnt>=2){
+				tagList.pop();
+				alert("중복되는 태그가 있습니다");
+			}
+			else{
+				$("#tags").append("<div>"
+						+"<input type='text' class='tag' readonly='readonly' value='"+hTag+"'>"
+						+"<div onclick='tagDel(this)'>X</div>"
+						+"</div>");
+				console.log(tagList);
+			}
+		}
+
+	}
+	
+	//해쉬태그 지우기
+	function tagDel(e){
+		hTag=$(e).prev().val();
+		$(e).parent().remove();
+		tagList.splice(tagList.indexOf(hTag),1);
+	}
+	
+	/* var tagList = [];
 	function tagAdd() {
 		hTag = $("#tag").val();
 		tagList.push(hTag);
@@ -154,9 +205,10 @@
 						tagList.pop();
 						alert("태그는 최대 10개입니다.");
 					}else{
+						console.log(data.list);
 						$("#tags").append("<div>"
-								+"<input type='text' class='tag' readonly='readonly' value='#"+hTag+"'>"
-								+"<input type='button' class='tagDel' onclick='tagDel()' value='X'>"
+								+"<input type='text' class='tag' readonly='readonly' value='"+data.hTag+"'>"
+								+"<div onclick='tagDel(this)'>X</div>"
 								+"</div>");
 					}
 				},
@@ -166,12 +218,11 @@
 			});
 		}
 		
-	}
+	} */
 	
-	//해쉬태그 지우기
-	function tagDel() {
-		console.log($(this));
+	//메뉴사진 업로드 창
+	function menuPhotoUp() {
+		var myWin = window.open("./menuPhotoForm","메뉴판 사진 추가","width=400, height=100");
 	}
-	
 	</script>
 </html>

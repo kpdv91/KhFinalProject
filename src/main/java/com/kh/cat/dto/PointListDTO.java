@@ -1,12 +1,21 @@
 package com.kh.cat.dto;
 
+import java.sql.Date;
+
 public class PointListDTO {
 	private int pointList_idx;
 	private String id;
 	private long pointList_point;
 	private String pointList_type;
 	private String pointList_cate;
+	private Date pointList_date;
 	
+	public Date getPointList_date() {
+		return pointList_date;
+	}
+	public void setPointList_date(Date pointList_date) {
+		this.pointList_date = pointList_date;
+	}
 	public int getPointList_idx() {
 		return pointList_idx;
 	}

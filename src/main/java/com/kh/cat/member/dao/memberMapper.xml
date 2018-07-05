@@ -9,8 +9,8 @@
 	</select>
 	
 	<insert id="join" parameterType="member">
-		INSERT INTO member(id,pw,name,email)
-			VALUES(#{id},#{pw},#{name},#{email})
+		INSERT INTO member(id,pw,name,email,phone,profile,aut,pointCnt,revCnt,followCnt)
+			VALUES(#{id},#{pw},#{name},#{email},#{phone},#{profile},'user',0,0,0)
 		<!-- <if test="!email.equals('')">
 			VALUES(#{id},#{pw},#{name},#{age},#{gender},#{email})
 		</if>

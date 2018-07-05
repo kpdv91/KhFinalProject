@@ -28,10 +28,46 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/login")
-	public ModelAndView login(@RequestParam HashMap<String, String> params, HttpSession session) {
+	public ModelAndView loginConfirmPage (@RequestParam HashMap<String, String> params,HttpSession session) {
 		logger.info("login 요청");
-		return memberService.login(params,session);
+		return memberService.login(params, session);
 	}
+	
+	@RequestMapping(value = "/joinForm", method = RequestMethod.GET)
+	public String joinForm() {
+		logger.info("joinForm 페이지 요청");
+		return "member/joinForm";
+	}
+	
+	@RequestMapping(value="join", method=RequestMethod.POST)
+	public ModelAndView join(@RequestParam HashMap<String, String> map) {
+		logger.info("회원 가입 요청");
+		logger.info("id : {}",map.get("userId"));
+		logger.info("pw : {}",map.get("userPw"));
+		logger.info("name : {}",map.get("userName"));
+		logger.info("email : {}",map.get("userEmail"));
+		//logger.info("phone : {}",map.get("user_phone"));
+		//logger.info("profile : {}",map.get("user_profile"));
+		//성공 = result.jsp, 실패 = writeForm.jsp
+		return memberService.join(map);
+	}
+	
+	
+	/*@RequestMapping(value = "/login")
+	public ModelAndView login(@RequestParam HashMap<String, String> params) {
+		logger.info("login 요청");
+		return memberService.login(params);
+	}*/
+	
+	/*@RequestMapping(value = "/login")
+	public String login(@RequestParam("id") String id,@RequestParam("pw") String pw,HttpSession session) {
+		logger.info("로그인 요청");
+		if(memberService.login(id,pw)) {
+			session.setAttribute("loginId", id);
+		}
+		//return "redirect:/list";
+		return "main";
+	}*/
 	
 
 

@@ -1,5 +1,8 @@
 package com.kh.cat.review.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -8,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,4 +49,36 @@ public class ReviewController {
 		String root = session.getServletContext().getRealPath("/");
 		return service.upload(file,root);
 	}
+	
+	@RequestMapping(value = "/fileDel")
+	public @ResponseBody HashMap<String, Integer> 
+		fileDel(@RequestParam("fileName") String fileName, HttpSession session) {
+		logger.info("file delete 요청");
+		String root = session.getServletContext().getRealPath("/");
+		
+		return service.fileDel(root,fileName);
+	}
+	
+	@RequestMapping(value= "/reviewWrite")
+	public ModelAndView wirte(@RequestParam("hash_tag") ArrayList<String> hash_tag,
+			@RequestParam("review_photo") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map) {
+		logger.info("글쓰기 요청");	
+		logger.info(""+map);
+	
+		return service.write(hash_tag, review_photo, map);
+	}
+	
+	@RequestMapping(value = "/revStoreSearch")
+	public @ResponseBody HashMap<String, Object> revStoreSearch(@RequestParam String params) {
+		logger.info("가게 리스트 요청");
+		logger.info(params);
+		return service.revStoreSearch(params);
+	}
+	
+	/*@RequestMapping(value= "/reviewWrite")
+	public ModelAndView wirte(@RequestParam HashMap<String, Object> hash_tag) {
+		logger.info("글쓰기 요청");	
+		logger.info("해시태그:" + hash_tag.get("hash_tag"));
+		return null;
+	}*/
 }

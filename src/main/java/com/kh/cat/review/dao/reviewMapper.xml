@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">    
+    <!-- namespace = 연결되는 인터페이스 -->
+<mapper namespace="com.kh.cat.review.dao.ReviewInter">
+	
+	<!-- 글쓰기(등록된 글의 idx 컬럼을 반환해야함) -->
+	<!-- 키를 bean 에 반환함
+		parameterType="com.file.dto.BoardBean" <- 파라메터로 사용될 빈
+		useGeneratedKeys="true" <- insert 후 키 생성 여부
+		keyProperty="idx" <- 키가 될 필드
+		keyColumn="idx" <- 키가 저장될 컬럼
+	 -->
+	 <insert id="reviewWrite" 
+	 	parameterType="review"
+	 	useGeneratedKeys="true"
+	 	keyProperty="review_idx"
+	 	keyColumn="review_idx">
+	 	INSERT INTO review(review_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile)
+	 		VALUES(seq_review.NEXTVAL,#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,'A')
+	 </insert>
+	 
+	 <insert id="hashtag">
+	 	INSERT INTO hash(hash_tag,hash_cate,review_idx)
+	 		VALUES(#{param1},'review',#{param2})
+	 </insert>
+	 
+	 <insert id="reviewPhotoWrite">
+	 	INSERT INTO revPhoto(review_idx,revPhoto_photo)
+	 		VALUES(#{param1},#{param2})
+	 </insert>
+	 
+	 <select id="storeList" resultType="store">
+	 	SELECT store_idx, store_name, store_addr 
+	 	FROM store WHERE store_name LIKE '%'|| #{param1}||'%'
+	 </select>
+	 
+	
+</mapper>

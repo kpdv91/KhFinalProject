@@ -12,10 +12,10 @@
 		keyColumn = "idx" (키가 저장될 DB 컬럼)
 	-->
 	<select id="receivelist" resultType="dm">
-		SELECT * FROM dm WHERE id=#{param1}
+		SELECT * FROM dm WHERE dm_id=#{param1}
 	</select>
 	<select id="sendlist" resultType="dm">
-		SELECT * FROM dm WHERE dm_id=#{param1}
+		SELECT * FROM dm WHERE id=#{param1}
 	</select>
 	<select id="receivedetail" resultType="dm">
 		SELECT * FROM dm WHERE dm_idx=#{param1}
@@ -32,8 +32,12 @@
 	<select id="couponlist" resultType="couponBox">
 		SELECT * FROM couponbox WHERE id=#{param1}
 	</select>
-	
-	
+	<select id="messagesendidcheck" resultType="String">
+		SELECT id FROM member WHERE id=#{param1}
+	</select>
+	<insert id="sendmsg">
+		INSERT INTO dm VALUES(seq_dm.NEXTVAL,#{param1},#{param2},#{param3},SYSDATE)
+	</insert>
 	<select id="storeSearch" resultType="store">
 		SELECT * FROM store WHERE store_name Like '%'||#{param1}||'%'
 	</select>

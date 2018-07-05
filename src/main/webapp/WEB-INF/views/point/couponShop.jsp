@@ -18,32 +18,62 @@
 	<body>
 	<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
 		<div id="tableDiv">
-			<c:if test="${ sessionScope.loginId != null}">
-				<button id="write">쿠폰추가</button> 
-			</c:if>
 			<table>
-				<thead>
-					<tr>
-						<th>쿠폰이름</th>
-						<th>필요한 포인트</th>
-						<th>구매</th>
-					</tr>
-				</thead>
-				<tbody id="list">
-					
-				</tbody>
+				<tr>
+					<th>쿠폰이름</th>
+					<th>필요한 포인트</th>
+					<th>구매</th>
+				</tr>
+				<tr>
+					<td>1000 쿠폰</td>
+					<td>1000 point</td>
+					<td><button class="btn" id="1000" name="1000 쿠폰">구매</button></td>
+				</tr>
+				<tr>
+					<td>2000 쿠폰</td>
+					<td>2000 point</td>
+					<td><button class="btn" id="2000">구매</button></td>
+				</tr>
+				<tr>
+					<td>3000 쿠폰</td>
+					<td>3000 point</td>
+					<td><button class="btn" id="3000">구매</button></td>
+				</tr>
 			</table>
 		</div>
 	</body>
 	<script>
-	$(document).ready(function() {
+	
+	//printList 구매 버튼 
+	$(".btn").click(function (e) {
+		console.log($(this).attr("id"));
+		console.log($(this).attr("name"));
+		/* $.ajax({ 
+			type : "post",
+			url : "./couponPurchase",
+			data : {
+				price : $(this).attr("id"),
+				name : $(this).attr("name")
+			},
+			dataType : "json",
+			success : function (data) {
+				console.log(data);
+				
+			},
+			error : function (error) {
+				console.log(error);
+			}
+		}); */
+	});
+	
+	
+	/* $(document).ready(function() {
 		$.ajax({
 			type : "post",
 			url : "./couponShop",
 			dataType : "json",
 			success : function (data) {
 				console.log(data);
-				printList(data.list);
 				if(data.list != null){
 					printList(data.list);
 				}
@@ -52,21 +82,26 @@
 				console.log(error);
 			}
 		});
-	});
+	}); */
+	
 	
 	//받아온 리스트
-	function printList(list) {
-		console.log("리스트 어팬드 여부");
+	/* function printList(list) {
 		var content = "";
 		list.forEach(function(item, idx) {
 			content += "<tr>";
 			content += "<td>"+item.couponBox_name+"</td>";
 			content += "<td>"+item.couponBox_price+"</td>";
-			content += "<td><button>구매</button></td>";
+			content += "<td><button id='"+item.couponBox_code+"' class='btn'>구매</button></td>";
 			content += "</tr>";
 		});
 		$("#list").empty();
 		$("#list").append(content);
-	}
+		
+		console.log($("").attr("id"));   
+	} */
+	
+	
+
 	</script>
 </html>

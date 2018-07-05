@@ -37,6 +37,7 @@ public class MemberService {
 		String pw = params.get("pw");
 		logger.info("아이디 : "+id+" / 비밀번호 : "+pw);
 		session.setAttribute("loginId", id); 
+		logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
 		String result = inter.login(id, pw);
 		logger.info(""+result);
 		

@@ -22,4 +22,8 @@ public interface CommonInter {
 
 	ArrayList<CouponBoxDTO> couponlist(String id);
 
+	String messagesendidcheck(String id);
+
+	int sendmsg(String userid, String id, String content);
+
 }

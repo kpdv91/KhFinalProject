@@ -273,7 +273,7 @@
 		var content = "";		
 		list.forEach(function(item, idx){
 			content += "<tr>"
-			content +="<td>"+item.dm_id+"</td>"
+			content +="<td>"+item.id+"</td>"
 			content +="<td id='"+item.dm_idx+"' onclick='receivedetail(id)'>"+item.dm_content+"</td>"
 			var date = new Date(item.dm_date);			
 			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
@@ -286,7 +286,7 @@
 		var content = "";		
 		list.forEach(function(item, idx){
 			content += "<tr>"
-			content +="<td>"+item.id+"</td>"
+			content +="<td>"+item.dm_id+"</td>"
 			content +="<td id='"+item.dm_idx+"' onclick='senddetail(id)'>"+item.dm_content+"</td>"
 			var date = new Date(item.dm_date);	
 			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"

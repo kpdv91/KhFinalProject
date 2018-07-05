@@ -79,6 +79,29 @@ public class CommonService {
 		map.put("list", inter.couponlist(id));
 		return map;
 	}
+	public HashMap<String, Object> messagesendidcheck(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		logger.info(id);
+		boolean idcheck = false;
+		if(inter.messagesendidcheck(id) != null){
+			idcheck=true;
+		}		
+		map.put("id",idcheck);
+		return map;
+	}
 
+	public HashMap<String, Object> sendmsg(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String userid=params.get("userid");
+		String id=params.get("id");		
+		String content=params.get("content");
+		logger.info(userid+"/"+id+"/"+content);		
+		int a = inter.sendmsg(userid,id,content);
+		map.put("success",a);
+		return map;
+	}
 
 }

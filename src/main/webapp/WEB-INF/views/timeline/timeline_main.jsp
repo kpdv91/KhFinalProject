@@ -21,7 +21,7 @@
 			#userdetai{float: left;width: 180px;position:relative;}
 			#update{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#message{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
-			#cupon{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
+			#coupon{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#point{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#total{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#content{float: left;margin-left: 100px;position: relative; width: 800px;;height: auto;}
@@ -47,7 +47,7 @@
 		<div class="userdetail" id="userdetai">
 			<div id="update">회원정보수정</div>
 			<div id="message">쪽지함</div>
-			<div id="cupon">구매한 쿠폰</div>
+			<div id="coupon">구매한 쿠폰</div>
 			<div id="point">포인트내역</div>
 			<div id="total">통계</div>
 		</div>
@@ -56,24 +56,21 @@
 		</div>
 	</body>
 	<script>
-	var userid = "${sessionScope.userId}";
+	var userid = "${sessionScope.loginId}";
+	var page = "";
 	console.log(userid);
 	$(".userdetail").click(function(e) {
-		console.log("상세정보");
-		//var p_no=${place_no};
-		var page = "";
 		console.log(e.target.id);
 		$(this).css("background-color","darkblue");
-		$(this).css("color","white");
-		
+		$(this).css("color","white");		
 		if(e.target.id == "message") {
 			page = "resources/timelinehtml/messagebox.html";
 			$("#message").css("background-color","darkblue");
 			$("#message").css("color","white");
 			$("#update").css("background-color","lightgray");
 			$("#update").css("color","black");
-	    	$("#cupon").css("background-color","lightgray");
-	    	$("#cupon").css("color","black");
+	    	$("#coupon").css("background-color","lightgray");
+	    	$("#coupon").css("color","black");
 	    	$("#point").css("background-color","lightgray");
 	    	$("#point").css("color","black");
 	    	$("#total").css("background-color","lightgray");
@@ -84,10 +81,10 @@
 	    	$("#likereview").css("color","black");
 	    	$("#likestore").css("background-color","lightgray");
 	    	$("#likestore").css("color","black");
-		} else if(e.target.id == "cupon") {
-			page = "resources/timelinehtml/cuponbox.html";
-			$("#cupon").css("background-color","darkblue");
-			$("#cupon").css("color","white");
+		} else if(e.target.id == "coupon") {
+			page = "resources/timelinehtml/couponbox.html";
+			$("#coupon").css("background-color","darkblue");
+			$("#coupon").css("color","white");
 			$("#update").css("background-color","lightgray");
 			$("#update").css("color","black");
 	    	$("#message").css("background-color","lightgray");
@@ -110,8 +107,8 @@
 			$("#update").css("color","black");
 	    	$("#message").css("background-color","lightgray");
 	    	$("#message").css("color","black");
-	    	$("#cupon").css("background-color","lightgray");
-	    	$("#cupon").css("color","black");
+	    	$("#coupon").css("background-color","lightgray");
+	    	$("#coupon").css("color","black");
 	    	$("#total").css("background-color","lightgray");
 	    	$("#total").css("color","black");
 	    	$("#review").css("background-color","lightgray");
@@ -124,8 +121,8 @@
 			page = "resources/timelinehtml/userupdate.html";
 			$("#update").css("background-color","darkblue");
 			$("#update").css("color","white");
-			$("#cupon").css("background-color","lightgray");
-			$("#cupon").css("color","black");
+			$("#coupon").css("background-color","lightgray");
+			$("#coupon").css("color","black");
 	    	$("#message").css("background-color","lightgray");
 	    	$("#message").css("color","black");
 	    	$("#point").css("background-color","lightgray");
@@ -138,8 +135,11 @@
 	    	$("#likereview").css("color","black");
 	    	$("#likestore").css("background-color","lightgray");
 	    	$("#likestore").css("color","black");
-		}			
-		$("#content").load(page,function(res, stat) {  /* $("#area").html(res) */  });
+		}
+		$("#content").load(page,function(res, stat) {});
+		ajaxCall(page);
+	});		
+	function ajaxCall(page){
 		if(page=="resources/timelinehtml/messagebox.html"){
 			$.ajax({
 				url:"./receivelist",
@@ -155,8 +155,78 @@
 					console.log(e);
 				}
 			});
+		}else if(page=="resources/timelinehtml/pointbox.html"){
+			$.ajax({
+				url:"./pointlist",
+				type:"get",
+				data:{
+					id : userid
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d);
+					pointlist(d);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}else if(page=="resources/timelinehtml/couponbox.html"){
+			$.ajax({
+				url:"./couponlist",
+				type:"get",
+				data:{
+					id : userid
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d);
+					couponlist(d.list);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});			
 		}
-	});
+	}
+	function couponlist(list){
+		var content = "";
+		list.forEach(function(item, idx){
+			content += "<tr>"
+			content +="<td>"+item.couponBox_name+"</td>"
+			content +="<td>"+item.couponBox_code+"</td>"
+			var coupon_use="";
+			if(item.couponBox_use==0){
+				coupon_use="사용하지 않은 쿠폰"
+			}else{
+				coupon_use="사용한 쿠폰"
+			}
+			content +="<td>"+coupon_use+"</td>"
+			content += "</tr>"			
+		});		
+		$("#list").empty();
+		$("#list").append(content);//내용 붙이기
+	}
+	function pointlist(d){
+		$("#pointcnt").val(d.memberpoint);
+		var content = "";
+		d.list.forEach(function(item, idx){
+			if(item.pointList_type == "증가"){			
+				var plusorminus = '+';
+			}else if(item.pointList_type == "감소"){
+				var plusorminus = '-';
+			}
+			content += "<tr>"
+			var date = new Date(item.pointList_date);
+			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
+			content +="<td>"+item.pointList_cate+"</td>"
+			content +="<td>"+plusorminus+item.pointList_point+"</td>"
+			content += "</tr>"			
+		});		
+		$("#list").empty();
+		$("#list").append(content);//내용 붙이기
+	}
+	
 	function send(){
 		$("#send").css("background-color","darkblue");
 		$("#send").css("color","white");
@@ -204,7 +274,7 @@
 		list.forEach(function(item, idx){
 			content += "<tr>"
 			content +="<td>"+item.dm_id+"</td>"
-			content +="<td><a href='/dmdetail?idx"+item.dm_idx+"'>"+item.dm_content+"</a></td>"
+			content +="<td id='"+item.dm_idx+"' onclick='receivedetail(id)'>"+item.dm_content+"</td>"
 			var date = new Date(item.dm_date);			
 			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
 			content += "</tr>"			
@@ -217,7 +287,7 @@
 		list.forEach(function(item, idx){
 			content += "<tr>"
 			content +="<td>"+item.id+"</td>"
-			content +="<td><a href='/dmdetail?idx"+item.dm_idx+"'>"+item.dm_content+"</a></td>"
+			content +="<td id='"+item.dm_idx+"' onclick='senddetail(id)'>"+item.dm_content+"</td>"
 			var date = new Date(item.dm_date);	
 			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
 			content += "</tr>"			
@@ -228,5 +298,13 @@
 	$("#dm").click(function(e){
 		var myWin= window.open("./sendMessage","메세지보내기","width=500,height=500");
 	})
+	function receivedetail(e){
+		console.log(e);
+		var myWin= window.open("./receivedetail?idx="+e,"메세지상세보기","width=500,height=500");
+	};	
+	function senddetail(e){
+		console.log(e);
+		var myWin= window.open("./senddetail?idx="+e,"메세지상세보기","width=500,height=500");
+	};
 	</script>
 </html>

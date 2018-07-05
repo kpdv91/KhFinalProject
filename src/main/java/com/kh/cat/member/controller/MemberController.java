@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.cat.member.service.MemberService;
@@ -28,31 +29,44 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value = "/login")
-	public ModelAndView loginConfirmPage (@RequestParam HashMap<String, String> params,HttpSession session) {
+	public ModelAndView loginConfirmPage (@RequestParam HashMap<String, String> params, HttpSession session) {
 		logger.info("login 요청");
 		return memberService.login(params, session);
 	}
 	
+	@RequestMapping(value = "/joinForm", method = RequestMethod.GET)
+	public String joinForm() {
+		logger.info("joinForm 페이지 요청");
+		return "member/joinForm";
+	}
 	
-	/*@RequestMapping(value = "/login")
-	public ModelAndView login(@RequestParam HashMap<String, String> params) {
-		logger.info("login 요청");
-		return memberService.login(params);
-	}*/
+	@RequestMapping(value="join", method=RequestMethod.POST)
+	public ModelAndView join(@RequestParam HashMap<String, String> map) {
+		logger.info("회원 가입 요청");
+		logger.info("id : {}",map.get("userId"));
+		logger.info("pw : {}",map.get("userPw"));
+		logger.info("name : {}",map.get("userName"));
+		logger.info("email : {}",map.get("userEmail"));
+		logger.info("phone : {}",map.get("userPhone"));
+		logger.info("profile : {}",map.get("profile"));
+		//성공 = result.jsp, 실패 = writeForm.jsp
+		return memberService.join(map);
+	}	
 	
-	/*@RequestMapping(value = "/login")
-	public String login(@RequestParam("id") String id,@RequestParam("pw") String pw,HttpSession session) {
-		logger.info("로그인 요청");
-		if(memberService.login(id,pw)) {
-			session.setAttribute("loginId", id);
-		}
-		//return "redirect:/list";
-		return "main";
-	}*/
-	
+	//보네 - (커뮤니티) 파일 업로드 폼
+	@RequestMapping(value = "/fileUploadForm")
+	public String fileUploadForm() {
+		logger.info("파일 업로드 페이지 이동");
+		return "member/fileUploadForm";
+	}
 
+	//보네 - (커뮤니티) 파일 업로드
+	@RequestMapping(value = "/fileUpload")
+	public ModelAndView fileUpload(MultipartFile file, HttpSession session) {
+		logger.info("fileUpload 요청");
+		String root = session.getServletContext().getRealPath("/");
+		return memberService.fileUpload(file,root);
+	}
 
-	
-	
 
 }

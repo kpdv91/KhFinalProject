@@ -57,4 +57,13 @@ public class StoreController {
 		String root = session.getServletContext().getRealPath("/");
 		return	storeService.menuUpload(file, root);
 	}
+	
+	//메뉴 사진 삭제
+	@RequestMapping(value = "/menuDel")
+	public @ResponseBody HashMap<String, Integer> 
+	menuDel(@RequestParam("fileName") String fileName, HttpSession session) {
+		logger.info("메뉴 삭제 요청.");
+		String root = session.getServletContext().getRealPath("/");
+		return storeService.fileDel(root, fileName);
+	}
 }

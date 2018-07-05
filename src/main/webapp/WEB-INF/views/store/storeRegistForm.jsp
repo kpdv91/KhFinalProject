@@ -70,12 +70,15 @@
 				<tr>
 					<th>해쉬태그</th>
 					<td>
-						<input type="text" name="store_tag"/>
-						<input type="button" onclick="hashTag()" value="추가">
+						<input type="text" id="tag" name="store_tag"/>
+						<input type="button" onclick="tagAdd()" value="추가">
 					</td>
 				</tr>
 				<tr>
-					<div id="tags"></div>
+					<td colspan="2">
+					<div id="tags">
+					</div>
+					</td>
 				</tr>
 				<tr>
 					<th>메뉴판 사진</th>
@@ -95,7 +98,10 @@
 	var holder = document.getElementById('sPhotoShow');
 	storeD();
 	
+	//대표사진 변화시 func
 	upload.onchange = function (e) {
+		e.preventDefault();
+		
 		var file = upload.files[0],
 		reader = new FileReader();
 		
@@ -119,10 +125,53 @@
 	return false;
 	};
 	
+	//대표사진 디폴트
 	function storeD() {
 		$("#sPhoto").val("");
 		holder.innerHTML = '<img alt="기본사진"'
 		+'src="resources/img/store/storeD.jpg" width="400" height="270">';
 	}
+	
+	var hTag;
+	var tagList = [];
+	function tagAdd() {
+		hTag = $("#tag").val();
+		tagList.push(hTag);
+		if(hTag==""){
+			alert("태그 내용을 입력해주세요.");
+		}else{
+			console.log(tagList);
+			$.ajax({
+				url:"./hashTagAdd",
+				type:"get",
+				data:{
+					"hTag":hTag,
+					"tagList":tagList
+					},
+				success:function(data){
+					console.log(data);
+					if(data.max){
+						tagList.pop();
+						alert("태그는 최대 10개입니다.");
+					}else{
+						$("#tags").append("<div>"
+								+"<input type='text' class='tag' readonly='readonly' value='#"+hTag+"'>"
+								+"<input type='button' class='tagDel' onclick='tagDel()' value='X'>"
+								+"</div>");
+					}
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}
+		
+	}
+	
+	//해쉬태그 지우기
+	function tagDel() {
+		console.log($(this));
+	}
+	
 	</script>
 </html>

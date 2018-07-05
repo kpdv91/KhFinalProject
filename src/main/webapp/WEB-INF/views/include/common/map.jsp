@@ -57,6 +57,22 @@
 
 				// 지도에 선을 표시합니다 
 				polyline.setMap(map);  
+				
+				// 주소-좌표 변환 객체를 생성합니다
+				var geocoder = new daum.maps.services.Geocoder();
+				geocoder.addressSearch(mapLocation, function(result, status) {
+				    // 정상적으로 검색이 완료됐으면 
+				     if (status === daum.maps.services.Status.OK) {
+				        var coords = new daum.maps.LatLng(result[0].y, result[0].x);
+				        // 결과값으로 받은 위치를 마커로 표시합니다
+				        var marker = new daum.maps.Marker({
+				            map: map,
+				            position: coords
+				        });
+				        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+				        map.setCenter(coords);
+				    } 
+				});    
 			}
 		</script>
 	</body>

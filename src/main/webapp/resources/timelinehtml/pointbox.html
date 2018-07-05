@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <style>
 			#pointbox{position: absolute;top: 60px;}
 			table, th{border-bottom: 1px solid black;border-top: 1px solid black;border-collapse: collapse;padding: 5px 10px;text-align: center;}
@@ -17,17 +18,24 @@
 				포인트 내역
 			</div>
 			<div id="totalpoint">
-				포인트 총액 :
+				포인트 총액 :<input type="text" id="pointcnt" readonly/>
 			</div>
 			<div id="pointbox">
 				<table>
+				<thead>
 					<tr>
 						<th>날짜</th>
 						<th>포인트 내역</th>
 						<th>금액</th>
 					</tr>
+					</thead>
+					<tbody id="list">
+					
+					</tbody>
 				</table>
 			</div>
 		</div>
 </body>
+<script>
+</script>
 </html>

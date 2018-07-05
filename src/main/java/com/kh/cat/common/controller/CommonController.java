@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.cat.common.service.CommonService;
 
@@ -42,7 +43,7 @@ public class CommonController {
 	}
 	@RequestMapping(value = "/sendlist")
 	public @ResponseBody HashMap<String, Object> sendlist(@RequestParam Map<String,String> params) {
-		logger.info("받은 메세지 확인");
+		logger.info("보낸 메세지 확인");
 		//String id = params.get("id");
 		String msg= params.get("msg");
 		//logger.info("id : {}",id);
@@ -53,5 +54,25 @@ public class CommonController {
 	public String sendMessage() {
 		logger.info("메세지 보내기 페이지 이동");		
 		return "timeline/timeline_sendMessage";
+	}
+	@RequestMapping(value = "/receivedetail")
+	public ModelAndView receivedetail(@RequestParam("idx") String idx) {
+		logger.info("{}번 메세지 요청",idx);
+		return commonservice.receivedetail(idx);
+	}
+	@RequestMapping(value = "/senddetail")
+	public ModelAndView senddetail(@RequestParam("idx") String idx) {
+		logger.info("{}번 메세지 요청",idx);
+		return commonservice.senddetail(idx);
+	}
+	@RequestMapping(value = "/pointlist")
+	public @ResponseBody HashMap<String, Object> pointlist(@RequestParam Map<String,String> params) {
+		logger.info("포인트 리스트 요청");		
+		return commonservice.pointlist(params);
+	}
+	@RequestMapping(value = "/couponlist")
+	public @ResponseBody HashMap<String, Object> cuponlist(@RequestParam Map<String,String> params) {
+		logger.info("포인트 리스트 요청");		
+		return commonservice.couponlist(params);
 	}
 }

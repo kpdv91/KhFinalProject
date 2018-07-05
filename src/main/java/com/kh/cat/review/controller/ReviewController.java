@@ -1,5 +1,6 @@
 package com.kh.cat.review.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
@@ -57,4 +58,27 @@ public class ReviewController {
 		
 		return service.fileDel(root,fileName);
 	}
+	
+	@RequestMapping(value= "/reviewWrite")
+	public ModelAndView wirte(@RequestParam("hash_tag") ArrayList<String> hash_tag,
+			@RequestParam("review_photo") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map) {
+		logger.info("글쓰기 요청");	
+		logger.info(""+map);
+	
+		return service.write(hash_tag, review_photo, map);
+	}
+	
+	@RequestMapping(value = "/revStoreSearch")
+	public @ResponseBody HashMap<String, Object> revStoreSearch(@RequestParam String params) {
+		logger.info("가게 리스트 요청");
+		logger.info(params);
+		return service.revStoreSearch(params);
+	}
+	
+	/*@RequestMapping(value= "/reviewWrite")
+	public ModelAndView wirte(@RequestParam HashMap<String, Object> hash_tag) {
+		logger.info("글쓰기 요청");	
+		logger.info("해시태그:" + hash_tag.get("hash_tag"));
+		return null;
+	}*/
 }

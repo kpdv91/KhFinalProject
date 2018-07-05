@@ -46,10 +46,13 @@
        	</div>
         <div id="menuBox">
 	        <ul>
-			<li><a href="boardList">게시판</a></li>
-			<c:if test="${ sessionScope.user == null}">
+			<li><a href="./boardListPage">게시판</a></li>
+			<c:if test="${ sessionScope.loginId == null}">
 				<li><a href="loginForm">로그인</a></li>
-				<li><a href="#">회원가입</a></li>
+				<li><a href="joinForm">회원가입</a></li>
+			</c:if>
+			<c:if test="${ sessionScope.loginId != null}">
+				<li><a href="./couponShopPage">쿠폰샵</a></li>
 			</c:if>
 			</ul>
 		</div>

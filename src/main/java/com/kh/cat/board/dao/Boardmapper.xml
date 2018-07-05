@@ -20,6 +20,20 @@
 		SELECT board_idx, id, board_subject, board_content, board_cate, board_date 
 			FROM board WHERE board_idx = #{board_idx}
 	</select>
+	
+	<update id="boardUpdate" parameterType="board">
+		UPDATE board SET board_subject = #{board_subject}, board_content = #{board_content}
+			WHERE board_idx = #{board_idx}	
+	</update>
+	
+	<delete id="boardDelete">
+		DELETE FROM board WHERE board_idx = #{param1}
+	</delete>
+	
+	<select id="boardList" resultType="board">
+		SELECT board_idx, id, board_subject, board_content, board_cate, board_date
+			FROM board ORDER BY board_idx ASC
+	</select>
 </mapper>
 
 

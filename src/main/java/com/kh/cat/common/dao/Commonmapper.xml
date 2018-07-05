@@ -30,7 +30,7 @@
 		SELECT * FROM pointList WHERE id=#{param1}
 	</select>
 	<select id="couponlist" resultType="couponBox">
-		SELECT * FROM couponbox WHERE id=#{param1} AND couponbox_use=0
+		SELECT * FROM couponbox WHERE id=#{param1}
 	</select>
 </mapper>
 

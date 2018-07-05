@@ -21,7 +21,7 @@
 			#userdetai{float: left;width: 180px;position:relative;}
 			#update{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#message{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
-			#cupon{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
+			#coupon{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#point{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#total{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#content{float: left;margin-left: 100px;position: relative; width: 800px;;height: auto;}
@@ -47,7 +47,7 @@
 		<div class="userdetail" id="userdetai">
 			<div id="update">회원정보수정</div>
 			<div id="message">쪽지함</div>
-			<div id="cupon">구매한 쿠폰</div>
+			<div id="coupon">구매한 쿠폰</div>
 			<div id="point">포인트내역</div>
 			<div id="total">통계</div>
 		</div>
@@ -81,8 +81,8 @@
 	    	$("#likereview").css("color","black");
 	    	$("#likestore").css("background-color","lightgray");
 	    	$("#likestore").css("color","black");
-		} else if(e.target.id == "cupon") {
-			page = "resources/timelinehtml/cuponbox.html";
+		} else if(e.target.id == "coupon") {
+			page = "resources/timelinehtml/couponbox.html";
 			$("#cupon").css("background-color","darkblue");
 			$("#cupon").css("color","white");
 			$("#update").css("background-color","lightgray");
@@ -171,7 +171,7 @@
 					console.log(e);
 				}
 			});
-		}else if(page=="resources/timelinehtml/cuponbox.html"){
+		}else if(page=="resources/timelinehtml/couponbox.html"){
 			$.ajax({
 				url:"./couponlist",
 				type:"get",
@@ -181,7 +181,7 @@
 				dataType:"json",
 				success:function(d){
 					console.log(d);
-					pointlist(d);
+					couponlist(d.list);
 				},
 				error:function(e){
 					console.log(e);
@@ -189,8 +189,25 @@
 			});			
 		}
 	}
+	function couponlist(list){
+		var content = "";
+		list.forEach(function(item, idx){
+			content += "<tr>"
+			content +="<td>"+item.couponBox_name+"</td>"
+			content +="<td>"+item.couponBox_code+"</td>"
+			var coupon_use="";
+			if(item.couponBox_use==0){
+				coupon_use="사용하지 않은 쿠폰"
+			}else{
+				coupon_use="사용한 쿠폰"
+			}
+			content +="<td>"+coupon_use+"</td>"
+			content += "</tr>"			
+		});		
+		$("#list").empty();
+		$("#list").append(content);//내용 붙이기
+	}
 	function pointlist(d){
-		console.log(d);
 		$("#pointcnt").val(d.memberpoint);
 		var content = "";
 		d.list.forEach(function(item, idx){
@@ -208,7 +225,6 @@
 		});		
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
-		console.log(content);
 	}
 	
 	function send(){

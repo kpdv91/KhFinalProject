@@ -69,8 +69,8 @@
 			$("#message").css("color","white");
 			$("#update").css("background-color","lightgray");
 			$("#update").css("color","black");
-	    	$("#cupon").css("background-color","lightgray");
-	    	$("#cupon").css("color","black");
+	    	$("#coupon").css("background-color","lightgray");
+	    	$("#coupon").css("color","black");
 	    	$("#point").css("background-color","lightgray");
 	    	$("#point").css("color","black");
 	    	$("#total").css("background-color","lightgray");
@@ -83,8 +83,8 @@
 	    	$("#likestore").css("color","black");
 		} else if(e.target.id == "coupon") {
 			page = "resources/timelinehtml/couponbox.html";
-			$("#cupon").css("background-color","darkblue");
-			$("#cupon").css("color","white");
+			$("#coupon").css("background-color","darkblue");
+			$("#coupon").css("color","white");
 			$("#update").css("background-color","lightgray");
 			$("#update").css("color","black");
 	    	$("#message").css("background-color","lightgray");
@@ -107,8 +107,8 @@
 			$("#update").css("color","black");
 	    	$("#message").css("background-color","lightgray");
 	    	$("#message").css("color","black");
-	    	$("#cupon").css("background-color","lightgray");
-	    	$("#cupon").css("color","black");
+	    	$("#coupon").css("background-color","lightgray");
+	    	$("#coupon").css("color","black");
 	    	$("#total").css("background-color","lightgray");
 	    	$("#total").css("color","black");
 	    	$("#review").css("background-color","lightgray");
@@ -121,8 +121,8 @@
 			page = "resources/timelinehtml/userupdate.html";
 			$("#update").css("background-color","darkblue");
 			$("#update").css("color","white");
-			$("#cupon").css("background-color","lightgray");
-			$("#cupon").css("color","black");
+			$("#coupon").css("background-color","lightgray");
+			$("#coupon").css("color","black");
 	    	$("#message").css("background-color","lightgray");
 	    	$("#message").css("color","black");
 	    	$("#point").css("background-color","lightgray");

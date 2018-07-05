@@ -19,7 +19,7 @@
 		<table>
  	<tr>
  		<td id="messagetype">${name}</td>
- 		<td id="messageid">${detail.dm_id}</td>
+ 		<td id="messageid">${detail.id}</td>
  	</tr>
  	<tr>
  		<td id="messagecontent" colspan="2">${detail.dm_content}</td>
@@ -31,7 +31,7 @@
 	<script>	
 	if("${name}"=="받는사람"){
 		console.log("${name}");
-		$("#messageid").html("${detail.id}")
+		$("#messageid").html("${detail.dm_id}");
 		$("#reply").css("display","none");
 	}
 	$("#close").click(function(){

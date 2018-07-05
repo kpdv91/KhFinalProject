@@ -26,10 +26,11 @@ public class CommonController {
 		return "main";
 	}
 	
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public String search() {
+	@RequestMapping(value = "/search")
+	public ModelAndView search(@RequestParam("search_content") String search_content) {
 		logger.info("검색 페이지 이동");		
-		return "include/common/search";
+		logger.info("검색어 : "+search_content);
+		return commonservice.storeSearch(search_content);
 	}
 	
 	@RequestMapping(value = "/receivelist")
@@ -74,5 +75,15 @@ public class CommonController {
 	public @ResponseBody HashMap<String, Object> cuponlist(@RequestParam Map<String,String> params) {
 		logger.info("포인트 리스트 요청");		
 		return commonservice.couponlist(params);
+	}
+	@RequestMapping(value = "/messagesendidcheck")
+	public @ResponseBody HashMap<String, Object> messagesendidcheck(@RequestParam Map<String,String> params) {
+		logger.info("포인트 리스트 요청");		
+		return commonservice.messagesendidcheck(params);
+	}
+	@RequestMapping(value = "/sendmsg")
+	public @ResponseBody HashMap<String, Object> sendmsg(@RequestParam Map<String,String> params) {
+		logger.info("포인트 리스트 요청");		
+		return commonservice.sendmsg(params);
 	}
 }

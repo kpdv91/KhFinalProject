@@ -36,65 +36,34 @@
 	</head>
 	<script>
 		var mapLevel = 9;
+		var mapLocation = "서울특별시";
 	</script>
 	<body>
 		<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
 		<c:import url="/WEB-INF/views/include/common/map.jsp"/>
 		
-		<table class="storeTable">
-			<tr>
-				<td colspan="3"><img class="storeImg" src="resources/img/search.png" /></td>
-			</tr>
-			<tr>
-				<td>상호명</td>
-				<th>즉석떡볶이1</th>
-				<td rowspan="2">하트</td>
-			</tr>
-			<tr>
-				<td>주소</td>
-				<th>서울특별시 강남구 역삼동 823-25</th>
-			</tr>
-			<tr>
-				<td colspan="3">해시태그</td>
-			</tr>
-		</table>
+		<c:forEach items="${list}" var="sto">
+			<table class="storeTable">
+				<tr>
+					<td colspan="3"><img class="storeImg" src="resources/img/search.png" /></td>
+				</tr>
+				<tr>
+					<td>상호명</td>
+					<th><a href="">${sto.store_name}</a></th>
+					<td rowspan="2">하트</td>
+				</tr>
+				<tr>
+					<td>주소</td>
+					<th>${sto.store_addr}</th>
+				</tr>
+				<tr>
+					<td colspan="3">해시태그</td>
+				</tr>
+			</table>
+		</c:forEach>
 		
-		<table class="storeTable">
-			<tr>
-				<td colspan="3"><img class="storeImg" src="resources/img/search.png" /></td>
-			</tr>
-			<tr>
-				<td>상호명</td>
-				<th>즉석떡볶이2</th>
-				<td rowspan="2">하트</td>
-			</tr>
-			<tr>
-				<td>주소</td>
-				<th>서울특별시 강남구 역삼동 823-25</th>
-			</tr>
-			<tr>
-				<td colspan="3">해시태그</td>
-			</tr>
-		</table>
-		
-		<table class="storeTable">
-			<tr>
-				<td colspan="3"><img class="storeImg" src="resources/img/search.png" /></td>
-			</tr>
-			<tr>
-				<td>상호명</td>
-				<th>즉석떡볶이3</th>
-				<td rowspan="2">하트</td>
-			</tr>
-			<tr>
-				<td>주소</td>
-				<th>서울특별시 강남구 역삼동 823-25</th>
-			</tr>
-			<tr>
-				<td colspan="3">해시태그</td>
-			</tr>
-		</table>
 	</body>
 	<script>
+		console.log("${list}");
 	</script>
 </html>

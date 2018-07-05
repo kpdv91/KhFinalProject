@@ -38,11 +38,11 @@
 <nav id="nav">
 	<div id="mainFrame">
 		<div id="logoBox">
-			<img alt="logo" src="resources/img/logo/logo_cat.png"></li>
+			<img alt="logo" src="resources/img/logo/logo_cat.png">
 		</div>
         <div id="searchBox">
-            <input type="text"/>
-            <button>검색</button>
+            <input type="text" id="search_content"/>
+            <button type="button" onclick="search()">검색</button>
        	</div>
         <div id="menuBox">
 	        <ul>
@@ -60,4 +60,12 @@
 		</div>
 	</div>
 </nav>
+<<<<<<< HEAD
 
+=======
+<script>
+	function search(){
+		location.href = "./search?search_content=" + $("#search_content").val();
+	}
+</script>
+>>>>>>> 82028e90c7c6e4434b55a04b12eb7e52adde7ec7

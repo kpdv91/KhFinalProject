@@ -1,6 +1,5 @@
 package com.kh.cat.common.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.cat.common.controller.CommonController;
 import com.kh.cat.common.dao.CommonInter;
 
 @Service

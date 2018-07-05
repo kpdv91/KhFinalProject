@@ -1,5 +1,6 @@
 package com.kh.cat.common.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,6 +79,14 @@ public class CommonService {
 		logger.info(id);
 		map.put("list", inter.couponlist(id));
 		return map;
+	}
+
+	public ModelAndView storeSearch(String search_content) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("list", inter.storeSearch(search_content));
+		mav.setViewName("include/common/search");
+		return mav;
 	}
 
 

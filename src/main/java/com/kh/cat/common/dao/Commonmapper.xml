@@ -32,6 +32,11 @@
 	<select id="couponlist" resultType="couponBox">
 		SELECT * FROM couponbox WHERE id=#{param1}
 	</select>
+	
+	
+	<select id="storeSearch" resultType="store">
+		SELECT * FROM store WHERE store_name Like '%'||#{param1}||'%'
+	</select>
 </mapper>
 
 

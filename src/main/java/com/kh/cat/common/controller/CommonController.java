@@ -26,10 +26,11 @@ public class CommonController {
 		return "main";
 	}
 	
-	@RequestMapping(value = "/search", method = RequestMethod.GET)
-	public String search() {
+	@RequestMapping(value = "/search")
+	public ModelAndView search(@RequestParam("search_content") String search_content) {
 		logger.info("검색 페이지 이동");		
-		return "include/common/search";
+		logger.info("검색어 : "+search_content);
+		return commonservice.storeSearch(search_content);
 	}
 	
 	@RequestMapping(value = "/receivelist")

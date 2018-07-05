@@ -169,7 +169,7 @@
     	
     </div>
     <div id="mapDiv">
-    <%-- <c:import url="/WEB-INF/views/include/common/map.jsp"/> --%>
+    <c:import url="/WEB-INF/views/include/common/map.jsp"/>
 <%--     <jsp:include page="../include/common/map.jsp" /> --%>
     </div>
     별점 : <jsp:include page="star.jsp"></jsp:include><br/>

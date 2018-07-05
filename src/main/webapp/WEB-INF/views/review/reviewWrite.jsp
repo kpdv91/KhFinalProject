@@ -150,10 +150,14 @@
        	font-size: 12px;
        	margin-left: 10px;
 	   }
+	   #map{
+	   	width: 400px;
+		height: 400px;
+	   }
     </style>
     <script>
     	var mapLevel=9;
-    	var mapLocation="";
+    	var mapLocation="서울특별시";
     </script>
 	</head>
 	<body>
@@ -169,7 +173,7 @@
     	
     </div>
     <div id="mapDiv">
-    <c:import url="/WEB-INF/views/include/common/map.jsp"/>
+    	<c:import url="/WEB-INF/views/include/common/map.jsp"/>
 <%--     <jsp:include page="../include/common/map.jsp" /> --%>
     </div>
     별점 : <jsp:include page="star.jsp"></jsp:include><br/>
@@ -274,7 +278,7 @@
 				}else{
 					for(var i=0; i<data.list.length; i++){
 						storeList += "<div><a class='store_list' href='#' onclick='map(this)'>"+data.list[i].store_name+"</a><br/>";
-						storeList += "<a class='store_addr' href = '#'>"+data.list[i].store_addr+"</a><hr/></div>";
+						storeList += "<a class='store_addr' href = '#' onclick='relayout()'>"+data.list[i].store_addr+"</a><hr/></div>";
 					}
 				}
 				$("#searchList").append(storeList);
@@ -293,6 +297,7 @@
 		$("#mapDiv").css("display","block");
 		//$("#mapDiv").text(elem.parentNode.children[2].text);
 		mapLocation=elem.parentNode.children[2].text;
+		relayout();
 	}
 	
 	

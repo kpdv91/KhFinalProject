@@ -76,4 +76,14 @@ public class CommonController {
 		logger.info("포인트 리스트 요청");		
 		return commonservice.couponlist(params);
 	}
+	@RequestMapping(value = "/messagesendidcheck")
+	public @ResponseBody HashMap<String, Object> messagesendidcheck(@RequestParam Map<String,String> params) {
+		logger.info("포인트 리스트 요청");		
+		return commonservice.messagesendidcheck(params);
+	}
+	@RequestMapping(value = "/sendmsg")
+	public @ResponseBody HashMap<String, Object> sendmsg(@RequestParam Map<String,String> params) {
+		logger.info("포인트 리스트 요청");		
+		return commonservice.sendmsg(params);
+	}
 }

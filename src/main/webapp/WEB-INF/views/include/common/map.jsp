@@ -12,7 +12,7 @@
 	<body>
 		<!-- <div id="map" style="width:1000px;height:500px;"></div> -->
 		<div id="map"></div>
-		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ee7df8e6dcb1394872966202c64589c2&libraries=services"></script>
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c7f29813d0150c2927c1529f7d432392&libraries=services"></script>
 		<script>
 			$.getJSON("resources/json/seoul.json", function(geojson) {
 				 

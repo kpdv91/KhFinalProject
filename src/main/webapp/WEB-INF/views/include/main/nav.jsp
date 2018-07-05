@@ -53,8 +53,11 @@
 			</c:if>
 			<c:if test="${ sessionScope.loginId != null}">
 				<li><a href="./couponShopPage">쿠폰샵</a></li>
+				<!-- <li><img src="resources/img/member/noprofile.jpg" width="40px" height="40px"/> -->
 			</c:if>
+			
 			</ul>
 		</div>
 	</div>
 </nav>
+

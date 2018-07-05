@@ -19,6 +19,17 @@
 		</if> -->
 	</insert>
 	
+	<select id="getAut" resultType="String">
+		SELECT aut FROM member WHERE id=#{param1} AND pw=#{param2}
+	</select>
+	
+	<select id="idcheck" parameterType="String" resultType="Integer">
+		SELECT COUNT(*) FROM member
+	    WHERE
+	    userId = #{userId}
+	</select>
+	
+	
 	
 	
 </mapper>

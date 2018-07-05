@@ -36,4 +36,20 @@
 			</div>
 		</div>
 </body>
+<script>
+$.ajax({
+	url:"./receivelist",
+	type:"get",
+	data:{
+		id : userid
+	},
+	dataType:"json",
+	success:function(d){
+		receivelist(d.list);
+	},
+	error:function(e){
+		console.log(e);
+	}
+});
+</script>
 </html>

@@ -56,16 +56,13 @@
 		</div>
 	</body>
 	<script>
-	var userid = "${sessionScope.userId}";
+	var userid = "${sessionScope.loginId}";
+	var page = "";
 	console.log(userid);
 	$(".userdetail").click(function(e) {
-		console.log("상세정보");
-		//var p_no=${place_no};
-		var page = "";
 		console.log(e.target.id);
 		$(this).css("background-color","darkblue");
-		$(this).css("color","white");
-		
+		$(this).css("color","white");		
 		if(e.target.id == "message") {
 			page = "resources/timelinehtml/messagebox.html";
 			$("#message").css("background-color","darkblue");
@@ -138,8 +135,11 @@
 	    	$("#likereview").css("color","black");
 	    	$("#likestore").css("background-color","lightgray");
 	    	$("#likestore").css("color","black");
-		}			
+		}
 		$("#content").load(page,function(res, stat) {});
+		ajaxCall(page);
+	});		
+	function ajaxCall(page){
 		if(page=="resources/timelinehtml/messagebox.html"){
 			$.ajax({
 				url:"./receivelist",
@@ -155,8 +155,62 @@
 					console.log(e);
 				}
 			});
+		}else if(page=="resources/timelinehtml/pointbox.html"){
+			$.ajax({
+				url:"./pointlist",
+				type:"get",
+				data:{
+					id : userid
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d);
+					pointlist(d);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}else if(page=="resources/timelinehtml/cuponbox.html"){
+			$.ajax({
+				url:"./couponlist",
+				type:"get",
+				data:{
+					id : userid
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d);
+					pointlist(d);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});			
 		}
-	});
+	}
+	function pointlist(d){
+		console.log(d);
+		$("#pointcnt").val(d.memberpoint);
+		var content = "";
+		d.list.forEach(function(item, idx){
+			if(item.pointList_type == "증가"){			
+				var plusorminus = '+';
+			}else if(item.pointList_type == "감소"){
+				var plusorminus = '-';
+			}
+			content += "<tr>"
+			var date = new Date(item.pointList_date);
+			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
+			content +="<td>"+item.pointList_cate+"</td>"
+			content +="<td>"+plusorminus+item.pointList_point+"</td>"
+			content += "</tr>"			
+		});		
+		$("#list").empty();
+		$("#list").append(content);//내용 붙이기
+		console.log(content);
+	}
+	
 	function send(){
 		$("#send").css("background-color","darkblue");
 		$("#send").css("color","white");
@@ -230,41 +284,11 @@
 	})
 	function receivedetail(e){
 		console.log(e);
-		$("#content").empty();
-		 $.ajax({
-			url:"./receivedetail",
-			type:"get",
-			data:{
-				idx : e
-			},
-			dataType:"json",
-			success:function(d){
-				page="resources/timelinehtml/receivedetail.html"
-				$("#content").load(page,{id:e.target.id},function(res, stat) {});
-			},
-			error:function(e){
-				console.log(e);
-			}
-		});
-	};
+		var myWin= window.open("./receivedetail?idx="+e,"메세지상세보기","width=500,height=500");
+	};	
 	function senddetail(e){
 		console.log(e);
-		//$("#content").empty();
-		/* $.ajax({
-			url:"./receivedetail",
-			type:"get",
-			data:{
-				id : e.target.id
-			},
-			dataType:"json",
-			success:function(d){
-				page="resources/timelinehtml/receivedetail.html"
-				$("#content").load(page,{id:e.target.id},function(res, stat) {});
-			},
-			error:function(e){
-				console.log(e);
-			}
-		}); */
+		var myWin= window.open("./senddetail?idx="+e,"메세지상세보기","width=500,height=500");
 	};
 	</script>
 </html>

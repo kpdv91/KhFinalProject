@@ -17,6 +17,21 @@
 	<select id="sendlist" resultType="dm">
 		SELECT * FROM dm WHERE dm_id=#{param1}
 	</select>
+	<select id="receivedetail" resultType="dm">
+		SELECT * FROM dm WHERE dm_idx=#{param1}
+	</select>
+	<select id="senddetail" resultType="dm">
+		SELECT * FROM dm WHERE dm_idx=#{param1}
+	</select>
+	<select id="memberpoint" resultType="String">
+		SELECT pointCnt FROM member WHERE id=#{param1}
+	</select>
+	<select id="pointlist" resultType="pointList">
+		SELECT * FROM pointList WHERE id=#{param1}
+	</select>
+	<select id="couponlist" resultType="couponBox">
+		SELECT * FROM couponbox WHERE id=#{param1} AND couponbox_use=0
+	</select>
 </mapper>
 
 

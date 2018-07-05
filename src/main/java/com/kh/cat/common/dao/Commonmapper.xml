@@ -38,6 +38,9 @@
 	<insert id="sendmsg">
 		INSERT INTO dm VALUES(seq_dm.NEXTVAL,#{param1},#{param2},#{param3},SYSDATE)
 	</insert>
+	<select id="storeSearch" resultType="store">
+		SELECT * FROM store WHERE store_name Like '%'||#{param1}||'%'
+	</select>
 </mapper>
 
 

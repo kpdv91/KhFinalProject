@@ -1,5 +1,6 @@
 package com.kh.cat.common.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,7 +92,6 @@ public class CommonService {
 		map.put("id",idcheck);
 		return map;
 	}
-
 	public HashMap<String, Object> sendmsg(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -102,6 +102,13 @@ public class CommonService {
 		int a = inter.sendmsg(userid,id,content);
 		map.put("success",a);
 		return map;
+	}
+	public ModelAndView storeSearch(String search_content) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("list", inter.storeSearch(search_content));
+		mav.setViewName("include/common/search");
+		return mav;
 	}
 
 }

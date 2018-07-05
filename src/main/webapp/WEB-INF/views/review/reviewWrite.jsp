@@ -106,13 +106,14 @@
        }
        #searchList{
 		width: 250px;
-		height: 400px;
-		background-color: pink;  
+		height: 400px; 
+		background-color: rgba(46,100,254,0.7);
 		margin-top:-42px;     
 		margin-left: 401px;
 		z-index: 2;
 		position: absolute;
 		display: none;
+		text-align: left;
        }
        #formDiv{
        position: relative;
@@ -133,8 +134,27 @@
        	float: right;
        	border-radius: 0px;
        }
-       
+       .store_list{
+       	color: black;
+       	text-decoration: none;
+       	line-height: 2.0;
+       	font-weight: 550;
+       	margin-left: 10px;
+       }
+       .store_list:hover {
+		color: #33aaaaff;
+	   }
+	   .store_addr{
+	    color: black;
+       	text-decoration: none;
+       	font-size: 12px;
+       	margin-left: 10px;
+	   }
     </style>
+    <script>
+    	var mapLevel=9;
+    	var mapLocation="";
+    </script>
 	</head>
 	<body>
 	<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
@@ -145,10 +165,13 @@
 	작성자 : <input id="userId" name="id" type="text" value="${sessionScope.loginId}" readonly/><br/><br/>
     상호명 : <input id="review_storeName" type="text" name="review_storeName"/><button type="button" id="search"><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/><br/>
     <div id="searchList">
-    	<a id="list">리스트 자리</a>
-    	<input id="listClose" type="button" value="X"/>
+    	
+    	
     </div>
-    <div id="mapDiv">지도 자리</div>
+    <div id="mapDiv">
+    <%-- <c:import url="/WEB-INF/views/include/common/map.jsp"/> --%>
+<%--     <jsp:include page="../include/common/map.jsp" /> --%>
+    </div>
     별점 : <jsp:include page="star.jsp"></jsp:include><br/>
     내용<br/>
     <textarea name="review_content"></textarea><br/><br/>
@@ -195,6 +218,7 @@
 	
 	function hashDel(elem){
 		//var sp = elem.id.split("_")[1];
+		console.log(elem.target);
 		console.log(elem.parentNode);
 		//delete hashtagArr[sp];
 		elem.parentNode.remove();
@@ -231,15 +255,31 @@
 		});
 	}
 	
+	//가게 검색 리스트
+	var storeList="";
+	var btn="";
 	$("#search").click(function(){
 		console.log("search click");
+		console.log($("#review_storeName").val());
+		$("#searchList").empty();
+		btn = "<input id='listClose' type='button' value='X'/><br/>";
+		$("#searchList").append(btn);
 		$.ajax({
 			url : "./revStoreSearch",
-			type : "post",
 			data : {"review_storeName":$("#review_storeName").val()},
 			success : function(data){
-				console.log(data);
-				
+				console.log(data.list.length);
+				if(data.list.length == 0){					
+					storeList += "<h3>찾으시는 상호명이 없습니다.</h2>";
+				}else{
+					for(var i=0; i<data.list.length; i++){
+						storeList += "<div><a class='store_list' href='#' onclick='map(this)'>"+data.list[i].store_name+"</a><br/>";
+						storeList += "<a class='store_addr' href = '#'>"+data.list[i].store_addr+"</a><hr/></div>";
+					}
+				}
+				$("#searchList").append(storeList);
+				storeList = "";
+				btn="";
 			},
 			error : function(e){
 				console.log(e);
@@ -247,14 +287,20 @@
 		});
 		$("#searchList").css("display","block");
 	});
-	$("#list").click(function(){
-		console.log("List Click");
+	
+	function map(elem){
+		console.log(elem.parentNode.children[2].text);
 		$("#mapDiv").css("display","block");
-	});
-	$("#listClose").click(function(){
-		console.log("X Click");
-		$("#searchList").css("display","none");
-		$("#mapDiv").css("display","none");
-	});
+		//$("#mapDiv").text(elem.parentNode.children[2].text);
+		mapLocation=elem.parentNode.children[2].text;
+	}
+	
+	
+
+		$(document).on("click","#listClose",function(){
+			console.log("X Click");
+			$("#searchList").css("display","none");
+			$("#mapDiv").css("display","none");
+		});
 	</script>
 </html>

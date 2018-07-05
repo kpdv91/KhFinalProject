@@ -1,15 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-		<title>띠요옹</title>
-		<style>
-		</style>
-	</head>
-	<body>
+
 		<!-- <div id="map" style="width:1000px;height:500px;"></div> -->
 		<div id="map"></div>
 		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c7f29813d0150c2927c1529f7d432392&libraries=services"></script>
@@ -73,6 +64,7 @@
 			});    
 			
 			function relayout(){
+				console.log(map);
 				map.relayout();
 			}
 		</script>

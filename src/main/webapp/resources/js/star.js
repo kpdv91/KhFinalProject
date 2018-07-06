@@ -24,6 +24,7 @@ var $star = $(".star-input"),
   	})
     .on("mouseover", ".star-input label", function(){
     	$result.text($(this).text());
+    	
     })
     .on("mouseleave", ".star-input>.input", function(){
     	var $checked = $star.find(":checked");

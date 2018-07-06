@@ -74,6 +74,11 @@ public class MemberController {
 		logger.info("프로필 사진 불러오기 요청");			
 		return memberService.profileimg(params);
 	}
+	@RequestMapping(value = "/profileunder")
+	public @ResponseBody HashMap<String, Object> profileunder(@RequestParam Map<String,String> params) {
+		logger.info("프로필 사진 불러오기 요청");			
+		return memberService.profileunder(params);
+	}
 
 
 }

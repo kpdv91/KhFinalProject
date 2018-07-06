@@ -17,4 +17,8 @@ public interface ReviewInter {
 
 	ArrayList<ReviewDTO> reviewList();
 
+	ArrayList<ReviewDTO> reviewHash(String review_idx);
+
+	ArrayList<ReviewDTO> reviewPhoto(String review_idx);
+
 }

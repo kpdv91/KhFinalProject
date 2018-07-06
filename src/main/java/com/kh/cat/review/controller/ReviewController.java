@@ -88,4 +88,10 @@ public class ReviewController {
 		logger.info("리뷰 리스트 요청");
 		return service.reviewList();
 	}
+	@RequestMapping(value = "/reviewHashPhoto")
+	public @ResponseBody HashMap<String, Object> reviewHashPhoto(@RequestParam("review_idx") String review_idx) {
+		logger.info("리뷰 해시태그, 사진 요청");
+		return service.reviewHashPhoto(review_idx);
+	}
+	
 }

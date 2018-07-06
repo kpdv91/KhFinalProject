@@ -40,5 +40,12 @@
 	 	SELECT * FROM review ORDER BY review_date DESC
 	 </select>
 	 
+	 <select id="reviewHash" resultType="hash">
+	 	SELECT hash_tag FROM hash WHERE hash_cate='review' AND review_idx = #{param1}
+	 </select>
+	 
+	 <select id="reviewPhoto" resultType="revPhoto">
+	 	SELECT revPhoto_photo FROM revPhoto WHERE review_idx = #{param1}
+	 </select>
 	
 </mapper>

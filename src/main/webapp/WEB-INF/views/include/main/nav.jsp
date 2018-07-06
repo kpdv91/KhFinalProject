@@ -89,12 +89,9 @@
 		</div>
 	</div>
 </nav>
-<<<<<<< HEAD
 
-=======
 <script>
 	function search(){
 		location.href = "./search?search_content=" + $("#search_content").val()+"&searchMap=" + $("#searchMap").val();
 	}
 </script>
->>>>>>> 82028e90c7c6e4434b55a04b12eb7e52adde7ec7

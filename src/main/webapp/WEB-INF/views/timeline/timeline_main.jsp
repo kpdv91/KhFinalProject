@@ -9,7 +9,7 @@
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>Insert title here</title>
 		<style>		
-			#profileimg{position: absolute;width: 100px;height: 100px;left: 400px;top: 65px;			}
+			#profileim{position: absolute;width: 100px;height: 100px;left: 400px;top: 65px;			}
 			#timelineuserId{position: absolute;width: 150px;height: 60px;text-align: center;left: 500px;top: 50px;}
 			#profile{position: absolute;width: 100%;height: 200px;top:100px;}
 			#fallow{background-color: lightgray;border:1px solid black;width: 90px;position: absolute;left: 650px;top: 70px;}
@@ -30,8 +30,8 @@
 	</head>
 	<body>
 		<div id="profile">
-		<img id="profileimg" src="resources/img/member/noprofile.jpg">		
-		<h1 id="timelineuserId">홍길동</h1>
+		<img id="profileim" src="resources/img/member/noprofile.jpg">		
+		<h1 id="timelineuserId">${id}</h1>
 			<div id="fallow">팔로우 신청</div>
 			<div id="dm">메세지 보내기</div>
 			<div class="userdetail">
@@ -59,6 +59,13 @@
 	var userid = "${sessionScope.loginId}";
 	var page = "";
 	console.log(userid);
+	console.log("${id}")
+	if(userid=="${id}"){
+		$("#fallow").css("display","none");
+		$("#dm").css("display","none");
+	}else{
+		$("#userdetai").css("display","none");
+	}
 	$(".userdetail").click(function(e) {
 		console.log(e.target.id);
 		$(this).css("background-color","darkblue");

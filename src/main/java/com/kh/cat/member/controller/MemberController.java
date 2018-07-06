@@ -1,6 +1,7 @@
 package com.kh.cat.member.controller;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -66,6 +68,16 @@ public class MemberController {
 		logger.info("fileUpload 요청");
 		String root = session.getServletContext().getRealPath("/");
 		return memberService.fileUpload(file,root);
+	}
+	@RequestMapping(value = "/profileimg")
+	public @ResponseBody HashMap<String, Object> profileimg(@RequestParam Map<String,String> params) {
+		logger.info("프로필 사진 불러오기 요청");			
+		return memberService.profileimg(params);
+	}
+	@RequestMapping(value = "/profileunder")
+	public @ResponseBody HashMap<String, Object> profileunder(@RequestParam Map<String,String> params) {
+		logger.info("프로필 사진 불러오기 요청");			
+		return memberService.profileunder(params);
 	}
 
 

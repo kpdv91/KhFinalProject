@@ -25,12 +25,6 @@ public class ReviewController {
 	
 	@Autowired ReviewService service;
 	
-	@RequestMapping(value = "/timeline", method = RequestMethod.GET)
-	public String timeline() {
-		System.out.println("타임라인 요청");
-		return "timeline/timeline_main";
-	}
-	
 	@RequestMapping(value = "/reviewWritePage")
 	public String reviewWritePage() {
 		

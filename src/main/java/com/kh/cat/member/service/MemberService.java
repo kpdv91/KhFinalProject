@@ -138,4 +138,14 @@ public class MemberService {
 		return map;
 	}
 
+
+	public HashMap<String, Object> profileunder(Map<String, String> params) {
+		inter = sqlSession.getMapper(MemberInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		logger.info(id);
+		map.put("profile", inter.profileunder(id));
+		return map;
+	}
+
 }

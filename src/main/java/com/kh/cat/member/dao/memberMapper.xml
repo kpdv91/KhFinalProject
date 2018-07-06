@@ -6,8 +6,7 @@
 <mapper namespace="com.kh.cat.member.dao.MemberInter">
 	<select id="login" resultType="String">
 		SELECT id FROM member WHERE id=#{param1} AND pw=#{param2}
-	</select>
-	
+	</select>	
 	<insert id="join" parameterType="member">
 		INSERT INTO member(id,pw,name,email,phone,profile,aut,pointCnt,revCnt,followCnt)
 			VALUES(#{id},#{pw},#{name},#{email},#{phone},#{profile},'user',0,0,0)
@@ -18,22 +17,21 @@
 			VALUES(#{id},#{pw},#{name},#{age},#{gender},'없음')
 		</if> -->
 	</insert>
-	
 	<select id="profileimg" resultType="member">
 		SELECT profile FROM member WHERE id=#{param1}
-	</select>
+	</select>	
 	
 	<select id="getAut" resultType="String">
 		SELECT aut FROM member WHERE id=#{param1} AND pw=#{param2}
-	</select>
-	
+	</select>	
 	<select id="idcheck" parameterType="String" resultType="Integer">
 		SELECT COUNT(*) FROM member
 	    WHERE
 	    userId = #{userId}
 	</select>
-	
-	
+	<select id="profileunder" resultType="member">
+		SELECT * FROM member WHERE id=#{param1}
+	</select>
 </mapper>
 
 

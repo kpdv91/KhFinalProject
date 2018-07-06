@@ -18,6 +18,10 @@
 	#nav input{font-size: 16px; width: 250px; padding: 10px; border: 0px; outline: none; }
 	#nav button{width: 50px; height: 100%; border: 0px; background-color: #1b5ac2; outline: none; float: right; color:#ffffff;}
 	#profileimg{width: 50px;height : 50px;position:absolute;left:500px;top:1px;}
+	.btn{background-color:blue; color:white;width:80px;border: 2px solid white;}
+	#proimg{width: 50px;height : 50px;}
+	#profileck{background-color:white;border: 1px solid #1b5ac2;position:absolute;left:375px;width:175px;}
+	#userid{margin-left:70px;top:5px;position:absolute;}
 </style>
 <nav id="nav">
 	<div id="mainFrame">
@@ -60,25 +64,30 @@
 	        <ul>
 			<li><a href="./boardListPage">게시판</a></li>
 			<c:if test="${ sessionScope.loginId == null}">
-				<li><a href="loginForm">로그인</a></li>
+				<li><a href="loginForm">로그인</a></li>            
 				<li><a href="joinForm">회원가입</a></li>
 			</c:if>
 			<c:if test="${ sessionScope.loginId != null}">
 				<li><a href="./couponShopPage">쿠폰샵</a></li>
-				<!-- <li><img src="resources/img/member/noprofile.jpg" width="40px" height="40px"/> -->
-			</c:if>
-			
+				<!--<li><img src="resources/img/member/noprofile.jpg" width="40px" height="40px"/> -->
+				<li>
+				<div>
+				<img id="profileimg" src='#' onclick="profileclick()">
+				</div>
+				<div id="profi"></div>
+				</li>
+			</c:if>			
 			</ul>
 		</div>
 	</div>
 </nav>
 
 <script>
+var loginid="${sessionScope.loginId}";
 	function search(){
 		location.href = "./search?search_content=" + $("#search_content").val()+"&searchMap=" + $("#searchMap").val();
 	};
-	$( document ).ready(function() {
-		var loginid="${sessionScope.loginId}";
+	$( document ).ready(function() {		
 	    if(loginid != null){
 	    	$.ajax({
 				url:"./profileimg",
@@ -94,8 +103,37 @@
 				error:function(e){
 					console.log(e);
 				}
-			});	    
-	    	//$("#profileimg").attr("src",'resources/upload/'+data.list[0].place_photo);
+			});
 	    }
 	});
+	function profileclick(){
+		$.ajax({
+			url:"./profileunder",
+			type:"post",
+			data:{
+				id : loginid
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d);
+				profileunder(d.profile)
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	function profileunder(data){
+		var content="<div id='profileck'><img id='proimg' src='resources/upload/"+data.profile+"'>";
+		content += "<h3 id='userid'>"+data.id+"</h3>";
+		content += "<h4>보유 포인트 : "+data.pointCnt+"point</h4>";
+		content += "<div class='btn' id='"+data.id+"' onclick='gotimeline(id)'>타임라인</div>";
+		content += "<div class='btn' id='"+data.id+"'>로그아웃</div>";
+		content += "</div>";
+		$("#profi").append(content);
+	}
+	function gotimeline(e){
+		console.log(e);
+		location.href="./timeline?id="+e;
+	}
 </script>

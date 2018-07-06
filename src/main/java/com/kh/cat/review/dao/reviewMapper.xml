@@ -36,5 +36,9 @@
 	 	FROM store WHERE store_name LIKE '%'|| #{param1}||'%'
 	 </select>
 	 
+	 <select id="reviewList" resultType="review">
+	 	SELECT * FROM review ORDER BY review_date DESC
+	 </select>
+	 
 	
 </mapper>

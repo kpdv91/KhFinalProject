@@ -15,4 +15,6 @@ public interface ReviewInter {
 
 	ArrayList<StoreDTO> storeList(String params);
 
+	ArrayList<ReviewDTO> reviewList();
+
 }

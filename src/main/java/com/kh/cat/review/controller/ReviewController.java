@@ -27,6 +27,7 @@ public class ReviewController {
 	
 	@RequestMapping(value = "/reviewWritePage")
 	public String reviewWritePage() {
+		
 		System.out.println("리뷰 작성 페이지 요청");
 		return "review/reviewWrite";
 	}
@@ -54,7 +55,7 @@ public class ReviewController {
 	}
 	
 	@RequestMapping(value= "/reviewWrite")
-	public ModelAndView wirte(@RequestParam("hash_tag") ArrayList<String> hash_tag,
+	public String wirte(@RequestParam("hash_tag") ArrayList<String> hash_tag,
 			@RequestParam("review_photo") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map) {
 		logger.info("글쓰기 요청");	
 		logger.info(""+map);
@@ -75,4 +76,16 @@ public class ReviewController {
 		logger.info("해시태그:" + hash_tag.get("hash_tag"));
 		return null;
 	}*/
+	
+	//리뷰 리스트 페이지
+	@RequestMapping(value = "/reviewListPage")
+	public String reviewListPage() {		
+		System.out.println("리뷰 작성 페이지 요청");
+		return "review/reviewList";
+	}
+	@RequestMapping(value = "/reviewList")
+	public @ResponseBody HashMap<String, Object> reviewList() {
+		logger.info("리뷰 리스트 요청");
+		return service.reviewList();
+	}
 }

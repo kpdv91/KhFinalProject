@@ -46,11 +46,16 @@ public class PointService {
 		if(code > range) {
 			code = code - trim;
 		}
+		
+		java.sql.Date today = new java.sql.Date(new java.util.Date().getTime());
+		logger.info("현재시간 : {}", today);
+		int a =0;
 		logger.info("랜덤 코드 : {}",code);
 		dto.setCouponBox_code(code);
 		dto.setId(loginId);
 		dto.setCouponBox_price(Long.parseLong(price));
-		dto.setCouponBox_use(0);
+		dto.setCouponBox_name(name);
+		dto.setCouponBox_use(a);
 		
 		/*int code[] = {1,2,3,4,5,6};
 		int random_code[] = shuffle(code);//맨 아래 메소드

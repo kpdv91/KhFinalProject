@@ -70,12 +70,12 @@
 			<c:if test="${ sessionScope.loginId != null}">
 				<li><a href="./couponShopPage">쿠폰샵</a></li>
 				<!--<li><img src="resources/img/member/noprofile.jpg" width="40px" height="40px"/> -->
-				<li>
-				<div>
-				<img id="profileimg" src='#' onclick="profileclick()">
-				</div>
-				<div id="profi"></div>
-				</li>
+				<!-- <li>
+					<div>
+						<img id="profileimg" src='#' onclick="profileclick()">
+					</div>
+					<div id="profi"></div>
+				</li> -->
 			</c:if>			
 			</ul>
 		</div>

@@ -64,10 +64,12 @@
         <div id="div2">
         <table>
         <tr>
-            <th>아이디 : </th>
+            <!-- <th>아이디 : </th> -->
             <td><input type="text" id="userId" name="userId" placeholder="아이디"></td>
-            <td><button>중복체크</button></td>
-            <td id="idChk"></td>
+            <td><input type="button" value="중복확인" onclick="idck()">
+            <input type="hidden" id="idChk" value="N" /><!-- ID체크 했는지, 안했는지. -->
+            아이디 : <input type="text" name="id" id="insertId" maxlength="30" /><input type="button" value="Id체크" onclick="javascript:chkDupId();" />
+            </td>
          </tr>
          <tr>
             <th>비밀번호 : </th>
@@ -107,11 +109,7 @@
 	</form>
 	</body>
 	<script>
-	/* 
-	function nullChk(){
-	
-	
-	} */
+
 	var pwChkVal=0;
 	
 	//회원 가입 클릭시

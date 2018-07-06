@@ -27,8 +27,10 @@
 	if(filePath != ""){
 		var content = "";//img태그
 		var elem = window.opener.document.getElementById("editable");
+		content +="<div>";
 		content +="<img width='250' src='${path}'/>";
-		content +="<input class='delBtn' id='${path}' type='button' value='삭제' onclick='del(this)'/><br>";
+		content +="<input class='delBtn' id='${path}' type='button' value='삭제' onclick='menuDel(this)'/><br>";
+		content +="</div>";
 		elem.innerHTML += content;
 		self.close();
 	}

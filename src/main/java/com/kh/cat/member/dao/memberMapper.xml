@@ -18,11 +18,10 @@
 			VALUES(#{id},#{pw},#{name},#{age},#{gender},'없음')
 		</if> -->
 	</insert>
-<<<<<<< HEAD
+	
 	<select id="profileimg" resultType="member">
 		SELECT profile FROM member WHERE id=#{param1}
 	</select>
-=======
 	
 	<select id="getAut" resultType="String">
 		SELECT aut FROM member WHERE id=#{param1} AND pw=#{param2}
@@ -33,9 +32,6 @@
 	    WHERE
 	    userId = #{userId}
 	</select>
-	
-	
->>>>>>> 02510671efdb0138c6fb0b6a2fb3bbf6f2bfeeb5
 	
 	
 </mapper>

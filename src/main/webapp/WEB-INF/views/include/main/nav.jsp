@@ -69,11 +69,6 @@
 			</c:if>
 			
 			</ul>
-			<c:if test="${ sessionScope.loginId != null}">
-			<div>
-				<img id="profileimg" src='#'>
-			</div>
-			</c:if>
 		</div>
 	</div>
 </nav>

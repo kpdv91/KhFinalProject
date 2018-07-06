@@ -31,6 +31,18 @@
 		UPDATE member SET pointCnt = pointCnt - #{param2} WHERE id = #{param1}
 	</update>
 	
+	
+	<!-- int couponBox_code;
+	String id;
+	long couponBox_price;
+	String couponBox_name;
+	Date couponBox_date;
+	int couponBox_use; -->
+	<insert id="myCoupon" parameterType="couponBox">
+		INSERT INTO couponBox(couponBox_code, id, couponBox_use, couponBox_date couponBox_name, couponBox_price)
+			VALUES(#{couponBox_code}, #{id}, #{couponBox_use}, SYSDATE, #{couponBox_name},#{couponBox_price})
+	</insert>
+	
 </mapper>
 
 

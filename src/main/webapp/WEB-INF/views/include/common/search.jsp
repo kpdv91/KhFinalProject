@@ -49,7 +49,7 @@
 				</tr>
 				<tr>
 					<td>상호명</td>
-					<th><a href="">${sto.store_name}</a></th>
+					<th><a href="#">${sto.store_name}</a></th>
 					<td rowspan="2">하트</td>
 				</tr>
 				<tr>
@@ -61,9 +61,7 @@
 				</tr>
 			</table>
 		</c:forEach>
-		
 	</body>
 	<script>
-		console.log("${list}");
 	</script>
 </html>

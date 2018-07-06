@@ -147,4 +147,14 @@ public class ReviewService {
 		return map;
 	}
 
+	public HashMap<String, Object> reviewHashPhoto(String review_idx) {
+		logger.info("리뷰 해시태그");
+		inter = sqlSession.getMapper(ReviewInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("reviewHash", inter.reviewHash(review_idx));
+		map.put("reviewPhoto", inter.reviewPhoto(review_idx));
+		logger.info(""+map.get("reviewHash"));
+		return map;
+	}
+
 }

@@ -109,4 +109,13 @@ public class CommonService {
 		return mav;
 	}
 
+	public HashMap<String, Object> maintimeline(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");		
+		int a = inter.reviewtimelinecnt(id);
+		map.put("review",a);
+		return map;
+	}
+
 }

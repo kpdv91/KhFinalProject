@@ -29,5 +29,7 @@ public interface CommonInter {
 
 	ArrayList<StoreDTO> storeSearch(String search_content);
 
+	int reviewtimelinecnt(String id);
+
 
 }

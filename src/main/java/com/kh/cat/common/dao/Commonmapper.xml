@@ -41,6 +41,9 @@
 	<select id="storeSearch" resultType="store">
 		SELECT * FROM store WHERE store_name Like '%'||#{param1}||'%'
 	</select>
+	<select id="reviewtimelinecnt" resultType="Integer">
+		SELECT COUNT(*) FROM review WHERE id=#{param1}
+	</select>
 </mapper>
 
 

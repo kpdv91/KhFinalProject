@@ -3,6 +3,9 @@ package com.kh.cat.common.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,11 +90,18 @@ public class CommonController {
 		return commonservice.sendmsg(params);
 	}
 	@RequestMapping(value = "/timeline")
-	public ModelAndView timeline(@RequestParam("id") String id) {
+	public ModelAndView timeline(@RequestParam("id") String id,HttpSession session) {
 		System.out.println("타임라인 요청");
+		String userid=(String)session.getAttribute("loginId");
+		logger.info(userid);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("id",id);
 		mav.setViewName("timeline/timeline_main");
 		return mav;
+	}
+	@RequestMapping(value = "/maintimeline")
+	public @ResponseBody HashMap<String, Object> maintimeline(@RequestParam Map<String,String> params) {
+		logger.info("타임라인 메인 리뷰,좋아요,찜한가게,팔로우 목록 요청");		
+		return commonservice.maintimeline(params);
 	}
 }

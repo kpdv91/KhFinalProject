@@ -68,7 +68,7 @@
 				</tr>
 				<tr>
 					<th>예상 예산(2인기준)</th>
-					<td><input type="text" name="store_price" placeholder="ex) 45000"/></td>원
+					<td><input type="text" name="store_price" placeholder="ex) 45000"/>원</td>
 				</tr>
 				<tr>
 					<th>영업 시간</th>

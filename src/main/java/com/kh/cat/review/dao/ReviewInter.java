@@ -15,4 +15,10 @@ public interface ReviewInter {
 
 	ArrayList<StoreDTO> storeList(String params);
 
+	ArrayList<ReviewDTO> reviewList();
+
+	ArrayList<ReviewDTO> reviewHash(String review_idx);
+
+	ArrayList<ReviewDTO> reviewPhoto(String review_idx);
+
 }

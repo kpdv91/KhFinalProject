@@ -87,4 +87,12 @@ public class CommonController {
 		logger.info("포인트 리스트 요청");		
 		return commonservice.sendmsg(params);
 	}
+	@RequestMapping(value = "/timeline")
+	public ModelAndView timeline(@RequestParam("id") String id) {
+		System.out.println("타임라인 요청");
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("id",id);
+		mav.setViewName("timeline/timeline_main");
+		return mav;
+	}
 }

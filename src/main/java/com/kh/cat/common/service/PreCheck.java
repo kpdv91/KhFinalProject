@@ -19,12 +19,11 @@ public class PreCheck extends HandlerInterceptorAdapter {
 		boolean pass = false;
 		if(id==null) {
 			System.out.println("로그인 안됨");
-			response.sendRedirect("/controller/");
+			response.sendRedirect("/cat/main");
 		}else {
 			System.out.println("로그인 됨");
 			pass = true;
 		}
-		System.out.println("해당 요청으로 보낼지 true | false로 반환");
 		return pass;
 	}
 
@@ -33,11 +32,6 @@ public class PreCheck extends HandlerInterceptorAdapter {
 			ModelAndView mav) throws Exception {
 		System.out.println("controller 요청 후에서 부터 뷰 전송 사이에 실행 -- postHandle()");
 		System.out.println("mav를 이용해서 특정페이지에 특정 데이터 전송가능");
-		HttpSession session = request.getSession();
-		String id = (String) session.getAttribute("loginId");
-		String content = "<div id='loginArea'>안녕하세요 '"+id+"'님</div>";
-		mav.addObject("loginBox", content);
-		
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -125,6 +126,16 @@ public class MemberService {
 		return mav;
 		//자바 nio는 자바 버전 7 이상에서 쓸수있음... io보다 빠름
 		//파일 업로드 자체는 db 쓰지 않기때문에 interface 안가도 된다!
+	}
+
+
+	public HashMap<String, Object> profileimg(Map<String, String> params) {
+		inter = sqlSession.getMapper(MemberInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		logger.info(id);
+		map.put("profileimg", inter.profileimg(id));
+		return map;
 	}
 
 }

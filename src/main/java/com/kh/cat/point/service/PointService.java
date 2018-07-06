@@ -57,18 +57,6 @@ public class PointService {
 		dto.setCouponBox_name(name);
 		dto.setCouponBox_use(a);
 		
-		/*int code[] = {1,2,3,4,5,6};
-		int random_code[] = shuffle(code);//맨 아래 메소드
-		logger.info("코드번호 : {}", random_code);
-
-		/*private int couponBox_code;
-		private String id;
-		private long couponBox_price;
-		private String couponBox_name;
-		private Date couponBox_date;
-		private int couponBox_use;*/
-		
-		
 		int myPoint = inter.myPoint(loginId);
 		logger.info("내 포인트 : {}", myPoint);
 		
@@ -79,8 +67,11 @@ public class PointService {
 		}else {
 			int result = inter.couponPurchase(loginId, couponPrice);
 			logger.info("쿠폰 구매 성공 여부 : {}", result);
+			map.put("couponPurchaseMsg", result);
 			int success = inter.myCoupon(dto);
 			logger.info("쿠폰함 추가 성공 여부 : {}", success);
+			map.put("couponBoxMsg", success);
+			map.put("msg", "쿠폰구매완료");
 		}
 		return map;
 	}

@@ -2,11 +2,15 @@ package com.kh.cat.point.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.cat.point.service.PointService;
@@ -24,10 +28,21 @@ public class PointController {
 		return "point/couponShop";
 	}
 	
+	/*//쿠폰샵 리스트
 	@RequestMapping(value="/couponShop")
 	public @ResponseBody HashMap<String, Object> couponShop() {
 		logger.info("couponShop 요청");
 		return pointService.couponShopList();
-	}
+	}*/
+	
+	//쿠폰 구매
+	@RequestMapping(value="/couponPurchase")
+	public @ResponseBody HashMap<String, Object> couponPurchase(@RequestParam("price") String price, HttpServletRequest request) {
+		logger.info("couponPurchase 요청");
+		logger.info("code : {}", price);
+		String loginId = (String) request.getSession().getAttribute("loginId");
+		logger.info("세션 : {}", loginId);
+		return pointService.couponPurchase(price, loginId);
+	} 
 	
 }

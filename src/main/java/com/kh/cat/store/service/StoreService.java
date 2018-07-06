@@ -32,9 +32,10 @@ public class StoreService {
 		return map;
 	}*/
 
+	//메뉴 사진 업로드
 	public ModelAndView menuUpload(MultipartFile file, String root) {
 		ModelAndView mav = new ModelAndView();
-		String detailPath = "resources/upload/store";
+		String detailPath = "resources/upload/store/";
 		String fullPath = root+detailPath;
 		logger.info(fullPath);
 		//1. 폴더가 없을 경우 폴더 생성
@@ -44,15 +45,15 @@ public class StoreService {
 			dir.mkdir();
 		}
 		//2. 파일명 추출
-		String fileName = file.getOriginalFilename();
+		String oriFileName = file.getOriginalFilename();
 		//3. 새로운 파일명 생성
-		String newFileName = System.currentTimeMillis()+fileName.substring(fileName.lastIndexOf("."));
+		String newFileName = System.currentTimeMillis()+oriFileName.substring(oriFileName.lastIndexOf("."));
 		//4. 파일 추출
 		try {
 			byte[] bytes =  file.getBytes();//multupartFilr에서 부터 바이트 추출
 			Path filePath = Paths.get(fullPath+newFileName);//파일 생성 경로
 			Files.write(filePath, bytes);
-			fileList.put(newFileName, fileName);
+			fileList.put(newFileName, oriFileName);
 			logger.info("저장할 파일 갯수 : {}",fileList.size());
 			mav.addObject("path",detailPath+newFileName);
 		} catch (IOException e) {
@@ -61,6 +62,30 @@ public class StoreService {
 		mav.setViewName("store/menuPhotoForm");
 		
 		return mav;
+	}
+
+	//메뉴 사진 삭제
+	public HashMap<String, Integer> fileDel(String root, String fileName) {
+		logger.info(fileName);
+		int success = 0;
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		String detailPath ="resources/upload/store/";
+		String fullPath = root+detailPath+fileName;
+		logger.info(fullPath);
+		File file = new File(fullPath);
+		if(file.exists()) {
+			file.delete();
+		}else {
+			logger.info("이미 삭제된 사진입니다.");
+		}
+		if(fileList.get(fileName)!=null) {//ma에 해당 파일이 존재하면 
+			fileList.remove(fileName);
+			logger.info("삭제후 남은 파일 갯수 : {}", fileList.size());
+			success=1;
+		}
+		map.put("success", success);
+		System.out.println(fileList);
+		return map;
 	}
 
 }

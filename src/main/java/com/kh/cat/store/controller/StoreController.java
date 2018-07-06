@@ -1,5 +1,7 @@
 package com.kh.cat.store.controller;
 
+import java.util.HashMap;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -51,5 +55,14 @@ public class StoreController {
 		logger.info("메뉴 사진 업로드 요청.");
 		String root = session.getServletContext().getRealPath("/");
 		return	storeService.menuUpload(file, root);
+	}
+	
+	//메뉴 사진 삭제
+	@RequestMapping(value = "/menuDel")
+	public @ResponseBody HashMap<String, Integer> 
+	menuDel(@RequestParam("fileName") String fileName, HttpSession session) {
+		logger.info("메뉴 삭제 요청.");
+		String root = session.getServletContext().getRealPath("/");
+		return storeService.fileDel(root, fileName);
 	}
 }

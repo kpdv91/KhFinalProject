@@ -42,8 +42,8 @@
 			<img alt="logo" src="resources/img/logo/logo_cat.png">
 		</div>
         <div id="searchBox">
-        	<select id="searchMap" name="searchMap">
-				<option value="전체" selected="selected" >전체</option>
+        	<select id="search_map">
+				<option value="" selected="selected" >전체</option>
 				<option value="강남구">강남구</option>
 				<option value="강동구">강동구</option>
 				<option value="강북구">강북구</option>
@@ -92,6 +92,6 @@
 
 <script>
 	function search(){
-		location.href = "./search?search_content=" + $("#search_content").val()+"&searchMap=" + $("#searchMap").val();
+		location.href = "./search?search_content=" + $("#search_content").val()+"&search_map=" + $("#search_map").val();
 	}
 </script>

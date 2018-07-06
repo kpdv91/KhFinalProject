@@ -1,5 +1,6 @@
 package com.kh.cat.common.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.cat.common.dao.CommonInter;
+import com.kh.cat.dto.StoreDTO;
 
 @Service
 public class CommonService {
@@ -101,12 +103,33 @@ public class CommonService {
 		map.put("success",a);
 		return map;
 	}
-	public ModelAndView storeSearch(String search_content) {
+	public ModelAndView storeSearch(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
+		String search_content = params.get("search_content");
+		String search_content_And = search_content.replaceAll(" ", "%");
+		String[] search_content_Split = search_content.split(" ");
+		HashMap<String, Object> search_content_Map = new HashMap<String, Object>();
+		search_content_Map.put("map", params.get("search_map"));
+		search_content_Map.put("split", search_content_Split);
+		
+		ArrayList<StoreDTO> result = inter.storeSearch_And(params.get("search_map"),search_content_And);
+		logger.info(result.toString());
+		if(result.isEmpty()) {
+			result = inter.storeSearch_Or(search_content_Map);
+		}
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("list", inter.storeSearch(search_content));
+		mav.addObject("list", result);
 		mav.setViewName("include/common/search");
 		return mav;
+	}
+
+	public HashMap<String, Object> maintimeline(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");		
+		int a = inter.reviewtimelinecnt(id);
+		map.put("review",a);
+		return map;
 	}
 
 }

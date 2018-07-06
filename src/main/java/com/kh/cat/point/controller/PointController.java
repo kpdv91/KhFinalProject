@@ -37,12 +37,15 @@ public class PointController {
 	
 	//쿠폰 구매
 	@RequestMapping(value="/couponPurchase")
-	public @ResponseBody HashMap<String, Object> couponPurchase(@RequestParam("price") String price, HttpServletRequest request) {
+	public @ResponseBody HashMap<String, Object> couponPurchase(@RequestParam("price") String price, 
+			@RequestParam("name") String name, HttpServletRequest request) {
 		logger.info("couponPurchase 요청");
 		logger.info("code : {}", price);
+		logger.info("name : {}", name);
+		
 		String loginId = (String) request.getSession().getAttribute("loginId");
 		logger.info("세션 : {}", loginId);
-		return pointService.couponPurchase(price, loginId);
+		return pointService.couponPurchase(price, name, loginId);
 	} 
 	
 }

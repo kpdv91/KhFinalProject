@@ -71,6 +71,7 @@
 			</c:if>
 			<c:if test="${sessionScope.loginId != null}">
 				<li><a href="./couponShopPage">쿠폰샵</a></li>
+
  				<li>
  				<div> 					
 					<img id="profileimg" src="" onclick="profileclick()">

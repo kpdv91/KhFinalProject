@@ -20,6 +20,7 @@
 	<select id="profileimg" resultType="member">
 		SELECT profile FROM member WHERE id=#{param1}
 	</select>	
+	
 	<select id="getAut" resultType="String">
 		SELECT aut FROM member WHERE id=#{param1} AND pw=#{param2}
 	</select>	

@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +29,9 @@ public class ReviewService {
 
 	@Autowired SqlSession sqlSession;
 	ReviewInter inter;
+	HttpServletRequest request;
 	
-	
+	//사진 업로드폴더에 저장
 	HashMap<String, String> fileList = new HashMap<String, String>();
 	public ModelAndView upload(MultipartFile file, String root) {
 		
@@ -64,6 +67,8 @@ public class ReviewService {
 		
 		return mav;
 	}
+	
+	//사진 삭제
 	public HashMap<String, Integer> fileDel(String root, String fileName) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		int success = 0;
@@ -83,7 +88,9 @@ public class ReviewService {
 		map.put("success", success);
 		return map;
 	}
-	public ModelAndView write(ArrayList<String> hash_tag, ArrayList<String> review_photo, HashMap<String, String> map) {
+	
+	//리뷰 작성
+	public String write(ArrayList<String> hash_tag, ArrayList<String> review_photo, HashMap<String, String> map) {
 
 		logger.info("리뷰 작성 서비스 도착");
 		
@@ -116,16 +123,37 @@ public class ReviewService {
 				}
 			}
 		}
-		mav.setViewName("review/reviewList");
-		return mav;
+		
+		return "redirect:/reviewList";
 	}
+	
+	//리뷰 상호명 검색
 	public HashMap<String, Object> revStoreSearch(String params) {
 		
-		logger.info("가게 검색 리스트 요청");
+		logger.info("리뷰 상호명 검색");
 		inter = sqlSession.getMapper(ReviewInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("list", inter.storeList(params));
 		
+		return map;
+	}
+	
+	//리뷰 리스트
+	public HashMap<String, Object> reviewList() {
+		logger.info("리뷰 리스트 서비스");
+		inter = sqlSession.getMapper(ReviewInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("reviewList", inter.reviewList());
+		return map;
+	}
+
+	public HashMap<String, Object> reviewHashPhoto(String review_idx) {
+		logger.info("리뷰 해시태그");
+		inter = sqlSession.getMapper(ReviewInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("reviewHash", inter.reviewHash(review_idx));
+		map.put("reviewPhoto", inter.reviewPhoto(review_idx));
+		logger.info(""+map.get("reviewHash"));
 		return map;
 	}
 

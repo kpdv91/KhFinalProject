@@ -7,5 +7,7 @@ public interface MemberInter {
 	String login(String id, String pw);
 
 	int join(MemberDTO dto);//회원가입. 
+
+	MemberDTO profileimg(String id);
 	
 }

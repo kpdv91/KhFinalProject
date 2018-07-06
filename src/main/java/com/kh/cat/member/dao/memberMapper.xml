@@ -18,7 +18,9 @@
 			VALUES(#{id},#{pw},#{name},#{age},#{gender},'없음')
 		</if> -->
 	</insert>
-	
+	<select id="profileimg" resultType="member">
+		SELECT profile FROM member WHERE id=#{param1}
+	</select>
 	
 	
 </mapper>

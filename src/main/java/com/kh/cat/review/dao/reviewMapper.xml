@@ -48,12 +48,24 @@
 	 	SELECT revPhoto_photo FROM revPhoto WHERE review_idx = #{param1}
 	 </select>
 	 
+	 <!-- 포인트 적립(사진 미포함 : 50) -->
 	 <update id="review_point">
 	 	UPDATE member SET pointcnt = pointcnt + 50 WHERE id=#{param1}
 	 </update>
 	 
+	 <!-- 포인트 적립(사진 포함 : 100) -->
 	 <update id="photoReview_point">
 	 	UPDATE member SET pointcnt = pointcnt + 100 WHERE id=#{param1}
+	 </update>
+	 
+	 <!-- 좋아요 수 조회 -->
+	 <select id="review_likeCnt" resultType="Integer">
+	 	SELECT review_likecnt FROM review WHERE review_idx= #{param1}
+	 </select>
+	 
+	 <!-- 좋아요 10일 때 포인트 적립 -->
+	 <update id="likePoint">
+	 	UPDATE member SET pointcnt = pointcnt + 1000 WHERE id=#{param1}
 	 </update>
 	
 </mapper>

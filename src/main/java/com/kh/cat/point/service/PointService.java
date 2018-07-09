@@ -1,6 +1,5 @@
 package com.kh.cat.point.service;
 
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -57,37 +56,23 @@ public class PointService {
 		dto.setCouponBox_name(name);
 		dto.setCouponBox_use(a);
 		
-		int myPoint = inter.myPoint(loginId);
+		int myPoint = inter.myPoint(loginId);//내포인트 조회
 		logger.info("내 포인트 : {}", myPoint);
 		
-		int couponPrice = Integer.parseInt(price);
-		if(myPoint < couponPrice) {
+		int couponPrice = Integer.parseInt(price);//쿠폰 가격
+		if(myPoint < couponPrice) {//내 포인트가 쿠폰가격보다 작으면
 			logger.info("포인트가 부족합니다.");
 			map.put("msg", "포인트가 부족합니다.");
 		}else {
-			int result = inter.couponPurchase(loginId, couponPrice);
+			int result = inter.couponPurchase(loginId, couponPrice);//쿠폰구매 쿼리
 			logger.info("쿠폰 구매 성공 여부 : {}", result);
-			map.put("couponPurchaseMsg", result);
-			int success = inter.myCoupon(dto);
+			map.put("couponPurchaseMsg", result);//쿠폰구매여부
+			int success = inter.myCoupon(dto);//쿠폰함 추가 쿼리
 			logger.info("쿠폰함 추가 성공 여부 : {}", success);
-			map.put("couponBoxMsg", success);
-			map.put("msg", "쿠폰구매완료");
+			map.put("couponBoxMsg", success);//쿠폰함 추가 여부
+			map.put("msg", "쿠폰 구매 완료");
 		}
 		return map;
 	}
-
-	
-	//코드번호 랜덤으로 섞기
-	/*private static int[] shuffle(int[] code) {
-		 for(int x=0;x<code.length;x++){
-		      int i = (int)(Math.random()*code.length);
-		      int j = (int)(Math.random()*code.length);
-		            
-		      int tmp = code[i];
-		      code[i] = code[j];
-		      code[j] = tmp;
-		    }
-		return code;
-	}*/
 
 }

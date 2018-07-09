@@ -22,7 +22,9 @@
 <nav id="nav">
 	<div id="mainFrame">
 		<div id="logoBox">
-			<img alt="logo" src="resources/img/logo/logo_cat.png">
+			<a href="./">
+				<img alt="logo" src="resources/img/logo/logo_cat.png">
+			</a>
 		</div>
         <div id="searchBox">
         	<select id="searchMap" name="searchMap">

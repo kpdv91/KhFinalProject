@@ -37,18 +37,20 @@ public class MemberService {
 		String id = params.get("id");
 		String pw = params.get("pw");
 		logger.info("아이디 : "+id+" / 비밀번호 : "+pw);
-		session.setAttribute("loginId", id); 
-		logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
+
 		String result = inter.login(id, pw);
 		logger.info(""+result);
-		
+				
 		String page = "main";
 		String msg = "success";
-		
+		System.out.println(result);
 		if(result == null) {
 			page = "member/loginForm";
 			msg = "fail";
-		} 
+		}else {
+			session.setAttribute("loginId", id); 
+			logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
+		}
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("msg", msg);//모델에 들어갈 내용

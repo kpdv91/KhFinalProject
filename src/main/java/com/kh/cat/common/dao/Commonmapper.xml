@@ -38,8 +38,17 @@
 	<insert id="sendmsg">
 		INSERT INTO dm VALUES(seq_dm.NEXTVAL,#{param1},#{param2},#{param3},SYSDATE)
 	</insert>
-	<select id="storeSearch" resultType="store">
-		SELECT * FROM store WHERE store_name Like '%'||#{param1}||'%'
+	<select id="storeSearch_And" resultType="store">
+		SELECT * FROM store WHERE store_addr LIKE '%'||#{param1}||'%' AND store_name LIKE '%'||#{param2}||'%'
+	</select>
+	<select id="storeSearch_Or" resultType="store" parameterType="hashmap">
+		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND
+		<foreach collection="split" item="split" index="index" open="(" close=")" separator="OR">
+			store_name LIKE '%'||#{split}||'%'
+		</foreach>
+	</select>
+	<select id="reviewtimelinecnt" resultType="Integer">
+		SELECT COUNT(*) FROM review WHERE id=#{param1}
 	</select>
 </mapper>
 

@@ -66,6 +66,22 @@
 	}else{
 		$("#userdetai").css("display","none");
 	}
+	$(document).ready(function(){
+		$.ajax({
+			url:"./maintimeline",
+			type:"post",
+			data:{
+				id : "${id}"
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	});
 	$(".userdetail").click(function(e) {
 		console.log(e.target.id);
 		$(this).css("background-color","darkblue");

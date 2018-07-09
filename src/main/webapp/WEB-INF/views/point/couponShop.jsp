@@ -58,7 +58,11 @@
 			dataType : "json",
 			success : function (data) {
 				console.log(data);
-				alert(data.msg);
+				if(data.couponPurchaseMsg > 0 && data.couponBoxMsg > 0){
+					alert(data.msg);
+				}else{
+					alert(data.msg);
+				}
 				
 			},
 			error : function (error) {

@@ -23,14 +23,15 @@
 	#profileck{background-color:white;border: 1px solid #1b5ac2;position:absolute;left:375px;width:175px;}
 	#userid{margin-left:70px;top:5px;position:absolute;}
 </style>
+
 <nav id="nav">
 	<div id="mainFrame">
 		<div id="logoBox">
 			<img alt="logo" src="resources/img/logo/logo_cat.png">
 		</div>
         <div id="searchBox">
-        	<select id="searchMap" name="searchMap">
-				<option value="전체" selected="selected" >전체</option>
+        	<select id="search_map">
+				<option value="" selected="selected" >전체</option>
 				<option value="강남구">강남구</option>
 				<option value="강동구">강동구</option>
 				<option value="강북구">강북구</option>
@@ -60,35 +61,42 @@
             <input type="text" id="search_content"/>
             <button type="button" onclick="search()">검색</button>
        	</div>
+       	
         <div id="menuBox">
 	        <ul>
-			<li><a href="./boardListPage">게시판</a></li>
-			<c:if test="${ sessionScope.loginId == null}">
+			<li><a href="./boardListPage">게시판</a></li>			
+			<c:if test="${sessionScope.loginId == null}">
 				<li><a href="loginForm">로그인</a></li>            
 				<li><a href="joinForm">회원가입</a></li>
 			</c:if>
-			<c:if test="${ sessionScope.loginId != null}">
+			<c:if test="${sessionScope.loginId != null}">
 				<li><a href="./couponShopPage">쿠폰샵</a></li>
-				<!--<li><img src="resources/img/member/noprofile.jpg" width="40px" height="40px"/> -->
-				<!-- <li>
-					<div>
-						<img id="profileimg" src='#' onclick="profileclick()">
-					</div>
-					<div id="profi"></div>
-				</li> -->
-			</c:if>			
+
+ 				<li>
+ 				<div> 					
+					<img id="profileimg" src="" onclick="profileclick()">
+				</div>
+				<div id="profi"></div>
+				</li>
+			</c:if>	
 			</ul>
 		</div>
+
 	</div>
 </nav>
 
 <script>
+
 var loginid="${sessionScope.loginId}";
+console.log(loginid);
+	
 	function search(){
-		location.href = "./search?search_content=" + $("#search_content").val()+"&searchMap=" + $("#searchMap").val();
+		location.href = "./search?search_content=" + $("#search_content").val()+"&search_map=" + $("#search_map").val();
 	};
+	alert("stop");
+	
 	$( document ).ready(function() {		
-	    if(loginid != null){
+	    if(loginid != ""){	    	
 	    	$.ajax({
 				url:"./profileimg",
 				type:"post",

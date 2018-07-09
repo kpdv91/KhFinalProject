@@ -37,9 +37,13 @@
 	$("#close").click(function(){
 		self.close();
 	})
-	$("#reply").click(function(e){
-		self.close();
-		var myWin= window.open("./sendMessage","메세지보내기","width=500,height=500");
+	var myWin;
+	$("#reply").click(function(e){	
+		//self.close();
+		pid=$("#messageid").html();
+		console.log(pid);
+		myWin= window.open("./sendMessage?id="+pid,"메세지보내기","width=500,height=500");
+		myWin.document.getElementById("sendId").value=document.getElementById("messageid").html;
 	})
 	</script>
 </html>

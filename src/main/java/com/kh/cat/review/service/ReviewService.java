@@ -108,7 +108,7 @@ public class ReviewService {
 		logger.info("리뷰 작성 slq 시작");
 		inter = sqlSession.getMapper(ReviewInter.class);
 		if(inter.reviewWrite(dto) == 1) {
-			System.out.println(dto.getReview_idx());
+			logger.info("리뷰번호 : "+dto.getReview_idx());
 			if(hash_tag.size() > 0) {
 				for(int i=0; i<hash_tag.size(); i++) {
 					String tag = hash_tag.get(i);
@@ -176,6 +176,7 @@ public class ReviewService {
 	//사진 포함 100포인트
 	public void photoReview_point(String loginId) {
 		logger.info("로그인 세션 : {}", loginId);
+<<<<<<< HEAD
 		
 			리뷰 좋아요 수 : SELECT review_likecnt FROM review WHERE review_idx=7; 
 		 	사진 포함 리뷰 : UPDATE member SET pointcnt = pointcnt + 100 WHERE id='user1';
@@ -185,5 +186,32 @@ public class ReviewService {
 		inter = sqlSession.getMapper(ReviewInter.class);
 		inter.photoReview_point(loginId);
 	}*/
+=======
+		/*
+			리뷰 좋아요 수 : SELECT review_likecnt FROM review WHERE review_idx=리뷰번호; 
+		 	사진 포함 리뷰 : UPDATE member SET pointcnt = pointcnt + 100 WHERE id='아이디';
+			사진 미포함 리뷰 : UPDATE member SET pointcnt = pointcnt + 50 WHERE id='아이디';	
+		*/
+		logger.info("리뷰작성 100포인트");
+		inter = sqlSession.getMapper(ReviewInter.class);
+		inter.photoReview_point(loginId);
+	}
+	
+	//좋아요 받을 시 포인트 적립
+	public void review_likeCnt(int idx, String id) {
+		logger.info("리뷰 번호 : {}", idx);
+		
+		/*리뷰 좋아요 수 : SELECT review_likecnt FROM review WHERE review_idx=리뷰번호; */
+		
+		inter = sqlSession.getMapper(ReviewInter.class);
+		int likeCnt = inter.review_likeCnt(idx);
+		logger.info("좋아요 수 : {}", likeCnt);
+		if(likeCnt == 10) {
+			inter.likePoint(id);
+		}
+	}
+	
+	
+>>>>>>> eb95b16185983dfb6069f27184805a109e25b2c7
 
 }

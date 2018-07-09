@@ -100,9 +100,11 @@
         font-size: 15px;
         margin-left: 10px;
        }
-       #userId{
+       #user_Id{
        	border: 0px;
        	font-size: 15px;
+       	text-align: center;
+       	font-weight: bold;
        }
        #searchList{
 		width: 250px;
@@ -172,7 +174,7 @@
 <input type="button" value="크기" onclick="resizeMap()"/> -->
 
 	<div id ="formDiv">
-	작성자 : <input id="userId" name="id" type="text" value="관리자" readonly/><br/><br/>
+	작성자 : <input id="user_Id" name="id" type="text" value="관리자" readonly/><br/><br/>
     상호명 : <input id="review_storeName" type="text" name="review_storeName"/><button type="button" id="search"><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/><br/>
    
     <div id="searchList">

@@ -116,17 +116,17 @@ public class ReviewService {
 				}
 			}
 			if(review_photo.size() > 0) {
-				photoReview_point(loginId);//photoReview_point 메소드
+				//photoReview_point(loginId);//photoReview_point 메소드
 				for(int i=1; i<review_photo.size();i++) {
 					String rePhoto = review_photo.get(i);
 					int result = inter.reviewPhotoWrite(dto.getReview_idx(),rePhoto);
 				}
 			}else {
-				review_point(loginId);//review_point 메소드
+				//review_point(loginId);//review_point 메소드
 			}
 		}
 		fileList.clear();
-		return "redirect:/reviewListPage";
+		return "redirect:/";
 	}
 	
 	//리뷰 상호명 검색
@@ -160,14 +160,14 @@ public class ReviewService {
 	}
 	
 	
-	//사진 미포함 50포인트
+/*	//사진 미포함 50포인트
 	public void review_point(String loginId) {
 		logger.info("로그인 세션 : {}", loginId);
-		/*
+		
 			리뷰 좋아요 수 : SELECT review_likecnt FROM review WHERE review_idx=7; 
 		 	사진 포함 리뷰 : UPDATE member SET pointcnt = pointcnt + 100 WHERE id='user1';
 			사진 미포함 리뷰 : UPDATE member SET pointcnt = pointcnt + 50 WHERE id='user1';	
-		*/
+		
 		logger.info("리뷰작성 50포인트");
 		inter = sqlSession.getMapper(ReviewInter.class);
 		inter.review_point(loginId);
@@ -176,14 +176,14 @@ public class ReviewService {
 	//사진 포함 100포인트
 	public void photoReview_point(String loginId) {
 		logger.info("로그인 세션 : {}", loginId);
-		/*
+		
 			리뷰 좋아요 수 : SELECT review_likecnt FROM review WHERE review_idx=7; 
 		 	사진 포함 리뷰 : UPDATE member SET pointcnt = pointcnt + 100 WHERE id='user1';
 			사진 미포함 리뷰 : UPDATE member SET pointcnt = pointcnt + 50 WHERE id='user1';	
-		*/
+		
 		logger.info("리뷰작성 100포인트");
 		inter = sqlSession.getMapper(ReviewInter.class);
 		inter.photoReview_point(loginId);
-	}
+	}*/
 
 }

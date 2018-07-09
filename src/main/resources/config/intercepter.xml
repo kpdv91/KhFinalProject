@@ -18,6 +18,8 @@
 			<!-- /example로 시작하는 요청이 왔을 경우 -->
 			<mvc:mapping path="/example*"/>
 			
+			<mvc:mapping path="/reviewWritePage"/>
+			
 			<!-- 인터셉터 한 내용에 대한 클래스 매핑 -->
 			<bean class="com.kh.cat.common.service.PreCheck"></bean>
 		</mvc:interceptor>

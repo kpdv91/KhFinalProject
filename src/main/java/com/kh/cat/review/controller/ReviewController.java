@@ -82,7 +82,7 @@ public class ReviewController {
 	//리뷰 리스트 페이지
 	@RequestMapping(value = "/reviewListPage")
 	public String reviewListPage() {		
-		System.out.println("리뷰 작성 페이지 요청");
+		System.out.println("리뷰 리스트 페이지 요청");
 		return "review/reviewList";
 	}
 	@RequestMapping(value = "/reviewList")
@@ -91,9 +91,10 @@ public class ReviewController {
 		return service.reviewList();
 	}
 	@RequestMapping(value = "/reviewHashPhoto")
-	public @ResponseBody HashMap<String, Object> reviewHashPhoto(@RequestParam("review_idx") String review_idx) {
+	public @ResponseBody HashMap<String, Object> reviewHashPhoto(@RequestParam("review_idx") String review_idx,HttpSession session) {
 		logger.info("리뷰 해시태그, 사진 요청");
-		return service.reviewHashPhoto(review_idx);
+		String root = session.getServletContext().getRealPath("/");
+		return service.reviewHashPhoto(review_idx,root);
 	}
 	
 }

@@ -136,7 +136,7 @@ console.log(loginid);
 		content += "<h3 id='userid'>"+data.id+"</h3>";
 		content += "<h4>보유 포인트 : "+data.pointCnt+"point</h4>";
 		content += "<div class='btn' id='"+data.id+"' onclick='gotimeline(id)'>타임라인</div>";
-		content += "<div class='btn' id='"+data.id+"'>로그아웃</div>";
+		content += "<div class='btn' id='"+data.id+"' onclick='logout()'>로그아웃</div>";
 		content += "</div>";
 		$("#profi").append(content);
 	}
@@ -144,4 +144,10 @@ console.log(loginid);
 		console.log(e);
 		location.href="./timeline?id="+e;
 	}
+	
+	function logout(){
+		console.log("로그아웃 실행");
+		location.href="./logout"
+	}
+	
 </script>

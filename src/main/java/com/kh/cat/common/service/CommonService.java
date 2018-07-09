@@ -128,7 +128,22 @@ public class CommonService {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		String id=params.get("id");		
 		int a = inter.reviewtimelinecnt(id);
+		int b = inter.liketimelinecnt(id);
+		int c = inter.storeliketimelinecnt(id);
+		int d = inter.followtimelinecnt(id);
 		map.put("review",a);
+		map.put("reviewlike",b);
+		map.put("storelike",c);
+		map.put("follow",d);
+		return map;
+	}
+
+	public HashMap<String, Object> timelinereviewlist(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		logger.info(id);
+		map.put("list", inter.timelinereviewlist(id));
 		return map;
 	}
 

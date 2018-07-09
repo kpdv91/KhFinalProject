@@ -105,4 +105,9 @@ public class CommonController {
 		logger.info("타임라인 메인 리뷰,좋아요,찜한가게,팔로우 목록 요청");		
 		return commonservice.maintimeline(params);
 	}
+	@RequestMapping(value = "/timelinereviewlist")
+	public @ResponseBody HashMap<String, Object> timelinereviewlist(@RequestParam Map<String,String> params) {
+		logger.info("포인트 리스트 요청");		
+		return commonservice.timelinereviewlist(params);
+	}
 }

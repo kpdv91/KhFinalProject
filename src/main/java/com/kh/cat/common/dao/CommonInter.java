@@ -43,5 +43,10 @@ public interface CommonInter {
 
 	ArrayList<ReviewDTO> timelinereviewlist(String id);
 
+	int followinsert(String userid, String id);
+
+	String followcheck(String userid, String id);
+
+	int followdelete(String userid, String id);
 
 }

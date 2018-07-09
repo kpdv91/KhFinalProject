@@ -78,6 +78,26 @@
 		$("#dm").css("display","none");
 	}else{
 		$("#userdetai").css("display","none");
+		$.ajax({
+			url:"./followcheck",
+			type:"post",
+			data:{
+				userid : userid,
+				id : "${id}"
+			},
+			dataType:"json",
+			success:function(d){
+				//console.log(d);
+				if(d.id==true){
+					$("#fallow").html("팔로우 취소");
+				}else{
+					$("#fallow").html("팔로우 신청");
+				}
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
 	}
 	$(document).ready(function(){
 		$.ajax({
@@ -127,12 +147,12 @@
 			content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div><br/>";
 			hashtag();
 		})
-		
+		$("#content").empty();
 		$("#content").append(content);
 	}
 	
 	function hashtag(){
-		//console.log("a");
+		console.log($("#review_idx").val());
 		$.ajax({
 			url:"./reviewHashPhoto",
 			type:"post",
@@ -442,8 +462,8 @@
 		$("#list").append(content);//내용 붙이기
 	}
 	$("#dm").click(function(e){
-		var myWin= window.open("./sendMessage","메세지보내기","width=500,height=500");
-	})
+		var myWin= window.open("./sendMessage?id="+"${id}","메세지보내기","width=500,height=500");
+	});
 	function receivedetail(e){
 		console.log(e);
 		var myWin= window.open("./receivedetail?idx="+e,"메세지상세보기","width=500,height=500");
@@ -452,5 +472,51 @@
 		console.log(e);
 		var myWin= window.open("./senddetail?idx="+e,"메세지상세보기","width=500,height=500");
 	};
+	$("#fallow").click(function(e){
+		//console.log(e.target.innerHTML);
+		if(e.target.innerHTML=="팔로우 신청"){
+			$.ajax({
+				url:"./followinsert",
+				type:"post",
+				data:{
+					userid : userid,
+					id : "${id}"
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d);
+					if(d.success>0){
+						e.target.innerHTML="팔로우 취소";	
+					}else{
+						alert("팔로우가 안되었습니다.");
+					}									
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}else if(e.target.innerHTML=="팔로우 취소"){
+			$.ajax({
+				url:"./followdelete",
+				type:"post",
+				data:{
+					userid : userid,
+					id : "${id}"
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d);
+					if(d.success>0){
+						e.target.innerHTML="팔로우 신청";	
+					}else{
+						alert("팔로우 취소가 안되었습니다.");
+					}									
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}		
+	});
 	</script>
 </html>

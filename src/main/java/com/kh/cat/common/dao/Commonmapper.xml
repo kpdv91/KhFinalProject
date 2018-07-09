@@ -62,6 +62,15 @@
 	<select id="timelinereviewlist" resultType="review">
 		SELECT * FROM review WHERE id=#{param1}
 	</select>
+	<insert id="followinsert">
+		INSERT INTO follow VALUES(seq_follow.NEXTVAL,#{param1},#{param2})
+	</insert>
+	<select id="followcheck" resultType="String">
+		SELECT id FROM follow WHERE id=#{param1} AND follow_id=#{param2}
+	</select>
+	<delete id="followdelete">
+		DELETE FROM follow WHERE id=#{param1} AND follow_id=#{param2}
+	</delete>
 </mapper>
 
 

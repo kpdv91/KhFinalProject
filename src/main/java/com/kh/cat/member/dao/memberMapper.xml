@@ -37,11 +37,18 @@
     <select id="idAuth" resultType="String">
         SELECT id FROM member WHERE id = #{param1}
     </select>
+    
+    <!--중복체크-->
+    <select id="emailAuth" resultType="String">
+        SELECT email FROM members WHERE email = #{param1}
+    </select>
 
 	
 	
 	
 </mapper>
+
+
 
 
 

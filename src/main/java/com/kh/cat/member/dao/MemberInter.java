@@ -19,5 +19,7 @@ public interface MemberInter {
 	MemberDTO profileunder(String id);	
 
 	String idAuth(String id);
+
+	String emailAuth(String email);
 	
 }

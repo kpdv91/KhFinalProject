@@ -47,5 +47,13 @@
 	 <select id="reviewPhoto" resultType="revPhoto">
 	 	SELECT revPhoto_photo FROM revPhoto WHERE review_idx = #{param1}
 	 </select>
+	 
+	 <update id="review_point">
+	 	UPDATE member SET pointcnt = pointcnt + 50 WHERE id=#{param1}
+	 </update>
+	 
+	 <update id="photoReview_point">
+	 	UPDATE member SET pointcnt = pointcnt + 100 WHERE id=#{param1}
+	 </update>
 	
 </mapper>

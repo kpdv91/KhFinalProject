@@ -150,4 +150,34 @@ public class MemberService {
 		return map;
 	}
 
-}
+
+	/*@Service
+	public class OverlayService {
+	 
+	    @Autowired
+	    SqlSession sqlSession;
+	 
+	    private Logger logger = LoggerFactory.getLogger(this.getClass());
+	 
+	    OverlayInterface inter = null;*/
+	 
+	// 이메일 중복확인
+	    public Map<String, String> idAuth(String id) {
+	        Map<String, String> jsonObj = new HashMap<String, String>();
+	 
+	        inter = sqlSession.getMapper(MemberInter.class);
+	        String idAuth = inter.idAuth(id);
+	 
+	        if (idAuth != null) {
+	            jsonObj.put("chk", "-1");
+	        } else {
+	            jsonObj.put("chk", "1");
+	        }
+	        return jsonObj;
+	    }
+	    
+	}
+
+
+
+

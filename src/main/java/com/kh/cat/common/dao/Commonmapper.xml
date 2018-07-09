@@ -50,6 +50,18 @@
 	<select id="reviewtimelinecnt" resultType="Integer">
 		SELECT COUNT(*) FROM review WHERE id=#{param1}
 	</select>
+	<select id="liketimelinecnt" resultType="Integer">
+		SELECT COUNT(*) FROM revLike WHERE id=#{param1}
+	</select>
+	<select id="storeliketimelinecnt" resultType="Integer">
+		SELECT COUNT(*) FROM storeLike WHERE id=#{param1}
+	</select>
+	<select id="followtimelinecnt" resultType="Integer">
+		SELECT COUNT(*) FROM follow WHERE id=#{param1}
+	</select>
+	<select id="timelinereviewlist" resultType="review">
+		SELECT * FROM review WHERE id=#{param1}
+	</select>
 </mapper>
 
 

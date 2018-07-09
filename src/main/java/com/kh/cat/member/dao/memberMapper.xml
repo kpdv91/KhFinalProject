@@ -5,7 +5,7 @@
 <!-- namespace=연결되는 인터페이스 -->    
 <mapper namespace="com.kh.cat.member.dao.MemberInter">
 	<select id="login" resultType="String">
-		SELECT id FROM member WHERE id=#{param1} AND pw=#{param2}
+		SELECT id,aut FROM member WHERE id=#{param1} AND pw=#{param2}
 	</select>	
 	<insert id="join" parameterType="member">
 		INSERT INTO member(id,pw,name,email,phone,profile,aut,pointCnt,revCnt,followCnt)
@@ -32,6 +32,15 @@
 	<select id="profileunder" resultType="member">
 		SELECT * FROM member WHERE id=#{param1}
 	</select>
+	
+	<!--중복체크-->
+    <select id="idAuth" resultType="String">
+        SELECT id FROM member WHERE id = #{param1}
+    </select>
+
+	
+	
+	
 </mapper>
 
 

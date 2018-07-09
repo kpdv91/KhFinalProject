@@ -3,6 +3,7 @@ package com.kh.cat.review.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -56,11 +57,12 @@ public class ReviewController {
 	
 	@RequestMapping(value= "/reviewWrite")
 	public String wirte(@RequestParam("hash_tag") ArrayList<String> hash_tag,
-			@RequestParam("review_photo") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map) {
+			@RequestParam("review_photo") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map, HttpServletRequest request) {
 		logger.info("글쓰기 요청");	
 		logger.info(""+map);
 	
-		return service.write(hash_tag, review_photo, map);
+		String loginId = (String) request.getSession().getAttribute("loginId");
+		return service.write(hash_tag, review_photo, map, loginId);
 	}
 	
 	@RequestMapping(value = "/revStoreSearch")

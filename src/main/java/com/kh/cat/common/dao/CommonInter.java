@@ -6,6 +6,7 @@ import java.util.HashMap;
 import com.kh.cat.dto.CouponBoxDTO;
 import com.kh.cat.dto.DMDTO;
 import com.kh.cat.dto.PointListDTO;
+import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.dto.StoreDTO;
 
 public interface CommonInter {
@@ -33,6 +34,14 @@ public interface CommonInter {
 	ArrayList<StoreDTO> storeSearch_Or(HashMap<String, Object> search_content_Map);
 
 	int reviewtimelinecnt(String id);
+
+	int liketimelinecnt(String id);
+
+	int storeliketimelinecnt(String id);
+
+	int followtimelinecnt(String id);
+
+	ArrayList<ReviewDTO> timelinereviewlist(String id);
 
 
 }

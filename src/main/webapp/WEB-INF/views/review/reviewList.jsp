@@ -87,9 +87,7 @@
             width: auto;            
             text-align: center; 
             float: left;
-            margin-left: 20px;
-            margin-top: 10px;
-            padding-left: 10px;
+            padding: 0px 5px;
         }
         
 		</style>
@@ -116,6 +114,7 @@
 			error:function(e){console.log(e);}
 		});
 	}
+	var idx="";
 	function printList(list){		 
 		var content = "";
 		list.forEach(function(item){
@@ -124,47 +123,51 @@
 			content += "<table><tr><td>"+item.review_storeName+"</td>";
 			content += "<td id='star'>"+item.review_star+"</td></tr>";
 			content += "<tr><td colspan='2'><textarea>"+item.review_content+"</textarea></td></tr>";
-			content += "<tr><td colspan='2' id='reviewList_hash'></td></tr>";
-			content += "<tr><td colspan='2' id='reviewList_photo'><td></tr></table>";
+			content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
+			content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table>";
 			content += "<a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div>";
 			content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div><br/>";
-			hashtag();
+
+			idx=item.review_idx;
+			hashtag(idx);
 		})
 		
 		$("#reviewListDiv").append(content);
+		
 	}
 	
-	function hashtag(){		
-		$.ajax({
+	function hashtag(elem){
+		 $.ajax({
 			url:"./reviewHashPhoto",
 			type:"post",
 			dataType:"json",
-			data:{"review_idx":$("#review_idx").val()},
+			data:{"review_idx":elem},
 			success:function(d){
-				console.log(d);
 				console.log(d.reviewHash);
-				console.log(d.reviewPhoto);
-				printHash(d.reviewHash);		
-				printPhoto(d.reviewPhoto);
+				//console.log(d.reviewHash);
+				//console.log(d.reviewPhoto);
+				printHash(d.reviewHash,elem);		
+				printPhoto(d.reviewPhoto,elem);
 			},
 			error:function(e){console.log(e);}
-		});		
+		});	 
 	}
 	
-	function printHash(hash){
+	function printHash(hash,elem){
 		var tag="";
 		hash.forEach(function(item){
-			tag += "<div id='hashtag'>"+item.hash_tag+"</div>";
-		})
-		$("#reviewList_hash").append(tag);
+			tag += "<div id='hashtag'>#"+item.hash_tag+"</div>";
+		});
+		console.log($("#reviewList_hash"));
+		$("#reviewList_hash"+elem).append(tag);
 	}
 	
-	function printPhoto(photo){
+	function printPhoto(photo,elem){
 		var img="";
 		photo.forEach(function(item){
 			img += "<div id='photo'>"+item.revPhoto_photo+"</div>";
 		})
-		$("#reviewList_photo").append(img);
+		$("#reviewList_photo"+elem).append(img);
 	}
 	
 

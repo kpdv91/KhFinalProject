@@ -7,13 +7,18 @@
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>Insert title here</title>
 		<style>
+		#reviewListDiv{
+			width: 600px;
+			margin: 0 auto;
+		}
+		
 			 #review{
-            border: 1px solid black;
+            border: 2px solid #142e5b;
             width: 500px;
             height: 250px
         }
         #listTop{
-            border-bottom: 1px solid black;
+            border-bottom: 2px solid #142e5b;
             height: 50px;
             line-height: 50px;
         }
@@ -32,7 +37,7 @@
         }
         table{
             height: 170px;
-    		border-bottom: 1px solid black;
+    		border-bottom: 2px solid #142e5b;
             border-collapse: collapse;
 			width: 500px;
 			
@@ -43,7 +48,7 @@
 
         }
         #hashtag{
-            border: 1px solid black;
+            border: 2px solid black;
             width: 60px;
             height: 25px;
             font-size: 12px;
@@ -59,7 +64,7 @@
             resize: none;
         }
         #photo{
-            border: 1px solid black;
+           
             width: 60px;
             height: 50px;
             float: left;
@@ -143,9 +148,9 @@
 			dataType:"json",
 			data:{"review_idx":elem},
 			success:function(d){
-				console.log(d.reviewHash);
 				//console.log(d.reviewHash);
-				//console.log(d.reviewPhoto);
+				//console.log(d.reviewHash);
+				console.log(d.reviewPhoto);
 				printHash(d.reviewHash,elem);		
 				printPhoto(d.reviewPhoto,elem);
 			},
@@ -165,7 +170,7 @@
 	function printPhoto(photo,elem){
 		var img="";
 		photo.forEach(function(item){
-			img += "<div id='photo'>"+item.revPhoto_photo+"</div>";
+			img += "<div id='photo'><img width='60px' height='50px' src='"+item.revPhoto_Photo+"'/></div>";
 		})
 		$("#reviewList_photo"+elem).append(img);
 	}

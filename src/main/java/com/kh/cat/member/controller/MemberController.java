@@ -3,6 +3,7 @@ package com.kh.cat.member.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -36,6 +37,20 @@ public class MemberController {
 		return memberService.login(params, session);
 	}
 	
+	@RequestMapping("/logout")
+	public String logout(HttpSession session, HttpServletRequest request ){
+		session = request.getSession(false);		
+		if(session != null) {
+			session.invalidate();
+			System.out.println("로그아웃 처리 완료");
+		}
+
+		return "home";
+
+	}
+	
+	
+	
 	@RequestMapping(value = "/joinForm", method = RequestMethod.GET)
 	public String joinForm() {
 		logger.info("joinForm 페이지 요청");
@@ -54,6 +69,26 @@ public class MemberController {
 		//성공 = result.jsp, 실패 = writeForm.jsp
 		return memberService.join(map);
 	}	
+	
+	@Controller("restController")    //컨트롤러 명 지정
+	@RequestMapping(value = "/rest") // 컨트롤러의 위치를 정해줍니다. 
+	public class restController {
+	 
+	    /*@Autowired
+	    OverlayService service;*/
+	 
+	    /*private Logger logger = LoggerFactory.getLogger(this.getClass());*/
+	 
+	    // 중복확인(이메일)
+	    @RequestMapping(value = "/idAuth")
+	    public @ResponseBody Map<String, String> emailAuth(@RequestParam("id") String id) {
+	        return memberService.idAuth(id);
+	    }
+	 
+	}
+	
+	
+	
 	
 	//보네 - (커뮤니티) 파일 업로드 폼
 	@RequestMapping(value = "/fileUploadForm")

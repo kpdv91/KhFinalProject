@@ -147,4 +147,40 @@ public class CommonService {
 		return map;
 	}
 
+	public HashMap<String, Object> followinsert(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String userid=params.get("userid");
+		String id=params.get("id");		
+		logger.info(userid+"/"+id+"/");		
+		int a = inter.followinsert(userid,id);
+		map.put("success",a);
+		return map;
+	}
+
+	public HashMap<String, Object> followcheck(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String userid=params.get("userid");
+		String id=params.get("id");
+		logger.info(id);
+		boolean followcheck = false;
+		if(inter.followcheck(userid,id) != null){
+			followcheck=true;
+		}		
+		map.put("id",followcheck);
+		return map;
+	}
+
+	public HashMap<String, Object> followdelete(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String userid=params.get("userid");
+		String id=params.get("id");		
+		logger.info(userid+"/"+id+"/");		
+		int a = inter.followdelete(userid,id);
+		map.put("success",a);
+		return map;
+	}
+
 }

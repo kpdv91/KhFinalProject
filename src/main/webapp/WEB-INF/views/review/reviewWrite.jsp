@@ -172,7 +172,7 @@
 <input type="button" value="크기" onclick="resizeMap()"/> -->
 
 	<div id ="formDiv">
-	작성자 : <input id="userId" name="id" type="text" value="${sessionScope.loginId}" readonly/><br/><br/>
+	작성자 : <input id="userId" name="id" type="text" value="관리자" readonly/><br/><br/>
     상호명 : <input id="review_storeName" type="text" name="review_storeName"/><button type="button" id="search"><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/><br/>
    
     <div id="searchList">
@@ -259,9 +259,12 @@
 				console.log(data);
 				if(data.success == 1){
 					//이미지 삭제
-					$(elem).prev().prev().remove();
+					console.log($(elem).parent().next());
+					 $(elem).prev().prev().remove();
+					 $(elem).parent().next().remove();
 					//버튼 삭제
-					$(elem).remove();
+					$(elem).remove();  
+					
 				}
 			},
 			error : function(e){

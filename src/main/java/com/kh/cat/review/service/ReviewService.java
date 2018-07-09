@@ -83,6 +83,7 @@ public class ReviewService {
 		if(fileList.get(fileName) != null) {
 			fileList.remove(fileName);//리스트 삭제
 			logger.info("삭제 후 남은 파일 갯수 : {}",fileList.size());
+			logger.info(fileList.toString());
 			success = 1;
 		}
 		map.put("success", success);
@@ -92,7 +93,6 @@ public class ReviewService {
 	//리뷰 작성
 	public String write(ArrayList<String> hash_tag, ArrayList<String> review_photo, HashMap<String, String> map, String loginId) {
 		logger.info("리뷰 작성 서비스 도착");
-		
 		ModelAndView mav = new ModelAndView();
 		String page = "redirect:/reviewWritePage";
 		ReviewDTO dto = new ReviewDTO();
@@ -125,8 +125,8 @@ public class ReviewService {
 				review_point(loginId);//review_point 메소드
 			}
 		}
-		
-		return "redirect:/reviewList";
+		fileList.clear();
+		return "redirect:/reviewListPage";
 	}
 	
 	//리뷰 상호명 검색
@@ -149,12 +149,12 @@ public class ReviewService {
 		return map;
 	}
 
-	public HashMap<String, Object> reviewHashPhoto(String review_idx) {
+	public HashMap<String, Object> reviewHashPhoto(String review_idx, String root) {
 		logger.info("리뷰 해시태그");
 		inter = sqlSession.getMapper(ReviewInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("reviewHash", inter.reviewHash(review_idx));
-		map.put("reviewPhoto", inter.reviewPhoto(review_idx));
+		map.put("reviewPhoto",  inter.reviewPhoto(review_idx));
 		logger.info(""+map.get("reviewHash"));
 		return map;
 	}

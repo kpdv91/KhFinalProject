@@ -8,8 +8,7 @@
 		<title>Insert title here</title>
 		<style>
 		#reviewListDiv{
-			width: 600px;
-			margin: 0 auto;
+			margin-left: 490px;
 		}
 		
 			 #review{
@@ -96,10 +95,13 @@
         }
         
 		</style>
+		<script>
+		
+		</script>
 	</head>
 	<body>
 	<div id="reviewListDiv">
-	</div>
+	</div><br/>
 	
 	
 	
@@ -114,11 +116,14 @@
 			success:function(d){
 				console.log(d.reviewList);
 				printList(d.reviewList);
-				
+				$("#star").load("star.jsp #star-input");
 			},
 			error:function(e){console.log(e);}
 		});
 	}
+	
+	//starChk(item.review_star);
+	
 	var idx="";
 	function printList(list){		 
 		var content = "";
@@ -126,13 +131,14 @@
 			content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 			content += "<div id='listTop'>"+item.id+"<div id='listTop_R'><a href='#'>신고</a><br/>명이 좋아합니다.</div></div>";
 			content += "<table><tr><td>"+item.review_storeName+"</td>";
-			content += "<td id='star'>"+item.review_star+"</td></tr>";
-			content += "<tr><td colspan='2'><textarea>"+item.review_content+"</textarea></td></tr>";
+			content += "<td id='star'></td></tr>";
+			
+			content += "<tr><td colspan='2'><textarea readonly>"+item.review_content+"</textarea></td></tr>";
 			content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
 			content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table>";
 			content += "<a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div>";
 			content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div><br/>";
-
+			
 			idx=item.review_idx;
 			hashtag(idx);
 		})

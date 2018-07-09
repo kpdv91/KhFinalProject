@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -49,6 +50,19 @@ public class MemberController {
 
 	}
 	
+/*	@RequestMapping(value = "/overlay")
+	public void overlay (HttpServletRequest request, HttpServletResponse response) {
+		logger.info("login 요청");
+		return memberService.overlay(request, response);
+	}*/
+	
+
+	@RequestMapping(value = "/emailChkForm", method = RequestMethod.GET)
+	public String emailChkForm() {
+		logger.info("emailChkForm 페이지 요청");
+		return "member/emailChkForm";
+	}	
+	
 	
 	
 	@RequestMapping(value = "/joinForm", method = RequestMethod.GET)
@@ -69,23 +83,6 @@ public class MemberController {
 		//성공 = result.jsp, 실패 = writeForm.jsp
 		return memberService.join(map);
 	}	
-	
-	@Controller("restController")    //컨트롤러 명 지정
-	@RequestMapping(value = "/rest") // 컨트롤러의 위치를 정해줍니다. 
-	public class restController {
-	 
-	    /*@Autowired
-	    OverlayService service;*/
-	 
-	    /*private Logger logger = LoggerFactory.getLogger(this.getClass());*/
-	 
-	    // 중복확인(이메일)
-	    @RequestMapping(value = "/idAuth")
-	    public @ResponseBody Map<String, String> emailAuth(@RequestParam("id") String id) {
-	        return memberService.idAuth(id);
-	    }
-	 
-	}
 	
 	
 	

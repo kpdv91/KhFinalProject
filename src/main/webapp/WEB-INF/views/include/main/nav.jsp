@@ -92,9 +92,7 @@ console.log(loginid);
 	
 	function search(){
 		location.href = "./search?search_content=" + $("#search_content").val()+"&search_map=" + $("#search_map").val();
-	};
-	alert("stop");
-	
+	};	
 	$( document ).ready(function() {		
 	    if(loginid != ""){	    	
 	    	$.ajax({
@@ -105,7 +103,6 @@ console.log(loginid);
 				},
 				dataType:"json",
 				success:function(d){
-					console.log(d);
 					$("#profileimg").attr("src",'resources/upload/'+d.profileimg.profile);
 				},
 				error:function(e){

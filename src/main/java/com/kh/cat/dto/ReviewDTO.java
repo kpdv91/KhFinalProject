@@ -12,8 +12,14 @@ public class ReviewDTO {
 	private Date review_date;
 	private String profile;
 	private String review_storeName;
+	private int review_replyCnt;
 	
-	
+	public int getReview_replyCnt() {
+		return review_replyCnt;
+	}
+	public void setReview_replyCnt(int review_replyCnt) {
+		this.review_replyCnt = review_replyCnt;
+	}
 	public String getReview_storeName() {
 		return review_storeName;
 	}

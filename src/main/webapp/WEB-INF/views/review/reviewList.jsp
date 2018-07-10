@@ -93,7 +93,9 @@
             float: left;
             padding: 0px 5px;
         }
-        
+        #storeName_td{
+        	font-weight: bold;
+        }
 		</style>
 		<script>
 		
@@ -129,8 +131,8 @@
 		var content = "";
 		list.forEach(function(item){
 			content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-			content += "<div id='listTop'>"+item.id+"<div id='listTop_R'><a href='#'>신고</a><br/>명이 좋아합니다.</div></div>";
-			content += "<table><tr><td>"+item.review_storeName+"</td>";
+			content += "<div id='listTop'>"+item.id+"<div id='listTop_R'><a href='#' onclick='complain(this)'>신고</a><br/>명이 좋아합니다.</div></div>";
+			content += "<table><tr><td id='storeName_td'>"+item.review_storeName+"</td>";
 			content += "<td id='star'></td></tr>";
 			
 			content += "<tr><td colspan='2'><textarea readonly>"+item.review_content+"</textarea></td></tr>";
@@ -147,6 +149,12 @@
 		
 	}
 	
+	function complain(elem){
+		var complain_Id = $(elem).parents()[1].childNodes[0].data;
+		var Win = window.open("./complainPage?complain_Id="+complain_Id,"Complain",'height=500,width=500,top=200,left=600');
+		console.log($(elem).parents()[1].childNodes[0].data);
+
+	}
 	function hashtag(elem){
 		 $.ajax({
 			url:"./reviewHashPhoto",

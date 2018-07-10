@@ -96,5 +96,11 @@ public class ReviewController {
 		String root = session.getServletContext().getRealPath("/");
 		return service.reviewHashPhoto(review_idx,root);
 	}
+	@RequestMapping(value = "/complainPage")
+	public String complainPage(@RequestParam("complain_Id") String complain_Id) {		
+		System.out.println("신고 페이지 요청");
+		logger.info(complain_Id);
+		return "review/complainForm";
+	}
 	
 }

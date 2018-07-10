@@ -110,6 +110,7 @@ console.log(loginid);
 				},
 				dataType:"json",
 				success:function(d){
+					//console.log(d);
 					$("#profileimg").attr("src",'resources/upload/'+d.profileimg.profile);
 				},
 				error:function(e){

@@ -8,7 +8,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>Insert title here</title>
-		<style>		
+		<style>
 			#profileim{position: absolute;width: 100px;height: 100px;left: 400px;top: 65px;			}
 			#timelineuserId{position: absolute;width: 150px;height: 60px;text-align: center;left: 500px;top: 50px;}
 			#profile{position: absolute;width: 100%;height: 200px;top:100px;}
@@ -24,21 +24,23 @@
 			#coupon{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#point{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#total{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
-			#content{float: left;margin-left: 100px;position: relative; width: 800px;;height: auto;}
+			#content{margin-left : 100px;position: relative; width: 800px;height: auto;left : 350px;}
 			hr{margin-top:200px;}
-			#review{border: 1px solid black;width: 500px;height: 250px}
-        	#listTop{border-bottom: 1px solid black;height: 50px;line-height: 50px;}
-        	#listTop_R{float: right;height: 50px;width: 150px;line-height: 25px;}
-        	.review_table{border-collapse: collapse;margin:0 auto;}
-        	.review_list{height: 170px;border-bottom: 1px solid black;border-collapse: collapse;width: 500px;margin:0 auto;}
-        	#star{text-align: right;}
-        	#hashtag{border: 1px solid black;width: 60px;height: 25px;font-size: 12px;text-align: center;line-height: 25px;float: left;margin-left: 5px;}
-        	#reviewList_textarea{border: 0px;width: 99%;height: 100%;resize: none;}
-        	#photo{border: 1px solid black;width: 60px;height: 50px;float: left;margin-left: 5px;}
-        	#reviewReply{border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;width: 500px;display: none;}
-        	#starDiv{width: 100%;height: 30px;}
-        	#reviewList_hash,#reviewList_photo{width: 600px;height: auto;overflow: hidden;}
-        	#hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;margin-left: 20px;margin-top: 10px;padding-left: 10px;}
+			#review{border: 2px solid #142e5b;width: 500px;height: 250px}
+        #listTop{border-bottom: 2px solid #142e5b;height: 50px;line-height: 50px;}
+        #listTop_R{float: right;height: 50px;width: 150px;line-height: 25px;}
+        #reply_div{position :absolute;margin-top:170px;}
+        .review_tabletr{border-collapse: collapse;margin:0 auto;}
+        #review_table{position :absolute;height: 170px;border-bottom: 2px solid #142e5b;border-collapse: collapse;width: 500px;margin-top:1px;}
+        #star{text-align: right;}
+        #hashtag{border: 2px solid black;width: 60px;height: 25px;font-size: 12px;text-align: center;line-height: 25px;float: left;margin-left: 5px;}
+        textarea{border: 0px;width: 99%;height: 100%;resize: none;}
+        #photo{width: 60px;height: 50px;float: left;margin-left: 5px;}
+        #reviewReply{border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;width: 500px;display: none;}
+        #starDiv{width: 100%;height: 30px;}
+        #reviewList_hash,#reviewList_photo{width: 600px;height: auto;overflow: hidden;}
+        #hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;}
+        #storeName_td{font-weight: bold;}
 		</style>
 	</head>
 	<body>
@@ -71,13 +73,18 @@
 	<script>
 	var userid = "${sessionScope.loginId}";
 	var page = "";
-	console.log(userid);
-	console.log("${id}")
+	//console.log(userid);
+	//console.log("${id}")
+	if(userid==""){
+		$("#fallow").css("display","none");
+		$("#dm").css("display","none");
+	}
 	if(userid=="${id}"){
 		$("#fallow").css("display","none");
 		$("#dm").css("display","none");
 	}else{
 		$("#userdetai").css("display","none");
+		//$("#content").css("left","150px");
 		$.ajax({
 			url:"./followcheck",
 			type:"post",
@@ -112,11 +119,14 @@
 				$("#likereview").html("좋아요 "+d.reviewlike);
 				$("#likestore").html("찜한가게 "+d.storelike);
 				$("#friend").html("팔로우 목록 "+d.follow);
+				timelinereview();
 			},
 			error:function(e){
 				console.log(e);
 			}
-		});
+		});		
+	});
+	function timelinereview(){
 		$.ajax({
 			url:"./timelinereviewlist",
 			type:"post",
@@ -132,57 +142,58 @@
 				console.log(e);
 			}
 		});
-	});
+	};
 	function printList(list){		 
-		var content = "";
+		var content = "";		
 		list.forEach(function(item){
-			content += "<div id='review'><input type='hidden' id='review_idx' value='"+item.review_idx+"'/>";
-			content += "<div id='listTop'>"+item.id+"<div id='listTop_R'><a href='#'>신고</a><br/>명이 좋아합니다.</div></div>";
-			content += "<table id='review_list'><tr class='review_table'><td class='review_table'>"+item.review_storeName+"</td>";
-			content += "<td id='star'>"+item.review_star+"</td></tr>";
-			content += "<tr class='review_table'><td class='review_table' colspan='2'><textarea id='reviewList_textarea'>"+item.review_content+"</textarea></td></tr>";
-			content += "<tr class='review_table'><td colspan='2' id='reviewList_hash'></td></tr>";
-			content += "<tr class='review_table'><td colspan='2' id='reviewList_photo'><td></tr></table>";
-			content += "<a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div>";
-			content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div><br/>";
-			hashtag();
+			console.log(item.review_replyCnt);
+			content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
+			content += "<div id='listTop'>"+item.id+"<div id='listTop_R'><br/>"+item.review_likeCnt+"명이 좋아합니다.</div></div>";
+			content += "<div id='table_div'><table id='review_table'><tr class='review_tabletr'><td id='storeName_td' class='review_tabletr'>"+item.review_storeName+"</td>";
+			content += "<td id='star'></td></tr>";			
+			content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2'><textarea id='review_text' readonly>"+item.review_content+"</textarea></td></tr>";
+			content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
+			content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table></div>";
+			content += "<div id='reply_div'><a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div></div>";
+			content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div><br/></div>";			
+			idx=item.review_idx;
+			hashtag(idx);
 		})
 		$("#content").empty();
 		$("#content").append(content);
 	}
 	
-	function hashtag(){
-		console.log($("#review_idx").val());
-		$.ajax({
+	function hashtag(elem){
+		 $.ajax({
 			url:"./reviewHashPhoto",
 			type:"post",
 			dataType:"json",
-			data:{review_idx:$("#review_idx").val()},
+			data:{"review_idx":elem},
 			success:function(d){
-				console.log(d);
-				console.log(d.reviewHash);
+				//console.log(d.reviewHash);
+				//console.log(d.reviewHash);
 				console.log(d.reviewPhoto);
-				printHash(d.reviewHash);		
-				printPhoto(d.reviewPhoto);
+				printHash(d.reviewHash,elem);		
+				printPhoto(d.reviewPhoto,elem);
 			},
 			error:function(e){console.log(e);}
-		});		
+		});	 
 	}
 	
-	function printHash(hash){
+	function printHash(hash,elem){
 		var tag="";
 		hash.forEach(function(item){
-			tag += "<div id='hashtag'>"+item.hash_tag+"</div>";
-		})
-		$("#reviewList_hash").append(tag);
+			tag += "<div id='hashtag'>#"+item.hash_tag+"</div>";
+		});
+		$("#reviewList_hash"+elem).append(tag);
 	}
 	
-	function printPhoto(photo){
+	function printPhoto(photo,elem){
 		var img="";
 		photo.forEach(function(item){
-			img += "<div id='photo'>"+item.revPhoto_photo+"</div>";
+			img += "<div id='photo'><img width='60px' height='50px' src='"+item.revPhoto_Photo+"'/></div>";
 		})
-		$("#reviewList_photo").append(img);
+		$("#reviewList_photo"+elem).append(img);
 	}
 	$(".userdetail").click(function(e) {
 		console.log(e.target.id);

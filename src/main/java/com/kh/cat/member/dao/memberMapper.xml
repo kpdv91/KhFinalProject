@@ -4,9 +4,13 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace=연결되는 인터페이스 -->    
 <mapper namespace="com.kh.cat.member.dao.MemberInter">
-	<select id="login" resultType="String">
+
+	<!-- 로그인 -->
+	<select id="login" resultType="member" parameterType="String">
 		SELECT id,aut FROM member WHERE id=#{param1} AND pw=#{param2}
-	</select>	
+	</select>
+	
+	<!-- 회원가입 -->	
 	<insert id="join" parameterType="member">
 		INSERT INTO member(id,pw,name,email,phone,profile,aut,pointCnt,revCnt,followCnt)
 			VALUES(#{id},#{pw},#{name},#{email},#{phone},#{profile},'user',0,0,0)
@@ -17,30 +21,18 @@
 			VALUES(#{id},#{pw},#{name},#{age},#{gender},'없음')
 		</if> -->
 	</insert>
+	
 	<select id="profileimg" resultType="member">
 		SELECT profile FROM member WHERE id=#{param1}
 	</select>	
 	
-	<select id="getAut" resultType="String">
-		SELECT aut FROM member WHERE id=#{param1} AND pw=#{param2}
-	</select>	
-	<select id="idcheck" parameterType="String" resultType="Integer">
-		SELECT COUNT(*) FROM member
-	    WHERE
-	    userId = #{userId}
-	</select>
 	<select id="profileunder" resultType="member">
 		SELECT * FROM member WHERE id=#{param1}
 	</select>
-	
-	<!--중복체크-->
-    <select id="idAuth" resultType="String">
-        SELECT id FROM member WHERE id = #{param1}
-    </select>
     
-    <!--중복체크-->
-    <select id="emailAuth" resultType="String">
-        SELECT email FROM members WHERE email = #{param1}
+    <!-- id 중복체크-->
+    <select id="overlay" resultType="String">
+        SELECT id FROM member WHERE id=#{param1}
     </select>
 
 	

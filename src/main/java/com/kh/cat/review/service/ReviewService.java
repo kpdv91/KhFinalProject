@@ -116,13 +116,13 @@ public class ReviewService {
 				}
 			}
 			if(review_photo.size() > 0) {
-				photoReview_point(loginId);//photoReview_point 메소드
+				photoReview_point(loginId);//photoReview_point 메소드(포인트100)
 				for(int i=1; i<review_photo.size();i++) {
 					String rePhoto = review_photo.get(i);
 					int result = inter.reviewPhotoWrite(dto.getReview_idx(),rePhoto);
 				}
 			}else {
-				review_point(loginId);//review_point 메소드
+				review_point(loginId);//review_point 메소드(포인트 50)
 			}
 		}
 		fileList.clear();
@@ -187,18 +187,16 @@ public class ReviewService {
 	}
 	
 	//좋아요 받을 시 포인트 적립
-	public void review_likeCnt(int idx, String id) {
+	/*public void review_likeCnt(int idx, String id) {
 		logger.info("리뷰 번호 : {}", idx);
-		
-		/*리뷰 좋아요 수 : SELECT review_likecnt FROM review WHERE review_idx=리뷰번호; */
-		
+		//리뷰 좋아요 수 : SELECT review_likecnt FROM review WHERE review_idx=리뷰번호; 
 		inter = sqlSession.getMapper(ReviewInter.class);
 		int likeCnt = inter.review_likeCnt(idx);
 		logger.info("좋아요 수 : {}", likeCnt);
 		if(likeCnt == 10) {
 			inter.likePoint(id);
 		}
-	}
+	}*/
 	
 	
 

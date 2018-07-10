@@ -137,6 +137,13 @@
     일치 불일치에 따라 아래에 텍스트로 표시되도록 한다.*/
     
    /*  var ChkOverlay = 0; */
+   
+   var overlayCnt = 0;
+/*    if ($("#overlay").click) {
+	   overlayCnt++; */
+	   console.log(overlayCnt);
+  // }
+   
     //중복 확인
     $("#overlay").click(function(){
         data ={};
@@ -323,7 +330,7 @@
         /* }else if(ms.style.color="red"){
         	alert("비밀번호가 올바르지 않습니다."); */
         /* }else if(ChkOverlay==0){
-        	alert("아이디 중복체크 확인이 필요 합니다."); */
+        	alert("아이디 중복체크 확인이 필요 합니다."); */ 
         }else{	
 
 			//핸드폰 번호 합치기

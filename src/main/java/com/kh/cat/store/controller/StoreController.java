@@ -28,19 +28,9 @@ public class StoreController {
 	@RequestMapping(value = "/storeRegistForm", method = RequestMethod.GET)
 	public String storeRegistForm() {
 		logger.info("가게등록 페이지 요청.");
+		storeService.menuReset();
 		return "store/storeRegistForm";
 	}
-	
-	/*//해쉬테그 추가
-	@RequestMapping(value = "/hashTagAdd")
-	public @ResponseBody HashMap<String, Object> 
-	hashTagAdd(@RequestParam (value="tagList[]") String[] tagArr	
-			,@RequestParam(value="hTag") String hTag) {
-		logger.info("해쉬태그 추가요청.");
-		logger.info("tagArr[] : "+tagArr.length);
-		logger.info("tagArr[] : "+tagArr[0]);
-		return storeService.hashTagAdd(tagArr, hTag);
-	}*/
 	
 	//메뉴 사진 추가 페이지
 	@RequestMapping(value = "/menuPhotoForm", method = RequestMethod.GET)
@@ -64,5 +54,27 @@ public class StoreController {
 		logger.info("메뉴 삭제 요청.");
 		String root = session.getServletContext().getRealPath("/");
 		return storeService.fileDel(root, fileName);
+	}
+	
+	//대표 사진 업로드 
+		@RequestMapping(value = "/photoUpload")
+		public ModelAndView photoUpload(MultipartFile file, HttpSession session) {
+			logger.info("대표 사진 업로드 요청.");
+			String root = session.getServletContext().getRealPath("/");
+			logger.info(file.getOriginalFilename());
+			//return storeService.photoUpload(file, root);
+			return null;
+		}
+	
+	//맛집 등록
+	@RequestMapping(value = "/storeRegist")
+	public @ResponseBody HashMap<String, Object> 
+	storeRegist(@RequestParam (value="tagList[]") String[] tagArr	
+			,@RequestParam HashMap<String, String> data) {
+		logger.info("맛집 등록 요청.");
+		logger.info("tagArr[] : "+tagArr.length);
+		logger.info("tagArr[] : "+tagArr[0]);
+		logger.info(data.get("store_addr"));
+		return storeService.storeRegist(tagArr, data);
 	}
 }

@@ -24,20 +24,17 @@
 	
 	<select id="profileimg" resultType="member">
 		SELECT profile FROM member WHERE id=#{param1}
-	</select>	
+	</select>
 	
 	<select id="profileunder" resultType="member">
 		SELECT * FROM member WHERE id=#{param1}
 	</select>
-    
+   
     <!-- id 중복체크-->
     <select id="overlay" resultType="String">
         SELECT id FROM member WHERE id=#{param1}
     </select>
 
-	
-	
-	
 </mapper>
 
 

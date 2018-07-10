@@ -12,38 +12,24 @@
 		<!-- 단일 인터셉터 -->
 		<mvc:interceptor>
 			<!-- 인터셉터할 요청 -->
-			
-			<!-- /example로 왔을 경우 -->
 			<mvc:mapping path="/storeRegistForm"/>
 			<mvc:mapping path="/couponShopPage"/>
 			<mvc:mapping path="/couponPurchase"/>
 			<mvc:mapping path="/boardWritePage"/>
 			<mvc:mapping path="/boardWrite"/>
-			<!-- /example로 시작하는 요청이 왔을 경우 -->
-			<!-- /example로 왔을 경우 -->
 			<mvc:mapping path="/receivelist"/>			
 			<mvc:mapping path="/reviewWritePage"/>			
+			<mvc:mapping path="/sendlist"/>		
+			<mvc:mapping path="/sendMessage"/>		
+			<mvc:mapping path="/receivedetail"/>			
+			<mvc:mapping path="/senddetail"/>			
+			<mvc:mapping path="/pointlist"/>		
+			<mvc:mapping path="/couponlist"/>			
+			<mvc:mapping path="/messagesendidcheck"/>			
+			<mvc:mapping path="/sendmsg"/>		
+			<mvc:mapping path="/followinsert"/>		
+			<mvc:mapping path="/followdelete"/>			
 			<!-- 인터셉터 한 내용에 대한 클래스 매핑 -->
-			<mvc:mapping path="/sendlist"/>
-			<!-- 인터셉터 한 내용에 대한 클래스 매핑 -->			
-			<mvc:mapping path="/sendMessage"/>
-			<!-- 인터셉터 한 내용에 대한 클래스 매핑 -->			
-			<mvc:mapping path="/receivedetail"/>
-			<!-- 인터셉터 한 내용에 대한 클래스 매핑 -->			
-			<mvc:mapping path="/senddetail"/>
-			<!-- 인터셉터 한 내용에 대한 클래스 매핑 -->			
-			<mvc:mapping path="/pointlist"/>
-			<!-- 인터셉터 한 내용에 대한 클래스 매핑 -->			
-			<mvc:mapping path="/couponlist"/>
-			<!-- 인터셉터 한 내용에 대한 클래스 매핑 -->			
-			<mvc:mapping path="/messagesendidcheck"/>
-			<!-- 인터셉터 한 내용에 대한 클래스 매핑 -->			
-			<mvc:mapping path="/sendmsg"/>
-			<!-- 인터셉터 한 내용에 대한 클래스 매핑 -->			
-			<mvc:mapping path="/followinsert"/>
-			<!-- 인터셉터 한 내용에 대한 클래스 매핑 -->			
-			<mvc:mapping path="/followdelete"/>
-			<!-- 인터셉터 한 내용에 대한 클래스 매핑 -->			
 			<bean class="com.kh.cat.common.service.PreCheck"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>

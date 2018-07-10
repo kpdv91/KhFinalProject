@@ -27,7 +27,9 @@
 <nav id="nav">
 	<div id="mainFrame">
 		<div id="logoBox">
-			<img alt="logo" src="resources/img/logo/logo_cat.png">
+			<a href="./">
+				<img alt="logo" src="resources/img/logo/logo_cat.png">
+			</a>
 		</div>
         <div id="searchBox">
         	<select id="search_map">
@@ -103,6 +105,7 @@ console.log(loginid);
 				},
 				dataType:"json",
 				success:function(d){
+					//console.log(d);
 					$("#profileimg").attr("src",'resources/upload/'+d.profileimg.profile);
 				},
 				error:function(e){

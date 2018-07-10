@@ -7,30 +7,27 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
+import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.kh.cat.dto.StoreDTO;
+import com.kh.cat.store.dao.StoreInter;
 
 @Service
 public class StoreService {
 	
+	@Autowired SqlSession sqlSession;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+	StoreInter inter;
 	
 	HashMap<String, String> fileList = new HashMap<String, String>();
-	
-	/*public HashMap<String, Object> hashTagAdd(String[] tagArr, String hTag) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		if(tagArr.length>=10) {
-			map.put("max", true);
-		}else {
-			map.put("max", false);
-			map.put("hTag", hTag);
-		}
-		return map;
-	}*/
+	String storePhoto = "5413516546.jpg";
 
 	//메뉴 사진 업로드
 	public ModelAndView menuUpload(MultipartFile file, String root) {
@@ -86,6 +83,40 @@ public class StoreService {
 		map.put("success", success);
 		System.out.println(fileList);
 		return map;
+	}
+
+	//가게 등록
+	@Transactional
+	public HashMap<String, Object> storeRegist(String[] tagArr, HashMap<String, String> data) {
+		inter = sqlSession.getMapper(StoreInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		StoreDTO dto = new StoreDTO();
+		String id = "user";
+		dto.setId(id);
+		dto.setStore_photo(storePhoto);
+		dto.setStore_name(data.get("store_name"));
+		dto.setStore_ceo(data.get("store_ceo"));
+		dto.setStore_phone(data.get("store_phone"));
+		dto.setStore_addr(data.get("store_addr"));
+		dto.setStore_food(data.get("store_food"));
+		dto.setStore_price(Integer.parseInt(data.get("store_price")));
+		dto.setStore_time(data.get("store_time"));
+		dto.setStore_rest(data.get("store_rest"));
+		inter.storeRegist(dto);//가게 등록
+		for(String tag:tagArr) {
+			inter.storeHashTag(dto.getStore_idx(),tag);//태그 추가
+		}
+		for(String file:fileList.keySet()) {
+			inter.storeMenu(dto.getStore_idx(),file);//메뉴판 추가
+		}
+		fileList.clear();
+		map.put("success", 1);
+		return map;
+	}
+
+	//파일리스트 리셋
+	public void menuReset() {
+		fileList.clear();
 	}
 
 }

@@ -3,6 +3,7 @@ package com.kh.cat.review.controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -25,14 +26,9 @@ public class ReviewController {
 	
 	@Autowired ReviewService service;
 	
-	@RequestMapping(value = "/timeline", method = RequestMethod.GET)
-	public String timeline() {
-		System.out.println("타임라인 요청");
-		return "timeline/timeline_main";
-	}
-	
 	@RequestMapping(value = "/reviewWritePage")
 	public String reviewWritePage() {
+		
 		System.out.println("리뷰 작성 페이지 요청");
 		return "review/reviewWrite";
 	}
@@ -60,12 +56,13 @@ public class ReviewController {
 	}
 	
 	@RequestMapping(value= "/reviewWrite")
-	public ModelAndView wirte(@RequestParam("hash_tag") ArrayList<String> hash_tag,
-			@RequestParam("review_photo") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map) {
+	public String wirte(@RequestParam("hash_tag") ArrayList<String> hash_tag,
+			@RequestParam("review_photo") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map, HttpServletRequest request) {
 		logger.info("글쓰기 요청");	
 		logger.info(""+map);
 	
-		return service.write(hash_tag, review_photo, map);
+		String loginId = (String) request.getSession().getAttribute("loginId");
+		return service.write(hash_tag, review_photo, map, loginId);
 	}
 	
 	@RequestMapping(value = "/revStoreSearch")
@@ -81,4 +78,23 @@ public class ReviewController {
 		logger.info("해시태그:" + hash_tag.get("hash_tag"));
 		return null;
 	}*/
+	
+	//리뷰 리스트 페이지
+	@RequestMapping(value = "/reviewListPage")
+	public String reviewListPage() {		
+		System.out.println("리뷰 리스트 페이지 요청");
+		return "review/reviewList";
+	}
+	@RequestMapping(value = "/reviewList")
+	public @ResponseBody HashMap<String, Object> reviewList() {
+		logger.info("리뷰 리스트 요청");
+		return service.reviewList();
+	}
+	@RequestMapping(value = "/reviewHashPhoto")
+	public @ResponseBody HashMap<String, Object> reviewHashPhoto(@RequestParam("review_idx") String review_idx,HttpSession session) {
+		logger.info("리뷰 해시태그, 사진 요청");
+		String root = session.getServletContext().getRealPath("/");
+		return service.reviewHashPhoto(review_idx,root);
+	}
+	
 }

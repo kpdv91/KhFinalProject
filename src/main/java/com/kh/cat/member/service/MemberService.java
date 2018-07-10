@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.cat.dto.MemberDTO;
 import com.kh.cat.member.dao.MemberInter;
 
@@ -37,18 +40,20 @@ public class MemberService {
 		String id = params.get("id");
 		String pw = params.get("pw");
 		logger.info("아이디 : "+id+" / 비밀번호 : "+pw);
-		session.setAttribute("loginId", id); 
-		logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
+
 		String result = inter.login(id, pw);
 		logger.info(""+result);
-		
+				
 		String page = "main";
 		String msg = "success";
-		
+		System.out.println(result);
 		if(result == null) {
 			page = "member/loginForm";
 			msg = "fail";
-		} 
+		}else {
+			session.setAttribute("loginId", id); 
+			logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
+		}
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("msg", msg);//모델에 들어갈 내용
@@ -90,6 +95,26 @@ public class MemberService {
 		mav.setViewName(page);//반환 페이지 내용
 		return mav;
 	}
+	
+	//중복체크
+	public void overlay(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String id = request.getParameter("id");
+		System.out.println("param :"+id);
+		MemberDAO dao = new MemberDAO();
+		boolean overlay = dao.overlay(id);
+		
+		//Gson 객체생성
+		Gson json = new Gson();
+		//map 생성
+		HashMap<String, Boolean> map = new HashMap<>();
+		//map 에 값 추가
+		map.put("overlay", overlay);
+		//json 으로 변경
+		String obj = json.toJson(map);
+		//response 로 변환(옵션1 :한글깨짐,옵션2 : 크로스 도메인)
+		response.getWriter().println(obj);
+	}
+	
 
 
 
@@ -138,4 +163,44 @@ public class MemberService {
 		return map;
 	}
 
-}
+
+	public HashMap<String, Object> profileunder(Map<String, String> params) {
+		inter = sqlSession.getMapper(MemberInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		logger.info(id);
+		map.put("profile", inter.profileunder(id));
+		return map;
+	}
+
+
+	/*@Service
+	public class OverlayService {
+	 
+	    @Autowired
+	    SqlSession sqlSession;
+	 
+	    private Logger logger = LoggerFactory.getLogger(this.getClass());
+	 
+	    OverlayInterface inter = null;*/
+	 
+	// 이메일 중복확인
+	    public Map<String, String> idAuth(String id) {
+	        Map<String, String> jsonObj = new HashMap<String, String>();
+	 
+	        inter = sqlSession.getMapper(MemberInter.class);
+	        String idAuth = inter.idAuth(id);
+	 
+	        if (idAuth != null) {
+	            jsonObj.put("chk", "-1");
+	        } else {
+	            jsonObj.put("chk", "1");
+	        }
+	        return jsonObj;
+	    }
+	    
+	}
+
+
+
+

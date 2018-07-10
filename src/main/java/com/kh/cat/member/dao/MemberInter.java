@@ -15,5 +15,11 @@ public interface MemberInter {
 	int chkDupId(MemberDTO dto);//중복체크
 
 	String getAut(String aut);//권한 가져오기
+
+	MemberDTO profileunder(String id);	
+
+	String idAuth(String id);
+
+	String emailAuth(String email);
 	
 }

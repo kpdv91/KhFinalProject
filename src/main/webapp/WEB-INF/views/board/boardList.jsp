@@ -18,7 +18,9 @@
 	<body>
 	<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
 		<div id="tableDiv">
+			<c:if test="${ sessionScope.loginId != null}">
 			<button id="write">작성하기</button> 
+			</c:if>
 			<table>
 				<thead>
 					<tr>

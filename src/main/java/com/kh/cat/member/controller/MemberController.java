@@ -3,6 +3,8 @@ package com.kh.cat.member.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -36,6 +38,33 @@ public class MemberController {
 		return memberService.login(params, session);
 	}
 	
+	@RequestMapping("/logout")
+	public String logout(HttpSession session, HttpServletRequest request ){
+		session = request.getSession(false);		
+		if(session != null) {
+			session.invalidate();
+			System.out.println("로그아웃 처리 완료");
+		}
+
+		return "home";
+
+	}
+	
+/*	@RequestMapping(value = "/overlay")
+	public void overlay (HttpServletRequest request, HttpServletResponse response) {
+		logger.info("login 요청");
+		return memberService.overlay(request, response);
+	}*/
+	
+
+	@RequestMapping(value = "/emailChkForm", method = RequestMethod.GET)
+	public String emailChkForm() {
+		logger.info("emailChkForm 페이지 요청");
+		return "member/emailChkForm";
+	}	
+	
+	
+	
 	@RequestMapping(value = "/joinForm", method = RequestMethod.GET)
 	public String joinForm() {
 		logger.info("joinForm 페이지 요청");
@@ -55,6 +84,9 @@ public class MemberController {
 		return memberService.join(map);
 	}	
 	
+	
+	
+	
 	//보네 - (커뮤니티) 파일 업로드 폼
 	@RequestMapping(value = "/fileUploadForm")
 	public String fileUploadForm() {
@@ -73,6 +105,11 @@ public class MemberController {
 	public @ResponseBody HashMap<String, Object> profileimg(@RequestParam Map<String,String> params) {
 		logger.info("프로필 사진 불러오기 요청");			
 		return memberService.profileimg(params);
+	}
+	@RequestMapping(value = "/profileunder")
+	public @ResponseBody HashMap<String, Object> profileunder(@RequestParam Map<String,String> params) {
+		logger.info("프로필 사진 불러오기 요청");			
+		return memberService.profileunder(params);
 	}
 
 

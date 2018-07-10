@@ -38,14 +38,14 @@
 </head>
 <body>
 
-<form action="login" method="post">
+<form id="login" action="login" method="post">
 <div>
 	
     <table>
    	     <tr>
             <td>아 이 디 &nbsp : </td>
             <td><input type="text" name="id" placeholder="아이디"></td>
-            <td rowspan="2"> <input id="loginBtn" type="submit" value="로그인"> <!-- <button>로그인</button> --></td>
+            <td rowspan="2"> <input id="loginBtn" type="button" value="로그인"> <!-- <button>로그인</button> --></td>
          </tr>
          <tr>
             <td>비밀번호&nbsp&nbsp: </td>
@@ -65,42 +65,53 @@
 </body>
 <script>
 
-/* $("#join").click(function () {
-	location.href = "./joinForm";
-}); */
-
 
  function join() {
 	location.href="./joinForm";
-}; 
-/* $("#loginBtn").click(function(){
-	console.log("클릭");
-	//키와 값으로 복수개가 들어간다.
-	//type: [post|get], url: 어디로 보낼 것인가? 
-	//data: 어떤 파라메터와 값?, dataType: [json|xml|text|html|jsonp]
-	//success: 성공시 할 일, error: 실패시 할 일
-	$.ajax({
-		type:"post",
-		url:"./login",
-		data:{
-			id:$("#userId").val(),
-			pw:$("#userPw").val()
-		},
-		dataType:"json",
-		success:function(data){//인자 값은 서버에서 주는 메시지
-			console.log(data);
-			if(data.success){
-				alert("로그인에 성공 했습니다.");	
-				location.href="main.jsp";
-			}else{
-				alert("로그인에 실패 했습니다.");
-			}
-		},
-		error:function(err){//인자 값은 서버에서 주는 에러 메시지
-			console.log(err)
-		}
-	});
-}); */
+};
+
+/* var idReg = /^[a-z]+[a-z0-9]{4,19}$/g;
+if( !idReg.test( $("input[name=id]").val() ) ) {
+    alert("아이디는 영문자로 시작하는 5~20자 영문자 또는 숫자이어야 합니다.");
+    return; 
+}  */
+
+
+
+/* if(UserPassword.value.length<8) {
+    alert("비밀번호는 영문(대소문자구분),숫자,특수문자(~!@#$%^&*()-_? 만 허용)를 혼용하여 8~16자를 입력해주세요.");
+    return false;
+  } 
+  
+   if(!UserPassword.value.match(/([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~,-])|([!,@,#,$,%,^,&,*,?,_,~,-].*[a-zA-Z0-9])/)) {
+      alert("비밀번호는 영문(대소문자구분),숫자,특수문자(~!@#$%^&*()-_? 만 허용)를 혼용하여 8~16자를 입력해주세요.");
+    return false;
+  }
+ 
+  return true;
+} */
+
+var idReg = /^[a-z0-9]+[a-z0-9]{4,19}$/g;
+
+$("#loginBtn").click(function(){
+	
+	if($("input[name='id']").val()==""){//아이디
+        alert("아이디를 입력해주세요!!");
+        $("input[name='id']").focus();
+   }else if($("input[name='pw']").val()==""){//비밀번호
+	   	alert("비밀번호를 입력해주세요!!");
+	   	$("input[name='pw']").focus();
+   /* }else if(!idReg.test( $("input[name=id]").val() )){	//id 유효성
+   	alert("아이디는 영문자로 시작하는 5~20자 영문자 또는 숫자이어야 합니다."); */
+   /* }else if($("input[name='pw']").val().length<8 || $("input[name='pw']").val().length>16){	//비밀번호 유효성
+   	alert("비밀번호는 영문(대소문자구분),숫자,특수문자(~!@#$%^&*()-_? 만 허용)를 혼용하여 8~16자를 입력해주세요.");
+       return false;  */
+   }else{
+   	$("#login").submit();//submit
+   }
+});		
+
+
 
 </script>
 </html>

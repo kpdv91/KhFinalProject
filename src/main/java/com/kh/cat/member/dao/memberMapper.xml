@@ -5,9 +5,8 @@
 <!-- namespace=연결되는 인터페이스 -->    
 <mapper namespace="com.kh.cat.member.dao.MemberInter">
 	<select id="login" resultType="String">
-		SELECT id FROM member WHERE id=#{param1} AND pw=#{param2}
-	</select>
-	
+		SELECT id,aut FROM member WHERE id=#{param1} AND pw=#{param2}
+	</select>	
 	<insert id="join" parameterType="member">
 		INSERT INTO member(id,pw,name,email,phone,profile,aut,pointCnt,revCnt,followCnt)
 			VALUES(#{id},#{pw},#{name},#{email},#{phone},#{profile},'user',0,0,0)
@@ -25,15 +24,29 @@
 	
 	<select id="getAut" resultType="String">
 		SELECT aut FROM member WHERE id=#{param1} AND pw=#{param2}
-	</select>
-	
+	</select>	
 	<select id="idcheck" parameterType="String" resultType="Integer">
 		SELECT COUNT(*) FROM member
 	    WHERE
 	    userId = #{userId}
 	</select>
-	
+	<select id="profileunder" resultType="member">
+		SELECT * FROM member WHERE id=#{param1}
+	</select>
+
+	<!--중복체크-->
+    <select id="idAuth" resultType="String">
+        SELECT id FROM member WHERE id = #{param1}
+    </select>
+    
+    <!--중복체크-->
+    <select id="emailAuth" resultType="String">
+        SELECT email FROM members WHERE email = #{param1}
+    </select>
+
 </mapper>
+
+
 
 
 

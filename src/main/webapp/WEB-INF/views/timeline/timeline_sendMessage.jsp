@@ -27,6 +27,10 @@
 		</div>
 	</body>
 	<script>
+	console.log("${id}");
+	if("${id}"!=null){
+		$("#sendId").val("${id}");
+	}
 	var id;
 	var userid = "${sessionScope.loginId}";
 	var contentmsg; 

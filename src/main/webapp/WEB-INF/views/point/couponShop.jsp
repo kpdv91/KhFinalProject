@@ -32,12 +32,12 @@
 				<tr>
 					<td>2000 쿠폰</td>
 					<td>2000 point</td>
-					<td><button class="btn" id="2000">구매</button></td>
+					<td><button class="btn" id="2000" name="2000 쿠폰">구매</button></td>
 				</tr>
 				<tr>
 					<td>3000 쿠폰</td>
 					<td>3000 point</td>
-					<td><button class="btn" id="3000">구매</button></td>
+					<td><button class="btn" id="3000" name="3000 쿠폰">구매</button></td>
 				</tr>
 			</table>
 		</div>
@@ -48,7 +48,7 @@
 	$(".btn").click(function (e) {
 		console.log($(this).attr("id"));
 		console.log($(this).attr("name"));
-		/* $.ajax({ 
+		$.ajax({ 
 			type : "post",
 			url : "./couponPurchase",
 			data : {
@@ -58,12 +58,17 @@
 			dataType : "json",
 			success : function (data) {
 				console.log(data);
+				if(data.couponPurchaseMsg > 0 && data.couponBoxMsg > 0){
+					alert(data.msg);
+				}else{
+					alert(data.msg);
+				}
 				
 			},
 			error : function (error) {
 				console.log(error);
 			}
-		}); */
+		});
 	});
 	
 	

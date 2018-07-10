@@ -15,4 +15,18 @@ public interface ReviewInter {
 
 	ArrayList<StoreDTO> storeList(String params);
 
+	ArrayList<ReviewDTO> reviewList();
+
+	ArrayList<ReviewDTO> reviewHash(String review_idx);
+
+	ArrayList<ReviewDTO> reviewPhoto(String review_idx);
+
+	void review_point(String loginId);//리뷰 작성시 50포인트
+
+	void photoReview_point(String loginId);//리뷰 작성시 100포인트
+
+	int review_likeCnt(int idx);//리뷰 좋아요 수
+
+	void likePoint(String loginId);//좋아요 수 포인트
+
 }

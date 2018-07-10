@@ -75,18 +75,19 @@ star-input>.input.focus{
 </style>
 	</head>
 	<body>
-<span class="star-input">
-	<span class="input">
+	
+<span id="star-input" class="star-input">
+	<span class="input">		
     	<input type="radio" name="star-input" value="0.5" id="p0.5"><label for="p0.5">0.5</label>
-    	<input type="radio" name="star-input" value="1.0" id="p1.0"><label for="p1.0">1.0</label>
+    	<input type="radio" name="star-input" value="1" id="p1.0"><label for="p1.0">1.0</label>
         <input type="radio" name="star-input" value="1.5" id="p1.5"><label for="p1.5">1.5</label>
-        <input type="radio" name="star-input" value="2.0" id="p2.0"><label for="p2.0">2.0</label>
+        <input type="radio" name="star-input" value="2" id="p2.0"><label for="p2.0">2.0</label>
         <input type="radio" name="star-input" value="2.5" id="p2.5"><label for="p2.5">2.5</label>
-        <input type="radio" name="star-input" value="3.0" id="p3.0"><label for="p3.0">3.0</label>
+        <input type="radio" name="star-input" value="3" id="p3.0"><label for="p3.0">3.0</label>
         <input type="radio" name="star-input" value="3.5" id="p3.5"><label for="p3.5">3.5</label>
-        <input type="radio" name="star-input" value="4.0" id="p4.0"><label for="p4.0">4.0</label>
+        <input type="radio" name="star-input" value="4" id="p4.0"><label for="p4.0">4.0</label>
         <input type="radio" name="star-input" value="4.5" id="p4.5"><label for="p4.5">4.5</label>
-        <input type="radio" name="star-input" value="5.0" id="p5.0"><label for="p5.0">5.0</label>
+        <input type="radio" name="star-input" value="5" id="p5.0"><label for="p5.0">5.0</label>
   	</span>
   	<output for="star-input"><b name="review_star" id="starScore">0</b>점</output>						
 </span>
@@ -94,6 +95,11 @@ star-input>.input.focus{
 <script src="resources/js/star.js"></script>
 </body>
 <script>
-
+//star();
+//starChk(5);
+function starChk(elem){
+	$("input:radio[value='"+elem+"']").attr('checked', true);
+	$("#starScore").text(elem);
+}
 </script>
 </html>

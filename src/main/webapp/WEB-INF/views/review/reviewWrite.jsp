@@ -100,9 +100,11 @@
         font-size: 15px;
         margin-left: 10px;
        }
-       #userId{
+       #user_Id{
        	border: 0px;
        	font-size: 15px;
+       	text-align: center;
+       	font-weight: bold;
        }
        #searchList{
 		width: 250px;
@@ -164,7 +166,7 @@
 	<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
 	
 	<br/><br/><br/>
-	<form id="sendForm" action="reviewWrite">
+	<form id="sendForm" action="reviewWrite" method="post">
 	
 	
 <!-- <input type="button" value="asd" onclick="relayout()"/>
@@ -172,8 +174,9 @@
 <input type="button" value="크기" onclick="resizeMap()"/> -->
 
 	<div id ="formDiv">
-	작성자 : <input id="userId" name="id" type="text" value="${sessionScope.loginId}" readonly/><br/><br/>
+	작성자 : <input id="user_Id" name="id" type="text" value="관리자" readonly/><br/><br/>
     상호명 : <input id="review_storeName" type="text" name="review_storeName"/><button type="button" id="search"><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/><br/>
+   
     <div id="searchList">
     	
     	
@@ -183,8 +186,8 @@
     	 
 <%-- <jsp:include page="../include/common/map.jsp" />  --%>
     </div>
-    
-    별점 : <jsp:include page="star.jsp"></jsp:include><br/>
+    <div id="starDIV">
+    별점 : <jsp:include page="star.jsp"></jsp:include><br/></div>
     내용<br/>
     <textarea name="review_content"></textarea><br/><br/>
     
@@ -202,6 +205,7 @@
     <button id="write">작성하기</button>
     </div>
     </form>
+     
 	</body>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c7f29813d0150c2927c1529f7d432392&libraries=services"></script>
 	<script>
@@ -257,9 +261,12 @@
 				console.log(data);
 				if(data.success == 1){
 					//이미지 삭제
-					$(elem).prev().prev().remove();
+					console.log($(elem).parent().next());
+					 $(elem).prev().prev().remove();
+					 $(elem).parent().next().remove();
 					//버튼 삭제
-					$(elem).remove();
+					$(elem).remove();  
+					
 				}
 			},
 			error : function(e){
@@ -298,6 +305,7 @@
 				console.log(e);
 			}
 		});
+		$("#starDIV").css("pointer-events", "none");
 		$("#searchList").css("display","block");
 	});
 	
@@ -367,6 +375,7 @@
 				      $("#review_storeName").val(elem.text);
 				      $("#searchList").css("display","none");
 						$("#mapDiv").css("display","none");
+						$("#starDIV").css("pointer-events", "");
 				});
 		    } 
 		}); 
@@ -394,6 +403,7 @@
 			console.log("X Click");
 			$("#searchList").css("display","none");
 			$("#mapDiv").css("display","none");
+			$("#starDIV").css("pointer-events", "");
 		});
 	</script>
 </html>

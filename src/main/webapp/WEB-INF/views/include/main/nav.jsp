@@ -5,18 +5,21 @@
 <style>
 	#nav ul li{list-style: none;  display: inline;	padding: 0px 10px;}
 	#nav a{text-decoration: none; color: white; }    
-	#mainFrame{position: relative;background-color: navy;padding:5px; width:100%; height: 80px;}
-	#logoBox{position:absolute;top:10px;left: 10px;}
-	#searchBox{position:absolute;top:20px;left: 450px;}
-	#menuBox{position:absolute;top:30px;left: 1000px;}	  
+	#mainFrame{position: relative;background-color: white; width:100%; height: 80px;
+		min-width: 1500px;max-width: 1600px;bottom: 8px;}
+	#logoBox{position:absolute;top:10px;left: 10%;}
+	#searchBox{position:absolute;top:20px;left: 35%;}
+	#menuFrame{position: relative;background-color: #2637a4;width:100%; height: 50px;
+		min-width: 1500px;max-width: 1600px;}
+	#menuBox{position:absolute;top:0px;left: 1000px;}	  
 	input:-ms-input-placeholder{color:#a8a8a8;}
 	input:-webkit-input-placeholder{color:#a8a8a8;}
 	input:-moz-input-placeholder{color:#a8a8a8;}            
-	#searchBox{ width: 420px; height: 45px; border: 1px solid #1b5ac2; background-color: #ffffff; float:left;}    
+	#searchBox{ width: 420px; height: 45px; border: 1px solid #2637a4; background-color: #ffffff; float:left;}    
 	/* #menu{position: absolute; top: 17px; left: 500px;} */
 	#nav select{font-size: 16px; width: 110px; padding: 10px; border: 0px; outline: none; }
-	#nav input{font-size: 16px; width: 250px; padding: 10px; border: 0px; outline: none; }
-	#nav button{width: 50px; height: 100%; border: 0px; background-color: #1b5ac2; outline: none; float: right; color:#ffffff;}
+	#nav #search_content{font-size: 16px; width: 210px; padding: 10px; border: 0px; outline: none; }
+	#nav button{width: 50px; height: 100%; border: 0px; background-color: #2637a4; outline: none; float: right; color:#ffffff;}
 	#profileimg{width: 50px;height : 50px;position:absolute;left:500px;top:1px;}
 	.btn{background-color:blue; color:white;width:80px;border: 2px solid white;}
 	#proimg{width: 50px;height : 50px;}
@@ -63,7 +66,9 @@
             <input type="text" id="search_content"/>
             <button type="button" onclick="search()">검색</button>
        	</div>
+	</div>
        	
+	<div id="menuFrame">
         <div id="menuBox">
 	        <ul>
 			<li><a href="./boardListPage">게시판</a></li>			
@@ -83,8 +88,8 @@
 			</c:if>	
 			</ul>
 		</div>
-
 	</div>
+	
 </nav>
 
 <script>

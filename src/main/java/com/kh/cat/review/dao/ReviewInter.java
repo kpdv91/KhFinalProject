@@ -21,4 +21,12 @@ public interface ReviewInter {
 
 	ArrayList<ReviewDTO> reviewPhoto(String review_idx);
 
+	void review_point(String loginId);//리뷰 작성시 50포인트
+
+	void photoReview_point(String loginId);//리뷰 작성시 100포인트
+
+	int review_likeCnt(int idx);//리뷰 좋아요 수
+
+	void likePoint(String loginId);//좋아요 수 포인트
+
 }

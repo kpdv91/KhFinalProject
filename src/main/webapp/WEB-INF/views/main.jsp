@@ -20,6 +20,9 @@
             outline: 0px;
             border: 0px;
        }
+       #review_Write{
+       		margin-left: 490px;
+       }
 	</style>
 	</head>
 	<body>
@@ -27,7 +30,8 @@
 		<input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
 		<div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
 		
-		<input type="button" value="리뷰 작성" onclick="reviewWrite()"/>
+		<input id="review_Write" type="button" value="리뷰 작성" onclick="reviewWrite()"/><br/><br/>
+		<c:import url="/WEB-INF/views/review/reviewList.jsp"/>
 	
 		<c:import url="/WEB-INF/views/include/main/footer.jsp"/>
 	</body>

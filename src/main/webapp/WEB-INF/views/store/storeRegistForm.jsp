@@ -18,13 +18,15 @@
 	</head>
 	<body>
 		<div id="regist">
-			<form id="registForm" action="storeRegist" method="post" >
+			
 			<table>
 				<tr>
 					<th>대표사진</th>
 					<td>
-						<input type="file" id="sPhoto" name="store_photo" accept=".jpg,.jpeg,.png,.gif,.bmp"/>
-						<input type="button" onclick="storeD()" value="초기화">
+						<form id="registForm" action="./photoUpload" method="post" enctype="multipart/form-data">
+							<input type="file" id="sPhoto" name="store_photo" accept=".jpg,.jpeg,.png,.gif,.bmp"/>
+							<input type="button" onclick="storeD()" value="초기화">
+						</form>
 					</td>
 				</tr>
 				<tr>
@@ -99,19 +101,15 @@
 				</tr>
 				<tr>
 					<td>
-						<!-- div에서 내용을 받아 보여준다 -->
 						<div id="editable"></div>
-						<!-- 전송은 hidden에 담아서 한다 -->
-						<input id="contentForm" type="hidden" name="content"/>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<input type="button" id="save" value="등록 요청">
+						<input type="button" onclick="storeRegist()" value="등록 요청">
 					</td>
 				</tr>
 			</table>
-			</form>
 		</div>
 	</body>
 	<script>
@@ -122,7 +120,7 @@
 	//대표사진 변화시 func
 	upload.onchange = function (e) {
 		e.preventDefault();
-		
+		console.log("사진 변화");
 		var file = upload.files[0],
 		reader = new FileReader();
 		
@@ -141,6 +139,23 @@
 			reader.readAsDataURL(file);
 		}catch (e) {
 			storeD();
+		}finally{
+			var formData = new FormData($("#sPhoto")[0]);
+	        $.ajax({
+	            type : 'post',
+	            url : 'photoUpload',
+	            data : formData,
+	            processData : false,
+	            contentType : false,
+	            success : function(data) {
+	                //alert("파일 업로드하였습니다.");
+	            },
+	            error : function(error) {
+	                //alert("파일 업로드에 실패하였습니다.");
+	                console.log(error);
+	                console.log(error.status);
+	            }
+	        });
 		}
 	return false;
 	};
@@ -183,7 +198,7 @@
 				console.log(tagList);
 			}
 		}
-
+		$("#tag").val("");
 	}
 	
 	//해쉬태그 지우기
@@ -192,42 +207,6 @@
 		$(e).parent().remove();
 		tagList.splice(tagList.indexOf(hTag),1);
 	}
-	
-	/* var tagList = [];
-	function tagAdd() {
-		hTag = $("#tag").val();
-		tagList.push(hTag);
-		if(hTag==""){
-			alert("태그 내용을 입력해주세요.");
-		}else{
-			console.log(tagList);
-			$.ajax({
-				url:"./hashTagAdd",
-				type:"get",
-				data:{
-					"hTag":hTag,
-					"tagList":tagList
-					},
-				success:function(data){
-					console.log(data);
-					if(data.max){
-						tagList.pop();
-						alert("태그는 최대 10개입니다.");
-					}else{
-						console.log(data.list);
-						$("#tags").append("<div>"
-								+"<input type='text' class='tag' readonly='readonly' value='"+data.hTag+"'>"
-								+"<div onclick='tagDel(this)'>X</div>"
-								+"</div>");
-					}
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
-		}
-		
-	} */
 	
 	//메뉴사진 업로드 창
 	function menuPhotoUp() {
@@ -323,6 +302,45 @@
             }
         }).open();
     }
+	
+	//등록요청
+    function storeRegist() {
+		var store_phone="";
+		var store_addr="";
+		store_phone = $("input[name='store_phone_H']").val()+"-"
+		+$("input[name='store_phone_B']").val()+"-"+$("input[name='store_phone_T']").val();
+		store_addr = $("input[name='store_addr']").val()+" "+$("input[name='store_addr_D']").val()
+		if(false){
+			alert("");
+		}else{
+			console.log(tagList);
+			$.ajax({
+				url:"./storeRegist",
+				type:"get",
+				data:{
+					"tagList":tagList,
+					"store_name":$("input[name='store_name']").val(),
+					"store_ceo":$("input[name='store_ceo']").val(),
+					"store_phone":store_phone,
+					"store_addr":store_addr,
+					"store_food":$("input[name='store_food']").val(),
+					"store_price":$("input[name='store_price']").val(),
+					"store_time":$("input[name='store_time']").val(),
+					"store_rest":$("input[name='store_rest']").val(),
+					"store_tag":$("input[name='store_tag']").val()
+					},
+				success:function(data){
+					console.log(data);
+					alert(" 등록 성공");
+					
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}
+		
+	}
     
     </script>
 </html>

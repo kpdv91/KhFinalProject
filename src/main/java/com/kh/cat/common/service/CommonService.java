@@ -129,7 +129,58 @@ public class CommonService {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		String id=params.get("id");		
 		int a = inter.reviewtimelinecnt(id);
+		int b = inter.liketimelinecnt(id);
+		int c = inter.storeliketimelinecnt(id);
+		int d = inter.followtimelinecnt(id);
 		map.put("review",a);
+		map.put("reviewlike",b);
+		map.put("storelike",c);
+		map.put("follow",d);
+		return map;
+	}
+
+	public HashMap<String, Object> timelinereviewlist(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		logger.info(id);
+		map.put("list", inter.timelinereviewlist(id));
+		return map;
+	}
+
+	public HashMap<String, Object> followinsert(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String userid=params.get("userid");
+		String id=params.get("id");		
+		logger.info(userid+"/"+id+"/");		
+		int a = inter.followinsert(userid,id);
+		map.put("success",a);
+		return map;
+	}
+
+	public HashMap<String, Object> followcheck(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String userid=params.get("userid");
+		String id=params.get("id");
+		logger.info(id);
+		boolean followcheck = false;
+		if(inter.followcheck(userid,id) != null){
+			followcheck=true;
+		}		
+		map.put("id",followcheck);
+		return map;
+	}
+
+	public HashMap<String, Object> followdelete(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String userid=params.get("userid");
+		String id=params.get("id");		
+		logger.info(userid+"/"+id+"/");		
+		int a = inter.followdelete(userid,id);
+		map.put("success",a);
 		return map;
 	}
 

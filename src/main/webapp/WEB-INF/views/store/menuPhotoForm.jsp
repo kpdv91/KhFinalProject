@@ -12,9 +12,8 @@
 	</head>
 	<body>
 		<form id="photoUpload" action="./menuUpload" method="post" enctype="multipart/form-data">
-			<input type="file" name="file" onchange="photoUpload()"/>
+			<input type="file" name="file" onchange="photoUpload()" accept=".jpg,.jpeg,.png,.gif,.bmp"/>
 		</form>
-		업로드한 파일 경로 : <span></span>
 	</body>
 	<script>
 	function photoUpload(){
@@ -22,7 +21,6 @@
 	}
 	
 	var filePath = "${path}";
-	$("span").text(filePath);
 	
 	if(filePath != ""){
 		var content = "";//img태그

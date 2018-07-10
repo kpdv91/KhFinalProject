@@ -56,9 +56,12 @@ public class CommonController {
 		return commonservice.sendlist(params);
 	}
 	@RequestMapping(value = "/sendMessage")
-	public String sendMessage() {
-		logger.info("메세지 보내기 페이지 이동");		
-		return "timeline/timeline_sendMessage";
+	public ModelAndView sendMessage(@RequestParam("id") String id) {
+		logger.info("메세지 보내기 페이지 이동");
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("id",id);
+		mav.setViewName("timeline/timeline_sendMessage");
+		return mav;
 	}
 	@RequestMapping(value = "/receivedetail")
 	public ModelAndView receivedetail(@RequestParam("idx") String idx) {
@@ -104,5 +107,25 @@ public class CommonController {
 	public @ResponseBody HashMap<String, Object> maintimeline(@RequestParam Map<String,String> params) {
 		logger.info("타임라인 메인 리뷰,좋아요,찜한가게,팔로우 목록 요청");		
 		return commonservice.maintimeline(params);
+	}
+	@RequestMapping(value = "/timelinereviewlist")
+	public @ResponseBody HashMap<String, Object> timelinereviewlist(@RequestParam Map<String,String> params) {
+		logger.info("리뷰 리스트 요청");		
+		return commonservice.timelinereviewlist(params);
+	}
+	@RequestMapping(value = "/followinsert")
+	public @ResponseBody HashMap<String, Object> followinsert(@RequestParam Map<String,String> params) {
+		logger.info("팔로우 요청");		
+		return commonservice.followinsert(params);
+	}
+	@RequestMapping(value = "/followcheck")
+	public @ResponseBody HashMap<String, Object> followcheck(@RequestParam Map<String,String> params) {
+		logger.info("팔로우 체크");		
+		return commonservice.followcheck(params);
+	}
+	@RequestMapping(value = "/followdelete")
+	public @ResponseBody HashMap<String, Object> followdelete(@RequestParam Map<String,String> params) {
+		logger.info("팔로우 취소 요청");		
+		return commonservice.followdelete(params);
 	}
 }

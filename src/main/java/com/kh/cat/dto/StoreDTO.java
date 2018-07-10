@@ -9,10 +9,11 @@ public class StoreDTO {
 	private String store_name;
 	private String store_ceo;
 	private String store_addr;
+	private int store_price;
 	private String store_time;
 	private String store_food;
 	private String store_phone;
-	private String sotre_rest;
+	private String store_rest;
 	private int store_bHit;
 	private int store_revCnt;
 	private Date store_revDate;
@@ -55,6 +56,12 @@ public class StoreDTO {
 	public void setStore_addr(String store_addr) {
 		this.store_addr = store_addr;
 	}
+	public int getStore_price() {
+		return store_price;
+	}
+	public void setStore_price(int store_price) {
+		this.store_price = store_price;
+	}
 	public String getStore_time() {
 		return store_time;
 	}
@@ -73,11 +80,11 @@ public class StoreDTO {
 	public void setStore_phone(String store_phone) {
 		this.store_phone = store_phone;
 	}
-	public String getSotre_rest() {
-		return sotre_rest;
+	public String getStore_rest() {
+		return store_rest;
 	}
-	public void setSotre_rest(String sotre_rest) {
-		this.sotre_rest = sotre_rest;
+	public void setStore_rest(String sotre_rest) {
+		this.store_rest = sotre_rest;
 	}
 	public int getStore_bHit() {
 		return store_bHit;

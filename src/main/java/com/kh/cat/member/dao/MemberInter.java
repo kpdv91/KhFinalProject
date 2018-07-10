@@ -16,6 +16,10 @@ public interface MemberInter {
 
 	String getAut(String aut);//권한 가져오기
 
-	MemberDTO profileunder(String id);
+	MemberDTO profileunder(String id);	
+
+	String idAuth(String id);
+
+	String emailAuth(String email);
 	
 }

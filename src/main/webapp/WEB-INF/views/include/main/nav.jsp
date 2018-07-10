@@ -27,7 +27,9 @@
 <nav id="nav">
 	<div id="mainFrame">
 		<div id="logoBox">
-			<img alt="logo" src="resources/img/logo/logo_cat.png">
+			<a href="./">
+				<img alt="logo" src="resources/img/logo/logo_cat.png">
+			</a>
 		</div>
         <div id="searchBox">
         	<select id="search_map">
@@ -92,9 +94,7 @@ console.log(loginid);
 	
 	function search(){
 		location.href = "./search?search_content=" + $("#search_content").val()+"&search_map=" + $("#search_map").val();
-	};
-	alert("stop");
-	
+	};	
 	$( document ).ready(function() {		
 	    if(loginid != ""){	    	
 	    	$.ajax({
@@ -105,7 +105,7 @@ console.log(loginid);
 				},
 				dataType:"json",
 				success:function(d){
-					console.log(d);
+					//console.log(d);
 					$("#profileimg").attr("src",'resources/upload/'+d.profileimg.profile);
 				},
 				error:function(e){
@@ -136,7 +136,7 @@ console.log(loginid);
 		content += "<h3 id='userid'>"+data.id+"</h3>";
 		content += "<h4>보유 포인트 : "+data.pointCnt+"point</h4>";
 		content += "<div class='btn' id='"+data.id+"' onclick='gotimeline(id)'>타임라인</div>";
-		content += "<div class='btn' id='"+data.id+"'>로그아웃</div>";
+		content += "<div class='btn' id='"+data.id+"' onclick='logout()'>로그아웃</div>";
 		content += "</div>";
 		$("#profi").append(content);
 	}
@@ -144,4 +144,10 @@ console.log(loginid);
 		console.log(e);
 		location.href="./timeline?id="+e;
 	}
+	
+	function logout(){
+		console.log("로그아웃 실행");
+		location.href="./logout"
+	}
+	
 </script>

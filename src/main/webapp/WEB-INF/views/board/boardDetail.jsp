@@ -49,8 +49,11 @@
                     <td colspan="6"><textarea rows="15" id="board_content" readonly="readonly">${dto.board_content }</textarea></td>
                 </tr>
 			</table>
-            <button id="delete">삭제</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button id="update" onclick="update()">수정</button>   
+			
+			<c:if test="{sessionScope.loginId == dto.id}">
+	            <button id="delete">삭제</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	            <button id="update" onclick="update()">수정</button>   
+            </c:if>
 		</div>
 	</body>
 	<script>
@@ -72,7 +75,7 @@
 					if(data.success>0){
 						console.log(data.success);
 						alert("삭제 성공");
-						location.href="./boardList";
+						location.href="./boardListPage";
 					}else{
 						alert("삭제 실패");
 					}

@@ -32,7 +32,7 @@
 	
 	<select id="boardList" resultType="board">
 		SELECT board_idx, id, board_subject, board_content, board_cate, board_date
-			FROM board ORDER BY board_idx ASC
+			FROM board ORDER BY board_cate ASC, board_idx ASC
 	</select>
 </mapper>
 

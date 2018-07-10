@@ -60,7 +60,7 @@
 		SELECT COUNT(*) FROM follow WHERE id=#{param1}
 	</select>
 	<select id="timelinereviewlist" resultType="review">
-		SELECT * FROM review WHERE id=#{param1}
+		SELECT * FROM review WHERE id=#{param1} ORDER BY review_date DESC
 	</select>
 	<insert id="followinsert">
 		INSERT INTO follow VALUES(seq_follow.NEXTVAL,#{param1},#{param2})

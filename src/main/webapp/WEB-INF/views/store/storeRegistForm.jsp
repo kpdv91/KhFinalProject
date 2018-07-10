@@ -14,23 +14,30 @@
 		table,tr,td,th{
 			border: solid 1px black;
 		}
+		#regist{
+			position: relative;
+			width:800px;
+			top: 50px;
+			left: 25%;
+		}
 		</style>
 	</head>
 	<body>
 		<div id="regist">
-			
+			<h3>맛집 등록 요청</h3>
 			<table>
 				<tr>
 					<th>대표사진</th>
 					<td>
-						<form id="registForm" action="./photoUpload" method="post" enctype="multipart/form-data">
+						<form id="registForm" action="./photoUpload" method="post" enctype="multipart/form-data" style="margin:0px">
 							<input type="file" id="sPhoto" name="store_photo" accept=".jpg,.jpeg,.png,.gif,.bmp"/>
 							<input type="button" onclick="storeD()" value="초기화">
 						</form>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2">
+					<td></td>
+					<td>
 						<div id="sPhotoShow"></div>
 					</td>
 				</tr>
@@ -81,25 +88,27 @@
 					<td><input type="text" name="store_rest" placeholder="ex) 매달 셋째주 일요일"/></td>
 				</tr>
 				<tr>
-					<th rowspan="2">해쉬태그</th>
+					<th>해시 태그</th>
 					<td>
-						#<input type="text" id="tag" name="store_tag" placeholder="ex) 줄서는맛집"/>
+						<input type="text" id="tag" name="store_tag" placeholder="ex) 줄서는맛집"/>
 						<input type="button" onclick="tagAdd()" value="추가">
 					</td>
 				</tr>
 				<tr>
+					<td></td>
 					<td>
-					<div id="tags">
-					</div>
+						<div id="tags">
+						</div>
 					</td>
 				</tr>
 				<tr>
-					<th rowspan="2">메뉴판 사진</th>
+					<th>메뉴판 사진</th>
 					<td>
 						<input type="button" onclick="menuPhotoUp()" value="사진 추가">
 					</td>
 				</tr>
 				<tr>
+					<td></td>
 					<td>
 						<div id="editable"></div>
 					</td>
@@ -140,18 +149,16 @@
 		}catch (e) {
 			storeD();
 		}finally{
-			var formData = new FormData($("#sPhoto")[0]);
+			//대표 사진 업로드
+			var formData = new FormData($("#registForm")[0]);
 	        $.ajax({
 	            type : 'post',
 	            url : 'photoUpload',
 	            data : formData,
 	            processData : false,
 	            contentType : false,
-	            success : function(data) {
-	                //alert("파일 업로드하였습니다.");
-	            },
+	            success : function(data) {},
 	            error : function(error) {
-	                //alert("파일 업로드에 실패하였습니다.");
 	                console.log(error);
 	                console.log(error.status);
 	            }
@@ -165,47 +172,17 @@
 		$("#sPhoto").val("");
 		holder.innerHTML = '<img alt="기본사진"'
 		+'src="resources/img/store/storeD.jpg" width="400" height="270">';
-	}
-	
-	var hTag;
-	var tagList = [];
-	//해쉬 태그 추가
-	function tagAdd() {
-		hTag = $("#tag").val();
-		if(hTag==""){
-			alert("태그 내용을 입력해주세요.");
-		}else{
-			tagList.push(hTag);
-			var cnt =0;
-			for (var i = 0; i < tagList.length; i++) {
-		        if (tagList[i] == hTag) {
-		        	cnt++;
-		        }
+		
+		$.ajax({
+			url:"./photoDel",
+			type:"get",
+			success:function(data){
+				console.log(data);
+			},
+			error:function(e){
+				console.log(e);
 			}
-			
-			if(tagList.length>=11){
-				tagList.pop();
-				alert("태그는 최대 10개입니다.");
-			}else if(cnt>=2){
-				tagList.pop();
-				alert("중복되는 태그가 있습니다");
-			}
-			else{
-				$("#tags").append("<div>"
-						+"<input type='text' class='tag' readonly='readonly' value='"+hTag+"'>"
-						+"<div onclick='tagDel(this)'>X</div>"
-						+"</div>");
-				console.log(tagList);
-			}
-		}
-		$("#tag").val("");
-	}
-	
-	//해쉬태그 지우기
-	function tagDel(e){
-		hTag=$(e).prev().val();
-		$(e).parent().remove();
-		tagList.splice(tagList.indexOf(hTag),1);
+		});
 	}
 	
 	//메뉴사진 업로드 창
@@ -232,8 +209,6 @@
 			}
 		});
 	}
-	//
-
 
     var mapContainer = document.getElementById('map'), // 지도를 표시할 div
         mapOption = {
@@ -302,6 +277,47 @@
             }
         }).open();
     }
+	
+    var hTag;
+	var tagList = [];
+	//해쉬 태그 추가
+	function tagAdd() {
+		hTag = $("#tag").val();
+		if(hTag==""){
+			alert("태그 내용을 입력해주세요.");
+		}else{
+			tagList.push(hTag);
+			var cnt =0;
+			for (var i = 0; i < tagList.length; i++) {
+		        if (tagList[i] == hTag) {
+		        	cnt++;
+		        }
+			}
+			
+			if(tagList.length>=11){
+				tagList.pop();
+				alert("태그는 최대 10개입니다.");
+			}else if(cnt>=2){
+				tagList.pop();
+				alert("중복되는 태그가 있습니다");
+			}
+			else{
+				$("#tags").append("<div>"
+						+"<input type='text' class='tag' readonly='readonly' value='"+hTag+"'>"
+						+"<img alt='x이미지' src='resources/img/store/delImg.jpg' width='15' height='15' onclick='tagDel(this)'>"
+						+"</div>");
+				console.log(tagList);
+			}
+		}
+		$("#tag").val("");
+	}
+	
+	//해쉬태그 지우기
+	function tagDel(e){
+		hTag=$(e).prev().val();
+		$(e).parent().remove();
+		tagList.splice(tagList.indexOf(hTag),1);
+	}
 	
 	//등록요청
     function storeRegist() {

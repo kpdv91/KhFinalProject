@@ -24,22 +24,23 @@
 			#coupon{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#point{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#total{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
-			#content{margin-left: 100px;position: relative; width: 800px;height: auto;left : 350px;}
+			#content{margin-left : 100px;position: relative; width: 800px;height: auto;left : 350px;}
 			hr{margin-top:200px;}
 			#review{border: 2px solid #142e5b;width: 500px;height: 250px}
-	        #listTop{border-bottom: 2px solid #142e5b;height: 50px;line-height: 50px;}
-	        #listTop_R{float: right;height: 50px;width: 150px;line-height: 25px;}
-	        .review_tabletr{border-collapse: collapse;margin:0 auto;}
-	        <!-- height: 170 -> 100% -->
-	        .review_table{height: 100%;border-bottom: 2px solid #142e5b;border-collapse: collapse;width: 500px;margin:0 0;}
-	        #star{text-align: right;}
-	        #hashtag{border: 2px solid black;width: 60px;height: 25px;font-size: 12px;text-align: center;line-height: 25px;float: left;margin-left: 5px;}
-	        #review_text{border: 0px;width: 99%;height: 100%;resize: none;}
-	        #photo{width: 60px;height: 50px;float: left;margin-left: 5px;}
-	        #reviewReply{border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;width: 500px;display: none;}
-	        #starDiv{width: 100%;height: 30px;}
-	        #reviewList_hash,#reviewList_photo{width: 600px;height: auto;overflow: hidden;}
-	        #hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center; float: left;padding: 0px 5px;}
+        #listTop{border-bottom: 2px solid #142e5b;height: 50px;line-height: 50px;}
+        #listTop_R{float: right;height: 50px;width: 150px;line-height: 25px;}
+        #reply_div{position :absolute;margin-top:170px;}
+        .review_tabletr{border-collapse: collapse;margin:0 auto;}
+        #review_table{position :absolute;height: 170px;border-bottom: 2px solid #142e5b;border-collapse: collapse;width: 500px;margin-top:1px;}
+        #star{text-align: right;}
+        #hashtag{border: 2px solid black;width: 60px;height: 25px;font-size: 12px;text-align: center;line-height: 25px;float: left;margin-left: 5px;}
+        textarea{border: 0px;width: 99%;height: 100%;resize: none;}
+        #photo{width: 60px;height: 50px;float: left;margin-left: 5px;}
+        #reviewReply{border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;width: 500px;display: none;}
+        #starDiv{width: 100%;height: 30px;}
+        #reviewList_hash,#reviewList_photo{width: 600px;height: auto;overflow: hidden;}
+        #hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;}
+        #storeName_td{font-weight: bold;}
 		</style>
 	</head>
 	<body>
@@ -148,13 +149,13 @@
 			console.log(item.review_replyCnt);
 			content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 			content += "<div id='listTop'>"+item.id+"<div id='listTop_R'><br/>"+item.review_likeCnt+"명이 좋아합니다.</div></div>";
-			content += "<table class='review_table'><tr class='review_tabletr'><td class='review_tabletr'>"+item.review_storeName+"</td>";
+			content += "<div id='table_div'><table id='review_table'><tr class='review_tabletr'><td id='storeName_td' class='review_tabletr'>"+item.review_storeName+"</td>";
 			content += "<td id='star'></td></tr>";			
 			content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2'><textarea id='review_text' readonly>"+item.review_content+"</textarea></td></tr>";
 			content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
-			content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table>";
-			content += "<div><a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div></div>";
-			content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div><br/>";			
+			content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table></div>";
+			content += "<div id='reply_div'><a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div></div>";
+			content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div><br/></div>";			
 			idx=item.review_idx;
 			hashtag(idx);
 		})

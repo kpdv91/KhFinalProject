@@ -71,7 +71,9 @@
             아이디 : <input type="text" name="id" id="insertId" maxlength="30" /><input type="button" value="Id체크" onclick="javascript:chkDupId();" />
             
             <!-- <input type="email" id="email" placeholder="email" /> -->
-    		<input type="button" id="chkid" onclick="chkid()" value="중복확인">
+    		<!-- <input type="button" id="chkid" onclick="chkid()" value="중복확인"> -->
+    		<input id="overlay" type="button" value="중복체크"/></td>
+    		<!-- <input type="button" id="chkemail" onclick="chkemail()" value="E-mail 중복확인"> -->
 
             </td>
          </tr>
@@ -106,6 +108,7 @@
             <td>
                 <input id="cancel" type="button" onclick="location.href='#'" value="취소"/>
                 <input id="joinId" type="button" value="가입"/>
+                <input type="button" id="chkemail" onclick="location.href='./emailChkForm'" value="E-mail 중복확인">
             </td>
         </tr>
         </div>
@@ -113,6 +116,43 @@
 	</form>
 	</body>
 	<script>
+	
+	var obj={};//초기화	
+	obj.type="post";
+	obj.dataType="json";
+	obj.error=function(e){console.log(e)};
+
+	var overChk = false;//중복체크 값
+
+	$("#overlay").click(function(){			
+		obj.url="./overlay";
+		obj.data = {id:$("input[name='userId']").val()};			
+		obj.success=function(d){
+			console.log(d.overlay);
+			if(d.overlay==true){
+				alert("사용중인 아이디 입니다");
+				$("input[name='userId']").val("");
+			}else{
+				alert("사용가능한 아이디 입니다");
+				$("input[name='userId']").css("background-color","yellowgreen");
+				overChk = true;
+			}
+		};			
+		console.log(obj);
+		ajaxCall(obj);
+		
+	});
+	
+	//전달 받은 오브젝트로 ajax 통신 실행
+	function ajaxCall(obj){
+		$.ajax(obj);
+	}	
+	
+	
+/* 	function chkemail(){
+    	location.href = "./emailChk.jsp";
+    } */
+	
 	
 	var data = {}; //data 변수를 배열로 생성합니다.
 	  //중복확인 클릭시
@@ -165,7 +205,7 @@
 	
 	
 	
-	
+	    
 	
 	
 

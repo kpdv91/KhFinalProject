@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace=연결되는 인터페이스 -->    
+<mapper namespace="com.kh.cat.store.dao.StoreInter">
+	<!-- 글쓰기(등록된 글의 idx 컬럼을 반환해야한다.(몇가지 옵션이 필요하다.)) -->
+	<!-- 
+		parameterType 지정 (파라메터로 사용될 dto(bean))
+		useGenertedKeys = "true" (insert 후 키 생성 여부)
+		keyProperty = "idx" (키가 될 필드(dto변수))
+		keyColumn = "idx" (키가 저장될 DB 컬럼)
+	-->
+	<insert id="storeRegist" parameterType="store" 
+	useGeneratedKeys="true" keyProperty="store_idx" keyColumn="store_idx">
+		INSERT INTO store(store_Idx, id, store_photo, store_name, store_ceo, 
+		store_addr, store_price, store_time, store_food, store_phone, 
+		store_rest, store_bHit, store_revCnt, store_revDate, store_star, store_regist)
+		VALUES(seq_store.NEXTVAL, #{id}, #{store_photo}, #{store_name}, #{store_ceo},
+		 #{store_addr}, #{store_price}, #{store_time}, #{store_food}, #{store_phone},
+		 #{store_rest}, 0, 0, SYSDATE, 0,0)
+	</insert>
+	
+	<insert id="storeHashTag">
+	 	INSERT INTO hash(hash_cate, store_Idx, hash_tag)
+		VALUES('store',#{param1}, #{param2})
+	</insert>
+	
+	<insert id="storeMenu">
+		INSERT INTO menu(store_Idx, menu_photo)
+		VALUES(#{param1}, #{param2})
+	</insert>
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

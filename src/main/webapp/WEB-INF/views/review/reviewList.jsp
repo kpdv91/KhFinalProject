@@ -151,10 +151,21 @@
 	
 	function complain(elem){
 		var complain_Id = $(elem).parents()[1].childNodes[0].data;
-		var Win = window.open("./complainPage?complain_Id="+complain_Id,"Complain",'height=500,width=500,top=200,left=600');
-		console.log($(elem).parents()[1].childNodes[0].data);
+		var review_idx = $(elem).parents().parents()[1].childNodes[0].value;
+		var Win = window.open("./complainPage?complain_Id="+complain_Id+"&idx="+review_idx+"&complain_cate=리뷰","Complain",'height=500,width=500,top=200,left=600');
+		console.log($(elem).parents().parents()[1].childNodes[0].value);
+		
 
 	}
+	
+	//댓글신고할때 idx 값이랑 cate만 바꿔서!
+	/* function complain(elem){
+		var complain_Id = $(elem).parents()[1].childNodes[0].data;
+		var review_idx = $(elem).parents().parents()[1].childNodes[0].value;
+		var Win = window.open("./complainPage?complain_Id="+complain_Id+"&idx="+review_idx+"&complain_cate=리뷰","Complain",'height=500,width=500,top=200,left=600');
+		console.log($(elem).parents().parents()[1].childNodes[0].value);
+	} */
+	
 	function hashtag(elem){
 		 $.ajax({
 			url:"./reviewHashPhoto",
@@ -164,7 +175,7 @@
 			success:function(d){
 				//console.log(d.reviewHash);
 				//console.log(d.reviewHash);
-				console.log(d.reviewPhoto);
+				/* console.log(d.reviewPhoto); */
 				printHash(d.reviewHash,elem);		
 				printPhoto(d.reviewPhoto,elem);
 			},

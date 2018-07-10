@@ -10,7 +10,7 @@ public class ComplainDTO {
 	private String complain_content;
 	private String complain_cate;
 	private Date complain_date;
-	private String complain_black;
+	private int complain_black;
 	private int review_idx;
 	private int rev_reply_idx;
 	
@@ -56,10 +56,10 @@ public class ComplainDTO {
 	public void setComplain_date(Date complain_date) {
 		this.complain_date = complain_date;
 	}
-	public String getComplain_black() {
+	public int getComplain_black() {
 		return complain_black;
 	}
-	public void setComplain_black(String complain_black) {
+	public void setComplain_black(int complain_black) {
 		this.complain_black = complain_black;
 	}
 	public int getReview_idx() {

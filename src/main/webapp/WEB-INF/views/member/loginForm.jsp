@@ -102,9 +102,9 @@ $("#loginBtn").click(function(){
 	   	alert("비밀번호를 입력해주세요!!");
 	   	$("input[name='pw']").focus();
    /* }else if(!idReg.test( $("input[name=id]").val() )){	//id 유효성
-   	alert("아이디는 영문자로 시작하는 5~20자 영문자 또는 숫자이어야 합니다."); */
+   	alert("아이디는 5~20자 영문자 또는 숫자이어야 합니다."); */
    /* }else if($("input[name='pw']").val().length<8 || $("input[name='pw']").val().length>16){	//비밀번호 유효성
-   	alert("비밀번호는 영문(대소문자구분),숫자,특수문자(~!@#$%^&*()-_? 만 허용)를 혼용하여 8~16자를 입력해주세요.");
+   	alert("비밀번호는 8~16자를 입력해주세요.");
        return false;  */
    }else{
    	$("#login").submit();//submit

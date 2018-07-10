@@ -119,6 +119,7 @@ public class CommonService {
 		}
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("list", result);
+		mav.addObject("listCnt", result.size());
 		mav.setViewName("include/common/search");
 		return mav;
 	}

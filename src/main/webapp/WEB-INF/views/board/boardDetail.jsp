@@ -62,7 +62,7 @@
             </c:if>
 		</div>
 
-		<c:if test="${dto.board_cate == '문의사항'}">
+		<c:if test="${dto.board_cate == '문의사항'">
 			<div id="boardReply_write">    
 				<table> 
 					<tr>
@@ -93,31 +93,6 @@
 				<thead id="reply">
 					
 				</thead>
-				<%-- <tr>
-					<!-- 아이디, 작성날짜 -->
-					<td>
-						<div>
-							${reply.id }<br/>
-							${reply.boardReply_date }
-						</div>
-					</td>
-				
-				
-					<!-- 본문 -->
-					<td>
-						<div>
-							${reply.boardReply_content }
-						</div>
-					</td>	
-				
-					<!-- 수정, 삭제 -->
-					<td>
-						<div>
-							<button>수정</button>
-							<button>삭제</button>
-						</div>
-					</td>
-				</tr> --%>
 			</table>
 		</div>
 	</body>
@@ -125,27 +100,22 @@
 		function update() {
 			location.href="updateForm?idx="+${dto.board_idx};
 		}
-		
+		//댓글 리스트
 		$(document).ready(function () {
 			$.ajax({
 				type : "post",
 				url : "./boardReplyList",
-				data : {
-					idx : $("#board_idx").val()
-				},
+				data : { idx : $("#board_idx").val() },
 				dataType : "json",
 				success : function (data) {
 					reply(data.list);
 				},
-				error : function (error) {
-					console.log(error);
-				}
+				error : function (error) { console.log(error); }
 			});
 		});
 		
-		//받아온 리스트
+		//댓글 리스트 메소드
 		function reply(list) {
-			console.log("댓글리스트 어팬드 여부");
 			console.log(list); 
 			var content = "";
 			list.forEach(function(item, idx) {
@@ -155,9 +125,9 @@
 				content += "<td><div id='reply_content1'>"+item.boardReply_content+"</div>"+
 					"<div><textarea id='reply_content2' style='display:none;'>"+
 					item.boardReply_content+"</textarea></div></td>";
-				if(${sessionScope.loginId != "관리자"}){   
-					content += "</tr>";        
-				}else{   
+				if(${sessionScope.loginId != "관리자"}){    
+					content += "</tr>";         
+				}else{     
 					content += "<td><div><button id='replyUpdate'>수정</button>"+
 						"<button id='replySave' style='display:none;'>저장</button>"+
 						"<button id=replyDelete>삭제</button></div</td>";
@@ -220,9 +190,7 @@
 						}
 						location.href="boardDetail?idx="+$("#board_idx").val();
 					},
-					error : function (error) {
-						console.log(error);
-					}
+					error : function (error) { console.log(error); }
 				});
 			}); 
 		}  

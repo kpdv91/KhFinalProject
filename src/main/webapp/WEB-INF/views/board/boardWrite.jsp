@@ -32,12 +32,18 @@
 					<td>
                         <select id="category">
                             <option value="선택하세요" selected>선택하세요</option>
-                            <option>공지사항</option>
-                            <option>문의사항</option>
+                            <c:if test="${sessionScope.loginId != '관리자' }">
+                            	<option>문의사항</option>
+                            </c:if>
+                        
+                            <c:if test="${sessionScope.loginId == '관리자' }">
+                            	<option>공지사항</option>
+                            	<option>문의사항</option>
+                            </c:if>
                         </select>
                     </td>
 					<th>작성자</th>
-					<td><span id="user_name">관리자</span></td>
+					<td><span id="user_name">${sessionScope.loginId }</span></td>
 				</tr>
                 <tr>
                     <th>제목</th>
@@ -53,30 +59,38 @@
 	</body>
 	<script>
 		$("#write").click(function () {
-			$.ajax({
-				type : "post",
-				url : "./boardWrite",
-				data : {
-					cate : $("#category").val(),
-					id : $("#user_name").html(),
-					subject : $("#board_subject").val(),
-					content : $("#board_content").val()
-				},
-				dataType : "json",
-				success : function (data) {
-					console.log(data);
-					if(data.success>0){
-						console.log(data.success);
-						alert("글쓰기 성공");
-						location.href="./boardDetail?idx="+data.success
-					}else{
-						alert("글쓰기 실패");
+			if($("#category").val()=="선택하세요"){
+				alert("카테고리를 선택해주세요.");
+			}else if($("#board_subject").val()==""){
+				alert("제목을 입력해주세요.");
+			}else if($("#board_content").val()==""){
+				alert("내용을 입력해주세요.");
+			}else{
+				$.ajax({
+					type : "post",
+					url : "./boardWrite",
+					data : {
+						cate : $("#category").val(),
+						id : $("#user_name").html(),
+						subject : $("#board_subject").val(),
+						content : $("#board_content").val()
+					},
+					dataType : "json",
+					success : function (data) {
+						console.log(data);
+						if(data.success>0){
+							console.log(data.success);
+							alert("글쓰기 성공");
+							location.href="./boardDetail?idx="+data.success
+						}else{
+							alert("글쓰기 실패");
+						}
+					},
+					error : function (error) {
+						console.log(error);
 					}
-				},
-				error : function (error) {
-					
-				}
-			});
+				});
+			}
 		});
 	</script>
 </html>

@@ -5,6 +5,7 @@ import java.sql.Date;
 public class BoardReplyDTO {
 	private int boardReply_idx;
 	private int board_idx;
+	private String id;
 	private String boardReply_content;
 	private Date boardReply_date;
 	
@@ -20,6 +21,15 @@ public class BoardReplyDTO {
 	public void setBoard_idx(int board_idx) {
 		this.board_idx = board_idx;
 	}
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	
 	public String getBoardReply_content() {
 		return boardReply_content;
 	}

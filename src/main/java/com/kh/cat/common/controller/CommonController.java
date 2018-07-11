@@ -143,4 +143,9 @@ public class CommonController {
 		logger.info("댓글 리뷰 리스트 요청");		
 		return commonservice.timelinprofile(params);
 	}
+	@RequestMapping(value = "/timelinereviewreply")
+	public @ResponseBody HashMap<String, Object> timelinereviewreply(@RequestParam Map<String,String> params) {
+		logger.info("댓글 리뷰 리스트 요청");		
+		return commonservice.timelinereviewreply(params);
+	}
 }

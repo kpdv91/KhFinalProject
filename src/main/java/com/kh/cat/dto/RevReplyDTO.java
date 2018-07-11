@@ -3,18 +3,30 @@ package com.kh.cat.dto;
 import java.sql.Date;
 
 public class RevReplyDTO {
-	private int rev_reply_idx;
+	private int revreply_idx;
 	private int review_idx;
 	private String id;
-	private String rev_reply_content;
-	private Date rev_reply_date;
-	private String profile;
-	
-	public int getRev_reply_idx() {
-		return rev_reply_idx;
+	private String revreply_content;
+	private Date revreply_date;
+	private String revreply_profile;
+		
+	public int getRevreply_idx() {
+		return revreply_idx;
 	}
-	public void setRev_reply_idx(int rev_reply_idx) {
-		this.rev_reply_idx = rev_reply_idx;
+	public void setRevreply_idx(int revreply_idx) {
+		this.revreply_idx = revreply_idx;
+	}
+	public String getRevreply_content() {
+		return revreply_content;
+	}
+	public void setRevreply_content(String revreply_content) {
+		this.revreply_content = revreply_content;
+	}
+	public Date getRevreply_date() {
+		return revreply_date;
+	}
+	public void setRevreply_date(Date revreply_date) {
+		this.revreply_date = revreply_date;
 	}
 	public int getReview_idx() {
 		return review_idx;
@@ -28,24 +40,13 @@ public class RevReplyDTO {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getRev_reply_content() {
-		return rev_reply_content;
+	public String getRevreply_profile() {
+		return revreply_profile;
 	}
-	public void setRev_reply_content(String rev_reply_content) {
-		this.rev_reply_content = rev_reply_content;
+	public void setRevreply_profile(String revreply_profile) {
+		this.revreply_profile = revreply_profile;
 	}
-	public Date getRev_reply_date() {
-		return rev_reply_date;
-	}
-	public void setRev_reply_date(Date rev_reply_date) {
-		this.rev_reply_date = rev_reply_date;
-	}
-	public String getProfile() {
-		return profile;
-	}
-	public void setProfile(String profile) {
-		this.profile = profile;
-	}
+	
 	
 	
 }

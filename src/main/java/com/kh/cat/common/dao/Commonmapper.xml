@@ -86,6 +86,9 @@
 	<select id="storeSearch_Hash" resultType="hash">
 		SELECT * FROM hash WHERE store_idx=#{param1}
 	</select>
+	<select id="timelinereviewreply" resultType="revReply">
+		SELECT * FROM revreply WHERE review_idx=#{param1}
+	</select>
 </mapper>
 
 

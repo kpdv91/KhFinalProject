@@ -7,6 +7,7 @@ import com.kh.cat.dto.CouponBoxDTO;
 import com.kh.cat.dto.DMDTO;
 import com.kh.cat.dto.HashDTO;
 import com.kh.cat.dto.PointListDTO;
+import com.kh.cat.dto.RevReplyDTO;
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.dto.StoreDTO;
 
@@ -59,6 +60,8 @@ public interface CommonInter {
 	Object timelinprofile(String id);
 
 	ArrayList<HashDTO> storeSearch_Hash(int store_idx);
+
+	ArrayList<RevReplyDTO> timelinereviewreply(String idx);
 
 
 }

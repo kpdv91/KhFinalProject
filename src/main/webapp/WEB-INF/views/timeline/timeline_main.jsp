@@ -43,6 +43,12 @@
 	        #reviewList_hash,#reviewList_photo{width: 600px;height: auto;overflow: hidden;}
 	        #hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;}
 	        #storeName_td{font-weight: bold;}
+	        #reply{border: 1px solid #142e5b;height: 50px;width: 500px;height:auto;}
+			#reply_img{width: 50px;height: 40px;padding: 5px;}
+			#reply_id{font-size: 20px;width: 100px;text-align: center;}
+			#reply_content{padding: 5px;width: 240px;text-align: center;}
+			#reply_date{padding: 5px;width: 100px;text-align: center;}
+			#reply_table{border-bottom:1px solid black;}
 		</style>
 	</head>
 	<body>
@@ -74,6 +80,7 @@
 		</div>
 	</body>
 	<script>
+	var replyClick = 1;
 	var userid = "${sessionScope.loginId}";
 	var page = "";
 	//console.log(userid);
@@ -174,7 +181,7 @@
 				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
 				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table></div>";
 				content += "<div id='reply_div'><a id='"+item.review_idx+"' href='#' onclick='reply(id)'>댓글"+item.review_replyCnt+"개</a></div></div>";
-				content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div><br/></div>";			
+				content += "<div id='reviewReply'>댓글이 없습니다<br/></div><br/></div>";			
 				idx=item.review_idx;
 				hashtag(idx);
 			})
@@ -184,22 +191,44 @@
 	}
 	function reply(idx){
 		console.log(idx);
-		$.ajax({
-			url:"./timelinereviewlist",
-			type:"post",
-			data:{
-				idx : idx
-			},
-			dataType:"json",
-			success:function(d){
-				console.log(d);
-			},
-			error:function(e){
-				console.log(e);
-			}
-		});
+		replyClick *= -1;
+		if(replyClick == -1){
+			$("#reviewReply").css("display","block");
+			$.ajax({
+				url:"./timelinereviewreply",
+				type:"post",
+				data:{
+					idx : idx
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d);
+					replylist(d.replylist);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}else{
+			$("#reviewReply").css("display","none");
+		}			
 	}
-	
+	 function replylist(list){
+		var reply = "";
+		reply += "<div id='reply'>";
+		list.forEach(function(item){
+			var date = new Date(item.revreply_date);
+			reply +="<table id='reply_table'><tr>";
+			reply +="<td><img id='reply_img' src='resources/upload/"+item.revreply_profile+"'/></td>";
+			reply +="<td id='reply_id'>"+item.id+"</td>";
+			reply +="<td id='reply_content'>"+item.revreply_content+"</td>";
+			reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td>";
+			reply +="</tr></table>";
+		})
+		reply+="</div>";
+		$("#reviewReply").empty();
+		$("#reviewReply").append(reply);
+	}
 	function hashtag(elem){
 		 $.ajax({
 			url:"./reviewHashPhoto",

@@ -231,4 +231,13 @@ public class CommonService {
 		return map;
 	}
 
+	public HashMap<String, Object> timelinereviewreply(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String idx=params.get("idx");
+		logger.info(idx);
+		map.put("replylist", inter.timelinereviewreply(idx));
+		return map;
+	}
+
 }

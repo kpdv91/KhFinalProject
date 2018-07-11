@@ -19,6 +19,7 @@
 			#likestore{background-color: lightgray;border:1px solid black;position: absolute;width:100px;left: 710px;top: 130px;}
 			#friend{background-color: lightgray;border:1px solid black;position: absolute;width:120px;left: 810px;top: 130px;}
 			#userdetai{float: left;width: 180px;position:relative;}
+			#timeline_reply{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#update{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#message{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#coupon{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
@@ -27,20 +28,21 @@
 			#content{margin-left : 100px;position: relative; width: 800px;height: auto;left : 350px;}
 			hr{margin-top:200px;}
 			#review{border: 2px solid #142e5b;width: 500px;height: 250px}
-        #listTop{border-bottom: 2px solid #142e5b;height: 50px;line-height: 50px;}
-        #listTop_R{float: right;height: 50px;width: 150px;line-height: 25px;}
-        #reply_div{position :absolute;margin-top:170px;}
-        .review_tabletr{border-collapse: collapse;margin:0 auto;}
-        #review_table{position :absolute;height: 170px;border-bottom: 2px solid #142e5b;border-collapse: collapse;width: 500px;margin-top:1px;}
-        #star{text-align: right;}
-        #hashtag{border: 2px solid black;width: 60px;height: 25px;font-size: 12px;text-align: center;line-height: 25px;float: left;margin-left: 5px;}
-        textarea{border: 0px;width: 99%;height: 100%;resize: none;}
-        #photo{width: 60px;height: 50px;float: left;margin-left: 5px;}
-        #reviewReply{border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;width: 500px;display: none;}
-        #starDiv{width: 100%;height: 30px;}
-        #reviewList_hash,#reviewList_photo{width: 600px;height: auto;overflow: hidden;}
-        #hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;}
-        #storeName_td{font-weight: bold;}
+			#listTop{border-bottom: 2px solid #142e5b;height: 50px;line-height: 50px;}
+	        #listTop_C{position :absolute;margin-left:5px;}
+	        #listTop_R{float: right;height: 50px;width: 150px;line-height: 25px;}
+	        #reply_div{position :absolute;margin-top:170px;}
+	        .review_tabletr{border-collapse: collapse;margin:0 auto;}
+	        #review_table{position :absolute;height: 170px;border-bottom: 2px solid #142e5b;border-collapse: collapse;width: 500px;margin-top:1px;}
+	        #star{text-align: right;}
+	        #hashtag{border: 2px solid black;width: 60px;height: 25px;font-size: 12px;text-align: center;line-height: 25px;float: left;margin-left: 5px;}
+	        textarea{border: 0px;width: 99%;height: 100%;resize: none;}
+	        #photo{width: 60px;height: 50px;float: left;margin-left: 5px;}
+	        #reviewReply{border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;width: 500px;display: none;}
+	        #starDiv{width: 100%;height: 30px;}
+	        #reviewList_hash,#reviewList_photo{width: 600px;height: auto;overflow: hidden;}
+	        #hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;}
+	        #storeName_td{font-weight: bold;}
 		</style>
 	</head>
 	<body>
@@ -61,6 +63,7 @@
 		<br/>
 		<div class="userdetail" id="userdetai">
 			<div id="update">회원정보수정</div>
+			<div id="timeline_reply">작성한댓글리뷰</div>
 			<div id="message">쪽지함</div>
 			<div id="coupon">구매한 쿠폰</div>
 			<div id="point">포인트내역</div>
@@ -124,7 +127,22 @@
 			error:function(e){
 				console.log(e);
 			}
-		});		
+		});
+		$.ajax({
+			url:"./timelinprofile",
+			type:"post",
+			data:{
+				id : "${id}"
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d.profile);
+				$("#profileim").attr("src",'resources/upload/'+d.profile);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
 	});
 	function timelinereview(){
 		$.ajax({
@@ -144,23 +162,42 @@
 		});
 	};
 	function printList(list){		 
-		var content = "";		
-		list.forEach(function(item){
-			console.log(item.review_replyCnt);
-			content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-			content += "<div id='listTop'>"+item.id+"<div id='listTop_R'><br/>"+item.review_likeCnt+"명이 좋아합니다.</div></div>";
-			content += "<div id='table_div'><table id='review_table'><tr class='review_tabletr'><td id='storeName_td' class='review_tabletr'>"+item.review_storeName+"</td>";
-			content += "<td id='star'></td></tr>";			
-			content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2'><textarea id='review_text' readonly>"+item.review_content+"</textarea></td></tr>";
-			content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
-			content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table></div>";
-			content += "<div id='reply_div'><a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div></div>";
-			content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div><br/></div>";			
-			idx=item.review_idx;
-			hashtag(idx);
+		var content = "";
+		list.forEach(function(i){
+			i.forEach(function(item){
+				console.log(item.review_replyCnt);
+				content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
+				content += "<div id='listTop'><div id='listTop_C'>"+item.id+"</div><div id='listTop_R'><br/>"+item.review_likeCnt+"명이 좋아합니다.</div></div>";
+				content += "<div id='table_div'><table id='review_table'><tr class='review_tabletr'><td id='storeName_td' class='review_tabletr'>"+item.review_storeName+"</td>";
+				content += "<td id='star'></td></tr>";			
+				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2'><textarea id='review_text' readonly>"+item.review_content+"</textarea></td></tr>";
+				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
+				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table></div>";
+				content += "<div id='reply_div'><a id='"+item.review_idx+"' href='#' onclick='reply(id)'>댓글"+item.review_replyCnt+"개</a></div></div>";
+				content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div><br/></div>";			
+				idx=item.review_idx;
+				hashtag(idx);
+			})
 		})
 		$("#content").empty();
 		$("#content").append(content);
+	}
+	function reply(idx){
+		console.log(idx);
+		$.ajax({
+			url:"./timelinereviewlist",
+			type:"post",
+			data:{
+				idx : idx
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
 	}
 	
 	function hashtag(elem){
@@ -196,9 +233,7 @@
 		$("#reviewList_photo"+elem).append(img);
 	}
 	$(".userdetail").click(function(e) {
-		console.log(e.target.id);
-		$(this).css("background-color","darkblue");
-		$(this).css("color","white");		
+		console.log(e.target.id);	
 		if(e.target.id == "message") {
 			page = "resources/timelinehtml/messagebox.html";
 			$("#message").css("background-color","darkblue");
@@ -215,8 +250,10 @@
 	    	$("#myreview").css("color","black");
 	    	$("#likereview").css("background-color","lightgray");
 	    	$("#likereview").css("color","black");
-	    	$("#likestore").css("background-color","lightgray");
+	    	$("#likestore").css("background-color","lightgray");	    	
 	    	$("#likestore").css("color","black");
+	    	$("#timeline_reply").css("background-color","lightgray");
+	    	$("#timeline_reply").css("color","black");
 	    	$("#content").load(page,function(res, stat) {});
 			ajaxCall(page);
 		} else if(e.target.id == "coupon") {
@@ -237,6 +274,8 @@
 	    	$("#likereview").css("color","black");
 	    	$("#likestore").css("background-color","lightgray");
 	    	$("#likestore").css("color","black");
+	    	$("#timeline_reply").css("background-color","lightgray");
+	    	$("#timeline_reply").css("color","black");
 	    	$("#content").load(page,function(res, stat) {});
 			ajaxCall(page);
 		} else if(e.target.id == "point"){
@@ -257,6 +296,8 @@
 	    	$("#likereview").css("color","black");
 	    	$("#likestore").css("background-color","lightgray");
 	    	$("#likestore").css("color","black");
+	    	$("#timeline_reply").css("background-color","lightgray");
+	    	$("#timeline_reply").css("color","black");
 	    	$("#content").load(page,function(res, stat) {});
 			ajaxCall(page);
 		}else if(e.target.id == "update") {
@@ -277,12 +318,14 @@
 	    	$("#likereview").css("color","black");
 	    	$("#likestore").css("background-color","lightgray");
 	    	$("#likestore").css("color","black");
+	    	$("#timeline_reply").css("background-color","lightgray");
+	    	$("#timeline_reply").css("color","black");
 	    	$("#content").load(page,function(res, stat) {});
 			ajaxCall(page);
 		}else if(e.target.id == "myreview") {
 			page = "reviewlist"
-			$("#update").css("background-color","darkblue");
-			$("#update").css("color","white");
+			$("#myreview").css("background-color","darkblue");
+			$("#myreview").css("color","white");
 			$("#coupon").css("background-color","lightgray");
 			$("#coupon").css("color","black");
 	    	$("#message").css("background-color","lightgray");
@@ -297,8 +340,52 @@
 	    	$("#likereview").css("color","black");
 	    	$("#likestore").css("background-color","lightgray");
 	    	$("#likestore").css("color","black");
+	    	$("#timeline_reply").css("background-color","lightgray");
+	    	$("#timeline_reply").css("color","black");
 	    	ajaxCall(page);
-		}		
+		}else if(e.target.id == "likereview") {
+			page = "likereview"
+				$("#likereview").css("background-color","darkblue");
+				$("#likereview").css("color","white");
+				$("#coupon").css("background-color","lightgray");
+				$("#coupon").css("color","black");
+		    	$("#message").css("background-color","lightgray");
+		    	$("#message").css("color","black");
+		    	$("#point").css("background-color","lightgray");
+		    	$("#point").css("color","black");
+		    	$("#total").css("background-color","lightgray");
+		    	$("#total").css("color","black");
+		    	$("#update").css("background-color","lightgray");
+		    	$("#update").css("color","black");
+		    	$("#myreview").css("background-color","lightgray");
+		    	$("#myreview").css("color","black");
+		    	$("#likestore").css("background-color","lightgray");
+		    	$("#likestore").css("color","black");
+		    	$("#timeline_reply").css("background-color","lightgray");
+		    	$("#timeline_reply").css("color","black");
+		    	ajaxCall(page);
+			}else if(e.target.id == "timeline_reply"){
+				page = "timeline_reply"
+					$("#timeline_reply").css("background-color","darkblue");
+					$("#timeline_reply").css("color","white");
+					$("#coupon").css("background-color","lightgray");
+					$("#coupon").css("color","black");
+			    	$("#message").css("background-color","lightgray");
+			    	$("#message").css("color","black");
+			    	$("#point").css("background-color","lightgray");
+			    	$("#point").css("color","black");
+			    	$("#total").css("background-color","lightgray");
+			    	$("#total").css("color","black");
+			    	$("#update").css("background-color","lightgray");
+			    	$("#update").css("color","black");
+			    	$("#myreview").css("background-color","lightgray");
+			    	$("#myreview").css("color","black");
+			    	$("#likestore").css("background-color","lightgray");
+			    	$("#likestore").css("color","black");
+			    	$("#likereview").css("background-color","lightgray");
+			    	$("#likereview").css("color","black");
+			    	ajaxCall(page);
+			}
 	});		
 	function ajaxCall(page){
 		if(page=="resources/timelinehtml/messagebox.html"){
@@ -363,7 +450,39 @@
 				error:function(e){
 					console.log(e);
 				}
-			});	
+			});
+		}else if(page=="likereview"){
+			 $.ajax({
+				url:"./timelinelikereview",
+				type:"post",
+				data:{
+					id : "${id}"
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d.list);
+					printList(d.list);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}else if(page=="timeline_reply"){
+			$.ajax({
+			url:"./timeline_reply",
+			type:"post",
+			data:{
+				id : userid
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d.list);
+				printList(d.list);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
 		}
 	}
 	function couponlist(list){

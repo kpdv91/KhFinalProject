@@ -62,7 +62,18 @@
 	<delete id="followdelete">
 		DELETE FROM follow WHERE id=#{param1} AND follow_id=#{param2}
 	</delete>
-	
+	<select id="timelinereview" resultType="Integer">
+		SELECT review_idx FROM revlike WHERE id=#{param1}
+	</select>
+	<select id="timelinelikereview" resultType="review">
+		SELECT * FROM review WHERE review_idx=#{param1} ORDER BY review_date DESC
+	</select>
+	<select id="my_reply" resultType="Integer">
+		SELECT review_idx FROM revreply WHERE id=#{param1}
+	</select>
+	<select id="timelinprofile" resultType="String">
+		SELECT profile FROM member WHERE id=#{param1}
+	</select>
 	<select id="storeSearch_And" resultType="store">
 		SELECT * FROM store WHERE store_addr LIKE '%'||#{param1}||'%' AND store_name LIKE '%'||#{param2}||'%'
 	</select>

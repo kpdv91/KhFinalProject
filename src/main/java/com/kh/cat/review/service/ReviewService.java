@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.review.dao.ReviewInter;
 
@@ -198,5 +199,26 @@ public class ReviewService {
 		}
 	}
 
+	public HashMap<String, Integer> complain(HashMap<String, String> map) {
+		logger.info("신고하기 서비스");
+		ComplainDTO dto = new ComplainDTO();
+		dto.setId(map.get("Id"));
+		dto.setComplain_id(map.get("compId"));
+		dto.setComplain_cate(map.get("complain_cate"));
+		logger.info(map.get("complain_cate"));
+		if(map.get("complain_cate").equals("리뷰")) {
+			dto.setReview_idx(Integer.parseInt(map.get("idx")));
+		}else {
+			dto.setRev_reply_idx(Integer.parseInt(map.get("idx")));
+		}
+		dto.setComplain_type(map.get("complain_type"));
+		dto.setComplain_content(map.get("complain_content"));
+		System.out.println(dto.getId()+"/"+dto.getComplain_id()+"/"+dto.getComplain_cate()+"/"+dto.getReview_idx()+"/"+dto.getRev_reply_idx()+"/"+dto.getComplain_type()+"/"+dto.getComplain_content());
+		inter = sqlSession.getMapper(ReviewInter.class);
+		HashMap<String, Integer> hash = new HashMap<String, Integer>();
+		hash.put("success", inter.complain(dto));
+		System.out.println(hash.get("success"));
+		return hash;
+	}
 
 }

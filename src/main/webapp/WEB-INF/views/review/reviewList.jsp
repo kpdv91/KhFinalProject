@@ -93,7 +93,9 @@
             float: left;
             padding: 0px 5px;
         }
-        
+        #storeName_td{
+        	font-weight: bold;
+        }
 		</style>
 		<script>
 		
@@ -129,8 +131,8 @@
 		var content = "";
 		list.forEach(function(item){
 			content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-			content += "<div id='listTop'>"+item.id+"<div id='listTop_R'><a href='#'>신고</a><br/>명이 좋아합니다.</div></div>";
-			content += "<table><tr><td>"+item.review_storeName+"</td>";
+			content += "<div id='listTop'>"+item.id+"<div id='listTop_R'><a href='#' onclick='complain(this)'>신고</a><br/>명이 좋아합니다.</div></div>";
+			content += "<table><tr><td id='storeName_td'>"+item.review_storeName+"</td>";
 			content += "<td id='star'></td></tr>";
 			
 			content += "<tr><td colspan='2'><textarea readonly>"+item.review_content+"</textarea></td></tr>";
@@ -147,6 +149,23 @@
 		
 	}
 	
+	function complain(elem){
+		var complain_Id = $(elem).parents()[1].childNodes[0].data;
+		var review_idx = $(elem).parents().parents()[1].childNodes[0].value;
+		var Win = window.open("./complainPage?complain_Id="+complain_Id+"&idx="+review_idx+"&complain_cate=리뷰","Complain",'height=500,width=500,top=200,left=600');
+		console.log($(elem).parents().parents()[1].childNodes[0].value);
+		
+
+	}
+	
+	//댓글신고할때 idx 값이랑 cate만 바꿔서!
+	/* function complain(elem){
+		var complain_Id = $(elem).parents()[1].childNodes[0].data;
+		var review_idx = $(elem).parents().parents()[1].childNodes[0].value;
+		var Win = window.open("./complainPage?complain_Id="+complain_Id+"&idx="+review_idx+"&complain_cate=리뷰","Complain",'height=500,width=500,top=200,left=600');
+		console.log($(elem).parents().parents()[1].childNodes[0].value);
+	} */
+	
 	function hashtag(elem){
 		 $.ajax({
 			url:"./reviewHashPhoto",
@@ -156,7 +175,7 @@
 			success:function(d){
 				//console.log(d.reviewHash);
 				//console.log(d.reviewHash);
-				console.log(d.reviewPhoto);
+				/* console.log(d.reviewPhoto); */
 				printHash(d.reviewHash,elem);		
 				printPhoto(d.reviewPhoto,elem);
 			},

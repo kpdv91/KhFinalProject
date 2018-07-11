@@ -26,8 +26,6 @@
 	</style>
 	</head>
 	<body>
-		<input type="text" id="sample5_address" placeholder="주소">
-		<input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
 		<div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
 		
 		<input id="review_Write" type="button" value="리뷰 작성" onclick="reviewWrite()"/><br/><br/>

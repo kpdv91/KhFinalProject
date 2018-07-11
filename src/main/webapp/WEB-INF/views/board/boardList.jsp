@@ -67,12 +67,11 @@
 			list.forEach(function(item, idx) {
 				content += "<tr>";
 				content += "<td>"+item.board_idx+"</td>";
-				content += "<td>"+item.board_cate+"</td>";
-				content += "<td>"+item.board_subject+"</td>";
+				content += "<td>"+item.board_cate+"</td>"; 
+				content += "<td><a href='./boardDetail?idx="+item.board_idx+"'>"+item.board_subject+"</a></td>";
 				content += "<td>"+item.id+"</td>";
 				var date = new Date(item.board_date);
 				content += "<td>"+date.toLocaleDateString("ko-KR")+"</td>";
-				content += "<td><a href='#'>삭제</a></td>";
 				content += "</tr>";
 			});
 			$("#list").empty();

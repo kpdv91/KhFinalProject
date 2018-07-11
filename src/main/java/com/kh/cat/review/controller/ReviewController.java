@@ -96,5 +96,24 @@ public class ReviewController {
 		String root = session.getServletContext().getRealPath("/");
 		return service.reviewHashPhoto(review_idx,root);
 	}
+	@RequestMapping(value = "/complainPage")
+	public ModelAndView complainPage(@RequestParam("complain_Id") String complain_Id,@RequestParam("idx") String idx,@RequestParam("complain_cate") String complain_cate) {		
+		System.out.println("신고 페이지 요청");
+		logger.info(complain_Id);
+		logger.info(idx);
+		logger.info(complain_cate);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("complain_Id",complain_Id);
+		mav.addObject("idx",idx);
+		mav.addObject("complain_cate",complain_cate);
+		mav.setViewName("review/complainForm");		
+		return mav;
+	}
 	
+	@RequestMapping(value = "/complain")
+	public @ResponseBody HashMap<String, Integer> complain(@RequestParam HashMap<String, String>map) {		
+		System.out.println("신고 요청");
+		logger.info(""+service.complain(map).get("success"));
+		return service.complain(map);
+	}
 }

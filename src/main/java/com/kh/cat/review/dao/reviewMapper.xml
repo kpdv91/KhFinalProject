@@ -67,5 +67,16 @@
 	 <update id="likePoint">
 	 	UPDATE member SET pointcnt = pointcnt + 1000 WHERE id=#{param1}
 	 </update>
+	 
+	 <!-- 신고하기 -->
+	 <insert id="complain" parameterType="complain">
+	 	INSERT INTO complain
+	 	<if test="!review_idx.equals('')">
+			VALUES(seq_complain.NEXTVAL,#{id},#{complain_id},#{complain_type},#{complain_content},#{complain_cate},SYSDATE,0,#{review_idx},null)
+		</if>		
+		<if test="review_idx.equals('')">
+			VALUES(seq_complain.NEXTVAL,#{id},#{complain_id},#{complain_type},#{complain_content},#{complain_cate},SYSDATE,0,null,#{rev_reply_idx})
+		</if>
+	 </insert>
 	
 </mapper>

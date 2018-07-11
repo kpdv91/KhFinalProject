@@ -54,10 +54,9 @@ public class ReviewController {
 		
 		return service.fileDel(root,fileName);
 	}
-	
 	@RequestMapping(value= "/reviewWrite")
 	public String wirte(@RequestParam("hash_tag") ArrayList<String> hash_tag,
-			@RequestParam("review_photo") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map, HttpServletRequest request) {
+			@RequestParam(value ="review_photo", required = false, defaultValue = "0") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map, HttpServletRequest request) {
 		logger.info("글쓰기 요청");	
 		logger.info(""+map);
 	
@@ -96,6 +95,13 @@ public class ReviewController {
 		String root = session.getServletContext().getRealPath("/");
 		return service.reviewHashPhoto(review_idx,root);
 	}
+	
+	@RequestMapping(value = "/review_star")
+	public @ResponseBody HashMap<String, Object> review_star(@RequestParam("review_idx") String review_idx) {
+		logger.info("리뷰 해시태그, 사진 요청");
+		return service.review_star(review_idx);
+	}
+	
 	@RequestMapping(value = "/complainPage")
 	public ModelAndView complainPage(@RequestParam("complain_Id") String complain_Id,@RequestParam("idx") String idx,@RequestParam("complain_cate") String complain_cate) {		
 		System.out.println("신고 페이지 요청");

@@ -3,8 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+		<script src="resources/js/jquery-1.11.3.min.js"></script>
+		<script src="resources/js/star.js"></script>
+		<!-- <link rel="stylesheet" type="text/css" href="star.css"> -->
 		<title>Insert title here</title>
 		<style>
 		#reviewListDiv{
@@ -14,7 +18,7 @@
 			 #review{
             border: 2px solid #142e5b;
             width: 500px;
-            height: 250px
+            
         }
         #listTop{
             border-bottom: 2px solid #142e5b;
@@ -26,6 +30,9 @@
             height: 50px;
             width: 150px;
             line-height: 25px;
+            text-align: right;
+            font-size: 13
+            px;
         }
         tr,td{
 				/* border:1px solid black; */
@@ -42,9 +49,9 @@
 			
 			margin:0 auto;
         }
-        #star{
+        .starTd{
             text-align: right;
-
+            overflow: hidden;
         }
         #hashtag{
             border: 2px solid black;
@@ -95,11 +102,87 @@
         }
         #storeName_td{
         	font-weight: bold;
+        	width: 300px;
         }
+        #tableTop{
+        	height: 40px;
+        }
+        a{
+        	text-decoration: none;
+        	color: black;
+        }
+        a:hover{
+        	color: red;
+        }
+        
+        
+.star-input>.input,
+.star-input>.input>label:hover,
+.star-input>.input>input:focus+label,
+.star-input>.input>input:checked+label{
+    display: inline-block;
+    vertical-align:middle;
+    background:url('resources/img/star/grade_img.png')no-repeat;
+}
+.star-input{
+    display:inline-block; 
+    white-space:nowrap;
+    width:225px;height:40px;
+   line-height:30px; padding-top: 5px;
+}
+.star-input>.input{
+    display:inline-block;
+    width:150px;height:28px;
+    background-size:150px;
+    white-space:nowrap;
+    overflow:hidden;
+    position: relative;
+}
+.star-input>.input>input{
+    position:absolute;
+    width:1px;height:1px;
+    opacity:0;
+}
+star-input>.input.focus{
+    outline:1px dotted #ddd;
+}
+.star-input>.input>label{
+    width:30px;height:0;
+    padding:28px 0 0 0;
+    overflow: hidden;
+    float:left;
+    cursor: pointer;
+    position: absolute;
+    top: 0;left: 0;
+}
+.star-input>.input>label:hover,
+.star-input>.input>input:focus+label,
+.star-input>.input>input:checked+label{
+    background-size: 150px;
+    background-position: 0 bottom;
+}
+.star-input>.input>label:hover~label{
+    background-image: none;
+}
+.star-input>.input>label[for="p0.5"]{width:15px;z-index:10;}
+.star-input>.input>label[for="p1.0"]{width:30px;z-index:9;}
+.star-input>.input>label[for="p1.5"]{width:45px;z-index:8;}
+.star-input>.input>label[for="p2.0"]{width:60px;z-index:7;}
+.star-input>.input>label[for="p2.5"]{width:75px;z-index:6;}
+.star-input>.input>label[for="p3.0"]{width:90px;z-index:5;}
+.star-input>.input>label[for="p3.5"]{width:105px;z-index:4;}
+.star-input>.input>label[for="p4.0"]{width:120px;z-index:3;}
+.star-input>.input>label[for="p4.5"]{width:135px;z-index:2;}
+.star-input>.input>label[for="p5.0"]{width:150px;z-index:1;}
+.star-input>output{
+    display:inline-block;
+    width:60px; font-size:18px;
+    text-align:right; 
+    vertical-align:middle;
+}
+
 		</style>
-		<script>
 		
-		</script>
 	</head>
 	<body>
 	<div id="reviewListDiv">
@@ -109,6 +192,8 @@
 	
 	</body>
 	<script>
+	var loginId = "${sessionScope.loginId}";
+	
 	listCall();
 	function listCall(){
 		$.ajax({
@@ -116,37 +201,78 @@
 			type:"post",
 			dataType:"json",
 			success:function(d){
-				console.log(d.reviewList);
+				//console.log(d.reviewList);
 				printList(d.reviewList);
-				$("#star").load("star.jsp #star-input");
+				
 			},
 			error:function(e){console.log(e);}
 		});
 	}
-	
-	//starChk(item.review_star);
-	
+	var aTag="";
 	var idx="";
 	function printList(list){		 
 		var content = "";
 		list.forEach(function(item){
 			content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-			content += "<div id='listTop'>"+item.id+"<div id='listTop_R'><a href='#' onclick='complain(this)'>신고</a><br/>명이 좋아합니다.</div></div>";
-			content += "<table><tr><td id='storeName_td'>"+item.review_storeName+"</td>";
-			content += "<td id='star'></td></tr>";
-			
+			content += "<div id='listTop'>"+item.id+"<div id='listTop_R'><br/>명이 좋아합니다.</div></div>";
+			content += "<table><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
+			content += "<td id='starTd"+item.review_idx+"' class='starTd'></td></tr>";
 			content += "<tr><td colspan='2'><textarea readonly>"+item.review_content+"</textarea></td></tr>";
 			content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
 			content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table>";
 			content += "<a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div>";
 			content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div><br/>";
 			
+			
 			idx=item.review_idx;
 			hashtag(idx);
-		})
+			starSelect(idx);		
+			aTag = "";
+			/* if(loginId == item.id){				
+				aTag += "<a id='review_update' href='#' onclick='review_update()'>수정</a>&nbsp;";
+				aTag += "<a id='review_delete' href='#' onclick='review_delete()'>삭제</a>&nbsp;";
+			}else{
+				aTag += "<a href='#' onclick='complain(this)'>신고</a>"
+			} */
+			
+		});
 		
-		$("#reviewListDiv").append(content);
-		
+		$("#reviewListDiv").append(content);		
+		//$("#listTop_R").append(aTag);
+	}
+	
+	function starSelect(elem){
+		$.ajax({
+			url:"./review_star",
+			type:"post",
+			dataType:"json",
+			data:{"review_idx":elem},
+			success:function(d){
+				//console.log(d.reviewStar)
+				star_create(d.reviewStar,elem);		
+			},
+			error:function(e){console.log(e);}
+		});	 
+	}
+	
+	function star_create(star,elem){
+		//console.log(star);
+		var starCre = "";
+		starCre +="<span id='star-input' class='star-input'><span id='input' class='input'>";		
+		starCre +="<input id='"+elem+"0.5' type='radio' name='star-input"+elem+"' value='0.5' id='p0.5'><label  id='"+elem+"0.5' for='p0.5'>0.5</label>";
+		starCre +="<input id='"+elem+"1' type='radio' name='star-input"+elem+"' value='1' id='p1.0'><label  id='"+elem+"1' for='p1.0'>1.0</label>";
+		starCre +="<input id='"+elem+"1.5' type='radio' name='star-input"+elem+"' value='1.5' id='p1.5'><label id='"+elem+"1.5' for='p1.5'>1.5</label>";
+		starCre +="<input id='"+elem+"2' type='radio' name='star-input"+elem+"' value='2' id='p2.0'><label id='"+elem+"2' for='p2.0'>2.0</label>";
+		starCre +="<input id='"+elem+"2.5' type='radio' name='star-input"+elem+"' value='2.5' id='p2.5'><label id='"+elem+"2.5' for='p2.5'>2.5</label>";
+		starCre +="<input id='"+elem+"3' type='radio' name='star-input"+elem+"' value='3' id='p3.0'><label id='"+elem+"3' for='p3.0'>3.0</label>";
+		starCre +="<input id='"+elem+"3.5' type='radio' name='star-input"+elem+"' value='3.5' id='p3.5'><label id='"+elem+"3.5' for='p3.5'>3.5</label>";
+		starCre +="<input id='"+elem+"4' type='radio' name='star-input"+elem+"' value='4' id='p4.0'><label id='"+elem+"4' for='p4.0'>4.0</label>";
+		starCre +="<input id='"+elem+"4.5' type='radio' name='star-input"+elem+"' value='4.5' id='p4.5'><label id='"+elem+"4.5' for='p4.5'>4.5</label>";
+		starCre +="<input id='"+elem+"5' type='radio' name='star-input"+elem+"' value='5' id='p5.0'><label id='"+elem+"5' for='p5.0'>5.0</label>";
+		starCre +="</span></span>";		
+  		$("#starTd"+elem).append(starCre);
+  		$("#"+elem+star).attr('checked', true);
+  		$("#starTd"+elem).css("pointer-events","none");
 	}
 	
 	function complain(elem){
@@ -154,8 +280,6 @@
 		var review_idx = $(elem).parents().parents()[1].childNodes[0].value;
 		var Win = window.open("./complainPage?complain_Id="+complain_Id+"&idx="+review_idx+"&complain_cate=리뷰","Complain",'height=500,width=500,top=200,left=600');
 		console.log($(elem).parents().parents()[1].childNodes[0].value);
-		
-
 	}
 	
 	//댓글신고할때 idx 값이랑 cate만 바꿔서!
@@ -173,9 +297,6 @@
 			dataType:"json",
 			data:{"review_idx":elem},
 			success:function(d){
-				//console.log(d.reviewHash);
-				//console.log(d.reviewHash);
-				/* console.log(d.reviewPhoto); */
 				printHash(d.reviewHash,elem);		
 				printPhoto(d.reviewPhoto,elem);
 			},
@@ -188,7 +309,6 @@
 		hash.forEach(function(item){
 			tag += "<div id='hashtag'>#"+item.hash_tag+"</div>";
 		});
-		console.log($("#reviewList_hash"));
 		$("#reviewList_hash"+elem).append(tag);
 	}
 	

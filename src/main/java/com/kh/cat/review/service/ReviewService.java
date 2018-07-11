@@ -150,6 +150,7 @@ public class ReviewService {
 		return map;
 	}
 
+	//리뷰 해시태그, 사진
 	public HashMap<String, Object> reviewHashPhoto(String review_idx, String root) {
 		logger.info("리뷰 해시태그");
 		inter = sqlSession.getMapper(ReviewInter.class);
@@ -219,6 +220,15 @@ public class ReviewService {
 		hash.put("success", inter.complain(dto));
 		System.out.println(hash.get("success"));
 		return hash;
+	}
+
+	public HashMap<String, Object> review_star(String review_idx) {
+		logger.info("리뷰 별점");
+		inter = sqlSession.getMapper(ReviewInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("reviewStar", inter.reviewStar(review_idx));
+		logger.info(""+map.get("reviewStar"));
+		return map;
 	}
 
 }

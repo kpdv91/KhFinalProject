@@ -30,6 +30,7 @@
 			.storeTable{
 				float: left;
 				margin-right: 10px;
+				margin-top: 10px;
 			}
 			.storeImg{
 				width: 250px;
@@ -40,6 +41,15 @@
 				float: right;
 				border-radius: 5px;
 			}
+			#hashtag{
+	        	border: 2px solid #33aaaaff;
+	            font-size: 14px;
+	            width: auto;            
+	            text-align: center; 
+	            float: left;
+	            padding: 0px 5px;
+	            margin-right: 5px;
+	        }
 		</style>
 	</head>
 	
@@ -67,7 +77,7 @@
 		</select>
 		<br/><br/>
 		
-		<c:forEach items="${list}" var="sto">
+		<c:forEach items="${list}" var="sto" varStatus="status">
 			<table class="storeTable">
 				<tr>
 					<td colspan="3"><img class="storeImg" src="resources/img/search.png" /></td>
@@ -82,7 +92,12 @@
 					<th>${sto.store_addr}</th>
 				</tr>
 				<tr>
-					<td colspan="3">해시태그</td>
+					<td colspan="3">
+						<c:set var="i" value="${status.index}"/>
+						<c:forEach items="${list_hash[i]}" var="hash">
+							<div id='hashtag'>#${hash.hash_tag}</div>
+						</c:forEach>
+					</td>
 				</tr>
 			</table>
 		</c:forEach>
@@ -108,6 +123,31 @@
 				//tableSort(val,content);
 				break;
 			}
+		}
+		
+		var content = "<%=request.getParameter("search_content") %>";
+		//정렬
+		function tableSort(val,content){
+			$.ajax({
+				url:"./searchSort",
+				data:{data:val,content:content},
+				success:function(data){
+					//console.log(data.list);
+					//$("#searchlist").empty();
+					//listPrint(data.list);
+					/*
+					if(data.success == 1){
+						//이미지삭제
+						$(elem).prev().remove();
+						//버튼삭제
+						$(elem).remove();
+					}
+					*/
+				},
+				error:function(e){
+					console.log(e)
+				}
+			});
 		}
 	</script>
 </html>

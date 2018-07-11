@@ -13,6 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.cat.common.dao.CommonInter;
+
+import com.kh.cat.dto.ReviewDTO;
+
+import com.kh.cat.dto.HashDTO;
 import com.kh.cat.dto.StoreDTO;
 
 @Service
@@ -113,13 +117,16 @@ public class CommonService {
 		search_content_Map.put("split", search_content_Split);
 		
 		ArrayList<StoreDTO> result = inter.storeSearch_And(params.get("search_map"),search_content_And);
-		logger.info(result.toString());
+		ArrayList<ArrayList<HashDTO>> result_hash = new ArrayList<ArrayList<HashDTO>>();
+		for(int i=0; i<result.size(); i++) {
+			result_hash.add(inter.storeSearch_Hash(result.get(i).getStore_idx()));
+		}
 		if(result.isEmpty()) {
 			result = inter.storeSearch_Or(search_content_Map);
 		}
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("list", result);
-		mav.addObject("listCnt", result.size());
+		mav.addObject("list_hash", result_hash);
 		mav.setViewName("include/common/search");
 		return mav;
 	}
@@ -181,6 +188,55 @@ public class CommonService {
 		logger.info(userid+"/"+id+"/");		
 		int a = inter.followdelete(userid,id);
 		map.put("success",a);
+		return map;
+	}
+
+	public HashMap<String, Object> timelinelikereview(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		ArrayList<Integer> review = inter.timelinereview(id);
+		logger.info("review "+review.size());
+		logger.info("reviewlist"+review.get(0));
+		ArrayList<ArrayList<ReviewDTO>> list = new ArrayList<ArrayList<ReviewDTO>>();
+		for(int i=0;i<review.size();i++) {
+			list.add(inter.timelinelikereview(review.get(i)));
+		}
+		map.put("list",list);
+		return map;
+	}
+
+	public HashMap<String, Object> timeline_reply(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		ArrayList<Integer> review = inter.my_reply(id);
+		logger.info("review "+review.size());
+		logger.info("reviewlist"+review.get(0));
+		//ArrayList<ReviewDTO> list = new ArrayList<ReviewDTO>();
+		ArrayList<ArrayList<ReviewDTO>> list = new ArrayList<ArrayList<ReviewDTO>>();
+		for(int i=0;i<review.size();i++) {
+			list.add(inter.timelinelikereview(review.get(i)));
+		}
+		map.put("list",list);
+		return map;
+	}
+
+	public HashMap<String, Object> timelinprofile(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		logger.info(id);
+		map.put("profile", inter.timelinprofile(id));
+		return map;
+	}
+
+	public HashMap<String, Object> timelinereviewreply(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String idx=params.get("idx");
+		logger.info(idx);
+		map.put("replylist", inter.timelinereviewreply(idx));
 		return map;
 	}
 

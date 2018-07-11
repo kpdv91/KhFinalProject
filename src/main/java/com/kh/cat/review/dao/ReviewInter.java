@@ -32,4 +32,6 @@ public interface ReviewInter {
 
 	Integer complain(ComplainDTO dto);
 
+	Integer reviewStar(String review_idx);
+
 }

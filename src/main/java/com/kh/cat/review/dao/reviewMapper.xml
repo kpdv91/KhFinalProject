@@ -78,5 +78,11 @@
 			VALUES(seq_complain.NEXTVAL,#{id},#{complain_id},#{complain_type},#{complain_content},#{complain_cate},SYSDATE,0,null,#{rev_reply_idx})
 		</if>
 	 </insert>
+	 
+	 
+	 <!-- 좋아요 수 조회 -->
+	 <select id="reviewStar" resultType="Integer">
+	 	SELECT review_star FROM review WHERE review_idx= #{param1}
+	 </select>
 	
 </mapper>

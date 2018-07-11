@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.cat.dto.StoreDTO;
@@ -27,7 +29,7 @@ public class StoreService {
 	StoreInter inter;
 	
 	HashMap<String, String> fileList = new HashMap<String, String>();
-	String storePhoto = "5413516546.jpg";
+	String storePhoto = "";
 
 	//메뉴 사진 업로드
 	public ModelAndView menuUpload(MultipartFile file, String root) {
@@ -35,6 +37,7 @@ public class StoreService {
 		String detailPath = "resources/upload/store/";
 		String fullPath = root+detailPath;
 		logger.info(fullPath);
+		logger.info("대표사진 : {}",storePhoto);
 		//1. 폴더가 없을 경우 폴더 생성
 		File dir = new File(fullPath);
 		if(!dir.exists()) {
@@ -84,6 +87,62 @@ public class StoreService {
 		System.out.println(fileList);
 		return map;
 	}
+	
+	//대표사진 등록
+	public HashMap<String, Object> photoUpload(MultipartHttpServletRequest multi, String root) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		photoDel(root);//먼저 초기화
+		
+		String detailPath = "resources/upload/store/";
+		String fullPath = root+detailPath;
+		logger.info(fullPath);
+		//1. 폴더가 없을 경우 폴더 생성
+		File dir = new File(fullPath);
+		if(!dir.exists()) {
+			logger.info("폴더 생성");
+			dir.mkdir();
+		}
+		Iterator<String> files = multi.getFileNames();
+		while(files.hasNext()){
+			String uploadFile = files.next();
+			MultipartFile file = multi.getFile(uploadFile);
+			String oriFileName = file.getOriginalFilename();
+			logger.info("실제 파일 이름 : " +oriFileName);
+			if(!oriFileName.equals("")) {
+				String newFileName = System.currentTimeMillis()+oriFileName.substring(oriFileName.lastIndexOf("."));
+				try {
+					byte[] bytes =  file.getBytes();//multupartFilr에서 부터 바이트 추출
+					Path filePath = Paths.get(fullPath+newFileName);//파일 생성 경로
+					Files.write(filePath, bytes);
+					storePhoto = newFileName;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	             
+		return map;
+	}
+	
+	//대표 사진 초기화, 삭제
+	public HashMap<String, Object> photoDel(String root) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		if(!storePhoto.equals("")) {
+			String detailPath ="resources/upload/store/";
+			String fullPath = root+detailPath+storePhoto;
+			logger.info(fullPath);
+			File file = new File(fullPath);
+			if(file.exists()) {
+				file.delete();
+			}else {
+				logger.info("이미 삭제되었거나 파일업로드를 취소하였습니다.");
+			}
+			storePhoto="";
+		}
+		return map;
+	}
 
 	//가게 등록
 	@Transactional
@@ -93,6 +152,9 @@ public class StoreService {
 		StoreDTO dto = new StoreDTO();
 		String id = "user";
 		dto.setId(id);
+		if(storePhoto.equals("")) {
+			storePhoto="storeD.jpg";
+		}
 		dto.setStore_photo(storePhoto);
 		dto.setStore_name(data.get("store_name"));
 		dto.setStore_ceo(data.get("store_ceo"));
@@ -117,6 +179,7 @@ public class StoreService {
 	//파일리스트 리셋
 	public void menuReset() {
 		fileList.clear();
+		storePhoto = "";
 	}
 
 }

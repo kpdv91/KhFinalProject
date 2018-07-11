@@ -13,7 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.cat.common.dao.CommonInter;
+
 import com.kh.cat.dto.ReviewDTO;
+
+import com.kh.cat.dto.HashDTO;
 import com.kh.cat.dto.StoreDTO;
 
 @Service
@@ -114,13 +117,16 @@ public class CommonService {
 		search_content_Map.put("split", search_content_Split);
 		
 		ArrayList<StoreDTO> result = inter.storeSearch_And(params.get("search_map"),search_content_And);
-		logger.info(result.toString());
+		ArrayList<ArrayList<HashDTO>> result_hash = new ArrayList<ArrayList<HashDTO>>();
+		for(int i=0; i<result.size(); i++) {
+			result_hash.add(inter.storeSearch_Hash(result.get(i).getStore_idx()));
+		}
 		if(result.isEmpty()) {
 			result = inter.storeSearch_Or(search_content_Map);
 		}
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("list", result);
-		mav.addObject("listCnt", result.size());
+		mav.addObject("list_hash", result_hash);
 		mav.setViewName("include/common/search");
 		return mav;
 	}

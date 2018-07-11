@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.cat.board.dao.BoardInter;
 import com.kh.cat.dto.BoardDTO;
+import com.kh.cat.dto.BoardReplyDTO;
 
 @Service
 public class BoardService {
@@ -134,6 +135,91 @@ public class BoardService {
 		if(result > 0) {
 			map.put("success", result);
 		}
+		return map;
+	}
+
+	//게시판 댓글작성
+	public HashMap<String, Object> boardReplyWrite(HashMap<String, String> params) {
+		logger.info("boardReplyWrite 서비스 요청");
+		inter = sqlSession.getMapper(BoardInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		BoardReplyDTO dto = new BoardReplyDTO();
+		dto.setBoard_idx(Integer.parseInt(params.get("idx")));
+		dto.setId(params.get("id"));
+		dto.setBoardReply_content(params.get("boardReply_content"));
+		
+		int replyCnt = inter.replyCnt(dto.getBoard_idx());
+		logger.info("댓글 갯수 : {}", replyCnt);
+		
+		if(replyCnt > 0) {
+			logger.info("댓글을 작성할 수 없습니다.");
+			map.put("replyCnt", replyCnt);
+		}else{
+			int result = inter.boardReplyWrite(dto);
+			if(result > 0 ) {
+				map.put("success", result);
+			}
+		}
+		
+		return map;
+	}
+
+	
+	
+	//게시판 댓글리스트
+	public HashMap<String, Object> boardReplyList(String idx) {
+		logger.info("게시판 댓글리스트 서비스 요청");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		inter = sqlSession.getMapper(BoardInter.class);
+		
+		ArrayList<BoardReplyDTO> list = inter.boardReplyList(Integer.parseInt(idx));
+		//int replyCnt = inter.replyCnt(Integer.parseInt(idx));
+		
+		//if(replyCnt > 0) {
+			//map.put("replyCnt", replyCnt);
+		map.put("list", list);
+		//}
+		return map;
+	}
+
+	//게시판 댓글 수정
+	public HashMap<String, Object> boardReplyUpdate(HashMap<String, String> params) {
+		logger.info("댓글 수정 서비스 요청");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		BoardReplyDTO dto = new BoardReplyDTO();
+		dto.setBoard_idx(Integer.parseInt(params.get("board_idx")));
+		dto.setBoardReply_idx(Integer.parseInt(params.get("boardReply_idx")));
+		dto.setBoardReply_content(params.get("boardReply_content"));
+		
+		inter = sqlSession.getMapper(BoardInter.class);
+		
+		int result = inter.boardReplyUpdate(dto);
+		if(result > 0) {
+			map.put("success", result);
+		}
+		
+		
+		return map;
+	}
+
+	//게시판 댓글 삭제
+	public HashMap<String, Object> boardReplyDelete(HashMap<String, String> params) {
+		logger.info("게시판 댓글 삭제 서비스 요청");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		int board_idx = Integer.parseInt(params.get("board_idx"));
+		int boardReply_idx = Integer.parseInt(params.get("boardReply_idx"));
+		
+		inter = sqlSession.getMapper(BoardInter.class);
+		int result = inter.boardReplyDelete(board_idx, boardReply_idx);
+		logger.info("삭제 여부 : {}", result);
+		
+		
+		if(result > 0) {
+			map.put("success", result);
+		}
+		
 		return map;
 	}
 

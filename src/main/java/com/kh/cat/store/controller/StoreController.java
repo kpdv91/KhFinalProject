@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.cat.store.service.StoreService;
@@ -57,14 +58,20 @@ public class StoreController {
 	}
 	
 	//대표 사진 업로드 
-		@RequestMapping(value = "/photoUpload")
-		public ModelAndView photoUpload(MultipartFile file, HttpSession session) {
-			logger.info("대표 사진 업로드 요청.");
-			String root = session.getServletContext().getRealPath("/");
-			logger.info(file.getOriginalFilename());
-			//return storeService.photoUpload(file, root);
-			return null;
-		}
+	@RequestMapping(value = "/photoUpload")
+	public @ResponseBody HashMap<String, Object> photoUpload(MultipartHttpServletRequest multi) {
+		logger.info("대표 사진 업로드 요청.");
+		String root = multi.getSession().getServletContext().getRealPath("/");
+		return storeService.photoUpload(multi, root);
+	}
+		
+	//대표 사진 초기화
+	@RequestMapping(value = "/photoDel")
+	public @ResponseBody HashMap<String, Object> photoDel(HttpSession session) {
+		logger.info("대표 사진 초기화 요청.");
+		String root = session.getServletContext().getRealPath("/");
+		return storeService.photoDel(root);
+	}
 	
 	//맛집 등록
 	@RequestMapping(value = "/storeRegist")

@@ -2,6 +2,7 @@ package com.kh.cat.review.dao;
 
 import java.util.ArrayList;
 
+import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.dto.StoreDTO;
 
@@ -28,5 +29,9 @@ public interface ReviewInter {
 	int review_likeCnt(int idx);//리뷰 좋아요 수
 
 	void likePoint(String loginId);//좋아요 수 포인트
+
+	Integer complain(ComplainDTO dto);
+
+	Integer reviewStar(String review_idx);
 
 }

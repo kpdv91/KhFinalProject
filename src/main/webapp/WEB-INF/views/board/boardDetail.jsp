@@ -32,12 +32,11 @@
     		/* 댓글 CSS */
     		table#boardReplyWrite_table{
     			position: absolute; top: 200px; left: 10px; width: 700px; height: 50px;}  
-    		div#boardReply_write{position: absolute; top: 600px; left: 408px;}
-    		textarea#boardReply_content{resize: none;}       
+    		div#boardReply_write{position: absolute; top: 600px; left: 408px;}  
     		
     		td#replyTd_user_name{width: 100px; height: 50px; text-align: center;}   
     		td#replyTd_content{width: 500px; height: 50px;}
-    		textarea#boardReply_content{width: 100%; height: 100%; border: none; overflow: visible; line-height: 20px; resize: none;}
+    		textarea#boardReply_content{width: 100%; height: 100%; border: none; overflow: hidden; resize: none;}
      		td#replyTd_write{width: 100px; height: 50px;}   
     		button#replyWrite{width: 100%; height: 100%; border: none; outline: none; border-radius: 2px; background-color: lightskyblue;}
     		
@@ -48,7 +47,7 @@
     		td#replyListTd_user_name{width: 100px; height: 100px;}
     		td#replyListTd_content{width: 500px; height: 100px;}
     		div#reply_content1{resize: none; width: 100%; height: 100%; white-space: pre;} 
-    		textarea#reply_content2{width: 100%; height: 100%; resize: none; }
+    		textarea#reply_content2{width: 100%; height: 100%; border: none; overflow: hidden;  resize: none; }
     		td#replyListTd_btn{width: 100px; height: 100px;}
     		       
         
@@ -94,9 +93,11 @@
 			<div id="boardReply_write">    
 				<table id="boardReplyWrite_table"> 
 					<tr>
-						<input type="hidden" id="board_idx" value="${dto.board_idx }"/>
-						<input type="hidden" id="board_id" value="${sessionScope.loginId }"/>
-						<td id="replyTd_user_name">${sessionScope.loginId }</td>
+						<td id="replyTd_user_name">
+							<input type="hidden" id="board_idx" value="${dto.board_idx }"/>
+							<input type="hidden" id="board_id" value="${sessionScope.loginId }"/>
+							${sessionScope.loginId }
+						</td>
 						  
 						<td id="replyTd_content"><textarea id="boardReply_content" rows="4" cols="70"></textarea></td>
 						
@@ -116,7 +117,15 @@
 	</body>
 	<script>
 	
-		var loginId = "${sessionScope.loginId}";
+		var loginId = "${sessionScope.loginId}";//댓글 리스트 메소드에서 사용
+		
+		$("#boardReply_content").on("keyup", function () {
+			console.log($("#boardReply_content").height());
+			  $(this).height(50).height( $(this).prop("scrollHeight")+12 );	
+		});
+		
+		
+
 	
 		function update() {
 			location.href="updateForm?idx="+${dto.board_idx};
@@ -153,7 +162,7 @@
 					"<textarea id='reply_content2' style='display:none;'>"+
 					item.boardReply_content+"</textarea></td>";   
 				if(loginId != "관리자"){                               
-					content += "</tr>";             
+					content += "</tr>";                
 				}else{             
 					content += "<td align='center' id='replyListTd_btn'><button id='replyUpdate'>수정</button>"+  
 						"<button id='replyDelete'>삭제</button>"+
@@ -162,6 +171,9 @@
 					content += "</tr>";   
 				}    
 			});      
+			
+			
+			
 			
 			$("#reply").empty();
 			$("#reply").append(content); 
@@ -174,7 +186,15 @@
 				$("#reply_content2").css("display","");
 				$("#replyDelete").css("display","none");
 				$("#replyExit").css("display","");
+				
+				//$("#reply_content2").on("keyup", function () {
+					  $("#reply_content2").height($("#boardReply_content").height()).height($("#reply_content2").prop("scrollHeight")+12 );	
+				//});
+				
 			});
+			
+			
+			
 			//댓글 수정 취소
 			$("#replyExit").click(function () {
 				$("#replyUpdate").css("display","");
@@ -248,7 +268,7 @@
 				dataType : "json",
 				success : function (data) {
 					console.log(data.replyCnt);
-					if(data.replyCnt > 0 || data.loginId != "관리자"){
+					if(data.replyCnt > 0){
 						alert("댓글 작성 안됨");
 					}else{
 						if(data.success > 0){

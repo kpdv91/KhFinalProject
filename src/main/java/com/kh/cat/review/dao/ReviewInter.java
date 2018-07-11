@@ -1,6 +1,7 @@
 package com.kh.cat.review.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.ReviewDTO;
@@ -16,7 +17,7 @@ public interface ReviewInter {
 
 	ArrayList<StoreDTO> storeList(String params);
 
-	ArrayList<ReviewDTO> reviewList();
+	ArrayList<ReviewDTO> reviewList(HashMap<String, String> ra);
 
 	ArrayList<ReviewDTO> reviewHash(String review_idx);
 
@@ -31,5 +32,9 @@ public interface ReviewInter {
 	void likePoint(String loginId);//좋아요 수 포인트
 
 	Integer complain(ComplainDTO dto);
+
+	Integer reviewStar(String review_idx);
+
+	int review_delete(String review_idx);
 
 }

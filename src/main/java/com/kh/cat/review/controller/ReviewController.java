@@ -54,10 +54,9 @@ public class ReviewController {
 		
 		return service.fileDel(root,fileName);
 	}
-	
 	@RequestMapping(value= "/reviewWrite")
 	public String wirte(@RequestParam("hash_tag") ArrayList<String> hash_tag,
-			@RequestParam("review_photo") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map, HttpServletRequest request) {
+			@RequestParam(value ="review_photo", required = false, defaultValue = "0") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map, HttpServletRequest request) {
 		logger.info("글쓰기 요청");	
 		logger.info(""+map);
 	
@@ -86,9 +85,10 @@ public class ReviewController {
 		return "review/reviewList";
 	}
 	@RequestMapping(value = "/reviewList")
-	public @ResponseBody HashMap<String, Object> reviewList() {
+	public @ResponseBody HashMap<String, Object> reviewList(@RequestParam("range") String range) {
 		logger.info("리뷰 리스트 요청");
-		return service.reviewList();
+		logger.info(range);
+		return service.reviewList(range);
 	}
 	@RequestMapping(value = "/reviewHashPhoto")
 	public @ResponseBody HashMap<String, Object> reviewHashPhoto(@RequestParam("review_idx") String review_idx,HttpSession session) {
@@ -96,6 +96,13 @@ public class ReviewController {
 		String root = session.getServletContext().getRealPath("/");
 		return service.reviewHashPhoto(review_idx,root);
 	}
+	
+	@RequestMapping(value = "/review_star")
+	public @ResponseBody HashMap<String, Object> review_star(@RequestParam("review_idx") String review_idx) {
+		logger.info("리뷰 해시태그, 사진 요청");
+		return service.review_star(review_idx);
+	}
+	
 	@RequestMapping(value = "/complainPage")
 	public ModelAndView complainPage(@RequestParam("complain_Id") String complain_Id,@RequestParam("idx") String idx,@RequestParam("complain_cate") String complain_cate) {		
 		System.out.println("신고 페이지 요청");
@@ -116,4 +123,17 @@ public class ReviewController {
 		logger.info(""+service.complain(map).get("success"));
 		return service.complain(map);
 	}
+	
+	
+	@RequestMapping(value = "/review_delete")
+	public @ResponseBody Integer review_delete(@RequestParam("review_idx") String review_idx) {		
+		System.out.println("리뷰 삭제 요청");
+		
+		return service.review_delete(review_idx);
+	}
+	
+	
+	
+	
+	
 }

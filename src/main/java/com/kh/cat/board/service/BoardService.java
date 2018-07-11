@@ -3,6 +3,9 @@ package com.kh.cat.board.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,12 +76,12 @@ public class BoardService {
 	public ModelAndView boardDetail(String idx) {
 		logger.info("boardDetail 서비스 요청");
 		ModelAndView mav = new ModelAndView();
-		
 		inter = sqlSession.getMapper(BoardInter.class);
 		BoardDTO dto = inter.boardDetail(idx);
 		logger.info("idx : {}",idx);
+
 		String page = "board/boardDetail";
-		
+
 		mav.addObject("dto", dto);
 		mav.setViewName(page);
 
@@ -139,7 +142,7 @@ public class BoardService {
 	}
 
 	//게시판 댓글작성
-	public HashMap<String, Object> boardReplyWrite(HashMap<String, String> params) {
+	public HashMap<String, Object> boardReplyWrite(HashMap<String, String> params, HttpServletRequest request) {
 		logger.info("boardReplyWrite 서비스 요청");
 		inter = sqlSession.getMapper(BoardInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -149,12 +152,17 @@ public class BoardService {
 		dto.setId(params.get("id"));
 		dto.setBoardReply_content(params.get("boardReply_content"));
 		
+		String loginId = (String) request.getSession().getAttribute("loginId");
+		logger.info("로그인 세션 체크 : {}", loginId);
+		
+		
 		int replyCnt = inter.replyCnt(dto.getBoard_idx());
 		logger.info("댓글 갯수 : {}", replyCnt);
 		
-		if(replyCnt > 0) {
+		if(replyCnt > 0 || !loginId.equals("관리자")) {
 			logger.info("댓글을 작성할 수 없습니다.");
 			map.put("replyCnt", replyCnt);
+			map.put("loginId", loginId);
 		}else{
 			int result = inter.boardReplyWrite(dto);
 			if(result > 0 ) {

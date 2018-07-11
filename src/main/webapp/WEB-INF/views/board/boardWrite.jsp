@@ -7,29 +7,33 @@
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>Insert title here</title>
 		<style>
-            div#board{position: relative; top: 100px; left: 400px; border: 1px solid black; width: 500px; height: 500px;}
+            div#board{position: relative; top: 50px; left: 400px; border: 1px solid black; width: 720px; height: 1000px;}
             table, th, td{border: 1px solid black; border-collapse: collapse;}
-            table{position: absolute; top: 60px; left: 10px;}
-            th{width: 117px; height: 30px; background-color: lightskyblue;}
-            td{width: 116px; height: 30px; text-align: center;}
+            table[name="boardWrite_table"]{position: absolute; top: 30px; left: 10px; width: 700px; height: 500px;}     
+			th[name="th_boardWrite_cate"]{width: 100px; height: 30px; background-color: lightskyblue;}  
+            td[name="td_boardWrite_cate"]{width: 100px; height: 30px;}
+            th[name="th_boardWrite_user_name"]{width: 100px; height: 30px; background-color: lightskyblue;}
+            td[name="td_boardWrite_user_name"]{width: 100px; height: 30px; text-align: center;}
+            th[name="th_boardWrite_subject"]{width: 100px; height: 30px; background-color: lightskyblue;}       
+            td[name="td_boardWrite_subject"]{width: 100px; height: 30px;}
             
             select#category{width: 100%; height: 100%;}
             span#user_id{text-align: center;}
             input#board_subject{width: 100%; height: 100%;}
             textarea#board_content{resize: none; width: 100%; height: 100%;}
             
-            button#exit{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 367px; left: 377px;} 
-            button#write{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 367px; left: 432px;}
+            button#exit{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 540px; left: 595px;} 
+            button#write{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 540px; left: 650px;}
     
 		</style>
 	</head>
 	<body>
 		<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
 		<div id="board">
-			<table>
+			<table name="boardWrite_table">
 				<tr>
-					<th>분류</th>
-					<td>
+					<th name="th_boardWrite_cate">분류</th>
+					<td name="td_boardWrite_cate">
                         <select id="category">
                             <option value="선택하세요" selected>선택하세요</option>
                             <c:if test="${sessionScope.loginId != '관리자' }">
@@ -42,15 +46,15 @@
                             </c:if>
                         </select>
                     </td>
-					<th>작성자</th>
-					<td><span id="user_name">${sessionScope.loginId }</span></td>
+					<th name="th_boardWrite_user_name">작성자</th>
+					<td name="td_boardWrite_user_name"><span id="user_name">${sessionScope.loginId }</span></td>
 				</tr>
                 <tr>
-                    <th>제목</th>
-                    <td colspan="3"><input type="text" id="board_subject"/></td>
+                    <th name="th_boardWrite_subject">제목</th>
+                    <td name="td_boardWrite_subject" colspan="3"><input type="text" id="board_subject"/></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><textarea rows="15" id="board_content"></textarea></td>
+                    <td name="td_boardWrite_content" colspan="4"><textarea rows="15" id="board_content"></textarea></td>
                 </tr>
 			</table>
             <button id="exit">취소</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -58,6 +62,10 @@
 		</div>
 	</body>
 	<script>
+		$("#exit").click(function () {
+			history.back();   
+		})	;
+	
 		$("#write").click(function () {
 			if($("#category").val()=="선택하세요"){
 				alert("카테고리를 선택해주세요.");

@@ -49,4 +49,12 @@ public interface CommonInter {
 
 	int followdelete(String userid, String id);
 
+	ArrayList<Integer> timelinereview(String id);
+
+	ArrayList<ReviewDTO> timelinelikereview(Integer integer);
+
+	ArrayList<Integer> my_reply(String id);
+
+	Object timelinprofile(String id);
+
 }

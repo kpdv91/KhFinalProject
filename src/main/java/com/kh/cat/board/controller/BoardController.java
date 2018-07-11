@@ -2,6 +2,8 @@ package com.kh.cat.board.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,9 +83,9 @@ public class BoardController {
 
 	// 게시판 댓글작성
 	@RequestMapping(value = "/boardReplyWrite")
-	public @ResponseBody HashMap<String, Object> boardReplyWrite(@RequestParam HashMap<String, String> params) {
+	public @ResponseBody HashMap<String, Object> boardReplyWrite(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
 		logger.info("boardReplyWrite 요청");
-		return boardService.boardReplyWrite(params);
+		return boardService.boardReplyWrite(params, request);
 	}
 	
 	// 게시판 댓글 수정
@@ -93,7 +95,7 @@ public class BoardController {
 		return boardService.boardReplyUpdate(params);
 	}
 
-	// 게시판 댓글 수정
+	// 게시판 댓글 삭제
 	@RequestMapping(value = "/boardReplyDelete")
 	public @ResponseBody HashMap<String, Object> boardReplyDelete(@RequestParam HashMap<String, String> params) {
 		logger.info("boardReplyDelete 요청");

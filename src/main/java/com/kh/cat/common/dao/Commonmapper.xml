@@ -38,15 +38,6 @@
 	<insert id="sendmsg">
 		INSERT INTO dm VALUES(seq_dm.NEXTVAL,#{param1},#{param2},#{param3},SYSDATE)
 	</insert>
-	<select id="storeSearch_And" resultType="store">
-		SELECT * FROM store WHERE store_addr LIKE '%'||#{param1}||'%' AND store_name LIKE '%'||#{param2}||'%'
-	</select>
-	<select id="storeSearch_Or" resultType="store" parameterType="hashmap">
-		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND
-		<foreach collection="split" item="split" index="index" open="(" close=")" separator="OR">
-			store_name LIKE '%'||#{split}||'%'
-		</foreach>
-	</select>
 	<select id="reviewtimelinecnt" resultType="Integer">
 		SELECT COUNT(*) FROM review WHERE id=#{param1}
 	</select>
@@ -71,6 +62,19 @@
 	<delete id="followdelete">
 		DELETE FROM follow WHERE id=#{param1} AND follow_id=#{param2}
 	</delete>
+	
+	<select id="storeSearch_And" resultType="store">
+		SELECT * FROM store WHERE store_addr LIKE '%'||#{param1}||'%' AND store_name LIKE '%'||#{param2}||'%'
+	</select>
+	<select id="storeSearch_Or" resultType="store" parameterType="hashmap">
+		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND
+		<foreach collection="split" item="split" index="index" open="(" close=")" separator="OR">
+			store_name LIKE '%'||#{split}||'%'
+		</foreach>
+	</select>
+	<select id="storeSearch_Hash" resultType="hash">
+		SELECT * FROM hash WHERE store_idx=#{param1}
+	</select>
 </mapper>
 
 

@@ -54,10 +54,9 @@ public class ReviewController {
 		
 		return service.fileDel(root,fileName);
 	}
-	
 	@RequestMapping(value= "/reviewWrite")
 	public String wirte(@RequestParam("hash_tag") ArrayList<String> hash_tag,
-			@RequestParam("review_photo") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map, HttpServletRequest request) {
+			@RequestParam(value ="review_photo", required = false, defaultValue = "0") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map, HttpServletRequest request) {
 		logger.info("글쓰기 요청");	
 		logger.info(""+map);
 	

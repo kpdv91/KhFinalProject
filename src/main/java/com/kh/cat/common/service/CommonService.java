@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.cat.common.dao.CommonInter;
+
+import com.kh.cat.dto.ReviewDTO;
+
 import com.kh.cat.dto.HashDTO;
 import com.kh.cat.dto.StoreDTO;
 
@@ -229,6 +232,55 @@ public class CommonService {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("list", result);
 		map.put("list_hash", result_hash);
+		return map;
+	}
+
+	public HashMap<String, Object> timelinelikereview(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		ArrayList<Integer> review = inter.timelinereview(id);
+		logger.info("review "+review.size());
+		logger.info("reviewlist"+review.get(0));
+		ArrayList<ArrayList<ReviewDTO>> list = new ArrayList<ArrayList<ReviewDTO>>();
+		for(int i=0;i<review.size();i++) {
+			list.add(inter.timelinelikereview(review.get(i)));
+		}
+		map.put("list",list);
+		return map;
+	}
+
+	public HashMap<String, Object> timeline_reply(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		ArrayList<Integer> review = inter.my_reply(id);
+		logger.info("review "+review.size());
+		logger.info("reviewlist"+review.get(0));
+		//ArrayList<ReviewDTO> list = new ArrayList<ReviewDTO>();
+		ArrayList<ArrayList<ReviewDTO>> list = new ArrayList<ArrayList<ReviewDTO>>();
+		for(int i=0;i<review.size();i++) {
+			list.add(inter.timelinelikereview(review.get(i)));
+		}
+		map.put("list",list);
+		return map;
+	}
+
+	public HashMap<String, Object> timelinprofile(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		logger.info(id);
+		map.put("profile", inter.timelinprofile(id));
+		return map;
+	}
+
+	public HashMap<String, Object> timelinereviewreply(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String idx=params.get("idx");
+		logger.info(idx);
+		map.put("replylist", inter.timelinereviewreply(idx));
 		return map;
 	}
 

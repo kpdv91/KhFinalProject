@@ -9,16 +9,16 @@
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>Insert title here</title>
 		<style>
-			#profileim{position: absolute;width: 100px;height: 100px;left: 400px;top: 65px;			}
+			#profileim{position: absolute;width: 100px;height: 100px;left: 400px;top: 65px;}
 			#timelineuserId{position: absolute;width: 150px;height: 60px;text-align: center;left: 500px;top: 50px;}
 			#profile{position: absolute;width: 100%;height: 200px;top:100px;}
-			#fallow{background-color: lightgray;border:1px solid black;width: 90px;position: absolute;left: 650px;top: 70px;}
-			#dm{background-color: lightgray;border:1px solid black;width: 110px;position: absolute;left: 750px;top: 70px;}
-			#myreview{background-color: darkblue;color : white;border:1px solid black;position: absolute;width:100px;left: 510px;top: 130px;}
-			#likereview{background-color: lightgray;border:1px solid black;position: absolute;width:100px;left: 610px;top: 130px;}
-			#likestore{background-color: lightgray;border:1px solid black;position: absolute;width:100px;left: 710px;top: 130px;}
-			#friend{background-color: lightgray;border:1px solid black;position: absolute;width:120px;left: 810px;top: 130px;}
-			#userdetai{float: left;width: 180px;position:relative;}
+			#fallow{background-color: lightgray;border:1px solid black;width: 90px;position: absolute;left: 650px;top: 70px;cursor: pointer;}
+			#dm{background-color: lightgray;border:1px solid black;width: 110px;position: absolute;left: 750px;top: 70px;cursor: pointer;}
+			#myreview{background-color: darkblue;color : white;border:1px solid black;position: absolute;width:100px;left: 510px;top: 130px;cursor: pointer;}
+			#likereview{background-color: lightgray;border:1px solid black;position: absolute;width:100px;left: 610px;top: 130px;cursor: pointer;}
+			#likestore{background-color: lightgray;border:1px solid black;position: absolute;width:100px;left: 710px;top: 130px;cursor: pointer;}
+			#friend{background-color: lightgray;border:1px solid black;position: absolute;width:120px;left: 810px;top: 130px;cursor: pointer;}
+			#userdetai{float: left;width: 180px;position:relative;cursor: pointer;}
 			#timeline_reply{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#update{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#message{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}

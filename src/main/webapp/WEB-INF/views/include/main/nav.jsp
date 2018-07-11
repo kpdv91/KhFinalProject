@@ -20,8 +20,8 @@
 	#nav select{font-size: 16px; width: 110px; padding: 10px; border: 0px; outline: none; }
 	#nav #search_content{font-size: 16px; width: 210px; padding: 10px; border: 0px; outline: none; }
 	#nav button{width: 50px; height: 100%; border: 0px; background-color: #2637a4; outline: none; float: right; color:#ffffff;}
-	#profileimg{width: 80px;height : 80px;position:absolute;left:1450px;top:1px;}
-	.btn{background-color:blue; color:white;width:80px;border: 2px solid white;}
+	#profileimg{width: 80px;height : 80px;position:absolute;left:1450px;top:1px;cursor: pointer;}
+	.btn{background-color:blue; color:white;width:80px;border: 2px solid white;cursor: pointer;}
 	#proimg{width: 50px;height : 50px;}
 	#profileck{background-color:white;border: 1px solid #1b5ac2;position:absolute;left:1350px;width:175px;top:80px;z-index:1;}
 	#userid{margin-left:70px;top:5px;position:absolute;}

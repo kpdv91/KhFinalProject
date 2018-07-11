@@ -30,11 +30,20 @@ public class CommonController {
 	}
 	
 	@RequestMapping(value = "/search")
-	public ModelAndView search(@RequestParam Map<String,String> params) {
+	public ModelAndView search(@RequestParam HashMap<String,String> params) {
 		logger.info("검색 페이지 이동");
 		logger.info("지역 : "+params.get("search_map"));
 		logger.info("검색어 : "+params.get("search_content"));
 		return commonservice.storeSearch(params);
+	}
+	
+	@RequestMapping(value = "/searchSort")
+	public @ResponseBody HashMap<String,Object> searchSort(@RequestParam HashMap<String,String> params) {
+		logger.info("검색 정렬 페이지 이동");
+		logger.info("지역 : "+params.get("search_map"));
+		logger.info("정렬 : "+params.get("data"));
+		logger.info("검색어 : "+params.get("search_content"));
+		return commonservice.storeSearchSort(params);
 	}
 	
 	@RequestMapping(value = "/receivelist")

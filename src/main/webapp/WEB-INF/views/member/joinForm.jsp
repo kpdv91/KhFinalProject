@@ -53,7 +53,7 @@
 	<body>
 		<form action="join" id="join" method="post">
 		<div id="div1" >
-			<div id="profile">
+			<div id="profile" onchange="testBB()">
 				
 			</div>
             <!--<div id="pic">-->
@@ -65,7 +65,7 @@
         <table>
         <tr>
             <th>아이디 : </th> 
-            <td><input type="text" id="userId" name="userId" placeholder="아이디"></td>
+            <td><input type="text" id="userId" name="userId" placeholder="아이디" onchange="chgId()"></td>
             <td><input id="overlay" type="button" value="중복체크"/></td>
             
             <!-- <input type="hidden" id="idChk" value="N" />ID체크 했는지, 안했는지. -->
@@ -80,11 +80,11 @@
          </tr>
          <tr>
             <th>비밀번호 : </th>
-            <td><input type="password" id="userPw" name="userPw" onkeyup="chk2()" placeholder="비밀번호" ></td>
+            <td><input type="password" id="userPw" name="userPw" onkeyup="chgPw()" placeholder="비밀번호" ></td>
          </tr>
          <tr>
             <th>비밀번호확인 : </th>
-            <td><input type="password" id="userPwChk" name="userPwChk" placeholder="비밀번호확인" onkeyup="chk2()"></td>           
+            <td><input type="password" id="userPwChk" name="userPwChk" placeholder="비밀번호확인" onkeyup="chgPw()"></td>           
          </tr>
          <tr>
           
@@ -115,6 +115,7 @@
         </div>
 	</table>
 	</form>
+	<input type="button" value="체크체크" onclick="chkVal()"/>
 	</body>
 	<script>
 	
@@ -122,54 +123,23 @@
     // 중복확인과 회원가입 아작스 사용하기 위해 url,data를 선언
     var url;
     var data;
-    //비밀번호 확인
-    $("#pwChk").keyup(function(){
-        if($("#userPw").val() != $("#pwChk").val()){
-            $("#matchMsg").html("일치 하지 않습니다.");
-            $("#matchMsg").css("color","red");
-        }else{
-            $("#matchMsg").html("일치 합니다.");
-            $("#matchMsg").css("color","green");
-            chkSum ++;
-        }
-    });
-    /*두개의 비밀번호 텍스트 입력값을 가져와 비교한다
-    일치 불일치에 따라 아래에 텍스트로 표시되도록 한다.*/
+    var idVal=0;//ID 중복확인 체크해주는 값
+    var pwVal=0;//PW 중복확인 체크해주는 값
     
-   /*  var ChkOverlay = 0; */
-   
-   var overlayCnt = 0;
-/*    if ($("#overlay").click) {
-	   overlayCnt++; */
-	   console.log(overlayCnt);
-  // }
-   
+    
+	var imgLen = $("#profile img").length;
+	     
+    function chgId(){//ID 중복확인 후, ID의 값이 변경되면 실행.
+    	idVal=0;
+    }
+      
     //중복 확인
     $("#overlay").click(function(){
         data ={};
         data.id = $("#userId").val();
         ajaxCall("./rest/overlay",data);
-        //ChkOverlay = 1;
-    });
-    /*중복확인 버튼 클릭시 해당 함수실행
-    id값을 id변수에 담고 해당 url를 탄다.*/
-
-/*   //회원가입
-    $("#regist").click(function(){
-        data={};
-        data.id = $("#userId").val();
-        data.pw = $("#userPw").val();
-        data.name = $("#userName").val();
-        data.email = $("#email").val();
-        if(chkSum<2){
-            alert("중복확인과 비밀번호 확인을 해 주세요!");
-        }else{
-            ajaxCall("./rest/join", data);
-        }            
-    }); */
-    /*회원가입 버튼 클릭시 해당 함수실행
-    회원가입시 필요한 아이디,비밀번호,이름,이메일 값을 가져와 변수에 담는다.
-    chkSum은 비밀번호와 중복확인을 하지 않으면 회원가입이 되지 않는다.*/
+        
+    });   
     
     //ajax 실행
     function ajaxCall(reqUrl, reqData){
@@ -184,6 +154,7 @@
                     if(d.use == "Y"){
                         chkSum ++;
                         alert("사용 가능한 아이디 입니다.");
+                        idVal=1;
                     }else{
                         alert("누군가가 사용 하고 있는 아이디 입니다.");
                         $("#userId").val("");
@@ -203,105 +174,29 @@
         });            
     }
 
-    
-    
-    
-    
-    
-	
-/* 	
-	var obj={};//초기화	
-	obj.type="post";
-	obj.dataType="json";
-	obj.error=function(e){console.log(e)};
 
-	var overChk = false;//중복체크 값
+	function chkVal(){
 
-	$("#overlay").click(function(){			
-		obj.url="./overlay";
-		obj.data = {id:$("input[name='userId']").val()};			
-		obj.success=function(d){
-			console.log(d.overlay);
-			if(d.overlay==true){
-				alert("사용중인 아이디 입니다");
-				$("input[name='userId']").val("");
-			}else{
-				alert("사용가능한 아이디 입니다");
-				$("input[name='userId']").css("background-color","yellowgreen");
-				overChk = true;
-			}
-		};			
-		console.log(obj);
-		ajaxCall(obj);
-		
-	});
-	
-	//전달 받은 오브젝트로 ajax 통신 실행
-	function ajaxCall(obj){
-		$.ajax(obj);
-	}	
-	 */
-	
-/* 	function chkemail(){
-    	location.href = "./emailChk.jsp";
-    } */
-	
-	
-/* 	var data = {}; //data 변수를 배열로 생성합니다.
-	  //중복확인 클릭시
-	  //jquery에서는 #은 아이디 .은 클래스를 표현합니다. $("#ID명") $(".CLASS명")
-	    $("#chkid").click(function () {    // 아이디값이 chkemail인 것을 클릭했을시 function을 실행합니다.
-	        data.userId = $("#userId").val();    // data 변수에 email항목을 만듭니다. 그리고 id값이 email의 value값을 대입합니다.
-	        data.url = "./idAuth";        // data변수에 url항목을 생성하고 그 값에 emailAuth를 대입합니다.
-	        sendServer(data);                // sendServer함수에 data를 담아서 보냅니다.
-	    }); */
-	
-	    //function sendServer(data) {            
-	    	/*        
-	    	        $.ajax({
-	    	            type: "get",                // type에는 "get || post"를 사용할 수 있습니다.
-	    	            url : data.url,                // url은 서버에 보내질 url위치를 적어줍니다.
-	    	            data : data,                // 서버에 보낼 data를 입력합니다. data : data, 라고 적혀있지만 앞에는 ajax의 형식이고 뒤에는 피라메터 값 입니다.
-	    	            dataType: "JSON",            // json을 사용할 것이기에 json을 적어줍니다.
-	    	            success: function(success) {
-	    	                console.log(success);    // 성공시 서버에서 가져온 값을 콘솔에 보여줍니다.
-	    	            },
-	    	            error: function(error) {
-	    	                console.log(error);        // 실패시 에러값을 보여줍니다.
-	    	            }
-	    	        
-	    	        });
-	    	*/
-	    /* 	$.ajax({
-	            type: "get",
-	            url: data.url,
-	            data: data,
-	            dataType: "JSON",
-	            success: function (data) {
-	                if(url == "./rest/idAuth"){
-	                    if (data.emailChk < 0) {
-	                        alert('이미 사용중인 이메일 입니다.');
-	                    } else {
-	                        alert('사용 가능한 이메일 입니다.');
-	                    }                      
-	                }
-	            },
-	            error: function (error) {
-	                console.log(error);
-	            }
-	        });
-	    }
+		 
+		 /* console.log(imgLen);
+		 console.log("나len",$("#profile img").length);
+		 console.log("가",$("#profile").val());
+		 console.log("나",$("#profile").value);
+		 console.log("다",$("div #profile").innerHTML);
+		 console.log("다",$("div #profile").val); */
+		 /* console.log("ID 중복체크테스트", idVal);
+		 console.log("PW 중복체크테스트", pwVal);
+		 
+		 console.log("체크체크많다",pwVal); */
 
-
-	 */
+		 
+		 
+	 }
 	
-	
-	
-	
-	    
-	
-	
-
+	//var idReg = /^[A-Za-z0-9]{4,19}$/g;
+	//var idReg = /^[a-zA-Z0-9]{4,19}$/g;
+	var idReg = /^[A-za-z0-9]{5,20}/g;
+	//var idReg = /^[a-z0-9]+[a-z0-9]{4,19}$/g;
 	var pwChkVal=0;
 	
 	//회원 가입 클릭시
@@ -313,24 +208,38 @@
         }else if($("input[name='userPw']").val()==""){//비밀번호
         	alert("비밀번호를 입력해주세요!!");
         	$("input[name='userPw']").focus();
-        /* }else if($("#profile").val()==""){//사진
+        }else if($("input[name='userPwChk']").val()==""){//비밀번호
+        	alert("비밀번호확인을 입력해주세요!!");
+        	$("input[name='userPwChk']").focus();	
+        }else if($("#profile img").length==0){//사진
         	alert("프로필 사진을 등록해주세요!!");
-            $("#profile").focus(); */
         }else if($("input[name='userName']").val()==""){//이름
         	alert("이름을 입력해주세요!!");
             $("input[name='userName']").focus();
         }else if($("input[name='userEmail']").val()==""){//이메일
         	alert("이메일을 입력해주세요!!");
             $("input[name='userEmail']").focus();
-        }else if($("#hp1").val()==""||$("#hp2").val()==""||$("#hp3").val()==""){//핸드폰번호
+        }else if($("#hp1").val()==""){//핸드폰번호
         	alert("핸드폰번호를 입력해주세요!!");
-            $("input[name='#hp1']").focus();
+            $("input[name='hp1']").focus();
+        }else if($("#hp2").val()==""){//핸드폰번호
+        	alert("핸드폰번호를 입력해주세요!!");
+            $("input[name='hp2']").focus(); 
+        }else if($("#hp3").val()==""){//핸드폰번호
+        	alert("핸드폰번호를 입력해주세요!!");
+            $("input[name='hp3']").focus();
+        }else if(!idReg.test( $("input[name='userId']").val() )){	//id 유효성
+           	alert("아이디는 영문자로 시작하는 5~20자리의 영문자 또는 숫자이어야 합니다.");
+        }else if($("input[name='userPw']").val().length<8 || $("input[name='userPw']").val().length>16){	//비밀번호 유효성
+           	alert("비밀번호는 8~16자를 입력해주세요.");
+        }else if(chkSum<1){
+        	alert("아이디 중복체크 확인이 필요 합니다.");
+        }else if(idVal<1){
+        	alert("아이디값이 변경 되었습니다. 다시 중복체크 확인이 필요 합니다.");
         }else if(pwChkVal==0){
             alert("비밀번호를 확인 하세요.");
-        /* }else if(ms.style.color="red"){
-        	alert("비밀번호가 올바르지 않습니다."); */
-        /* }else if(ChkOverlay==0){
-        	alert("아이디 중복체크 확인이 필요 합니다."); */ 
+        }else if(pwVal==0){
+        	alert("비밀번호값이 변경 되었습니다. 다시 확인 해주세요.");
         }else{	
 
 			//핸드폰 번호 합치기
@@ -350,7 +259,8 @@
 	
 	    var ms=document.querySelector("span");
 		
-	    function chk2(){
+	    function chgPw(){
+	    	console.log("비교실행");
 	        //두 인풋의 일치여부 확인	 
 	   	var userPw =$("#userPw").val();
 		var userPwChk =$("#userPwChk").val();
@@ -359,9 +269,11 @@
 	            ms.innerHTML="비밀번호가 일치합니다";
 	            ms.style.color="green";
 	            pwChkVal=1;
+	            pwVal=1;
 	        }else{
 	            ms.innerHTML="비밀번호가 일치하지않습니다.";
-	            ms.style.color="red";	        	
+	            ms.style.color="red";	  
+	            pwVal=0;
 	        }
 	    }
 	</script>

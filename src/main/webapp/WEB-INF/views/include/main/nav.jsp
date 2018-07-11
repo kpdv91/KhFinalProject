@@ -23,7 +23,7 @@
 	#profileimg{width: 50px;height : 50px;position:absolute;left:500px;top:1px;}
 	.btn{background-color:blue; color:white;width:80px;border: 2px solid white;}
 	#proimg{width: 50px;height : 50px;}
-	#profileck{background-color:white;border: 1px solid #1b5ac2;position:absolute;left:375px;width:175px;}
+	#profileck{background-color:white;border: 1px solid #2637a4;position:absolute;left:375px;width:175px;}
 	#userid{margin-left:70px;top:5px;position:absolute;}
 </style>
 

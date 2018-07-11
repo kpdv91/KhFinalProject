@@ -141,11 +141,16 @@ public class ReviewService {
 	}
 	
 	//리뷰 리스트
-	public HashMap<String, Object> reviewList() {
+	public HashMap<String, Object> reviewList(int store_idx) {
 		logger.info("리뷰 리스트 서비스");
+		logger.info("가게번호"+store_idx+"의 리뷰");
 		inter = sqlSession.getMapper(ReviewInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("reviewList", inter.reviewList());
+		if(store_idx==0) {
+			map.put("reviewList", inter.reviewList());
+		}else {
+			map.put("reviewList", inter.reviewList_store(store_idx));
+		}
 		return map;
 	}
 

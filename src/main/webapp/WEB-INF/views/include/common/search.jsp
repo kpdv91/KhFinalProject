@@ -68,13 +68,13 @@
 		<br/><br/>
 		
 		<c:forEach items="${list}" var="sto">
-			<table class="storeTable">
+			<table class="storeTable" style="cursor:pointer;" onclick="location.href='storeDetail?store_idx=${sto.store_idx}'">
 				<tr>
 					<td colspan="3"><img class="storeImg" src="resources/img/search.png" /></td>
 				</tr>
 				<tr>
 					<td>상호명</td>
-					<th><a href="#">${sto.store_name}</a></th>
+					<th>${sto.store_name}</a></th>
 					<td rowspan="2">하트</td>
 				</tr>
 				<tr>

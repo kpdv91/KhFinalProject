@@ -86,9 +86,9 @@ public class ReviewController {
 		return "review/reviewList";
 	}
 	@RequestMapping(value = "/reviewList")
-	public @ResponseBody HashMap<String, Object> reviewList() {
+	public @ResponseBody HashMap<String, Object> reviewList(@RequestParam("store_idx") int store_idx) {
 		logger.info("리뷰 리스트 요청");
-		return service.reviewList();
+		return service.reviewList(store_idx);
 	}
 	@RequestMapping(value = "/reviewHashPhoto")
 	public @ResponseBody HashMap<String, Object> reviewHashPhoto(@RequestParam("review_idx") String review_idx,HttpSession session) {

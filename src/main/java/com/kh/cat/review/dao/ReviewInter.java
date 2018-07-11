@@ -1,6 +1,7 @@
 package com.kh.cat.review.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.dto.StoreDTO;
@@ -16,6 +17,7 @@ public interface ReviewInter {
 	ArrayList<StoreDTO> storeList(String params);
 
 	ArrayList<ReviewDTO> reviewList();
+	ArrayList<ReviewDTO> reviewList_store(int store_idx);
 
 	ArrayList<ReviewDTO> reviewHash(String review_idx);
 

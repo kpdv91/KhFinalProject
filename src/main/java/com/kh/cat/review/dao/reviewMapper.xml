@@ -37,7 +37,11 @@
 	 </select>
 	 
 	 <select id="reviewList" resultType="review">
-	 	SELECT * FROM review ORDER BY review_date DESC
+		SELECT * FROM review ORDER BY review_date DESC
+	 </select>
+	 
+	  <select id="reviewList_store" resultType="review">
+		SELECT * FROM review WHERE store_idx= #{param1} ORDER BY review_date DESC
 	 </select>
 	 
 	 <select id="reviewHash" resultType="hash">

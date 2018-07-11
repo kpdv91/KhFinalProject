@@ -105,7 +105,7 @@
 	<div id="reviewListDiv">
 	</div><br/>
 	
-	
+	<input id="storeIdx" type="hidden" value="<c:out value="${param.idx} "/>">
 	
 	</body>
 	<script>
@@ -114,6 +114,7 @@
 		$.ajax({
 			url:"./reviewList",
 			type:"post",
+			data:{"store_idx":$("#storeIdx").val()},
 			dataType:"json",
 			success:function(d){
 				console.log(d.reviewList);

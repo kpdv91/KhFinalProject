@@ -37,7 +37,14 @@
 	 </select>
 	 
 	 <select id="reviewList" resultType="review">
-	 	SELECT * FROM review ORDER BY review_date DESC
+	 	SELECT * FROM review 
+	 	<if test="range.equals('최신순')">
+	 		ORDER BY review_date DESC
+		</if>		
+		<if test="range.equals('좋아요순')">
+			ORDER BY review_likeCnt DESC
+		</if>
+	 	
 	 </select>
 	 
 	 <select id="reviewHash" resultType="hash">
@@ -84,5 +91,10 @@
 	 <select id="reviewStar" resultType="Integer">
 	 	SELECT review_star FROM review WHERE review_idx= #{param1}
 	 </select>
+	 
+	 <!-- 리뷰 삭제 -->
+	 <delete id="review_delete">
+	 	DELETE FROM review WHERE review_idx = #{param1}
+	 </delete>
 	
 </mapper>

@@ -11,7 +11,7 @@
 		
 		<title>가게 등록</title>
 		<style>
-		table,tr,td,th{
+		#regist table,tr,td,th{
 			border: solid 1px black;
 		}
 		#regist{
@@ -349,7 +349,7 @@
 				success:function(data){
 					console.log(data);
 					alert(" 등록 성공");
-					
+					location.href="./";
 				},
 				error:function(e){
 					console.log(e);

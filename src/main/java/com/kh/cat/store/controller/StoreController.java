@@ -2,6 +2,7 @@ package com.kh.cat.store.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -77,12 +78,13 @@ public class StoreController {
 	@RequestMapping(value = "/storeRegist")
 	public @ResponseBody HashMap<String, Object> 
 	storeRegist(@RequestParam (value="tagList[]") String[] tagArr	
-			,@RequestParam HashMap<String, String> data) {
+			,@RequestParam HashMap<String, String> data, HttpServletRequest session) {
 		logger.info("맛집 등록 요청.");
+		String loginId = (String) session.getSession().getAttribute("loginId");
 		logger.info("tagArr[] : "+tagArr.length);
 		logger.info("tagArr[] : "+tagArr[0]);
 		logger.info(data.get("store_addr"));
-		return storeService.storeRegist(tagArr, data);
+		return storeService.storeRegist(loginId, tagArr, data);
 	}
 	
 	//맛집 상세보기

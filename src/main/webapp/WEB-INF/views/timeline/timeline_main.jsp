@@ -27,28 +27,32 @@
 			#total{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#content{margin-left : 100px;position: relative; width: 800px;height: auto;left : 350px;}
 			hr{margin-top:200px;}
-			#review{border: 2px solid #142e5b;width: 500px;height: 250px}
+			#review{border: 2px solid #142e5b;width: 650px;height: 250px}
 			#listTop{border-bottom: 2px solid #142e5b;height: 50px;line-height: 50px;}
 	        #listTop_C{position :absolute;margin-left:5px;}
 	        #listTop_R{float: right;height: 50px;width: 150px;line-height: 25px;}
 	        #reply_div{position :absolute;margin-top:170px;}
 	        .review_tabletr{border-collapse: collapse;margin:0 auto;}
-	        #review_table{position :absolute;height: 170px;border-bottom: 2px solid #142e5b;border-collapse: collapse;width: 500px;margin-top:1px;}
+	        #review_table{position :absolute;height: 170px;border-bottom: 2px solid #142e5b;border-collapse: collapse;width: 650px;margin-top:1px;}
 	        #star{text-align: right;}
 	        #hashtag{border: 2px solid black;width: 60px;height: 25px;font-size: 12px;text-align: center;line-height: 25px;float: left;margin-left: 5px;}
 	        textarea{border: 0px;width: 99%;height: 100%;resize: none;}
 	        #photo{width: 60px;height: 50px;float: left;margin-left: 5px;}
-	        #reviewReply{border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;width: 500px;display: none;}
+	        #reviewReply{border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;width: 650px;display: none;}
 	        #starDiv{width: 100%;height: 30px;}
 	        #reviewList_hash,#reviewList_photo{width: 600px;height: auto;overflow: hidden;}
 	        #hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;}
 	        #storeName_td{font-weight: bold;}
-	        #reply{border: 1px solid #142e5b;height: 50px;width: 500px;height:auto;}
+	        #reply{border: 1px solid #142e5b;height: 50px;width: 650px;height:auto;}
 			#reply_img{width: 50px;height: 40px;padding: 5px;}
 			#reply_id{font-size: 20px;width: 100px;text-align: center;}
 			#reply_content{padding: 5px;width: 240px;text-align: center;}
 			#reply_date{padding: 5px;width: 100px;text-align: center;}
 			#reply_table{border-bottom:1px solid black;}
+			#reply_size{white_space:pre;}
+			#reply_save{display:none;}
+			#reply_cancel{display:none;}
+			.reply_btn{width:50px;}
 		</style>
 	</head>
 	<body>
@@ -170,6 +174,25 @@
 	};
 	function printList(list){		 
 		var content = "";
+		list.forEach(function(item){
+				console.log(item.review_replyCnt);
+				content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
+				content += "<div id='listTop'><div id='listTop_C'>"+item.id+"</div><div id='listTop_R'><br/>"+item.review_likeCnt+"명이 좋아합니다.</div></div>";
+				content += "<div id='table_div'><table id='review_table'><tr class='review_tabletr'><td id='storeName_td' class='review_tabletr'>"+item.review_storeName+"</td>";
+				content += "<td id='star'></td></tr>";			
+				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2'><textarea id='review_text' readonly>"+item.review_content+"</textarea></td></tr>";
+				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
+				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table></div>";
+				content += "<div id='reply_div'><a id='"+item.review_idx+"' href='#' onclick='reply(id)'>댓글"+item.review_replyCnt+"개</a></div></div>";
+				content += "<div id='reviewReply'>댓글이 없습니다<br/></div><br/></div>";			
+				idx=item.review_idx;
+				hashtag(idx);
+		})
+		$("#content").empty();
+		$("#content").append(content);
+	}
+	function revreplyList(list){		 
+		var content = "";
 		list.forEach(function(i){
 			i.forEach(function(item){
 				console.log(item.review_replyCnt);
@@ -215,20 +238,33 @@
 	}
 	 function replylist(list){
 		var reply = "";
-		reply += "<div id='reply'>";
+		reply += "<div id='reply'><table>";
 		list.forEach(function(item){
 			var date = new Date(item.revreply_date);
-			reply +="<table id='reply_table'><tr>";
+			reply +="<tr id='reply_table'>";
 			reply +="<td><img id='reply_img' src='resources/upload/"+item.revreply_profile+"'/></td>";
 			reply +="<td id='reply_id'>"+item.id+"</td>";
-			reply +="<td id='reply_content'>"+item.revreply_content+"</td>";
+			reply +="<td id='reply_content'><textarea id='reply_textarea' readonly>"+item.revreply_content+"</textarea></td>";
 			reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td>";
-			reply +="</tr></table>";
+			if(item.id==userid){
+				reply+="<td class='reply_btn' id='reply_update'><button onclick='reply_updateform()'>수정</button></td>";
+				reply+="<td class='reply_btn' id='reply_delete'><button onclick='reply_delete()'>삭제</button></td>";
+				reply+="<td class='reply_btn' id='reply_save'><button onclick='reply_update()'>저장</button></td>";
+				reply+="<td class='reply_btn' id='reply_cancel'><button onclick='reply_cancel()'>취소</button></td>";
+			}
+			reply +="</tr>";			
 		})
-		reply+="</div>";
+		reply+="</table></div>";
 		$("#reviewReply").empty();
 		$("#reviewReply").append(reply);
 	}
+	 function reply_updateform(){
+		 $("#reply_update").css("display","none");
+		 $("#reply_delete").css("display","none");
+		 $("#reply_save").css("display","block");
+		 $("#reply_cancel").css("display","block");		 
+		 $("#reply_textarea").removeAttr("readonly");
+	 }
 	function hashtag(elem){
 		 $.ajax({
 			url:"./reviewHashPhoto",
@@ -236,9 +272,6 @@
 			dataType:"json",
 			data:{"review_idx":elem},
 			success:function(d){
-				//console.log(d.reviewHash);
-				//console.log(d.reviewHash);
-				console.log(d.reviewPhoto);
 				printHash(d.reviewHash,elem);		
 				printPhoto(d.reviewPhoto,elem);
 			},
@@ -490,7 +523,7 @@
 				dataType:"json",
 				success:function(d){
 					console.log(d.list);
-					printList(d.list);
+					revreplyList(d.list);
 				},
 				error:function(e){
 					console.log(e);
@@ -506,7 +539,7 @@
 			dataType:"json",
 			success:function(d){
 				console.log(d.list);
-				printList(d.list);
+				revreplyList(d.list);
 			},
 			error:function(e){
 				console.log(e);

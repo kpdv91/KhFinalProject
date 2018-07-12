@@ -41,37 +41,38 @@
 						<tr>
 							<th>전화번호</th>
 							<td>
-								<input type="text" value="${storeDetail.store_phone}" readonly="readonly"/>
+								<span>${storeDetail.store_phone}</span>
 							</td>
 						</tr>
 						<tr>
 							<th>주소</th>
 							<td>
-								<input type="text" value="${storeDetail.store_addr}" readonly="readonly"/>
+								<span>${storeDetail.store_addr}</span>
 							</td>
 						</tr>
 						<tr>
 							<th>음식 종류</th>
 							<td>
-								<input type="text" value="${storeDetail.store_food}" readonly="readonly"/>
+								<span>${storeDetail.store_food}</span>
 							</td>
 						</tr>
 						<tr>
 							<th>예상 예산(2인기준)</th>
 							<td>
-								<input type="text" value="${storeDetail.store_price}" readonly="readonly"/>원
+								<span>${storeDetail.store_price}원</span>
 							</td>
 						</tr>
 						<tr>
 							<th>영업 시간</th>
 							<td>
-								<input type="text" value="${storeDetail.store_time}" readonly="readonly"/>
-							</td>
+								<span>${storeDetail.store_time}</span>
 							</td>
 						</tr>
 						<tr>
 							<th>휴무일</th>
-							<td><input type="text" value="${storeDetail.store_rest}" readonly="readonly"/></td>
+							<td>
+								<span>${storeDetail.store_rest}</span>
+							</td>
 						</tr>
 						<tr>
 							<th>해시 태그</th>

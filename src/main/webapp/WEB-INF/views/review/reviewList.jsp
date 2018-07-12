@@ -34,14 +34,12 @@
             font-size: 13
             px;
         }
-        tr,td{
+       #review_table tr,#review_table td{
 				/* border:1px solid black; */
 				border-collapse: collapse;
-				
-				
 				margin:0 auto;
         }
-        table{
+        #review_table{
             height: 170px;
     		border-bottom: 2px solid #142e5b;
             border-collapse: collapse;
@@ -63,7 +61,7 @@
             float: left;
             margin-left: 5px;
         }
-        textarea{
+        #review_content{
             border: 0px;
             width: 99%;
             height: 100%;
@@ -194,7 +192,7 @@ input[type=button]{
             color: white;
             border-radius: 7px;
             width: 70px;
-            height: 27px;
+            height: 28px;
             outline: 0px;
             border: 0px;
        }
@@ -204,10 +202,12 @@ input[type=button]{
        
        #review_range{
 				width: 80px;
-				height: 25px;
+				height: 28px;
 				border-radius: 5px;
 				font-size: 15px;
 				text-align-last: center;
+				margin-left: 350px;
+				border: 2px solid #142e5b;
 			}
 
 		</style>
@@ -226,7 +226,7 @@ input[type=button]{
 	<div id="reviewListDiv">
 	</div><br/>
 	
-	
+	<input id="storeIdx" type="hidden" value="<c:out value="${param.idx} "/>">
 	
 	</body>
 	<script>
@@ -257,7 +257,9 @@ input[type=button]{
 			url:"./reviewList",
 			type:"post",
 			dataType:"json",
-			data:{"range":elem},
+			data:{"store_idx":$("#storeIdx").val(),
+				"range":elem
+				},
 			success:function(d){
 				$("#reviewListDiv").empty();
 				console.log(d.reviewList);
@@ -276,9 +278,9 @@ input[type=button]{
 			content += "<div id='abc'>"
 			content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 			content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'></div></div>";
-			content += "<table><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
+			content += "<table id='review_table'><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
 			content += "<td id='starTd"+item.review_idx+"' class='starTd'></td></tr>";
-			content += "<tr><td colspan='2'><textarea readonly>"+item.review_content+"</textarea></td></tr>";
+			content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
 			content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
 			content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table>";
 			content += "<a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div>";
@@ -305,7 +307,7 @@ input[type=button]{
 			idx=item.review_idx;
 			if(loginId != ""){
 			 if(loginId == item.id){	
-					aTag += "<span class='span' id='review_update' href='#' onclick='review_update(this)'>수정</span>&nbsp;";
+					aTag += "<span class='span' id='review_update' href='#' onclick='review_update(this,"+idx+")'>수정</span>&nbsp;";
 					aTag += "<span class='span' id='review_delete' href='#' onclick='review_delete(this,"+idx+")'>삭제</span>&nbsp;";
 				}else if(loginId != item.id){
 					aTag += "<span class='span' href='#' onclick='complain(this)'>신고</span>"
@@ -314,6 +316,10 @@ input[type=button]{
 			 aTag+="<br/>"+item.review_likeCnt+"명이 좋아합니다.";
 			 $(".listTop_R"+idx).append(aTag);
 		});		
+	}
+	
+	function review_update(elem,idx){
+		location.href="./review_updateForm?review_idx="+idx;
 	}
 	
 	//리뷰 삭제
@@ -343,6 +349,7 @@ input[type=button]{
 			data:{"review_idx":elem},
 			success:function(d){
 				//console.log(d.reviewStar)
+				console.log(d.reviewStar);
 				star_create(d.reviewStar,elem);		
 			},
 			error:function(e){console.log(e);}
@@ -366,7 +373,9 @@ input[type=button]{
 		starCre +="<input id='"+elem+"5' type='radio' name='star-input"+elem+"' value='5' id='p5.0'><label id='"+elem+"5' for='p5.0'>5.0</label>";
 		starCre +="</span></span>";		
   		$("#starTd"+elem).append(starCre);
-  		$("#"+elem+star).attr('checked', true);
+  		var id = star+"";
+  		var idArr=id.split(".").join('\\.');
+  		$("#"+elem+idArr).attr('checked', true);
   		$("#starTd"+elem).css("pointer-events","none");
 	}
 	

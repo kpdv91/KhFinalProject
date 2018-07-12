@@ -301,10 +301,11 @@
 				tagList.pop();
 				alert("중복되는 태그가 있습니다");
 			}
+			//"<img alt='x이미지' src='resources/img/store/delImg.jpg' width='15' height='15' onclick='tagDel(this)'>"
 			else{
 				$("#tags").append("<div>"
 						+"<input type='text' class='tag' readonly='readonly' value='"+hTag+"'>"
-						+"<img alt='x이미지' src='resources/img/store/delImg.jpg' width='15' height='15' onclick='tagDel(this)'>"
+						+"<input type='button' value='-' onclick='tagDel(this)'>"
 						+"</div>");
 				console.log(tagList);
 			}

@@ -10,7 +10,7 @@
             div#board{position: relative; top: 50px; left: 400px; border: 1px solid black; width: 720px; height: 1000px;}                 
             table, th, td{border: 1px solid black; border-collapse: collapse;}   
             table#board_table{position: absolute; top: 30px; left: 10px; width: 700px; height: 500px;}             
-       
+       		/* 게시판 작성 테이블 */
             th#th_cate{width: 50px; height: 50px; background-color: lightskyblue;}               
     		td#td_cate{width: 130px; height: 50px; text-align: center;}     
     		th#th_user_name{width: 100px; height: 50px; background-color: lightskyblue;}
@@ -20,10 +20,9 @@
     		th#th_subject{width: 50px; height: 50px; background-color: lightskyblue;}  
             
             input#board_category{width: 100%; height: 100%;}
-            /* span#user_id{text-align: center;} */       
             input#board_subject{width: 100%; height: 100%;}
-            textarea#board_content{resize: none; width: 100%; height: 100%;}
-            
+            textarea#board_content{resize: none; width: 100%; height: 100%; border: none;}
+            /* 목록,수정,삭제 버튼 */
             button#list_btn{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 545px; left: 565px;}
             button#delete{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 545px; left: 615px;} 
             button#update{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 545px; left: 665px;}
@@ -33,24 +32,24 @@
     		table#boardReplyWrite_table{
     			position: absolute; top: 200px; left: 10px; width: 700px; height: 50px;}  
     		div#boardReply_write{position: absolute; top: 600px; left: 408px;}  
-    		
+    		/* 댓글 작성 테이블 */
     		td#replyTd_user_name{width: 100px; height: 50px; text-align: center;}   
     		td#replyTd_content{width: 500px; height: 50px;}
     		textarea#boardReply_content{width: 100%; height: 100%; border: none; overflow: hidden; resize: none;}
      		td#replyTd_write{width: 100px; height: 50px;}   
     		button#replyWrite{width: 100%; height: 100%; border: none; outline: none; border-radius: 2px; background-color: lightskyblue;}
-    		
+    		/* 댓글 리스트 테이블 */
     		div#boardReply_list{position: absolute; top: 625px; left: 408px;}
     		table#boardReply_table{
     			position: absolute; top: 300px; left: 10px; width: 700px; height: 100px;  
     		}          
     		td#replyListTd_user_name{width: 100px; height: 100px;}
-    		td#replyListTd_content{width: 500px; height: 100px;}
-    		div#reply_content1{resize: none; width: 100%; height: 100%; white-space: pre;} 
+    		td#replyListTd_content{width: 500px; height: 100px;}/* white-space: pre; */
+    		textarea#reply_content1{width: 100%; height: 100%; resize: none; border: none; overflow: hidden;} 
     		textarea#reply_content2{width: 100%; height: 100%; border: none; overflow: hidden;  resize: none; }
     		td#replyListTd_btn{width: 100px; height: 100px;}
     		       
-        
+        	/* 댓글 수정,삭제,저장,취소 버튼 */
         	button#replyUpdate{background-color: lightskyblue; border: 1px solid black; border-radius: 2px;}
         	button#replyDelete{background-color: lightskyblue; border: 1px solid black; border-radius: 2px;}
         	button#replySave{background-color: lightskyblue; border: 1px solid black; border-radius: 2px;}
@@ -116,8 +115,10 @@
 		</div>
 	</body>
 	<script>
-	
 		var loginId = "${sessionScope.loginId}";//댓글 리스트 메소드에서 사용
+		if(loginId != "관리자"){
+			$("#boardReply_write").css("display","none");
+		}
 		
 		$("#boardReply_content").on("keyup", function () {
 			console.log($("#boardReply_content").height());
@@ -145,6 +146,7 @@
 				dataType : "json",
 				success : function (data) {
 					reply(data.list);
+					$("#reply_content1").height($("#boardReply_content").height()).height($("#reply_content1").prop("scrollHeight")+12 );
 				},
 				error : function (error) { console.log(error); }
 			});
@@ -156,9 +158,9 @@
 			var content = "";
 			list.forEach(function(item, idx) {
 				var date = new Date(item.boardReply_date);
-				content += "<tr>";
-				content += "<td id='replyListTd_user_name'>"+item.id+"<br/>"+date.toLocaleDateString("ko-KR")+"</td>";
-				content += "<td id='replyListTd_content'><div id='reply_content1'>"+item.boardReply_content+"</div>"+
+				content += "<tr>";  
+				content += "<td id='replyListTd_user_name'>"+item.id+"<br/>"+"<span style='font-size: 12px;'>"+date.toLocaleDateString("ko-KR")+"</span>"+"</td>";
+				content += "<td id='replyListTd_content'><textarea id='reply_content1' readonly='readonly'>"+item.boardReply_content+"</textarea>"+
 					"<textarea id='reply_content2' style='display:none;'>"+
 					item.boardReply_content+"</textarea></td>";   
 				if(loginId != "관리자"){                               
@@ -187,13 +189,13 @@
 				$("#replyDelete").css("display","none");
 				$("#replyExit").css("display","");
 				
-				//$("#reply_content2").on("keyup", function () {
-					  $("#reply_content2").height($("#boardReply_content").height()).height($("#reply_content2").prop("scrollHeight")+12 );	
-				//});
+				$("#reply_content2").height($("#boardReply_content").height()).height($("#reply_content2").prop("scrollHeight")+12 );
+				//댓글 작성할 때마다 textarea 늘리기
+				$("#reply_content2").on("keyup", function () {
+					$("#reply_content2").height($("#boardReply_content").height()).height($("#reply_content2").prop("scrollHeight")+12 );
+				});
 				
 			});
-			
-			
 			
 			//댓글 수정 취소
 			$("#replyExit").click(function () {
@@ -224,7 +226,7 @@
 							$("#reply_content1").css("display","");
 							$("#reply_content2").css("display","none");
 						}
-					location.href="boardDetail?idx="+$("#board_idx").val();  
+					location.href="boardDetail?idx="+$("#board_idx").val();
 					},
 					error : function (error) {
 						console.log(error); 

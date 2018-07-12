@@ -77,25 +77,57 @@
 
 	<select id="storeSearch_And" resultType="store" parameterType="hashmap">
 		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{content}||'%'
-		<if test="sort.equals('리뷰 최신 순')">
-			ORDER BY store_revdate DESC
-		</if>
+		<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
+		<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
+		<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
+		<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
 	</select>
 	<select id="storeSearch_Or" resultType="store" parameterType="hashmap">
 		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND
 		<foreach collection="content" item="content" index="index" open="(" close=")" separator="OR">
 			store_name LIKE '%'||#{content}||'%'
 		</foreach>
-		<if test="sort.equals('리뷰 최신 순')">
-			ORDER BY store_revdate DESC
-		</if>
+		<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
+		<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
+		<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
+		<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
 	</select>
-	<select id="storeSearch_Hash" resultType="hash">
+	<select id="storeSearch_Hash" resultType="store" parameterType="hashmap">
+		SELECT * FROM (SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%') sto,
+		(SELECT * FROM hash WHERE 
+		<foreach collection="content" item="content" index="index" separator="OR">
+			hash_tag LIKE '%'||#{content}||'%'
+		</foreach>
+		) hashtag WHERE sto.store_idx=hashtag.store_idx
+		<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
+		<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
+		<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
+		<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
+	</select>
+	<select id="storeHash" resultType="hash">
 		SELECT * FROM hash WHERE store_idx=#{param1}
 	</select>
 	<select id="timelinereviewreply" resultType="revReply">
 		SELECT * FROM revreply WHERE review_idx=#{param1}
 	</select>
+	
+	<!-- 신고리스트(관리자) -->
+	<select id="complainList" resultType="complain">
+		SELECT * FROM complain ORDER BY complain_idx
+	</select>
+	
+	<!-- 가게 등록 리스트(관리자) -->
+	<select id="storeRegistList" resultType="store">
+		SELECT * FROM store ORDER BY store_idx
+	</select>
+
+	<update id="reply_update">
+		UPDATE revreply SET revreply_content=#{param2} WHERE revreply_idx=#{param1}
+	</update>
+	<delete id="reply_delete">
+		DELETE FROM revreply WHERE revreply_idx=#{param1}
+	</delete>
+
 </mapper>
 
 

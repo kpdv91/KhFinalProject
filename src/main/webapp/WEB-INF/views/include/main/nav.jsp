@@ -30,7 +30,7 @@
 <nav id="nav">
 	<div id="mainFrame">
 		<div id="logoBox">
-			<a href="./">
+			<a  id="Logo" href="./">
 				<img alt="logo" src="resources/img/logo/logo_cat.png">
 			</a>
 		</div>
@@ -63,7 +63,7 @@
 				<option value="중구">중구</option>
 				<option value="중랑구">중랑구</option>
 			</select>
-            <input type="text" id="search_content"/>
+            <input type="text" id="search_content" onkeyup="enterkey()"/>
             <button type="button" onclick="search()">검색</button>
        	</div>
        	<c:if test="${sessionScope.loginId != null}">
@@ -107,6 +107,13 @@ console.log(loginid);
 	function search(){
 		location.href = "./search?search_content=" + $("#search_content").val()+"&search_map=" + $("#search_map").val();
 	};	
+	function enterkey() {
+        if (window.event.keyCode == 13) {
+			search();
+        }
+	}
+
+	
 	$( document ).ready(function() {		
 	    if(loginid != ""){	    	
 	    	$.ajax({

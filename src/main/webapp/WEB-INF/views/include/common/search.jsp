@@ -85,7 +85,7 @@
 			<table class="storeTable" style="cursor:pointer;" onclick="location.href='storeDetail?store_idx=${sto.store_idx}'">
 
 				<tr>
-					<td colspan="3"><img class="storeImg" src="${sto.store_photo}" /></td>
+					<td colspan="3"><img class="storeImg" src="resources/upload/store/${sto.store_photo}" /></td>
 				</tr>
 				<tr>
 					<td>상호명</td>
@@ -109,6 +109,7 @@
 		</div>
 	</body>
 	<script>
+	
 		function markerRefresh(){
 			var mapLocation = new Array();
 			var mapContent = new Array();
@@ -135,15 +136,15 @@
 				break;
 			case "별점 순":
 				console.log("2");
-				//tableSort(val,search_content);
+				tableSort(val,search_content);
 				break;
 			case "조회수 순":
 				console.log("3");
-				//tableSort(val,search_content);
+				tableSort(val,search_content);
 				break;
 			case "리뷰수 순":
 				console.log("4");
-				//tableSort(val,search_content);
+				tableSort(val,search_content);
 				break;
 			}
 		}
@@ -172,7 +173,7 @@
 			var content = "";
 			list.forEach(function(item,index){
 				content += "<table class='storeTable'>";
-				content += "<tr><td colspan='3'><img class='storeImg' src='"+item.store_photo+"' /></td></tr>";
+				content += "<tr><td colspan='3'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' /></td></tr>";
 				content += "<tr><td>상호명</td>";
 				content += "<th><a href='#'>"+item.store_name+"</a></th><td rowspan='2'>하트</td></tr>";
 				content += "<tr><td>주소</td>";

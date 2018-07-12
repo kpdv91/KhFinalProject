@@ -104,6 +104,8 @@ public class ReviewService {
 		ModelAndView mav = new ModelAndView();
 		String page = "redirect:/reviewWritePage";
 		ReviewDTO dto = new ReviewDTO();
+		dto.setProfile(map.get("review_profile"));
+		logger.info(dto.getProfile());
 		dto.setReview_storeName(map.get("review_storeName"));
 		logger.info(map.get("review_storeName"));
 		dto.setId(map.get("id"));
@@ -268,7 +270,7 @@ public class ReviewService {
 
 	public String review_update(ArrayList<String> hash_tag, ArrayList<String> review_photo, HashMap<String, String> map,
 			String loginId) {
-		logger.info("리뷰 작성 서비스 도착");
+		logger.info("리뷰 수정 서비스 도착");
 		ModelAndView mav = new ModelAndView();
 		String page = "redirect:/reviewWritePage";
 		ReviewDTO dto = new ReviewDTO();

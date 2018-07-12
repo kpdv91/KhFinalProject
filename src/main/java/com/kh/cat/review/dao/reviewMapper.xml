@@ -18,7 +18,7 @@
 	 	keyProperty="review_idx"
 	 	keyColumn="review_idx">
 	 	INSERT INTO review(review_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile)
-	 		VALUES(seq_review.NEXTVAL,#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,'A')
+	 		VALUES(seq_review.NEXTVAL,#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{profile})
 	 </insert>
 	 
 	 <insert id="hashtag">

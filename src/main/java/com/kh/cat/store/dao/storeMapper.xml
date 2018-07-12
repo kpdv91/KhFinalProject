@@ -11,6 +11,8 @@
 		keyProperty = "idx" (키가 될 필드(dto변수))
 		keyColumn = "idx" (키가 저장될 DB 컬럼)
 	-->
+	
+	<!-- 맛집 등록 -->
 	<insert id="storeRegist" parameterType="store" 
 	useGeneratedKeys="true" keyProperty="store_idx" keyColumn="store_idx">
 		INSERT INTO store(store_Idx, id, store_photo, store_name, store_ceo, 
@@ -21,37 +23,26 @@
 		 #{store_rest}, 0, 0, SYSDATE, 0,0)
 	</insert>
 	
+	<!-- 맛집 해쉬태그 등록 -->
 	<insert id="storeHashTag">
 	 	INSERT INTO hash(hash_cate, store_Idx, hash_tag)
 		VALUES('store',#{param1}, #{param2})
 	</insert>
 	
+	<!-- 메뉴사진 등록 -->
 	<insert id="storeMenu">
 		INSERT INTO menu(store_Idx, menu_photo)
 		VALUES(#{param1}, #{param2})
 	</insert>
 	
+	<!-- 맛집 상세보기 -->
 	<select id="storeDetail" resultType="store">
 		SELECT * FROM store WHERE store_idx = #{param1} 
 	 </select>
+	 
+	 <!-- 맛집 해쉬태그 불러오기 -->
+	 <select id="storeHash" resultType="hash">
+	 	SELECT * FROM hash WHERE hash_cate = 'store' AND store_idx = #{param1}
+	 </select>
 	
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

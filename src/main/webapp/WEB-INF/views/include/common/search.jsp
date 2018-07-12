@@ -85,7 +85,7 @@
 			<table class="storeTable" style="cursor:pointer;" onclick="location.href='storeDetail?store_idx=${sto.store_idx}'">
 
 				<tr>
-					<td colspan="3"><img class="storeImg" src="${sto.store_photo}" /></td>
+					<td colspan="3"><img class="storeImg" src="resources/upload/store/${sto.store_photo}" /></td>
 				</tr>
 				<tr>
 					<td>상호명</td>
@@ -172,7 +172,7 @@
 			var content = "";
 			list.forEach(function(item,index){
 				content += "<table class='storeTable'>";
-				content += "<tr><td colspan='3'><img class='storeImg' src='"+item.store_photo+"' /></td></tr>";
+				content += "<tr><td colspan='3'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' /></td></tr>";
 				content += "<tr><td>상호명</td>";
 				content += "<th><a href='#'>"+item.store_name+"</a></th><td rowspan='2'>하트</td></tr>";
 				content += "<tr><td>주소</td>";

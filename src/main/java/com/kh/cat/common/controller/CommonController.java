@@ -163,4 +163,15 @@ public class CommonController {
 		logger.info("신고 리스트 요청");		
 		return commonservice.timeLineComplainList(params);
 	}
+	
+	@RequestMapping(value = "/reply_update")
+	public @ResponseBody HashMap<String, Object> reply_update(@RequestParam Map<String,String> params) {
+		logger.info("댓글 수정 요청");		
+		return commonservice.reply_update(params);
+	}
+	@RequestMapping(value = "/reply_delete")
+	public @ResponseBody HashMap<String, Object> reply_delete(@RequestParam Map<String,String> params) {
+		logger.info("댓글 수정 요청");		
+		return commonservice.reply_delete(params);
+	}
 }

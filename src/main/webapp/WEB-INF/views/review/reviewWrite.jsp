@@ -31,6 +31,7 @@
             outline: 0px;
             border: 0px;
         }
+        
         #write{
         vertical-align: middle;
             padding: 0px 5px;
@@ -55,7 +56,7 @@
             margin-top: 10px;
             padding-left: 10px;
         }
-        form{
+        #sendForm{
             text-align: center;
             margin: 0 auto;
             width: 600px;
@@ -103,8 +104,8 @@
        #user_Id{
        	border: 0px;
        	font-size: 15px;
-       	text-align: center;
        	font-weight: bold;
+       	margin-left: 15px;
        }
        #searchList{
 		width: 250px;
@@ -156,6 +157,18 @@
 	   	width: 400px;
 		height: 400px;
 	   }
+	   #review_profile{
+	   	width: 80px;
+	   	height: 80px;
+	   	border-radius:7px;
+	   	float: left;
+	   	margin-left: 170px;
+	   	margin-right: 0px;
+	   	overflow: hidden;
+	   }
+	   #starText{
+	   	color: red;
+	   }
     </style>
     <script>
     	var mapLevel=7;
@@ -174,7 +187,12 @@
 <input type="button" value="크기" onclick="resizeMap()"/> -->
 
 	<div id ="formDiv">
-	작성자 : <input id="user_Id" name="id" type="text" value="${ sessionScope.loginId}" readonly/><br/><br/>
+	<input type="hidden" name="review_idx" value="${review_updateForm.review_idx }"/>
+	<div id="review_profile">
+		<img  width='80px' height='80px'  src="resources/upload/${sessionScope.loginProfile }"/>
+		<input type="hidden" name='review_profile' value="resources/upload/${sessionScope.loginProfile }"/>
+	</div>
+	<br/>작성자 : <input id="user_Id" name="id" type="text" value="${ sessionScope.loginId}" readonly/><br/><br/><br/><br/>
     상호명 : <input id="review_storeName" type="text" name="review_storeName" value="${review_updateForm.review_storeName}"/><button type="button" id="search"><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/><br/>
     <div id="searchList">
     	
@@ -186,7 +204,9 @@
 <%-- <jsp:include page="../include/common/map.jsp" />  --%>
     </div>
     <div id="starDIV">
+    
     별점 : <jsp:include page="star.jsp"></jsp:include><br/>
+    <span id="starText">별점은 0.5점 이상부터 작성해 주세요.</span> <br/>
     <script>
     starChk("${review_updateForm.review_star}");
     function starChk(elem){
@@ -194,9 +214,9 @@
     	$("#starScore").text(elem);
     }
     </script>
-    </div>
+    </div><br/>
     내용<br/>
-    <textarea name="review_content">${review_updateForm.review_content }</textarea><br/><br/>
+    <textarea id="review_content" name="review_content">${review_updateForm.review_content }</textarea><br/><br/>
     
     해시태그 : <input id="hash" type="text"/><input id="add" type="button" value="추가"/><br/>
     
@@ -250,7 +270,8 @@
     <input type="hidden" name="review_photo"/>
     <div id="editable"></div>
     </div><br/><br/>
-    <button id="write">작성하기</button>
+    <input type="button" id="write" value="작성하기"/>
+    <input type="button" value="취소" id="reviewWriteCancel"/>
     </div>
     </form>
      
@@ -261,10 +282,63 @@
 	console.log(loginId);
 	var div = "";//div 추가 변수
 	
-	$("#write").click(function(){
-		//해시태그 삭제버튼 제거
+	$("#reviewWriteCancel").click(function(){
+		location.href="./";
+	});
+	if("${review_updateForm.review_content }" != ""){
+		$("#write").val("수정하기");
+		$("#reviewWriteCancel").css("display","none");
+	}
+	$(document).ready(function(){
+		$("#Logo").css("pointer-events","none");
 		
-		$("#sendForm").submit();
+		window.history.forward(1);
+		history.pushState(null, document.title, location.href); 
+		window.addEventListener('popstate', function(event) { history.pushState(null, document.title, location.href); });
+
+	//새로고침, 뒤로가기 막기
+	document.onkeydown = function(e){
+	      key = (e) ? e.keyCode : event.keyCode;
+	      if(key==116){
+	         if(e){
+	            e.preventDefault();
+	         }
+	         else{
+	            event.keyCode = 0;
+	            event.returnValue = false;
+	         }
+	      }
+	      document.onkeydown = LockF5;
+	}
+	//오른쪽마우스 막기
+	document.oncontextmenu = function(e){
+	     if(e){
+	        e.preventDefault();
+	     }
+	     else{
+	        event.keyCode = 0;
+	        event.returnValue = false;
+	     }
+	} 
+	});
+	
+	$("#write").click(function(){
+		if($("#tag").text() == ""){
+			alert("해시태그를 작성 해 주세요.");
+			$("#hash").focus();
+		}else if($("#review_content").val() == ""){
+			alert("내용을 작성 해 주세요");
+			$("#review_content").focus();
+		}else if($("#review_storeName").val()==""){
+			alert("상호명을 작성 해 주세요.");
+			$("#review_storeName").focus
+		}else if($("#starScore").text()=="" || $("#starScore").text()=="0"){
+			alert("별점을 작성 해 주세요");
+		}else{
+			console.log("else 진입");
+			$("#sendForm").submit();
+		}
+		
 	});
 	
 	//해시태그 추가 버튼시 div 생성

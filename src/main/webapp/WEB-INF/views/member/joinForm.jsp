@@ -228,8 +228,7 @@
         }else if($("#hp3").val()==""){//핸드폰번호
         	alert("핸드폰번호를 입력해주세요!!");
             $("input[name='hp3']").focus();
-        }else if(!idReg.test( $("input[name='userId']").val() )){	//id 유효성
-           	alert("아이디는 영문자로 시작하는 5~20자리의 영문자 또는 숫자이어야 합니다.");
+        
         }else if($("input[name='userPw']").val().length<8 || $("input[name='userPw']").val().length>16){	//비밀번호 유효성
            	alert("비밀번호는 8~16자를 입력해주세요.");
         }else if(chkSum<1){
@@ -240,6 +239,8 @@
             alert("비밀번호를 확인 하세요.");
         }else if(pwVal==0){
         	alert("비밀번호값이 변경 되었습니다. 다시 확인 해주세요.");
+        }else if(!idReg.test( $("input[name='userId']").val() )){	//id 유효성
+           	alert("아이디는 영문자로 시작하는 5~20자리의 영문자 또는 숫자이어야 합니다.");
         }else{	
 
 			//핸드폰 번호 합치기

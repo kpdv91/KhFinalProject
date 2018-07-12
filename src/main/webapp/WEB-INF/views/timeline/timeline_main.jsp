@@ -28,6 +28,10 @@
 			#dm_write{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#store_regist_list{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#complain_list{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}  
+			button#complain_move{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
+			button#store_regist_move{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
+			button#store_regist_yes{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
+			button#store_regist_no{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
 			
 			#content{margin-left : 100px;position: relative; width: 800px;height: auto;left : 350px;}
 			hr{margin-top:200px;}
@@ -54,9 +58,9 @@
 			#reply_date{padding: 5px;width: 100px;text-align: center;}
 			#reply_table{border-bottom:1px solid black;}
 			#reply_size{white_space:pre;}
-			#reply_save{display:none;}
-			#reply_cancel{display:none;}
 			.reply_btn{width:50px;}
+			.reply_clk{display:none;}
+			.ddd{display:none;}
 		</style>
 	</head>
 	<body>
@@ -100,6 +104,7 @@
 	var replyClick = 1;
 	var userid = "${sessionScope.loginId}";
 	var page = "";
+	var str = "";
 	//console.log(userid);
 	//console.log("${id}")
 	if(userid==""){
@@ -208,7 +213,7 @@
 		var content = "";
 		list.forEach(function(i){
 			i.forEach(function(item){
-				console.log(item.review_replyCnt);
+				//console.log(item.review_replyCnt);
 				content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 				content += "<div id='listTop'><div id='listTop_C'>"+item.id+"</div><div id='listTop_R'><br/>"+item.review_likeCnt+"명이 좋아합니다.</div></div>";
 				content += "<div id='table_div'><table id='review_table'><tr class='review_tabletr'><td id='storeName_td' class='review_tabletr'>"+item.review_storeName+"</td>";
@@ -216,8 +221,8 @@
 				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2'><textarea id='review_text' readonly>"+item.review_content+"</textarea></td></tr>";
 				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
 				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table></div>";
-				content += "<div id='reply_div'><a id='"+item.review_idx+"' href='#' onclick='reply(id)'>댓글"+item.review_replyCnt+"개</a></div></div>";
-				content += "<div id='reviewReply'>댓글이 없습니다<br/></div><br/></div>";			
+				content += "<div id='reply_div'><a id='a"+item.review_idx+"' href='#' onclick='reply("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</a></div></div>";
+				content += "<div class='ddd' id='reviewReply"+item.review_idx+"'><br/></div><br/></div>";			
 				idx=item.review_idx;
 				hashtag(idx);
 			})
@@ -226,8 +231,27 @@
 		$("#content").append(content);
 	}
 	function reply(idx){
-		console.log(idx);
-		replyClick *= -1;
+		$("#reviewReply"+idx).toggle(500,function(){			
+			 $.ajax({
+				url:"./timelinereviewreply",
+				type:"post",
+				data:{
+					idx : idx
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d);
+					
+					replylist(d.replylist,idx);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}),function(){
+			$("#reviewReply"+idx).css("display","none");
+		}
+		/* replyClick *= -1;
 		if(replyClick == -1){
 			$("#reviewReply").css("display","block");
 			$.ajax({
@@ -239,7 +263,7 @@
 				dataType:"json",
 				success:function(d){
 					console.log(d);
-					replylist(d.replylist);
+					replylist(d.replylist,idx);
 				},
 				error:function(e){
 					console.log(e);
@@ -247,36 +271,97 @@
 			});
 		}else{
 			$("#reviewReply").css("display","none");
-		}			
+		} */
 	}
-	 function replylist(list){
+	 function replylist(list,idx){
 		var reply = "";
-		reply += "<div id='reply'><table>";
+		reply += "<div id='reply'><table  id='reply_table'>";
 		list.forEach(function(item){
 			var date = new Date(item.revreply_date);
-			reply +="<tr id='reply_table'>";
+			reply +="<tr id='reply_table"+item.revreply_idx+"'>";
 			reply +="<td><img id='reply_img' src='resources/upload/"+item.revreply_profile+"'/></td>";
 			reply +="<td id='reply_id'>"+item.id+"</td>";
-			reply +="<td id='reply_content'><textarea id='reply_textarea' readonly>"+item.revreply_content+"</textarea></td>";
+			reply +="<td id='reply_content'><textarea id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
 			reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td>";
 			if(item.id==userid){
-				reply+="<td class='reply_btn' id='reply_update'><button onclick='reply_updateform()'>수정</button></td>";
-				reply+="<td class='reply_btn' id='reply_delete'><button onclick='reply_delete()'>삭제</button></td>";
-				reply+="<td class='reply_btn' id='reply_save'><button onclick='reply_update()'>저장</button></td>";
-				reply+="<td class='reply_btn' id='reply_cancel'><button onclick='reply_cancel()'>취소</button></td>";
+				reply+="<td class='reply_btn' ><button class='reply_ck' id='reply_update"+item.revreply_idx+"' onclick='reply_updateform("+item.revreply_idx+")'>수정</button></td>";
+				reply+="<td class='reply_btn' ><button class='reply_ck' id='reply_delete"+item.revreply_idx+"' onclick='reply_delete("+item.revreply_idx+")'>삭제</button></td>";
+				reply+="<td class='reply_btn' ><button class='reply_clk' id='reply_save"+item.revreply_idx+"' onclick='reply_update("+item.revreply_idx+")'>저장</button></td>";
+				reply+="<td class='reply_btn' ><button class='reply_clk'  id='reply_cancel"+item.revreply_idx+"' name='"+item.revreply_content+"' onclick='reply_cancel("+item.revreply_idx+",name)'>취소</button></td>";
 			}
 			reply +="</tr>";			
 		})
 		reply+="</table></div>";
-		$("#reviewReply").empty();
-		$("#reviewReply").append(reply);
+		$("#reviewReply"+idx).empty();
+		$("#reviewReply"+idx).append(reply);
 	}
-	 function reply_updateform(){
-		 $("#reply_update").css("display","none");
-		 $("#reply_delete").css("display","none");
-		 $("#reply_save").css("display","block");
-		 $("#reply_cancel").css("display","block");		 
-		 $("#reply_textarea").removeAttr("readonly");
+	 function reply_updateform(idx){
+		 $("#reply_update"+idx).css("display","none");
+		 $("#reply_delete"+idx).css("display","none");
+		 $("#reply_save"+idx).css("display","inline-block");
+		 $("#reply_cancel"+idx).css("display","inline-block");		 
+		 $("#reply_textarea"+idx).removeAttr("readonly");
+		 $("#reply_textarea"+idx).focus();
+	 }
+	 function reply_update(idx){
+		 var text=$("#reply_textarea"+idx).val();
+		  $.ajax({
+				url:"./reply_update",
+				type:"post",
+				dataType:"json",
+				data:{
+					revreply_idx:idx,
+					content:text
+				},
+				success:function(d){
+					console.log(d)
+					if(d.update>0){
+						$("#reply_textarea"+idx).val(text);
+						$("#reply_update"+idx).css("display","inline-block");
+						$("#reply_delete"+idx).css("display","inline-block");
+						$("#reply_save"+idx).css("display","none");
+						$("#reply_cancel"+idx).css("display","none");
+						$("#reply_textarea"+idx).attr("readonly",true);
+					}else{
+						alert("수정실패");
+						$("#reply_update"+idx).css("display","none");
+						 $("#reply_delete"+idx).css("display","none");
+						 $("#reply_save"+idx).css("display","inline-block");
+						 $("#reply_cancel"+idx).css("display","inline-block");		 
+						 $("#reply_textarea"+idx).removeAttr("readonly");
+						 $("#reply_textarea"+idx).focus();
+					}
+				},
+				error:function(e){console.log(e);}
+			});
+	 }
+	 function reply_cancel(idx,name){
+		$("#reply_update"+idx).css("display","inline-block");
+		$("#reply_delete"+idx).css("display","inline-block");
+		$("#reply_save"+idx).css("display","none");
+		$("#reply_cancel"+idx).css("display","none");
+		$("#reply_textarea").attr("readonly",true);
+		$("#reply_textarea"+idx).val(name);
+	 }
+	 function reply_delete(idx){
+		 console.log("delete"+idx);
+		 $.ajax({
+				url:"./reply_delete",
+				type:"post",
+				dataType:"json",
+				data:{
+					revreply_idx:idx
+				},
+				success:function(d){
+					console.log(d)
+					if(d.del>0){
+						$("#reply_table"+idx).remove();
+					}else{
+						alert("삭제실패");
+					}
+				},
+				error:function(e){console.log(e);}
+			});
 	 }
 	function hashtag(elem){
 		 $.ajax({
@@ -329,6 +414,10 @@
 	    	$("#likestore").css("color","black");
 	    	$("#timeline_reply").css("background-color","lightgray");
 	    	$("#timeline_reply").css("color","black");
+	    	$("#store_regist_list").css("background-color","lightgray");	    	
+	    	$("#store_regist_list").css("color","black");
+	    	$("#complain_list").css("background-color","lightgray");
+	    	$("#complain_list").css("color","black");
 	    	$("#content").load(page,function(res, stat) {});
 			ajaxCall(page);
 		} else if(e.target.id == "coupon") {
@@ -470,8 +559,21 @@
 				$("#store_regist_list").css("color","black");
 				$("#complain_list").css("background-color","darkblue");
 				$("#complain_list").css("color","white");
-				//ajaxCall(page);
-			}
+				$("#content").load(page,function(res, stat) {});
+				ajaxCall(page);
+			}else if(e.target.id == "store_regist_list"){
+				page = "resources/timelinehtml/store_regist_list.html"
+					$("#dm_write").css("background-color","lightgray");
+					$("#dm_write").css("color","black");
+					$("#message").css("background-color","lightgray");
+					$("#message").css("color","black");
+					$("#store_regist_list").css("background-color","darkblue");
+					$("#store_regist_list").css("color","white");
+					$("#complain_list").css("background-color","lightgray");
+					$("#complain_list").css("color","black");
+					$("#content").load(page,function(res, stat) {});
+					ajaxCall(page);
+				}
 	});		
 	function ajaxCall(page){
 		if(page=="resources/timelinehtml/messagebox.html"){
@@ -575,7 +677,21 @@
 				type:"post",
 				dataType:"json",
 				success:function(data){
-					console.log(data)
+					console.log(data);
+					complain_list(data.list);
+				},
+				error:function(error){
+					console.log(error);
+				}
+			});
+		}else if(page == "resources/timelinehtml/store_regist_list.html"){
+			$.ajax({
+				url:"./storeRegistList",
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					console.log(data);
+					store_regist_list(data.list);
 				},
 				error:function(error){
 					console.log(error);
@@ -746,5 +862,43 @@
 			});
 		}		
 	});
-	</script>
+	
+		//신고리스트
+		function complain_list(list) {
+			var content = "";		
+			list.forEach(function(item, idx){
+				content +="<tr>";
+				content +="<td>"+item.id+"</td>";
+				content +="<td>"+item.complain_type+"</td>";
+				content +="<td>"+item.complain_id+"</td>";
+				content +="<td>"+item.complain_cate+"</td>";
+				var date = new Date(item.complain_date);			
+				content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
+				content +="<td><button id='complain_move'>보 기</button></td>";
+				content += "</tr>";			
+			});		
+			$("#complail_tbody").empty();
+			$("#complail_tbody").append(content);//내용 붙이기
+		}
+		
+		//가게 등록 리스트
+		function store_regist_list(list) {
+			var content = "";		
+			list.forEach(function(item, idx){
+				if(item.store_regist == 0){
+					content +="<tr>";
+					content +="<td>"+item.store_name+"</td>";
+					content +="<td>"+item.store_ceo+"</td>";
+					content +="<td>"+item.store_addr+"</td>";
+					var date = new Date(item.store_revDate);			
+					content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
+					content +="<td><button id='store_regist_move'>보 기</button></td>";
+					content +="<td><button id='store_regist_yes'>승인</button> / <button id='store_regist_no'>취소</button></td>";
+					content += "</tr>";		
+				}	
+			});		
+			$("#store_tbody").empty();
+			$("#store_tbody").append(content);//내용 붙이기.")
+			
+			</script>
 </html>

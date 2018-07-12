@@ -57,11 +57,16 @@ public class ReviewController {
 	@RequestMapping(value= "/reviewWrite")
 	public String wirte(@RequestParam("hash_tag") ArrayList<String> hash_tag,
 			@RequestParam(value ="review_photo", required = false, defaultValue = "0") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map, HttpServletRequest request) {
-		logger.info("글쓰기 요청");	
+		logger.info("글쓰기 or 수정 요청");	
 		logger.info(""+map);
-	
 		String loginId = (String) request.getSession().getAttribute("loginId");
-		return service.write(hash_tag, review_photo, map, loginId);
+		logger.info(map.get("review_idx"));
+		
+		if(map.get("review_idx") != "") {
+			return service.review_update(hash_tag, review_photo, map, loginId);
+		}else {
+			return service.write(hash_tag, review_photo, map, loginId);
+		}
 	}
 	
 	@RequestMapping(value = "/revStoreSearch")

@@ -110,6 +110,24 @@
 	<select id="timelinereviewreply" resultType="revReply">
 		SELECT * FROM revreply WHERE review_idx=#{param1}
 	</select>
+	
+	<!-- 신고리스트(관리자) -->
+	<select id="complainList" resultType="complain">
+		SELECT * FROM complain ORDER BY complain_idx
+	</select>
+	
+	<!-- 가게 등록 리스트(관리자) -->
+	<select id="storeRegistList" resultType="store">
+		SELECT * FROM store ORDER BY store_idx
+	</select>
+
+	<update id="reply_update">
+		UPDATE revreply SET revreply_content=#{param2} WHERE revreply_idx=#{param1}
+	</update>
+	<delete id="reply_delete">
+		DELETE FROM revreply WHERE revreply_idx=#{param1}
+	</delete>
+
 </mapper>
 
 

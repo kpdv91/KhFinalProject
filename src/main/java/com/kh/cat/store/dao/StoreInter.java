@@ -10,4 +10,6 @@ public interface StoreInter {
 
 	void storeMenu(int store_idx, String file);
 
+	StoreDTO storeDetail(int store_idx);
+
 }

@@ -142,11 +142,19 @@ public class ReviewService {
 	}
 	
 	//리뷰 리스트
-	public HashMap<String, Object> reviewList() {
+
+	public HashMap<String, Object> reviewList(int store_idx, String range) {
 		logger.info("리뷰 리스트 서비스");
 		inter = sqlSession.getMapper(ReviewInter.class);
+		HashMap<String, String> ra = new HashMap<String, String>();
+		ra.put("range", range);
+		ra.put("store_idx", String.valueOf(store_idx));
+		logger.info("*****************");
+		logger.info(ra.get("store_idx"));
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("reviewList", inter.reviewList());
+
+		map.put("reviewList", inter.reviewList(ra));
+		
 		return map;
 	}
 
@@ -229,6 +237,13 @@ public class ReviewService {
 		map.put("reviewStar", inter.reviewStar(review_idx));
 		logger.info(""+map.get("reviewStar"));
 		return map;
+	}
+
+	public Integer review_delete(String review_idx) {
+		logger.info("리뷰 삭제");
+		inter=sqlSession.getMapper(ReviewInter.class);
+		int success = inter.review_delete(review_idx);
+		return success;
 	}
 
 }

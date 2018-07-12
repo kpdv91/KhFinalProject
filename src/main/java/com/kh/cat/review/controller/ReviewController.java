@@ -85,9 +85,11 @@ public class ReviewController {
 		return "review/reviewList";
 	}
 	@RequestMapping(value = "/reviewList")
-	public @ResponseBody HashMap<String, Object> reviewList() {
+
+	public @ResponseBody HashMap<String, Object> reviewList(@RequestParam("store_idx") int store_idx, @RequestParam("range") String range) {
 		logger.info("리뷰 리스트 요청");
-		return service.reviewList();
+		logger.info(range);
+		return service.reviewList(store_idx, range);
 	}
 	@RequestMapping(value = "/reviewHashPhoto")
 	public @ResponseBody HashMap<String, Object> reviewHashPhoto(@RequestParam("review_idx") String review_idx,HttpSession session) {
@@ -122,4 +124,17 @@ public class ReviewController {
 		logger.info(""+service.complain(map).get("success"));
 		return service.complain(map);
 	}
+	
+	
+	@RequestMapping(value = "/review_delete")
+	public @ResponseBody Integer review_delete(@RequestParam("review_idx") String review_idx) {		
+		System.out.println("리뷰 삭제 요청");
+		
+		return service.review_delete(review_idx);
+	}
+	
+	
+	
+	
+	
 }

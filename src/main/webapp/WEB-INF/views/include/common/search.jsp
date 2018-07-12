@@ -109,6 +109,7 @@
 		</div>
 	</body>
 	<script>
+	
 		function markerRefresh(){
 			var mapLocation = new Array();
 			var mapContent = new Array();
@@ -135,15 +136,15 @@
 				break;
 			case "별점 순":
 				console.log("2");
-				//tableSort(val,search_content);
+				tableSort(val,search_content);
 				break;
 			case "조회수 순":
 				console.log("3");
-				//tableSort(val,search_content);
+				tableSort(val,search_content);
 				break;
 			case "리뷰수 순":
 				console.log("4");
-				//tableSort(val,search_content);
+				tableSort(val,search_content);
 				break;
 			}
 		}

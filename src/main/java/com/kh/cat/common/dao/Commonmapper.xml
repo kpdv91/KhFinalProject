@@ -77,18 +77,20 @@
 
 	<select id="storeSearch_And" resultType="store" parameterType="hashmap">
 		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{content}||'%'
-		<if test="sort.equals('리뷰 최신 순')">
-			ORDER BY store_revdate DESC
-		</if>
+		<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
+		<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
+		<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
+		<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
 	</select>
 	<select id="storeSearch_Or" resultType="store" parameterType="hashmap">
 		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND
 		<foreach collection="content" item="content" index="index" open="(" close=")" separator="OR">
 			store_name LIKE '%'||#{content}||'%'
 		</foreach>
-		<if test="sort.equals('리뷰 최신 순')">
-			ORDER BY store_revdate DESC
-		</if>
+		<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
+		<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
+		<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
+		<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
 	</select>
 	<select id="storeSearch_Hash" resultType="store" parameterType="hashmap">
 		SELECT * FROM (SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%') sto,
@@ -97,6 +99,10 @@
 			hash_tag LIKE '%'||#{content}||'%'
 		</foreach>
 		) hashtag WHERE sto.store_idx=hashtag.store_idx
+		<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
+		<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
+		<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
+		<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
 	</select>
 	<select id="storeHash" resultType="hash">
 		SELECT * FROM hash WHERE store_idx=#{param1}

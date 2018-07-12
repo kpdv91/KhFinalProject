@@ -33,8 +33,10 @@ public interface ReviewInter {
 
 	Integer complain(ComplainDTO dto);
 
-	Integer reviewStar(String review_idx);
+	Double reviewStar(String review_idx);
 
 	int review_delete(String review_idx);
+
+	ArrayList<ReviewDTO> review_updateForm(String review_idx);
 
 }

@@ -107,29 +107,6 @@ public class CommonService {
 		map.put("success",a);
 		return map;
 	}
-	public ModelAndView storeSearch(Map<String, String> params) {
-		inter = sqlSession.getMapper(CommonInter.class);
-		String search_content = params.get("search_content");
-		String search_content_And = search_content.replaceAll(" ", "%");
-		String[] search_content_Split = search_content.split(" ");
-		HashMap<String, Object> search_content_Map = new HashMap<String, Object>();
-		search_content_Map.put("map", params.get("search_map"));
-		search_content_Map.put("split", search_content_Split);
-		
-		ArrayList<StoreDTO> result = inter.storeSearch_And(params.get("search_map"),search_content_And);
-		ArrayList<ArrayList<HashDTO>> result_hash = new ArrayList<ArrayList<HashDTO>>();
-		for(int i=0; i<result.size(); i++) {
-			result_hash.add(inter.storeSearch_Hash(result.get(i).getStore_idx()));
-		}
-		if(result.isEmpty()) {
-			result = inter.storeSearch_Or(search_content_Map);
-		}
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("list", result);
-		mav.addObject("list_hash", result_hash);
-		mav.setViewName("include/common/search");
-		return mav;
-	}
 
 	public HashMap<String, Object> maintimeline(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
@@ -191,6 +168,73 @@ public class CommonService {
 		return map;
 	}
 
+	public ModelAndView storeSearch(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		String search_content = params.get("search_content");
+		String search_content_And = search_content.replaceAll(" ", "%");
+		String[] search_content_Split = search_content.split(" ");
+		
+		HashMap<String, Object> search_content_AndMap = new HashMap<String, Object>();
+		search_content_AndMap.put("map", params.get("search_map"));
+		search_content_AndMap.put("content", search_content_And);
+		search_content_AndMap.put("sort", "리뷰 최신 순");
+		
+		HashMap<String, Object> search_content_OrMap = new HashMap<String, Object>();
+		search_content_OrMap.put("map", params.get("search_map"));
+		search_content_OrMap.put("content", search_content_Split);
+		search_content_OrMap.put("sort", "리뷰 최신 순");
+		
+		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_AndMap);
+		if(result.isEmpty()) {
+			result = inter.storeSearch_Or(search_content_OrMap);
+		}
+		
+		ArrayList<ArrayList<HashDTO>> result_hash = new ArrayList<ArrayList<HashDTO>>();
+		for(int i=0; i<result.size(); i++) {
+			result_hash.add(inter.storeSearch_Hash(result.get(i).getStore_idx()));
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("list", result);
+		mav.addObject("list_hash", result_hash);
+		mav.setViewName("include/common/search");
+		return mav;
+	}
+	
+	public HashMap<String, Object> storeSearchSort(HashMap<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		logger.info("넘어온 정렬 : "+params.get("data"));
+		logger.info("넘어온 검색어 : "+params.get("search_content"));
+		String search_content = params.get("search_content");
+		String search_content_And = search_content.replaceAll(" ", "%");
+		String[] search_content_Split = search_content.split(" ");
+		
+		HashMap<String, Object> search_content_AndMap = new HashMap<String, Object>();
+		search_content_AndMap.put("map", params.get("search_map"));
+		search_content_AndMap.put("content", search_content_And);
+		search_content_AndMap.put("sort", params.get("data"));
+		
+		HashMap<String, Object> search_content_OrMap = new HashMap<String, Object>();
+		search_content_OrMap.put("map", params.get("search_map"));
+		search_content_OrMap.put("content", search_content_Split);
+		search_content_OrMap.put("sort", params.get("data"));
+		
+		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_AndMap);
+		if(result.isEmpty()) {
+			result = inter.storeSearch_Or(search_content_OrMap);
+		}
+		
+		ArrayList<ArrayList<HashDTO>> result_hash = new ArrayList<ArrayList<HashDTO>>();
+		for(int i=0; i<result.size(); i++) {
+			result_hash.add(inter.storeSearch_Hash(result.get(i).getStore_idx()));
+		}
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("list", result);
+		map.put("list_hash", result_hash);
+		return map;
+	}
+
 	public HashMap<String, Object> timelinelikereview(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -238,6 +282,12 @@ public class CommonService {
 		logger.info(idx);
 		map.put("replylist", inter.timelinereviewreply(idx));
 		return map;
+	}
+
+	//관리자 신고 리스트
+	public HashMap<String, Object> timeLineComplainList(Map<String, String> params) {
+		logger.info("신고 리스트 서비스 요청");
+		return null;
 	}
 
 }

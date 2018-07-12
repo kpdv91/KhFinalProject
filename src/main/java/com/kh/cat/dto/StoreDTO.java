@@ -16,6 +16,7 @@ public class StoreDTO {
 	private String store_rest;
 	private int store_bHit;
 	private int store_revCnt;
+	private int store_storeLikeCnt;
 	private Date store_revDate;
 	private double store_star;
 	private int store_regist;
@@ -97,6 +98,12 @@ public class StoreDTO {
 	}
 	public void setStore_revCnt(int store_revCnt) {
 		this.store_revCnt = store_revCnt;
+	}
+	public int getStore_storeLikeCnt() {
+		return store_storeLikeCnt;
+	}
+	public void setStore_storeLikeCnt(int store_storeLikeCnt) {
+		this.store_storeLikeCnt = store_storeLikeCnt;
 	}
 	public Date getStore_revDate() {
 		return store_revDate;

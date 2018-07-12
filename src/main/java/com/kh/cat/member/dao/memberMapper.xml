@@ -6,8 +6,13 @@
 <mapper namespace="com.kh.cat.member.dao.MemberInter">
 
 	<!-- 로그인 -->
-	<select id="login" resultType="member" parameterType="String">
-		SELECT id,aut FROM member WHERE id=#{param1} AND pw=#{param2}
+	<select id="login" resultType="String" parameterType="String">
+		SELECT id FROM member WHERE id=#{param1} AND pw=#{param2}
+	</select>
+	
+	<!-- 프로필사진 가져오기 -->
+	<select id="getprofile" resultType="String" parameterType="String">
+		SELECT profile FROM member WHERE id=#{param1}
 	</select>
 	
 	<!-- 회원가입 -->	

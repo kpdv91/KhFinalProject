@@ -4,7 +4,7 @@ import com.kh.cat.dto.MemberDTO;
 
 public interface MemberInter {
 
-	MemberDTO login(String id, String pw);
+	String login(String id, String pw); //로그인
 
 	int join(MemberDTO dto);//회원가입. 
 
@@ -12,6 +12,8 @@ public interface MemberInter {
 
 	MemberDTO profileunder(String id);	
 
-	String overlay(String id); //중복체크
+	String overlay(String id); //ID 중복체크
+
+	String getprofile(String id); //프로필 가져오기
 	
 }

@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
-		<!-- <div id="map" style="width:1000px;height:500px;"></div> -->
-		<div id="map"></div>
-		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c7f29813d0150c2927c1529f7d432392&libraries=services"></script>
-		<script>
+<!-- <div id="map" style="width:1000px;height:500px;"></div> -->
+<div id="map"></div>
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c7f29813d0150c2927c1529f7d432392&libraries=services"></script>
+<script>
 			$.getJSON("resources/json/seoul.json", function(geojson) {
 				 
 			    var data = geojson.features;
@@ -23,6 +24,9 @@
 		        level: mapLevel // 지도의 확대 레벨
 		    };  
 
+			//마커를 담을 배열입니다.
+			var markers = [];
+			
 			// 지도를 생성합니다    
 			var map = new daum.maps.Map(mapContainer, mapOption); 
 			
@@ -49,21 +53,26 @@
 			// 주소-좌표 변환 객체를 생성합니다
 			var geocoder = new daum.maps.services.Geocoder();
 			
-			mapLocation.forEach(function(value,index){
-				geocoder.addressSearch(value, function(result, status) {		
-				    // 정상적으로 검색이 완료됐으면 
-				     if (status === daum.maps.services.Status.OK) {
-				    	var coords = new daum.maps.LatLng(result[0].y, result[0].x);
-				    	displayMarker(coords,index);
-				    } 
-				})
-			});
+			function displayMap(mapLocation, mapContent){
+				//console.log("디스플레이 맵 : "+mapContent);
+				mapLocation.forEach(function(value,index){
+					geocoder.addressSearch(value, function(result, status) {	
+					    // 정상적으로 검색이 완료됐으면 
+					     if (status === daum.maps.services.Status.OK) {
+					    	var coords = new daum.maps.LatLng(result[0].y, result[0].x);
+					    	displayMarker(coords,mapContent,index);
+					    } 
+					});
+				});
+			}
 			
-			function displayMarker(coords,index) {
+			function displayMarker(coords,mapContent,index) {
 		        var marker = new daum.maps.Marker({
 		            map: map,
 		            position: coords
 		        });
+		        markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+		        //console.log("디스플레이 마커 : "+mapContent[index]);
 		     	// 마커에 표시할 인포윈도우를 생성합니다 
 				var infowindow = new daum.maps.InfoWindow({
 			        content: mapContent[index] // 인포윈도우에 표시할 내용
@@ -73,6 +82,14 @@
 			    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
 			    daum.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
 			    daum.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+			}
+			
+			// 지도 위에 표시되고 있는 마커를 모두 제거합니다
+			function removeMarker() {
+			    for ( var i = 0; i < markers.length; i++ ) {
+			        markers[i].setMap(null);
+			    }   
+			    markers = [];
 			}
 			
 			// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
@@ -91,9 +108,8 @@
 			
 			//지도를 재졍렬 합니다.
 			function relayout(){
-				console.log(map);
 				map.relayout();
 			}
 		</script>
-	</body>
+</body>
 </html>

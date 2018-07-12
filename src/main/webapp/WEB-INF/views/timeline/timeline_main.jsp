@@ -25,6 +25,10 @@
 			#coupon{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#point{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#total{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
+			#dm_write{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
+			#store_regist_list{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
+			#complain_list{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}  
+			
 			#content{margin-left : 100px;position: relative; width: 800px;height: auto;left : 350px;}
 			hr{margin-top:200px;}
 			#review{border: 2px solid #142e5b;width: 650px;height: 250px}
@@ -72,12 +76,21 @@
 		<hr/>
 		<br/>
 		<div class="userdetail" id="userdetai">
-			<div id="update">회원정보수정</div>
-			<div id="timeline_reply">작성한댓글리뷰</div>
-			<div id="message">쪽지함</div>
-			<div id="coupon">구매한 쿠폰</div>
-			<div id="point">포인트내역</div>
-			<div id="total">통계</div>
+			<c:if test="${sessionScope.loginId == '관리자' }">
+				<div id="dm_write">쪽지보내기</div>
+				<div id="message">쪽지함</div>
+				<div id="store_regist_list">가게 등록 관리</div>
+				<div id="complain_list">신고 리스트</div>
+			</c:if>
+			
+			<c:if test="${sessionScope.loginId != '관리자' }">
+				<div id="update">회원정보수정</div>
+				<div id="timeline_reply">작성한댓글리뷰</div>
+				<div id="message">쪽지함</div>
+				<div id="coupon">구매한 쿠폰</div>
+				<div id="point">포인트내역</div>
+				<div id="total">통계</div>
+			</c:if>
 		</div>
 		<div id="content">
 			
@@ -447,6 +460,17 @@
 			    	$("#likereview").css("background-color","lightgray");
 			    	$("#likereview").css("color","black");
 			    	ajaxCall(page);
+			}else if(e.target.id == "complain_list"){
+				page = "resources/timelinehtml/complainList.html"
+				$("#dm_write").css("background-color","lightgray");
+				$("#dm_write").css("color","black");
+				$("#message").css("background-color","lightgray");
+				$("#message").css("color","black");
+				$("#store_regist_list").css("background-color","lightgray");
+				$("#store_regist_list").css("color","black");
+				$("#complain_list").css("background-color","darkblue");
+				$("#complain_list").css("color","white");
+				//ajaxCall(page);
 			}
 	});		
 	function ajaxCall(page){
@@ -530,21 +554,33 @@
 				}
 			});
 		}else if(page=="timeline_reply"){
+				$.ajax({
+				url:"./timeline_reply",
+				type:"post",
+				data:{
+					id : userid
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d.list);
+					revreplyList(d.list);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}else if(page == "resources/timelinehtml/complainList.html"){
 			$.ajax({
-			url:"./timeline_reply",
-			type:"post",
-			data:{
-				id : userid
-			},
-			dataType:"json",
-			success:function(d){
-				console.log(d.list);
-				revreplyList(d.list);
-			},
-			error:function(e){
-				console.log(e);
-			}
-		});
+				url:"./complainList",
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					console.log(data)
+				},
+				error:function(error){
+					console.log(error);
+				}
+			});
 		}
 	}
 	function couponlist(list){

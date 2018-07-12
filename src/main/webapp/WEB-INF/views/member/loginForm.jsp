@@ -37,7 +37,7 @@
 	</style>
 </head>
 <body>
-
+	
 <form id="login" action="login" method="post">
 <div>
 	
@@ -91,7 +91,8 @@ if( !idReg.test( $("input[name=id]").val() ) ) {
   return true;
 } */
 
-var idReg = /^[a-z0-9]+[a-z0-9]{4,19}$/g;
+//var idReg = /^[a-z0-9]+[a-z0-9]{4,19}$/g;
+var idReg = /^[A-za-z0-9]{5,20}/g;
 
 $("#loginBtn").click(function(){
 	
@@ -101,13 +102,12 @@ $("#loginBtn").click(function(){
    }else if($("input[name='pw']").val()==""){//비밀번호
 	   	alert("비밀번호를 입력해주세요!!");
 	   	$("input[name='pw']").focus();
-   /* }else if(!idReg.test( $("input[name=id]").val() )){	//id 유효성
-   	alert("아이디는 5~20자 영문자 또는 숫자이어야 합니다."); */
-   /* }else if($("input[name='pw']").val().length<8 || $("input[name='pw']").val().length>16){	//비밀번호 유효성
-   	alert("비밀번호는 8~16자를 입력해주세요.");
-       return false;  */
+ /*   }else if(!idReg.test( $("input[name=id]").val() )){	//id 유효성
+   		alert("아이디는 영문자로 시작하는 5~20자리의 영문자 또는 숫자이어야 합니다.");
+   }else if($("input[name='pw']").val().length<8 || $("input[name='pw']").val().length>16){	//비밀번호 유효성
+   		alert("비밀번호는 8~16자를 입력해주세요."); */
    }else{
-   	$("#login").submit();//submit
+   		$("#login").submit();//submit
    }
 });		
 

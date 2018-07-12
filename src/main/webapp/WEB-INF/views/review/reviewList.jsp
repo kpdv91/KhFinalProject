@@ -107,12 +107,18 @@
         #tableTop{
         	height: 40px;
         }
-        a{
+        .span{
         	text-decoration: none;
         	color: black;
         }
-        a:hover{
+        .span:hover{
         	color: red;
+        }
+        .bigPhoto{
+        	width: 505px;
+        	height: 250px;
+        	background-color: pink;
+        	display: none;
         }
         
         
@@ -181,66 +187,156 @@ star-input>.input.focus{
     vertical-align:middle;
 }
 
+input[type=button]{
+            vertical-align: middle;
+            padding: 0px 5px;
+            background-color: #33aaaaff;
+            color: white;
+            border-radius: 7px;
+            width: 70px;
+            height: 27px;
+            outline: 0px;
+            border: 0px;
+       }
+       #review_Write{
+       		margin-left: 490px;
+       }
+       
+       #review_range{
+				width: 80px;
+				height: 25px;
+				border-radius: 5px;
+				font-size: 15px;
+				text-align-last: center;
+			}
+
 		</style>
 		
 	</head>
 	<body>
+	<input id="review_Write" type="button" value="리뷰 작성" onclick="reviewWrite()"/>
+	<select id="review_range" onchange="range(this.value)">
+		  <option value="최신순" selected="selected">최신순</option>
+		  <option value="좋아요순">좋아요순</option>
+	</select>
+	
+	<br/><br/>
+	
+	
 	<div id="reviewListDiv">
 	</div><br/>
 	
-	
+	<input id="storeIdx" type="hidden" value="<c:out value="${param.idx} "/>">
 	
 	</body>
 	<script>
 	var loginId = "${sessionScope.loginId}";
+	listCall("최신순");
+	function range(value){
+		switch (value) {
+		case "최신순":
+			listCall(value);
+			break;
+		case "좋아요순":
+			listCall(value);
+			break;
+
+		default:
+			break;
+		}
+	}
 	
-	listCall();
-	function listCall(){
+	function reviewWrite(){
+		location.href="./reviewWritePage";
+	}
+	
+	//리뷰 리스트 ajax
+	
+	function listCall(elem){
 		$.ajax({
 			url:"./reviewList",
 			type:"post",
 			dataType:"json",
+			data:{"store_idx":$("#storeIdx").val(),
+				"range":elem
+				},
 			success:function(d){
-				//console.log(d.reviewList);
+				$("#reviewListDiv").empty();
+				console.log(d.reviewList);
 				printList(d.reviewList);
-				
+				atagCreate(d.reviewList);
 			},
 			error:function(e){console.log(e);}
 		});
 	}
-	var aTag="";
+	//리뷰 리스트
 	var idx="";
+	var content="";
 	function printList(list){		 
-		var content = "";
+		content = "";
 		list.forEach(function(item){
+			content += "<div id='abc'>"
 			content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-			content += "<div id='listTop'>"+item.id+"<div id='listTop_R'><br/>명이 좋아합니다.</div></div>";
+			content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'></div></div>";
 			content += "<table><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
 			content += "<td id='starTd"+item.review_idx+"' class='starTd'></td></tr>";
 			content += "<tr><td colspan='2'><textarea readonly>"+item.review_content+"</textarea></td></tr>";
 			content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
 			content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table>";
 			content += "<a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div>";
-			content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div><br/>";
-			
+			content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div>";	
+			content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";
 			
 			idx=item.review_idx;
-			hashtag(idx);
-			starSelect(idx);		
-			aTag = "";
-			/* if(loginId == item.id){				
-				aTag += "<a id='review_update' href='#' onclick='review_update()'>수정</a>&nbsp;";
-				aTag += "<a id='review_delete' href='#' onclick='review_delete()'>삭제</a>&nbsp;";
-			}else{
-				aTag += "<a href='#' onclick='complain(this)'>신고</a>"
-			} */
+			hashtag(idx);//리뷰 해시태그
+			starSelect(idx);//리뷰 별점
 			
 		});
 		
 		$("#reviewListDiv").append(content);		
-		//$("#listTop_R").append(aTag);
 	}
 	
+	var aTag = "";
+	var idx = "";
+	//리뷰 로그인체크 후 수정 삭제 신고 a 태그 띄워줌
+	function atagCreate(list){
+		aTag = "";
+		idx = "";
+		list.forEach(function(item){
+			aTag = "";
+			idx=item.review_idx;
+			if(loginId != ""){
+			 if(loginId == item.id){	
+					aTag += "<span class='span' id='review_update' href='#' onclick='review_update(this)'>수정</span>&nbsp;";
+					aTag += "<span class='span' id='review_delete' href='#' onclick='review_delete(this,"+idx+")'>삭제</span>&nbsp;";
+				}else if(loginId != item.id){
+					aTag += "<span class='span' href='#' onclick='complain(this)'>신고</span>"
+				} 
+			}
+			 aTag+="<br/>"+item.review_likeCnt+"명이 좋아합니다.";
+			 $(".listTop_R"+idx).append(aTag);
+		});		
+	}
+	
+	//리뷰 삭제
+	function review_delete(elem, idx){
+		$.ajax({
+			url:"./review_delete",
+			type:"post",
+			dataType:"json",
+			data:{"review_idx":idx},
+			success:function(d){
+
+				if(d.success != 0){
+					$(elem).parents().parents().parents()[1].remove();
+				}
+			},
+			error:function(e){console.log(e);}
+		});
+	}
+	
+	
+	//리뷰 별점
 	function starSelect(elem){
 		$.ajax({
 			url:"./review_star",
@@ -254,10 +350,11 @@ star-input>.input.focus{
 			error:function(e){console.log(e);}
 		});	 
 	}
-	
+	var starCre = "";
+	//리뷰 별점 리스트
 	function star_create(star,elem){
 		//console.log(star);
-		var starCre = "";
+		starCre = "";
 		starCre +="<span id='star-input' class='star-input'><span id='input' class='input'>";		
 		starCre +="<input id='"+elem+"0.5' type='radio' name='star-input"+elem+"' value='0.5' id='p0.5'><label  id='"+elem+"0.5' for='p0.5'>0.5</label>";
 		starCre +="<input id='"+elem+"1' type='radio' name='star-input"+elem+"' value='1' id='p1.0'><label  id='"+elem+"1' for='p1.0'>1.0</label>";
@@ -275,6 +372,7 @@ star-input>.input.focus{
   		$("#starTd"+elem).css("pointer-events","none");
 	}
 	
+	//신고하기
 	function complain(elem){
 		var complain_Id = $(elem).parents()[1].childNodes[0].data;
 		var review_idx = $(elem).parents().parents()[1].childNodes[0].value;
@@ -290,6 +388,7 @@ star-input>.input.focus{
 		console.log($(elem).parents().parents()[1].childNodes[0].value);
 	} */
 	
+	//해시태그,사진
 	function hashtag(elem){
 		 $.ajax({
 			url:"./reviewHashPhoto",
@@ -304,23 +403,32 @@ star-input>.input.focus{
 		});	 
 	}
 	
+	//해시태그 리스트
+	var tag="";
 	function printHash(hash,elem){
-		var tag="";
+		tag="";
 		hash.forEach(function(item){
 			tag += "<div id='hashtag'>#"+item.hash_tag+"</div>";
 		});
 		$("#reviewList_hash"+elem).append(tag);
 	}
 	
+	//사진 리스트
+	var img="";
 	function printPhoto(photo,elem){
-		var img="";
+		img="";
 		photo.forEach(function(item){
-			img += "<div id='photo'><img width='60px' height='50px' src='"+item.revPhoto_Photo+"'/></div>";
+			img += "<div id='photo'><img onclick='PhotoClick("+elem+")' width='60px' height='50px' src='"+item.revPhoto_Photo+"'/></div>";
 		})
 		$("#reviewList_photo"+elem).append(img);
 	}
 	
-
+	function PhotoClick(elem){
+		console.log(elem);
+		$("#bigPhoto"+elem).css("display","block");
+		
+	}
+	
 	
 	
 	

@@ -29,7 +29,7 @@ public class StoreController {
 	@RequestMapping(value = "/storeRegistForm", method = RequestMethod.GET)
 	public String storeRegistForm() {
 		logger.info("가게등록 페이지 요청.");
-		storeService.menuReset();
+		storeService.listReset();
 		return "store/storeRegistForm";
 	}
 	
@@ -83,5 +83,12 @@ public class StoreController {
 		logger.info("tagArr[] : "+tagArr[0]);
 		logger.info(data.get("store_addr"));
 		return storeService.storeRegist(tagArr, data);
+	}
+	
+	//맛집 상세보기
+	@RequestMapping(value = "/storeDetail", method = RequestMethod.GET)
+	public ModelAndView storeDetail(@RequestParam("store_idx") int store_idx) {
+		logger.info("가게 상세 페이지 요청.");
+		return storeService.storeDetail(store_idx);
 	}
 }

@@ -31,9 +31,9 @@ public interface CommonInter {
 
 	int sendmsg(String userid, String id, String content);
 
-	ArrayList<StoreDTO> storeSearch_And(String search_map, String search_content_And);
+	ArrayList<StoreDTO> storeSearch_And(HashMap<String, Object> search_content_AndMap);
 
-	ArrayList<StoreDTO> storeSearch_Or(HashMap<String, Object> search_content_Map);
+	ArrayList<StoreDTO> storeSearch_Or(HashMap<String, Object> search_content_OrMap);
 
 	int reviewtimelinecnt(String id);
 

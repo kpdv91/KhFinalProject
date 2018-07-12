@@ -226,7 +226,7 @@ input[type=button]{
 	<div id="reviewListDiv">
 	</div><br/>
 	
-	
+	<input id="storeIdx" type="hidden" value="<c:out value="${param.idx} "/>">
 	
 	</body>
 	<script>
@@ -257,7 +257,9 @@ input[type=button]{
 			url:"./reviewList",
 			type:"post",
 			dataType:"json",
-			data:{"range":elem},
+			data:{"store_idx":$("#storeIdx").val(),
+				"range":elem
+				},
 			success:function(d){
 				$("#reviewListDiv").empty();
 				console.log(d.reviewList);

@@ -14,9 +14,10 @@
 	</head>
 	<body>
 		<div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
-		
 		<br/><br/>
-		<c:import url="/WEB-INF/views/review/reviewList.jsp"/>
+		<c:import url="/WEB-INF/views/review/reviewList.jsp">
+			<c:param name="idx" value="0"/>
+		</c:import>
 	
 		<c:import url="/WEB-INF/views/include/main/footer.jsp"/>
 	</body>

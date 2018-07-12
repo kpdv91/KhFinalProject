@@ -74,14 +74,21 @@
 	<select id="timelinprofile" resultType="String">
 		SELECT profile FROM member WHERE id=#{param1}
 	</select>
-	<select id="storeSearch_And" resultType="store">
-		SELECT * FROM store WHERE store_addr LIKE '%'||#{param1}||'%' AND store_name LIKE '%'||#{param2}||'%'
+
+	<select id="storeSearch_And" resultType="store" parameterType="hashmap">
+		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{content}||'%'
+		<if test="sort.equals('리뷰 최신 순')">
+			ORDER BY store_revdate DESC
+		</if>
 	</select>
 	<select id="storeSearch_Or" resultType="store" parameterType="hashmap">
 		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND
-		<foreach collection="split" item="split" index="index" open="(" close=")" separator="OR">
-			store_name LIKE '%'||#{split}||'%'
+		<foreach collection="content" item="content" index="index" open="(" close=")" separator="OR">
+			store_name LIKE '%'||#{content}||'%'
 		</foreach>
+		<if test="sort.equals('리뷰 최신 순')">
+			ORDER BY store_revdate DESC
+		</if>
 	</select>
 	<select id="storeSearch_Hash" resultType="hash">
 		SELECT * FROM hash WHERE store_idx=#{param1}

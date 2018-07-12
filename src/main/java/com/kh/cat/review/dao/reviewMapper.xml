@@ -37,14 +37,24 @@
 	 </select>
 	 
 	 <select id="reviewList" resultType="review">
-	 	SELECT * FROM review 
+	 	<choose>
+	 		<when test="store_idx==0">
+	 			SELECT * FROM review
+	 		</when>
+	 		<otherwise>
+	 			SELECT * FROM review WHERE store_idx= #{store_idx}
+	 		</otherwise>
+	 	</choose>
 	 	<if test="range.equals('최신순')">
 	 		ORDER BY review_date DESC
 		</if>		
 		<if test="range.equals('좋아요순')">
 			ORDER BY review_likeCnt DESC
 		</if>
-	 	
+	</select>
+
+ 	<select id="reviewList_store" resultType="review">
+		SELECT * FROM review WHERE store_idx= #{param1} ORDER BY review_date DESC
 	 </select>
 	 
 	 <select id="reviewHash" resultType="hash">

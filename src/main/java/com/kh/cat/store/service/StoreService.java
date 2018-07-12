@@ -177,9 +177,18 @@ public class StoreService {
 	}
 
 	//파일리스트 리셋
-	public void menuReset() {
+	public void listReset() {
 		fileList.clear();
 		storePhoto = "";
 	}
 
+	public ModelAndView storeDetail(int store_idx) {
+		ModelAndView mav = new ModelAndView();
+		inter = sqlSession.getMapper(StoreInter.class);
+		
+		mav.addObject("storeDetail", inter.storeDetail(store_idx));
+		mav.addObject("store_idx",store_idx);
+		mav.setViewName("store/storeDetail");
+		return mav;
+	}
 }

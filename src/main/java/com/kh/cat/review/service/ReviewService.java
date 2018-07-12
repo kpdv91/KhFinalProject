@@ -149,14 +149,19 @@ public class ReviewService {
 	}
 	
 	//리뷰 리스트
-	public HashMap<String, Object> reviewList(String range) {
+
+	public HashMap<String, Object> reviewList(int store_idx, String range) {
 		logger.info("리뷰 리스트 서비스");
-		logger.info(range);
 		inter = sqlSession.getMapper(ReviewInter.class);
 		HashMap<String, String> ra = new HashMap<String, String>();
 		ra.put("range", range);
+		ra.put("store_idx", String.valueOf(store_idx));
+		logger.info("*****************");
+		logger.info(ra.get("store_idx"));
 		HashMap<String, Object> map = new HashMap<String, Object>();
+
 		map.put("reviewList", inter.reviewList(ra));
+		
 		return map;
 	}
 

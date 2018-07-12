@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.cat.common.dao.CommonInter;
 
 import com.kh.cat.dto.ReviewDTO;
-
+import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.HashDTO;
 import com.kh.cat.dto.StoreDTO;
 
@@ -287,7 +287,21 @@ public class CommonService {
 	//관리자 신고 리스트
 	public HashMap<String, Object> timeLineComplainList(Map<String, String> params) {
 		logger.info("신고 리스트 서비스 요청");
-		return null;
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		ArrayList<ComplainDTO> list = inter.complainList();
+		map.put("list", list);
+		return map;
+	}
+
+	//가게 등록 리스트(관리자)
+	public HashMap<String, Object> timeLineStoreRegistList(Map<String, String> params) {
+		logger.info("가게 등록 리스트 서비스 요청");
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		ArrayList<StoreDTO> list = inter.storeRegistList();
+		map.put("list", list);
+		return map;
 	}
 
 }

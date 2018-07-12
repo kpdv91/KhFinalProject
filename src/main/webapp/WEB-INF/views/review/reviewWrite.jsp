@@ -175,8 +175,7 @@
 
 	<div id ="formDiv">
 	작성자 : <input id="user_Id" name="id" type="text" value="${ sessionScope.loginId}" readonly/><br/><br/>
-    상호명 : <input id="review_storeName" type="text" name="review_storeName"/><button type="button" id="search"><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/><br/>
-   
+    상호명 : <input id="review_storeName" type="text" name="review_storeName" value="${review_updateForm.review_storeName}"/><button type="button" id="search"><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/><br/>
     <div id="searchList">
     	
     	
@@ -187,15 +186,64 @@
 <%-- <jsp:include page="../include/common/map.jsp" />  --%>
     </div>
     <div id="starDIV">
-    별점 : <jsp:include page="star.jsp"></jsp:include><br/></div>
+    별점 : <jsp:include page="star.jsp"></jsp:include><br/>
+    <script>
+    starChk("${review_updateForm.review_star}");
+    function starChk(elem){
+    	$("input:radio[value='"+elem+"']").attr('checked', true);
+    	$("#starScore").text(elem);
+    }
+    </script>
+    </div>
     내용<br/>
-    <textarea name="review_content"></textarea><br/><br/>
+    <textarea name="review_content">${review_updateForm.review_content }</textarea><br/><br/>
     
     해시태그 : <input id="hash" type="text"/><input id="add" type="button" value="추가"/><br/>
     
     <div id="tag"></div>
     
-    
+    <script>
+    hashtag("${review_updateForm.review_idx}")
+  //해시태그,사진
+	function hashtag(elem){
+		 $.ajax({
+			url:"./reviewHashPhoto",
+			type:"post",
+			dataType:"json",
+			data:{"review_idx":elem},
+			success:function(d){
+				console.log(d.reviewPhoto);
+				printHash(d.reviewHash,elem);		
+				printPhoto(d.reviewPhoto,elem);
+			},
+			error:function(e){console.log(e);}
+		});	 
+	}
+	
+	//해시태그 리스트
+	var tag="";
+	function printHash(hash,elem){
+		tag="";
+		hash.forEach(function(item){
+			tag += "<div class='hashTag' id='hashTag'>#"+item.hash_tag+
+			"<button onclick='hashDel(this)' class='hashDel'>-</button>"+
+			"<input type='hidden' name='hash_tag' value='"+item.hash_tag+"'/></div>";				
+		});
+		
+		$("#tag").append(tag);	
+	}
+	//사진 리스트
+	var img="";
+	function printPhoto(photo,elem){
+		img="";
+		photo.forEach(function(item){
+			img += "<div id='imgDiv'><img width='100' height='100' src='"+item.revPhoto_Photo+"'/></br>";
+			img += "<input id='"+item.revPhoto_Photo+"' type='button' value='삭제' onclick='del(this)' />";
+			img += "</div><input type='hidden' name='review_photo' value='"+item.revPhoto_Photo+"'/>";
+		})
+		$("#editable").append(img);
+	}
+    </script>
     
 	<div id="rePhoto">
     <input id="reviewPhoto" type="button" value="사진 추가" onclick="fileUp()"/><br/><br/>
@@ -259,7 +307,7 @@
 			data : {"fileName":fileName},
 			success : function(data){
 				console.log(data);
-				if(data.success == 1){
+				if(data.success == 1 || data.result == 1){
 					//이미지 삭제
 					console.log($(elem).parent().next());
 					 $(elem).prev().prev().remove();

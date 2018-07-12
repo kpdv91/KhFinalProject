@@ -31,6 +31,9 @@
 		VALUES(#{param1}, #{param2})
 	</insert>
 	
+	<select id="storeDetail" resultType="store">
+		SELECT * FROM store WHERE store_idx = #{param1} 
+	 </select>
 	
 </mapper>
 

@@ -37,10 +37,12 @@ public class MemberService {
 		
 		String id = params.get("id");
 		String pw = params.get("pw");
+		//String profile = params.get("profile");
 		logger.info("아이디 : "+id+" / 비밀번호 : "+pw);
 		
-		String result = inter.login(id, pw).getAut();
-		logger.info("해당 ID의 aut : "+result);
+		String profile = inter.getprofile(id);
+		String result = inter.login(id, pw);
+		//logger.info("해당 ID의 aut : "+result);
 				
 		/*String page = "main";
 		String msg = "success";
@@ -61,18 +63,14 @@ public class MemberService {
 		System.out.println(result);
 		if(result == null) {
 			page = "member/loginForm";
-			msg = "fail";
-		}else if(result.equals("admin")) {
-			/*page = "member/joinForm";*/
+			msg = "로그인 실패";
+		}else{
 			page = "main";
-			msg = "관리자 메인 페이지";
-			session.setAttribute("loginId", id); 
+			msg = "로그인 성공";
+			session.setAttribute("loginId", id);
+			session.setAttribute("loginProfile", profile);
 			logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
-		}else if(result.equals("user")){
-			page = "main";
-			msg = "사용자 메인 페이지";
-			session.setAttribute("loginId", id); 
-			logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
+			logger.info("세션값 체크 : {}", session.getAttribute("loginProfile"));
 		}
 		
 		ModelAndView mav = new ModelAndView();

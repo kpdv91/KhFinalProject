@@ -134,7 +134,10 @@ public class ReviewController {
 	}
 	
 	
-	
-	
+	@RequestMapping(value = "/review_updateForm")
+	public ModelAndView review_updateForm(@RequestParam("review_idx") String review_idx){
+		logger.info("리뷰 수정 페이지 이동");
+		return service.review_updateForm(review_idx);
+	}
 	
 }

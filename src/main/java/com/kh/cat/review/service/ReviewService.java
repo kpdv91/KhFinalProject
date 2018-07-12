@@ -73,21 +73,28 @@ public class ReviewService {
 	public HashMap<String, Integer> fileDel(String root, String fileName) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		int success = 0;
+		int result=0;
 		String fullPath = root + "resources/upload/"+fileName;
 		File file = new File(fullPath);
 		if(file.exists()) {
 			logger.info("삭제할 파일이 존재 : "+file);
 			file.delete();
+			result=1;
+			logger.info("파일 삭제 완료");
 		}else {
 			logger.info("이미 삭제된 사진");
+			result=1;
 		}
 		if(fileList.get(fileName) != null) {
+			logger.info("리스트가 있음");
 			fileList.remove(fileName);//리스트 삭제
 			logger.info("삭제 후 남은 파일 갯수 : {}",fileList.size());
 			logger.info(fileList.toString());
 			success = 1;
 		}
+		
 		map.put("success", success);
+		map.put("result", result);
 		return map;
 	}
 	
@@ -244,6 +251,19 @@ public class ReviewService {
 		inter=sqlSession.getMapper(ReviewInter.class);
 		int success = inter.review_delete(review_idx);
 		return success;
+	}
+
+	public ModelAndView review_updateForm(String review_idx) {
+		logger.info("리뷰 수정 페이지 서비스");
+		inter=sqlSession.getMapper(ReviewInter.class);
+		//HashMap<String, Object> map = new HashMap<String, Object>();
+		ArrayList<ReviewDTO> arr = new ArrayList<>();
+		//map.put("reviewUpdate", inter.review_updateForm(review_idx));
+		arr = inter.review_updateForm(review_idx);
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("review_updateForm", arr.get(0));
+		mav.setViewName("review/reviewWrite");
+		return mav;
 	}
 
 }

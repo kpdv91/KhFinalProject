@@ -97,8 +97,8 @@
 	 </insert>
 	 
 	 
-	 <!-- 좋아요 수 조회 -->
-	 <select id="reviewStar" resultType="Integer">
+	 <!-- 별점수 조회 -->
+	 <select id="reviewStar" resultType="Double">
 	 	SELECT review_star FROM review WHERE review_idx= #{param1}
 	 </select>
 	 
@@ -106,5 +106,10 @@
 	 <delete id="review_delete">
 	 	DELETE FROM review WHERE review_idx = #{param1}
 	 </delete>
+	 
+	 <!-- 리뷰 수정 페이지 -->
+	 <select id="review_updateForm" resultType="review">
+	 	SELECT * FROM review WHERE review_idx = #{param1}
+	 </select>
 	
 </mapper>

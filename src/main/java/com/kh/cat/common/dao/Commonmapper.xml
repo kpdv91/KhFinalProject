@@ -90,7 +90,15 @@
 			ORDER BY store_revdate DESC
 		</if>
 	</select>
-	<select id="storeSearch_Hash" resultType="hash">
+	<select id="storeSearch_Hash" resultType="store" parameterType="hashmap">
+		SELECT * FROM (SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%') sto,
+		(SELECT * FROM hash WHERE 
+		<foreach collection="content" item="content" index="index" separator="OR">
+			hash_tag LIKE '%'||#{content}||'%'
+		</foreach>
+		) hashtag WHERE sto.store_idx=hashtag.store_idx
+	</select>
+	<select id="storeHash" resultType="hash">
 		SELECT * FROM hash WHERE store_idx=#{param1}
 	</select>
 	<select id="timelinereviewreply" resultType="revReply">

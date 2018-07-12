@@ -349,7 +349,7 @@ input[type=button]{
 			data:{"review_idx":elem},
 			success:function(d){
 				//console.log(d.reviewStar)
-				console.log(d.reviewStar);
+				//console.log(d.reviewStar);
 				star_create(d.reviewStar,elem);		
 			},
 			error:function(e){console.log(e);}
@@ -437,7 +437,7 @@ input[type=button]{
 
 	function PhotoClick(elem, idx){
 		$("#bigPhoto"+idx).empty();
-		console.log($(elem).children().attr("src"));
+		//console.log($(elem).children().attr("src"));
 		var pho="";
 		$("#bigPhoto"+idx).toggle(500,function(){			
 			pho="<img id='BigPho' src='"+$(elem).children().attr("src")+"' width='250px' height='250px'/>";
@@ -445,7 +445,7 @@ input[type=button]{
 		});
 		}
 		
-	}
+	
 	
 	
 	

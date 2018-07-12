@@ -31,6 +31,7 @@
             outline: 0px;
             border: 0px;
         }
+        
         #write{
         vertical-align: middle;
             padding: 0px 5px;
@@ -174,9 +175,9 @@
 <input type="button" value="크기" onclick="resizeMap()"/> -->
 
 	<div id ="formDiv">
+	<input type="hidden" name="review_idx" value="${review_updateForm.review_idx }"/>
 	작성자 : <input id="user_Id" name="id" type="text" value="${ sessionScope.loginId}" readonly/><br/><br/>
-    상호명 : <input id="review_storeName" type="text" name="review_storeName"/><button type="button" id="search"><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/><br/>
-   
+    상호명 : <input id="review_storeName" type="text" name="review_storeName" value="${review_updateForm.review_storeName}"/><button type="button" id="search"><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/><br/>
     <div id="searchList">
     	
     	
@@ -187,15 +188,64 @@
 <%-- <jsp:include page="../include/common/map.jsp" />  --%>
     </div>
     <div id="starDIV">
-    별점 : <jsp:include page="star.jsp"></jsp:include><br/></div>
+    별점 : <jsp:include page="star.jsp"></jsp:include><br/>
+    <script>
+    starChk("${review_updateForm.review_star}");
+    function starChk(elem){
+    	$("input:radio[value='"+elem+"']").attr('checked', true);
+    	$("#starScore").text(elem);
+    }
+    </script>
+    </div>
     내용<br/>
-    <textarea name="review_content"></textarea><br/><br/>
+    <textarea name="review_content">${review_updateForm.review_content }</textarea><br/><br/>
     
     해시태그 : <input id="hash" type="text"/><input id="add" type="button" value="추가"/><br/>
     
     <div id="tag"></div>
     
-    
+    <script>
+    hashtag("${review_updateForm.review_idx}")
+  //해시태그,사진
+	function hashtag(elem){
+		 $.ajax({
+			url:"./reviewHashPhoto",
+			type:"post",
+			dataType:"json",
+			data:{"review_idx":elem},
+			success:function(d){
+				console.log(d.reviewPhoto);
+				printHash(d.reviewHash,elem);		
+				printPhoto(d.reviewPhoto,elem);
+			},
+			error:function(e){console.log(e);}
+		});	 
+	}
+	
+	//해시태그 리스트
+	var tag="";
+	function printHash(hash,elem){
+		tag="";
+		hash.forEach(function(item){
+			tag += "<div class='hashTag' id='hashTag'>#"+item.hash_tag+
+			"<button onclick='hashDel(this)' class='hashDel'>-</button>"+
+			"<input type='hidden' name='hash_tag' value='"+item.hash_tag+"'/></div>";				
+		});
+		
+		$("#tag").append(tag);	
+	}
+	//사진 리스트
+	var img="";
+	function printPhoto(photo,elem){
+		img="";
+		photo.forEach(function(item){
+			img += "<div id='imgDiv'><img width='100' height='100' src='"+item.revPhoto_Photo+"'/></br>";
+			img += "<input id='"+item.revPhoto_Photo+"' type='button' value='삭제' onclick='del(this)' />";
+			img += "</div><input type='hidden' name='review_photo' value='"+item.revPhoto_Photo+"'/>";
+		})
+		$("#editable").append(img);
+	}
+    </script>
     
 	<div id="rePhoto">
     <input id="reviewPhoto" type="button" value="사진 추가" onclick="fileUp()"/><br/><br/>
@@ -203,6 +253,7 @@
     <div id="editable"></div>
     </div><br/><br/>
     <button id="write">작성하기</button>
+    <input type="button" value="취소" id="reviewWriteCancel"/>
     </div>
     </form>
      
@@ -212,6 +263,46 @@
 	var loginId = "${sessionScope.loginId}";
 	console.log(loginId);
 	var div = "";//div 추가 변수
+	
+	$("#reviewWriteCancel").click(function(){
+		location.href="./";
+	});
+	if("${review_updateForm.review_content }" != ""){
+		$("#write").text("수정하기");
+		$("#reviewWriteCancel").css("display","none");
+	}
+	$(document).ready(function(){
+		$("#Logo").css("pointer-events","none");
+		
+		window.history.forward(1);
+		history.pushState(null, document.title, location.href); 
+		window.addEventListener('popstate', function(event) { history.pushState(null, document.title, location.href); });
+
+	//새로고침, 뒤로가기 막기
+	document.onkeydown = function(e){
+	      key = (e) ? e.keyCode : event.keyCode;
+	      if(key==116){
+	         if(e){
+	            e.preventDefault();
+	         }
+	         else{
+	            event.keyCode = 0;
+	            event.returnValue = false;
+	         }
+	      }
+	      document.onkeydown = LockF5;
+	}
+	//오른쪽마우스 막기
+	document.oncontextmenu = function(e){
+	     if(e){
+	        e.preventDefault();
+	     }
+	     else{
+	        event.keyCode = 0;
+	        event.returnValue = false;
+	     }
+	} 
+	});
 	
 	$("#write").click(function(){
 		//해시태그 삭제버튼 제거
@@ -259,7 +350,7 @@
 			data : {"fileName":fileName},
 			success : function(data){
 				console.log(data);
-				if(data.success == 1){
+				if(data.success == 1 || data.result == 1){
 					//이미지 삭제
 					console.log($(elem).parent().next());
 					 $(elem).prev().prev().remove();

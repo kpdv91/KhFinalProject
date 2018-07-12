@@ -94,19 +94,29 @@ if( !idReg.test( $("input[name=id]").val() ) ) {
 //var idReg = /^[a-z0-9]+[a-z0-9]{4,19}$/g;
 var idReg = /^[A-za-z0-9]{5,20}/g;
 
+
 $("#loginBtn").click(function(){
 	
 	if($("input[name='id']").val()==""){//아이디
         alert("아이디를 입력해주세요!!");
         $("input[name='id']").focus();
+        return false;
    }else if($("input[name='pw']").val()==""){//비밀번호
 	   	alert("비밀번호를 입력해주세요!!");
 	   	$("input[name='pw']").focus();
- /*   }else if(!idReg.test( $("input[name=id]").val() )){	//id 유효성
-   		alert("아이디는 영문자로 시작하는 5~20자리의 영문자 또는 숫자이어야 합니다.");
+	   	return false;
+   
    }else if($("input[name='pw']").val().length<8 || $("input[name='pw']").val().length>16){	//비밀번호 유효성
-   		alert("비밀번호는 8~16자를 입력해주세요."); */
+   		alert("비밀번호는 8~16자를 입력해주세요.");
+   		return false;
+   }else if(!idReg.test( $("input[name='id']").val() )){	//id 유효성
+  		alert("아이디는 영문자로 시작하는 5~20자리의 영문자 또는 숫자이어야 합니다.");
+  		return false;
    }else{
+	   var msg= "${msg}";
+		if(msg!=""){
+		alert(msg);
+		}
    		$("#login").submit();//submit
    }
 });		

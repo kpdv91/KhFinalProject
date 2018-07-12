@@ -184,14 +184,22 @@ public class CommonService {
 		search_content_OrMap.put("content", search_content_Split);
 		search_content_OrMap.put("sort", "리뷰 최신 순");
 		
+		HashMap<String, Object> search_content_Hash = new HashMap<String, Object>();
+		search_content_Hash.put("map", params.get("search_map"));
+		search_content_Hash.put("content", search_content_Split);
+		search_content_Hash.put("sort", "리뷰 최신 순");
+		
 		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_AndMap);
 		if(result.isEmpty()) {
 			result = inter.storeSearch_Or(search_content_OrMap);
+			if(result.isEmpty()) {
+				result = inter.storeSearch_Hash(search_content_Hash);
+			}
 		}
 		
 		ArrayList<ArrayList<HashDTO>> result_hash = new ArrayList<ArrayList<HashDTO>>();
 		for(int i=0; i<result.size(); i++) {
-			result_hash.add(inter.storeSearch_Hash(result.get(i).getStore_idx()));
+			result_hash.add(inter.storeHash(result.get(i).getStore_idx()));
 		}
 		
 		ModelAndView mav = new ModelAndView();
@@ -219,14 +227,22 @@ public class CommonService {
 		search_content_OrMap.put("content", search_content_Split);
 		search_content_OrMap.put("sort", params.get("data"));
 		
+		HashMap<String, Object> search_content_Hash = new HashMap<String, Object>();
+		search_content_Hash.put("map", params.get("search_map"));
+		search_content_Hash.put("content", search_content_Split);
+		search_content_Hash.put("sort", "리뷰 최신 순");
+		
 		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_AndMap);
 		if(result.isEmpty()) {
 			result = inter.storeSearch_Or(search_content_OrMap);
+			if(result.isEmpty()) {
+				result = inter.storeSearch_Hash(search_content_Hash);
+			}
 		}
 		
 		ArrayList<ArrayList<HashDTO>> result_hash = new ArrayList<ArrayList<HashDTO>>();
 		for(int i=0; i<result.size(); i++) {
-			result_hash.add(inter.storeSearch_Hash(result.get(i).getStore_idx()));
+			result_hash.add(inter.storeHash(result.get(i).getStore_idx()));
 		}
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -301,6 +317,35 @@ public class CommonService {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		ArrayList<StoreDTO> list = inter.storeRegistList();
 		map.put("list", list);
+		return map;
+	}
+
+	public HashMap<String, Object> reply_update(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int idx = Integer.parseInt(params.get("revreply_idx"));
+		String content = params.get("content");
+		logger.info(idx+"/"+content);
+		int a = inter.reply_update(idx,content);
+		boolean updatecheck = false;
+		if(a>0){
+			updatecheck=true;
+		}
+		map.put("update",updatecheck);
+		return map;
+	}
+
+	public HashMap<String, Object> reply_delete(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int idx = Integer.parseInt(params.get("revreply_idx"));
+		logger.info("idx"+idx);
+		int a = inter.reply_delete(idx);
+		boolean deletecheck = false;
+		if(a>0){
+			deletecheck=true;
+		}
+		map.put("del",deletecheck);
 		return map;
 	}
 

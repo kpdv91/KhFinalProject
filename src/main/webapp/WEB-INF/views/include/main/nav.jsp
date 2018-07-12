@@ -30,7 +30,7 @@
 <nav id="nav">
 	<div id="mainFrame">
 		<div id="logoBox">
-			<a href="./">
+			<a  id="Logo" href="./">
 				<img alt="logo" src="resources/img/logo/logo_cat.png">
 			</a>
 		</div>

@@ -63,5 +63,9 @@ public interface CommonInter {
 
 	ArrayList<RevReplyDTO> timelinereviewreply(String idx);
 
+	int reply_update(int idx, String content);
+
+	int reply_delete(int idx);
+
 
 }

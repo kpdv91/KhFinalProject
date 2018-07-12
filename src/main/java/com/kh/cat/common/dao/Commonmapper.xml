@@ -96,6 +96,12 @@
 	<select id="timelinereviewreply" resultType="revReply">
 		SELECT * FROM revreply WHERE review_idx=#{param1}
 	</select>
+	<update id="reply_update">
+		UPDATE revreply SET revreply_content=#{param2} WHERE revreply_idx=#{param1}
+	</update>
+	<delete id="reply_delete">
+		DELETE FROM revreply WHERE revreply_idx=#{param1}
+	</delete>
 </mapper>
 
 

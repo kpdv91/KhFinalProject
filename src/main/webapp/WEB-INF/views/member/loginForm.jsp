@@ -109,10 +109,10 @@ $("#loginBtn").click(function(){
    }else if($("input[name='pw']").val().length<8 || $("input[name='pw']").val().length>16){	//비밀번호 유효성
    		alert("비밀번호는 8~16자를 입력해주세요.");
    		return false;
-   }else if(!idReg.test( $("input[name='id']").val() )){	//id 유효성
+   }/* else if(!idReg.test( $("input[name='id']").val() )){	//id 유효성
   		alert("아이디는 영문자로 시작하는 5~20자리의 영문자 또는 숫자이어야 합니다.");
   		return false;
-   }else{
+   } */else{
 	   var msg= "${msg}";
 		if(msg!=""){
 		alert(msg);

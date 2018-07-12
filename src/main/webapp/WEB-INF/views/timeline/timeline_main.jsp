@@ -898,7 +898,7 @@
 				}	
 			});		
 			$("#store_tbody").empty();
-			$("#store_tbody").append(content);//내용 붙이기.")
-			
-			</script>
+			$("#store_tbody").append(content);//내용 붙이기
+		}
+	</script>
 </html>

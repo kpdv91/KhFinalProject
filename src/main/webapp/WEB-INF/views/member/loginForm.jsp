@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Insert title here</title>
+<title>ID 찾기</title>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <style>
     div{
@@ -53,8 +53,8 @@
          </tr>
          <tr>
            <td colspan="3">
-           &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <input onclick ="join()" type="button" value="회원가입"> <!-- <button id="join">회원가입</button> -->&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-           <input type="button" value="ID 찾기">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+           &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <input onclick ="join()" type="button" value="회원가입">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+           <input type="button" onclick ="popupOpen()" value="ID 찾기">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
             <input type="button" value="PW 찾기">
            </td>
          </tr>
@@ -66,9 +66,31 @@
 <script>
 
 
- function join() {
-	location.href="./joinForm";
-};
+	function join() {
+		location.href="./joinForm";
+	};
+	
+	function findId() {
+		//location.href="./findIdForm";
+		
+		 /* window.open("./findIdForm","","top=0, left=0, width=800, height=556, directories='no', location=no, menubar=no, resizable=no, status=yes, toolbar=no")  ;
+	     
+	     window.opener = "nothing";
+	     window.open('', '_parent', '');
+	     window.close(); */
+	};
+	
+	function popupOpen(){
+
+		var popUrl = "./findIdForm";	//팝업창에 출력될 페이지 URL
+
+		var popOption = "top=0, left=0, width=800, height=556, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
+
+			window.open(popUrl,"",popOption);
+
+		}
+
+
 
 /* var idReg = /^[a-z]+[a-z0-9]{4,19}$/g;
 if( !idReg.test( $("input[name=id]").val() ) ) {
@@ -110,7 +132,7 @@ $("#loginBtn").click(function(){
    		alert("비밀번호는 8~16자를 입력해주세요.");
    		return false;
    }else if(!idReg.test( $("input[name='id']").val() )){	//id 유효성
-  		alert("아이디는 영문자로 시작하는 5~20자리의 영문자 또는 숫자이어야 합니다.");
+  		alert("아이디는 5~20자리의 영문자 또는 숫자이어야 합니다.");
   		return false;
    }else{
 	   var msg= "${msg}";

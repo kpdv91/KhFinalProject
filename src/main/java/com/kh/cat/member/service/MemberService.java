@@ -29,7 +29,7 @@ public class MemberService {
 	@Autowired SqlSession sqlSession;
 	MemberInter inter;
 
-	
+	//로그인
 	public ModelAndView login(HashMap<String, String> params,HttpSession session) {
 		logger.info("로그인 체크요청");
 		MemberDTO dto = new MemberDTO();
@@ -114,7 +114,7 @@ public class MemberService {
 		return mav;
 	}
 	
-	//중복 체크
+	//ID 중복 체크
     public Map<String, String> overlay(String id) {
         inter = sqlSession.getMapper(MemberInter.class);
         Map<String, String> json = new HashMap<String, String>();
@@ -181,6 +181,46 @@ public class MemberService {
 		map.put("profile", inter.profileunder(id));
 		return map;
 	}
+
+	/*//ID 찾기
+	public HashMap<String, String> findId(Map<String, String> params) {
+		inter = sqlSession.getMapper(MemberInter.class);
+		HashMap<String, String> map = new HashMap<String, String>();
+		String name = params.get("userName");
+		String email = params.get("userEmail");
+		logger.info("이름 : "+name+" / 이메일 : "+email);
+		map.put("findId", inter.findId(name,email));
+		logger.info("찾는 id : " +inter.findId(name,email));
+		return map;	
+	}*/
+	
+	//ID 찾기
+	public ModelAndView findId(Map<String, String> params) {
+		inter = sqlSession.getMapper(MemberInter.class);
+		HashMap<String, String> map = new HashMap<String, String>();
+		String name = params.get("userName");
+		String email = params.get("userEmail");
+		logger.info("이름 : "+name+" / 이메일 : "+email);
+		map.put("findId", inter.findId(name,email));
+		String find = inter.findId(name,email);
+		logger.info("찾는 id : " +find);
+		ModelAndView mav = new ModelAndView();
+		String msg = "";
+		
+		if(find == null) {
+			//page = "member/loginForm";
+			msg = "정보 불일치";
+		}else{
+			//page = "main";
+			msg = "정보 일치";
+			/*session.setAttribute("loginId", id);
+			session.setAttribute("loginProfile", profile);
+			logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
+			logger.info("세션값 체크 : {}", session.getAttribute("loginProfile"));*/
+		}
+			mav.addObject("msg",msg);
+			return mav;	
+		}
 
 	 
 

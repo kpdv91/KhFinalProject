@@ -30,15 +30,16 @@
 	</style>
 </head>
 <body>
+<form id="findId" action="./findId" method="post">
 <div>
     <table>
    	     <tr>
             <td>이름 &nbsp&nbsp&nbsp&nbsp : </td>
-            <td><input type="text" id="userId" placeholder="이름"></td>
+            <td><input type="text" name="userName" placeholder="이름"></td>
          </tr>
          <tr>
             <td>이메일 &nbsp&nbsp: </td>
-            <td><input type="email" id="userEmail" placeholder="이메일"></td>            
+            <td><input type="email" name="userEmail" placeholder="이메일"></td>            
          </tr>
          <tr>
            <td colspan="3">
@@ -48,13 +49,33 @@
             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
             &nbsp&nbsp&nbsp&nbsp
-           <input type="button" value="찾기">
+           <input id="find" type="button" value="찾기">
            </td>
          </tr>
    </table>
 </div>
+</form>
 </body>
 <script>
+	
+	$("#find").click(function(){
+
+		if($("input[name='userName']").val()==""){//아이디
+		    alert("이름을 입력해주세요!!");
+		    $("input[name='userName']").focus();
+		    //return false;
+		}else if($("input[name='userEmail']").val()==""){//비밀번호
+		   	alert("이메일를 입력해주세요!!");
+		   	$("input[name='userEmail']").focus();
+		   	//return false;
+		}else {
+			var msg= "${msg}";
+			if(msg!=""){
+			alert(msg);
+			}
+			$("#findId").submit();//submit
+		}
+	});
  
 
  

@@ -28,6 +28,10 @@
 			#dm_write{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#store_regist_list{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#complain_list{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}  
+			button#complain_move{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
+			button#store_regist_move{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
+			button#store_regist_yes{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
+			button#store_regist_no{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
 			
 			#content{margin-left : 100px;position: relative; width: 800px;height: auto;left : 350px;}
 			hr{margin-top:200px;}
@@ -410,6 +414,10 @@
 	    	$("#likestore").css("color","black");
 	    	$("#timeline_reply").css("background-color","lightgray");
 	    	$("#timeline_reply").css("color","black");
+	    	$("#store_regist_list").css("background-color","lightgray");	    	
+	    	$("#store_regist_list").css("color","black");
+	    	$("#complain_list").css("background-color","lightgray");
+	    	$("#complain_list").css("color","black");
 	    	$("#content").load(page,function(res, stat) {});
 			ajaxCall(page);
 		} else if(e.target.id == "coupon") {
@@ -551,8 +559,21 @@
 				$("#store_regist_list").css("color","black");
 				$("#complain_list").css("background-color","darkblue");
 				$("#complain_list").css("color","white");
-				//ajaxCall(page);
-			}
+				$("#content").load(page,function(res, stat) {});
+				ajaxCall(page);
+			}else if(e.target.id == "store_regist_list"){
+				page = "resources/timelinehtml/store_regist_list.html"
+					$("#dm_write").css("background-color","lightgray");
+					$("#dm_write").css("color","black");
+					$("#message").css("background-color","lightgray");
+					$("#message").css("color","black");
+					$("#store_regist_list").css("background-color","darkblue");
+					$("#store_regist_list").css("color","white");
+					$("#complain_list").css("background-color","lightgray");
+					$("#complain_list").css("color","black");
+					$("#content").load(page,function(res, stat) {});
+					ajaxCall(page);
+				}
 	});		
 	function ajaxCall(page){
 		if(page=="resources/timelinehtml/messagebox.html"){
@@ -656,7 +677,21 @@
 				type:"post",
 				dataType:"json",
 				success:function(data){
-					console.log(data)
+					console.log(data);
+					complain_list(data.list);
+				},
+				error:function(error){
+					console.log(error);
+				}
+			});
+		}else if(page == "resources/timelinehtml/store_regist_list.html"){
+			$.ajax({
+				url:"./storeRegistList",
+				type:"post",
+				dataType:"json",
+				success:function(data){
+					console.log(data);
+					store_regist_list(data.list);
 				},
 				error:function(error){
 					console.log(error);
@@ -827,5 +862,43 @@
 			});
 		}		
 	});
-	</script>
+	
+		//신고리스트
+		function complain_list(list) {
+			var content = "";		
+			list.forEach(function(item, idx){
+				content +="<tr>";
+				content +="<td>"+item.id+"</td>";
+				content +="<td>"+item.complain_type+"</td>";
+				content +="<td>"+item.complain_id+"</td>";
+				content +="<td>"+item.complain_cate+"</td>";
+				var date = new Date(item.complain_date);			
+				content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
+				content +="<td><button id='complain_move'>보 기</button></td>";
+				content += "</tr>";			
+			});		
+			$("#complail_tbody").empty();
+			$("#complail_tbody").append(content);//내용 붙이기
+		}
+		
+		//가게 등록 리스트
+		function store_regist_list(list) {
+			var content = "";		
+			list.forEach(function(item, idx){
+				if(item.store_regist == 0){
+					content +="<tr>";
+					content +="<td>"+item.store_name+"</td>";
+					content +="<td>"+item.store_ceo+"</td>";
+					content +="<td>"+item.store_addr+"</td>";
+					var date = new Date(item.store_revDate);			
+					content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
+					content +="<td><button id='store_regist_move'>보 기</button></td>";
+					content +="<td><button id='store_regist_yes'>승인</button> / <button id='store_regist_no'>취소</button></td>";
+					content += "</tr>";		
+				}	
+			});		
+			$("#store_tbody").empty();
+			$("#store_tbody").append(content);//내용 붙이기.")
+			
+			</script>
 </html>

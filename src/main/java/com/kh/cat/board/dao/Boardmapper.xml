@@ -32,8 +32,32 @@
 	
 	<select id="boardList" resultType="board">
 		SELECT board_idx, id, board_subject, board_content, board_cate, board_date
-			FROM board ORDER BY board_cate ASC, board_idx ASC
+			FROM board ORDER BY board_cate ASC, board_idx DESC
 	</select>
+	
+	<insert id="boardReplyWrite" parameterType="boardReply">
+		INSERT INTO boardReply(boardReply_idx, board_idx, id, boardReply_content, boardReply_date)
+			VALUES(seq_boardReply.NEXTVAL, #{board_idx}, #{id}, #{boardReply_content}, SYSDATE)
+	</insert>
+	
+	<select id="boardReplyList" resultType="boardReply">
+		SELECT boardReply_idx, board_idx, id, boardReply_content, boardReply_date
+			FROM boardReply WHERE board_idx = #{board_idx}
+	</select>
+	
+	<select id="replyCnt" resultType="Integer">
+		SELECT COUNT(*) FROM boardReply WHERE board_idx = #{param1}
+	</select>
+	
+	<update id="boardReplyUpdate" parameterType="boardReply">
+		UPDATE boardReply SET boardReply_content = #{boardReply_content} 
+			WHERE boardReply_idx = #{boardReply_idx} AND board_idx = #{board_idx}
+	</update>
+	
+	<delete id="boardReplyDelete">
+		DELETE FROM boardReply 
+			WHERE board_idx = #{param2} AND boardReply_idx = #{param1}
+	</delete>
 </mapper>
 
 

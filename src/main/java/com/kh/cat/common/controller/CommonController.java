@@ -30,11 +30,20 @@ public class CommonController {
 	}
 	
 	@RequestMapping(value = "/search")
-	public ModelAndView search(@RequestParam Map<String,String> params) {
+	public ModelAndView search(@RequestParam HashMap<String,String> params) {
 		logger.info("검색 페이지 이동");
 		logger.info("지역 : "+params.get("search_map"));
 		logger.info("검색어 : "+params.get("search_content"));
 		return commonservice.storeSearch(params);
+	}
+	
+	@RequestMapping(value = "/searchSort")
+	public @ResponseBody HashMap<String,Object> searchSort(@RequestParam HashMap<String,String> params) {
+		logger.info("검색 정렬 페이지 이동");
+		logger.info("지역 : "+params.get("search_map"));
+		logger.info("정렬 : "+params.get("data"));
+		logger.info("검색어 : "+params.get("search_content"));
+		return commonservice.storeSearchSort(params);
 	}
 	
 	@RequestMapping(value = "/receivelist")
@@ -127,5 +136,25 @@ public class CommonController {
 	public @ResponseBody HashMap<String, Object> followdelete(@RequestParam Map<String,String> params) {
 		logger.info("팔로우 취소 요청");		
 		return commonservice.followdelete(params);
+	}
+	@RequestMapping(value = "/timelinelikereview")
+	public @ResponseBody HashMap<String, Object> timelinelikereview(@RequestParam Map<String,String> params) {
+		logger.info("좋아요 리뷰 리스트 요청");		
+		return commonservice.timelinelikereview(params);
+	}
+	@RequestMapping(value = "/timeline_reply")
+	public @ResponseBody HashMap<String, Object> timeline_reply(@RequestParam Map<String,String> params) {
+		logger.info("댓글 리뷰 리스트 요청");		
+		return commonservice.timeline_reply(params);
+	}
+	@RequestMapping(value = "/timelinprofile")
+	public @ResponseBody HashMap<String, Object> timelinprofile(@RequestParam Map<String,String> params) {
+		logger.info("댓글 리뷰 리스트 요청");		
+		return commonservice.timelinprofile(params);
+	}
+	@RequestMapping(value = "/timelinereviewreply")
+	public @ResponseBody HashMap<String, Object> timelinereviewreply(@RequestParam Map<String,String> params) {
+		logger.info("댓글 리뷰 리스트 요청");		
+		return commonservice.timelinereviewreply(params);
 	}
 }

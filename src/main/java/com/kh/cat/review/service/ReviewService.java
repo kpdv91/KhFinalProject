@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.review.dao.ReviewInter;
 
@@ -141,19 +142,23 @@ public class ReviewService {
 	}
 	
 	//리뷰 리스트
-	public HashMap<String, Object> reviewList(int store_idx) {
+
+	public HashMap<String, Object> reviewList(int store_idx, String range) {
 		logger.info("리뷰 리스트 서비스");
-		logger.info("가게번호"+store_idx+"의 리뷰");
 		inter = sqlSession.getMapper(ReviewInter.class);
+		HashMap<String, String> ra = new HashMap<String, String>();
+		ra.put("range", range);
+		ra.put("store_idx", String.valueOf(store_idx));
+		logger.info("*****************");
+		logger.info(ra.get("store_idx"));
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		if(store_idx==0) {
-			map.put("reviewList", inter.reviewList());
-		}else {
-			map.put("reviewList", inter.reviewList_store(store_idx));
-		}
+
+		map.put("reviewList", inter.reviewList(ra));
+		
 		return map;
 	}
 
+	//리뷰 해시태그, 사진
 	public HashMap<String, Object> reviewHashPhoto(String review_idx, String root) {
 		logger.info("리뷰 해시태그");
 		inter = sqlSession.getMapper(ReviewInter.class);
@@ -203,5 +208,42 @@ public class ReviewService {
 		}
 	}
 
+	public HashMap<String, Integer> complain(HashMap<String, String> map) {
+		logger.info("신고하기 서비스");
+		ComplainDTO dto = new ComplainDTO();
+		dto.setId(map.get("Id"));
+		dto.setComplain_id(map.get("compId"));
+		dto.setComplain_cate(map.get("complain_cate"));
+		logger.info(map.get("complain_cate"));
+		if(map.get("complain_cate").equals("리뷰")) {
+			dto.setReview_idx(Integer.parseInt(map.get("idx")));
+		}else {
+			dto.setRev_reply_idx(Integer.parseInt(map.get("idx")));
+		}
+		dto.setComplain_type(map.get("complain_type"));
+		dto.setComplain_content(map.get("complain_content"));
+		System.out.println(dto.getId()+"/"+dto.getComplain_id()+"/"+dto.getComplain_cate()+"/"+dto.getReview_idx()+"/"+dto.getRev_reply_idx()+"/"+dto.getComplain_type()+"/"+dto.getComplain_content());
+		inter = sqlSession.getMapper(ReviewInter.class);
+		HashMap<String, Integer> hash = new HashMap<String, Integer>();
+		hash.put("success", inter.complain(dto));
+		System.out.println(hash.get("success"));
+		return hash;
+	}
+
+	public HashMap<String, Object> review_star(String review_idx) {
+		logger.info("리뷰 별점");
+		inter = sqlSession.getMapper(ReviewInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("reviewStar", inter.reviewStar(review_idx));
+		logger.info(""+map.get("reviewStar"));
+		return map;
+	}
+
+	public Integer review_delete(String review_idx) {
+		logger.info("리뷰 삭제");
+		inter=sqlSession.getMapper(ReviewInter.class);
+		int success = inter.review_delete(review_idx);
+		return success;
+	}
 
 }

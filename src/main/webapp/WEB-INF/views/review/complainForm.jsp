@@ -19,14 +19,15 @@
             border: 0px;
         }
 			form {
-				background-color: #142e5b;
+				
+			}
+			body{
+			background-color: #142e5b;
 				color: white;
 				width: 100%;
 				height: 100%;
 				padding: 0px;
 				text-align: center;
-			}
-			body{
 				overflow-x:hidden; overflow-y:hidden;
 			}
 			#complain_content{
@@ -35,7 +36,7 @@
 				 resize: none;
 				 border-radius: 5px;
 			}
-			#compSelect{
+			#complain_type{
 				width: 80px;
 				height: 25px;
 				border-radius: 5px;
@@ -50,23 +51,50 @@
 	</head>
 	<body>
 	
-	<form action="./complain" method="post" enctype="multipart/form-data">
+	
 	<br/><br/><br/>
-		신고할 ID : <input id="compID" type="text" value="${complain_Id }"/><br/><br/>
+		신고할 ID : <input name="compId" id="compID" type="text" value="${complain_Id }"/>
+		<input type="hidden" id="Id" name="Id" value="${sessionScope.loginId}"/>
+		<input type="hidden" id="complain_cate" name="complain_cate" value="${complain_cate }"/> 
+		<input type="hidden" id="idx" name="idx" value="${idx }"/>
+		<br/><br/>
 		사유 : &nbsp;&nbsp;
-		<select id="compSelect" name="complain_type">
+		<select id="complain_type" name="complain_type">
 		  <option value="욕설" selected="selected">욕설</option>
 		  <option value="광고">광고</option>
 		  <option value="음란성">음란성</option>
 		</select><br/><br/>
-		<textarea id="complain_content" placeholder="신고 내용을 입력해 주세요."></textarea><br/><br/>
-		<button id="comp">신고하기</button>
-		
-	
-	</form>
+		<textarea name="complain_content" id="complain_content" placeholder="신고 내용을 입력해 주세요."></textarea><br/><br/>
+		<input type="button" id="comp" value="신고하기"/>
 
 	</body>
 	<script>
+	 $("#comp").click(function(){
+		$.ajax({
+			url:"./complain",
+			type:"post",
+			dataType:"json",
+			data:{
+				"compId":$("#compID").val(),
+				"Id":$("#Id").val(),
+				"complain_cate":$("#complain_cate").val(),
+				"idx":$("#idx").val(),
+				"complain_type":$("#complain_type").val(),
+				"complain_content":$("#complain_content").val(),
+			},
+			success:function(d){
+				console.log(d.success);
+				if(d.success == 1){
+					self.close();
+				}
+				
+			},
+			error:function(e){console.log(e);}
+		});
+	}); 
 
+	
+	
+	
 	</script>
 </html>

@@ -20,10 +20,10 @@
 	#nav select{font-size: 16px; width: 110px; padding: 10px; border: 0px; outline: none; }
 	#nav #search_content{font-size: 16px; width: 210px; padding: 10px; border: 0px; outline: none; }
 	#nav button{width: 50px; height: 100%; border: 0px; background-color: #2637a4; outline: none; float: right; color:#ffffff;}
-	#profileimg{width: 50px;height : 50px;position:absolute;left:500px;top:1px;}
-	.btn{background-color:blue; color:white;width:80px;border: 2px solid white;}
+	#profileimg{width: 80px;height : 80px;position:absolute;left:1450px;top:1px;cursor: pointer;}
+	.btn{background-color:blue; color:white;width:80px;border: 2px solid white;cursor: pointer;}
 	#proimg{width: 50px;height : 50px;}
-	#profileck{background-color:white;border: 1px solid #2637a4;position:absolute;left:375px;width:175px;}
+	#profileck{background-color:white;border: 1px solid #2637a4;position:absolute;left:1350px;width:175px;top:80px;z-index:1;}
 	#userid{margin-left:70px;top:5px;position:absolute;}
 </style>
 
@@ -66,6 +66,12 @@
             <input type="text" id="search_content"/>
             <button type="button" onclick="search()">검색</button>
        	</div>
+       	<c:if test="${sessionScope.loginId != null}">
+       		<div> 					
+				<img id="profileimg" src="" onclick="profileclick()">
+			</div>
+			<div id="profi"></div>
+       	</c:if>	
 	</div>
        	
 	<div id="menuFrame">
@@ -79,12 +85,12 @@
 			<c:if test="${sessionScope.loginId != null}">
 				<li><a href="./couponShopPage">쿠폰샵</a></li>
 
- 				<li>
- 				<div> 					
+ 				
+ 				<!-- <div> 					
 					<img id="profileimg" src="" onclick="profileclick()">
-				</div>
-				<div id="profi"></div>
-				</li>
+				</div> -->
+				<!-- <div id="profi"></div> -->
+				
 			</c:if>	
 			</ul>
 		</div>
@@ -93,7 +99,8 @@
 </nav>
 
 <script>
-
+var profilecli=1;
+console.log(profilecli);
 var loginid="${sessionScope.loginId}";
 console.log(loginid);
 	
@@ -120,21 +127,29 @@ console.log(loginid);
 	    }
 	});
 	function profileclick(){
-		$.ajax({
-			url:"./profileunder",
-			type:"post",
-			data:{
-				id : loginid
-			},
-			dataType:"json",
-			success:function(d){
-				console.log(d);
-				profileunder(d.profile)
-			},
-			error:function(e){
-				console.log(e);
-			}
-		});
+		if(profilecli==1){
+			console.log(profilecli);
+			$.ajax({
+				url:"./profileunder",
+				type:"post",
+				data:{
+					id : loginid
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d);
+					profileunder(d.profile)
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+			profilecli=0;
+		}else{
+			profilecli=1;
+			$("#profi").empty();
+		}
+		
 	}
 	function profileunder(data){
 		var content="<div id='profileck'><img id='proimg' src='resources/upload/"+data.profile+"'>";

@@ -5,7 +5,9 @@ import java.util.HashMap;
 
 import com.kh.cat.dto.CouponBoxDTO;
 import com.kh.cat.dto.DMDTO;
+import com.kh.cat.dto.HashDTO;
 import com.kh.cat.dto.PointListDTO;
+import com.kh.cat.dto.RevReplyDTO;
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.dto.StoreDTO;
 
@@ -29,9 +31,9 @@ public interface CommonInter {
 
 	int sendmsg(String userid, String id, String content);
 
-	ArrayList<StoreDTO> storeSearch_And(String search_map, String search_content_And);
+	ArrayList<StoreDTO> storeSearch_And(HashMap<String, Object> search_content_AndMap);
 
-	ArrayList<StoreDTO> storeSearch_Or(HashMap<String, Object> search_content_Map);
+	ArrayList<StoreDTO> storeSearch_Or(HashMap<String, Object> search_content_OrMap);
 
 	int reviewtimelinecnt(String id);
 
@@ -48,5 +50,18 @@ public interface CommonInter {
 	String followcheck(String userid, String id);
 
 	int followdelete(String userid, String id);
+
+	ArrayList<Integer> timelinereview(String id);
+
+	ArrayList<ReviewDTO> timelinelikereview(Integer integer);
+
+	ArrayList<Integer> my_reply(String id);
+
+	Object timelinprofile(String id);
+
+	ArrayList<HashDTO> storeSearch_Hash(int store_idx);
+
+	ArrayList<RevReplyDTO> timelinereviewreply(String idx);
+
 
 }

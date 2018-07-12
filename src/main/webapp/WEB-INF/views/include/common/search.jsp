@@ -30,6 +30,7 @@
 			.storeTable{
 				float: left;
 				margin-right: 10px;
+				margin-top: 10px;
 			}
 			.storeImg{
 				width: 250px;
@@ -40,6 +41,15 @@
 				float: right;
 				border-radius: 5px;
 			}
+			#hashtag{
+	        	border: 2px solid #33aaaaff;
+	            font-size: 14px;
+	            width: auto;            
+	            text-align: center; 
+	            float: left;
+	            padding: 0px 5px;
+	            margin-right: 5px;
+	        }
 		</style>
 	</head>
 	
@@ -56,8 +66,11 @@
 		</script>
 	
 		<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
-		<div id="searchPage">
 		<c:import url="/WEB-INF/views/include/common/map.jsp"/><br/>
+		<script>displayMap(mapLocation, mapContent)</script>
+		
+		<input type="button" onclick="markerRefresh()" value="마커생성"/>
+		<input type="button" onclick="remo()" value="마커삭제"/>
 		
 		<select id="sortSel" name="sortSel" onchange="sort(this.value)">
 			<option value="리뷰 최신 순" selected="selected" >리뷰 최신 순</option>
@@ -67,10 +80,12 @@
 		</select>
 		<br/><br/>
 		
-		<c:forEach items="${list}" var="sto">
+		<div id="searchPage">
+		<c:forEach items="${list}" var="sto" varStatus="status">
 			<table class="storeTable" style="cursor:pointer;" onclick="location.href='storeDetail?store_idx=${sto.store_idx}'">
+
 				<tr>
-					<td colspan="3"><img class="storeImg" src="resources/img/search.png" /></td>
+					<td colspan="3"><img class="storeImg" src="${sto.store_photo}" /></td>
 				</tr>
 				<tr>
 					<td>상호명</td>
@@ -82,32 +97,95 @@
 					<th>${sto.store_addr}</th>
 				</tr>
 				<tr>
-					<td colspan="3">해시태그</td>
+					<td colspan="3">
+						<c:set var="i" value="${status.index}"/>
+						<c:forEach items="${list_hash[i]}" var="hash">
+							<div id='hashtag'>#${hash.hash_tag}</div>
+						</c:forEach>
+					</td>
 				</tr>
 			</table>
 		</c:forEach>
 		</div>
 	</body>
 	<script>
+		function markerRefresh(){
+			var mapLocation = new Array();
+			var mapContent = new Array();
+			var mapLevel = 9;
+			<c:forEach items="${list}" var="sto">
+				mapContent.push("${sto.store_phone}");
+				mapLocation.push("${sto.store_addr}");
+			</c:forEach>
+			displayMap(mapLocation, mapContent);
+		}
+		
+		function remo(){
+			removeMarker();
+		}
+	
+		var search_content = "<%=request.getParameter("search_content") %>";
+		var search_map = "<%=request.getParameter("search_map") %>";
+		
 		function sort(val){
 			switch (val) {
 			case "리뷰 최신 순":
 				console.log("1");
-				//tableSort(val,content);
+				tableSort(val,search_content);
 				break;
 			case "별점 순":
 				console.log("2");
-				//tableSort(val,content);
+				//tableSort(val,search_content);
 				break;
 			case "조회수 순":
 				console.log("3");
-				//tableSort(val,content);
+				//tableSort(val,search_content);
 				break;
 			case "리뷰수 순":
 				console.log("4");
-				//tableSort(val,content);
+				//tableSort(val,search_content);
 				break;
 			}
+		}
+
+		//정렬
+		function tableSort(val,search_content){
+			$.ajax({
+				url:"./searchSort",
+				data:{data:val,search_content:search_content,search_map:search_map},
+				success:function(data){
+					console.log(data.list);
+					console.log(data.list_hash);
+					$("#searchPage").empty();
+					printList(data.list,data.list_hash);
+					removeMarker();
+					markerRefresh();
+				},
+				error:function(e){
+					console.log(e)
+				}
+			});
+		}
+		
+		//가게 리스트 출력
+		function printList(list,list_hash){		 
+			var content = "";
+			list.forEach(function(item,index){
+				content += "<table class='storeTable'>";
+				content += "<tr><td colspan='3'><img class='storeImg' src='"+item.store_photo+"' /></td></tr>";
+				content += "<tr><td>상호명</td>";
+				content += "<th><a href='#'>"+item.store_name+"</a></th><td rowspan='2'>하트</td></tr>";
+				content += "<tr><td>주소</td>";
+				content += "<th>"+item.store_addr+"</th></tr>";
+				content += "<tr><td id='"+item.store_idx+"' colspan='3'>";
+				
+				list_hash[index].forEach(function(item){
+					content += "<div id='hashtag'>#"+item.hash_tag+"</div>";
+				});
+				
+				content += "</td></tr></table>";
+			})
+			$("#searchPage").append(content);
 		}
 	</script>
 </html>

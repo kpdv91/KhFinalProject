@@ -2,6 +2,8 @@ package com.kh.cat.board.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +22,13 @@ public class BoardController {
 	@Autowired
 	BoardService boardService;
 
-	//리스트 페이지 이동
-	@RequestMapping(value="/boardListPage")
+	// 리스트 페이지 이동
+	@RequestMapping(value = "/boardListPage")
 	public String boardListCall() {
 		logger.info("리스트 페이지 요청");
 		return "board/boardList";
 	}
-	
+
 	// 게시판 리스트
 	@RequestMapping(value = "/boardList")
 	public @ResponseBody HashMap<String, Object> boardList() {
@@ -40,7 +42,7 @@ public class BoardController {
 		logger.info("boardWritePage 요청");
 		return "board/boardWrite";
 	}
-	
+
 	// 게시판 작성하기
 	@RequestMapping(value = "/boardWrite")
 	public @ResponseBody HashMap<String, Object> boardWrite(@RequestParam HashMap<String, String> params) {
@@ -78,5 +80,35 @@ public class BoardController {
 		logger.info("idx : {}", idx);
 		return boardService.boardDelete(idx);
 	}
+
+	// 게시판 댓글작성
+	@RequestMapping(value = "/boardReplyWrite")
+	public @ResponseBody HashMap<String, Object> boardReplyWrite(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
+		logger.info("boardReplyWrite 요청");
+		return boardService.boardReplyWrite(params, request);
+	}
+	
+	// 게시판 댓글 수정
+	@RequestMapping(value = "/boardReplyUpdate")
+	public @ResponseBody HashMap<String, Object> boardReplyUpdate(@RequestParam HashMap<String, String> params) {
+		logger.info("boardReplyUpdate 요청");
+		return boardService.boardReplyUpdate(params);
+	}
+
+	// 게시판 댓글 삭제
+	@RequestMapping(value = "/boardReplyDelete")
+	public @ResponseBody HashMap<String, Object> boardReplyDelete(@RequestParam HashMap<String, String> params) {
+		logger.info("boardReplyDelete 요청");
+		return boardService.boardReplyDelete(params);
+	}
+	
+	// 게시판 댓글리스트
+	@RequestMapping(value = "/boardReplyList")
+	public @ResponseBody HashMap<String, Object> boardReplyList(@RequestParam("idx") String idx) {
+		logger.info("boardReplyList 요청");
+		
+		return boardService.boardReplyList(idx);
+	}
+	
 
 }

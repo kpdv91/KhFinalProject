@@ -38,15 +38,6 @@
 	<insert id="sendmsg">
 		INSERT INTO dm VALUES(seq_dm.NEXTVAL,#{param1},#{param2},#{param3},SYSDATE)
 	</insert>
-	<select id="storeSearch_And" resultType="store">
-		SELECT * FROM store WHERE store_addr LIKE '%'||#{param1}||'%' AND store_name LIKE '%'||#{param2}||'%'
-	</select>
-	<select id="storeSearch_Or" resultType="store" parameterType="hashmap">
-		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND
-		<foreach collection="split" item="split" index="index" open="(" close=")" separator="OR">
-			store_name LIKE '%'||#{split}||'%'
-		</foreach>
-	</select>
 	<select id="reviewtimelinecnt" resultType="Integer">
 		SELECT COUNT(*) FROM review WHERE id=#{param1}
 	</select>
@@ -71,6 +62,40 @@
 	<delete id="followdelete">
 		DELETE FROM follow WHERE id=#{param1} AND follow_id=#{param2}
 	</delete>
+	<select id="timelinereview" resultType="Integer">
+		SELECT review_idx FROM revlike WHERE id=#{param1}
+	</select>
+	<select id="timelinelikereview" resultType="review">
+		SELECT * FROM review WHERE review_idx=#{param1} ORDER BY review_date DESC
+	</select>
+	<select id="my_reply" resultType="Integer">
+		SELECT review_idx FROM revreply WHERE id=#{param1}
+	</select>
+	<select id="timelinprofile" resultType="String">
+		SELECT profile FROM member WHERE id=#{param1}
+	</select>
+
+	<select id="storeSearch_And" resultType="store" parameterType="hashmap">
+		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{content}||'%'
+		<if test="sort.equals('리뷰 최신 순')">
+			ORDER BY store_revdate DESC
+		</if>
+	</select>
+	<select id="storeSearch_Or" resultType="store" parameterType="hashmap">
+		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND
+		<foreach collection="content" item="content" index="index" open="(" close=")" separator="OR">
+			store_name LIKE '%'||#{content}||'%'
+		</foreach>
+		<if test="sort.equals('리뷰 최신 순')">
+			ORDER BY store_revdate DESC
+		</if>
+	</select>
+	<select id="storeSearch_Hash" resultType="hash">
+		SELECT * FROM hash WHERE store_idx=#{param1}
+	</select>
+	<select id="timelinereviewreply" resultType="revReply">
+		SELECT * FROM revreply WHERE review_idx=#{param1}
+	</select>
 </mapper>
 
 

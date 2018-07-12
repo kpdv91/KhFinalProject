@@ -7,12 +7,19 @@
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>Insert title here</title>
 		<style>
-			div#tableDiv{position: relative; top: 100px; left: 400px; border: 1px solid black; width: 500px; height: 500px;}
+			div#tableDiv{position: relative; top: 50px; left: 400px; border: 1px solid black; width: 720px; height: 1000px;}
 			
 			table, th, td{border: 1px solid black; border-collapse: collapse;}
-			table{position: absolute; top: 60px; left: 10px;}
-			th{width: 117px; height: 30px;} 
-			button#write{position: absolute; top:20px; left: 422px; width:auto; height: 30px; background-color: lightskyblue; border: none;}  
+			table#board_list_table{position: absolute; top: 60px; left: 10px; width: 700px; height: 500px;}      
+			th[name="board_idx"]{width: 50px; height: 50px; background-color: lightskyblue;}
+			th[name="board_cate"]{width: 100px; height: 50px; background-color: lightskyblue;}
+			th[name="board_subject"]{width: 350px; height: 50px; background-color: lightskyblue;}
+			th[name="board_user_name"]{width: 100px; height: 50px; background-color: lightskyblue;}
+			th[name="board_date"]{width: 100px; height: 50px; background-color: lightskyblue;}
+			
+					
+			
+			button#write{position: absolute; top:570px; left: 644px; width:auto; height: 30px; background-color: lightskyblue; border: none; border-radius: 2px;}  
 		</style>
 	</head>
 	<body>
@@ -21,14 +28,14 @@
 			<c:if test="${ sessionScope.loginId != null}">
 			<button id="write">작성하기</button> 
 			</c:if>
-			<table>
+			<table id="board_list_table">
 				<thead>
 					<tr>
-						<th>번호</th>
-						<th>분류</th>
-						<th>제목</th>
-						<th>작성자</th>
-						<th>작성날짜</th>
+						<th name="board_idx">번호</th>
+						<th name="board_cate">분류</th>
+						<th name="board_subject">제목</th>
+						<th name="board_user_name">작성자</th>
+						<th name="board_date">작성날짜</th>
 					</tr>
 				</thead>
 				<tbody id="list">
@@ -66,13 +73,12 @@
 			var content = "";
 			list.forEach(function(item, idx) {
 				content += "<tr>";
-				content += "<td>"+item.board_idx+"</td>";
-				content += "<td>"+item.board_cate+"</td>";
-				content += "<td>"+item.board_subject+"</td>";
-				content += "<td>"+item.id+"</td>";
+				content += "<td align='center'>"+item.board_idx+"</td>";
+				content += "<td align='center'>"+item.board_cate+"</td>"; 
+				content += "<td align='left'><a href='./boardDetail?idx="+item.board_idx+"'>"+item.board_subject+"</a></td>";
+				content += "<td align='center'>"+item.id+"</td>";
 				var date = new Date(item.board_date);
-				content += "<td>"+date.toLocaleDateString("ko-KR")+"</td>";
-				content += "<td><a href='#'>삭제</a></td>";
+				content += "<td align='center'>"+date.toLocaleDateString("ko-KR")+"</td>";
 				content += "</tr>";
 			});
 			$("#list").empty();

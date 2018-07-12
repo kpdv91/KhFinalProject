@@ -7,62 +7,284 @@
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>Insert title here</title>
 		<style>
-            div#board{position: relative; top: 100px; left: 400px; border: 1px solid black; width: 500px; height: 500px;}
-            table, th, td{border: 1px solid black; border-collapse: collapse;}
-            table{position: absolute; top: 60px; left: 10px;}
-            th{width: 117px; height: 30px; background-color: lightskyblue;}
-            td{width: 116px; height: 30px; text-align: center;}
+            div#board{position: relative; top: 50px; left: 400px; border: 1px solid black; width: 720px; height: 1000px;}                 
+            table, th, td{border: 1px solid black; border-collapse: collapse;}   
+            table#board_table{position: absolute; top: 30px; left: 10px; width: 700px; height: 500px;}             
+       
+            th#th_cate{width: 50px; height: 50px; background-color: lightskyblue;}               
+    		td#td_cate{width: 130px; height: 50px; text-align: center;}     
+    		th#th_user_name{width: 100px; height: 50px; background-color: lightskyblue;}
+    		td#td_user_name{width: 130px; height: 50px; text-align: center;}
+    		th#th_date{width: 100px; height: 50px; background-color: lightskyblue;}
+    		td#td_date{width: 130px; height: 50px; text-align: center;}
+    		th#th_subject{width: 50px; height: 50px; background-color: lightskyblue;}  
             
             input#board_category{width: 100%; height: 100%;}
-            span#user_id{text-align: center;}
+            /* span#user_id{text-align: center;} */       
             input#board_subject{width: 100%; height: 100%;}
             textarea#board_content{resize: none; width: 100%; height: 100%;}
             
-            button#delete{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 367px; left: 377px;} 
-            button#update{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 367px; left: 432px;}
-    
+            button#list_btn{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 545px; left: 565px;}
+            button#delete{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 545px; left: 615px;} 
+            button#update{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 545px; left: 665px;}
+    	
+    	
+    		/* 댓글 CSS */
+    		table#boardReplyWrite_table{
+    			position: absolute; top: 200px; left: 10px; width: 700px; height: 50px;}  
+    		div#boardReply_write{position: absolute; top: 600px; left: 408px;}  
+    		
+    		td#replyTd_user_name{width: 100px; height: 50px; text-align: center;}   
+    		td#replyTd_content{width: 500px; height: 50px;}
+    		textarea#boardReply_content{width: 100%; height: 100%; border: none; overflow: hidden; resize: none;}
+     		td#replyTd_write{width: 100px; height: 50px;}   
+    		button#replyWrite{width: 100%; height: 100%; border: none; outline: none; border-radius: 2px; background-color: lightskyblue;}
+    		
+    		div#boardReply_list{position: absolute; top: 625px; left: 408px;}
+    		table#boardReply_table{
+    			position: absolute; top: 300px; left: 10px; width: 700px; height: 100px;  
+    		}          
+    		td#replyListTd_user_name{width: 100px; height: 100px;}
+    		td#replyListTd_content{width: 500px; height: 100px;}
+    		div#reply_content1{resize: none; width: 100%; height: 100%; white-space: pre;} 
+    		textarea#reply_content2{width: 100%; height: 100%; border: none; overflow: hidden;  resize: none; }
+    		td#replyListTd_btn{width: 100px; height: 100px;}
+    		       
+        
+        	button#replyUpdate{background-color: lightskyblue; border: 1px solid black; border-radius: 2px;}
+        	button#replyDelete{background-color: lightskyblue; border: 1px solid black; border-radius: 2px;}
+        	button#replySave{background-color: lightskyblue; border: 1px solid black; border-radius: 2px;}
+        	button#replyExit{background-color: lightskyblue; border: 1px solid black; border-radius: 2px;}
 		</style>
 	</head>
 	<body>
 		<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
 		<div id="board">
-			<table>
+			<table id="board_table">
 				<tr>
-					<th>분류</th>
-					<td>
+					<th id="th_cate">분 류</th>
+					<td id="td_cate">
                         ${dto.board_cate }
                     </td>
-					<th>작성자</th>
-					<td>
-						<span id="user_name">${dto.id }</span>
+					<th id="th_user_name">작성자</th>
+					<td id="td_user_name">
+						<!-- <span id="user_name"> -->${dto.id }<!-- </span> -->
 					</td>
-					<th>작성날짜</th>
-					<td>
-						<span id="board_date">${dto.board_date }</span>
+					<th id="th_date">작성날짜</th>
+					<td id="td_date">
+						<!-- <span id="board_date"> -->${dto.board_date }<!-- </span> -->
 					</td>
 				</tr>
                 <tr>
-                    <th>제목</th>
-                    <td colspan="5">${dto.board_subject }</td>
+                    <th id="th_subject">제 목</th>
+                    <td id="td_subject" colspan="5">${dto.board_subject }</td>
                 </tr>
                 <tr>
                     <td colspan="6"><textarea rows="15" id="board_content" readonly="readonly">${dto.board_content }</textarea></td>
                 </tr>
 			</table>
-			
-			<c:if test="{sessionScope.loginId == dto.id}">
-	            <button id="delete">삭제</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<button id="list_btn">목록</button>
+			<c:if test="${sessionScope.loginId == dto.id || sessionScope.loginId == '관리자'}">
+	            <button id="delete">삭제</button>
 	            <button id="update" onclick="update()">수정</button>   
             </c:if>
 		</div>
+		<c:if test="${dto.board_cate == '문의사항'}">                   
+			<div id="boardReply_write">    
+				<table id="boardReplyWrite_table"> 
+					<tr>
+						<td id="replyTd_user_name">
+							<input type="hidden" id="board_idx" value="${dto.board_idx }"/>
+							<input type="hidden" id="board_id" value="${sessionScope.loginId }"/>
+							${sessionScope.loginId }
+						</td>
+						  
+						<td id="replyTd_content"><textarea id="boardReply_content" rows="4" cols="70"></textarea></td>
+						
+						<td id="replyTd_write"><button id="replyWrite">댓글등록</button></td>
+					</tr>
+				</table>
+			</div>
+		</c:if>
+
+		<div id="boardReply_list">
+			<table id="boardReply_table">   
+				<thead id="reply">
+					
+				</thead>
+			</table>
+		</div>
 	</body>
 	<script>
+	
+		var loginId = "${sessionScope.loginId}";//댓글 리스트 메소드에서 사용
+		
+		$("#boardReply_content").on("keyup", function () {
+			console.log($("#boardReply_content").height());
+			  $(this).height(50).height( $(this).prop("scrollHeight")+12 );	
+		});
+		
+		
+
+	
 		function update() {
 			location.href="updateForm?idx="+${dto.board_idx};
 		}
 		
-		var idx = ${dto.board_idx};
+		$("#list_btn").click(function () {
+			location.href="./boardListPage";
+		});
+			
 		
+		//댓글 리스트
+		$(document).ready(function () {
+			$.ajax({
+				type : "post",
+				url : "./boardReplyList",
+				data : { idx : $("#board_idx").val() },
+				dataType : "json",
+				success : function (data) {
+					reply(data.list);
+				},
+				error : function (error) { console.log(error); }
+			});
+		});
+		
+		//댓글 리스트 메소드
+		function reply(list) {
+			console.log(list); 
+			var content = "";
+			list.forEach(function(item, idx) {
+				var date = new Date(item.boardReply_date);
+				content += "<tr>";
+				content += "<td id='replyListTd_user_name'>"+item.id+"<br/>"+date.toLocaleDateString("ko-KR")+"</td>";
+				content += "<td id='replyListTd_content'><div id='reply_content1'>"+item.boardReply_content+"</div>"+
+					"<textarea id='reply_content2' style='display:none;'>"+
+					item.boardReply_content+"</textarea></td>";   
+				if(loginId != "관리자"){                               
+					content += "</tr>";                
+				}else{             
+					content += "<td align='center' id='replyListTd_btn'><button id='replyUpdate'>수정</button>"+  
+						"<button id='replyDelete'>삭제</button>"+
+						"<button id='replySave' style='display:none;'>저장</button>"+
+						"<button id='replyExit' style='display:none;'>취소</button></td>";
+					content += "</tr>";   
+				}    
+			});      
+			
+			
+			
+			
+			$("#reply").empty();
+			$("#reply").append(content); 
+			
+			//댓글 수정
+			$("#replyUpdate").click(function () {
+				$("#replyUpdate").css("display","none");
+				$("#replySave").css("display","");
+				$("#reply_content1").css("display","none");
+				$("#reply_content2").css("display","");
+				$("#replyDelete").css("display","none");
+				$("#replyExit").css("display","");
+				
+				//$("#reply_content2").on("keyup", function () {
+					  $("#reply_content2").height($("#boardReply_content").height()).height($("#reply_content2").prop("scrollHeight")+12 );	
+				//});
+				
+			});
+			
+			
+			
+			//댓글 수정 취소
+			$("#replyExit").click(function () {
+				$("#replyUpdate").css("display","");
+				$("#replySave").css("display","none");
+				$("#reply_content1").css("display","");
+				$("#reply_content2").css("display","none");
+				$("#replyDelete").css("display","");
+				$("#replyExit").css("display","none");
+			});
+			
+			//댓글 수정
+			$("#replySave").click(function () {
+				console.log($("#reply_content2").val());
+				$.ajax({ 
+					type : "post",
+					url : "./boardReplyUpdate",
+					data : {
+						board_idx : list[0].board_idx,
+						boardReply_idx : list[0].boardReply_idx,
+						boardReply_content : $("#reply_content2").val()
+					},  
+					dataType : "json",
+					success : function (data) {
+						if(data.success > 0){
+							$("#replyUpdate").css("display","");
+							$("#replySave").css("display","none");
+							$("#reply_content1").css("display","");
+							$("#reply_content2").css("display","none");
+						}
+					location.href="boardDetail?idx="+$("#board_idx").val();  
+					},
+					error : function (error) {
+						console.log(error); 
+					}
+				});
+			});
+			
+			//댓글 삭제
+			$("#replyDelete").click(function () {
+				$.ajax({
+					type : "post",
+					url : "./boardReplyDelete",
+					data : {
+						board_idx : list[0].boardReply_idx,
+						boardReply_idx : list[0].board_idx
+					},
+					dataType : "json",
+					success : function (data) {
+						if(data.success > 0){
+							alert("삭제 성공");
+						}else{
+							alert("삭제 실패"); 
+						}
+						location.href="boardDetail?idx="+$("#board_idx").val();
+					},
+					error : function (error) { console.log(error); }
+				});
+			}); 
+		}     
+		  
+		//댓글 작성
+		$("#replyWrite").click(function () {
+			$.ajax({
+				type : "post",
+				url : "./boardReplyWrite",
+				data : {
+					idx : $("#board_idx").val(),
+					id : $("#board_id").val(),
+					boardReply_content : $("#boardReply_content").val()
+				},
+				dataType : "json",
+				success : function (data) {
+					console.log(data.replyCnt);
+					if(data.replyCnt > 0){
+						alert("댓글 작성 안됨");
+					}else{
+						if(data.success > 0){
+							alert("댓글 작성 성공");
+						}
+					}
+					location.href="boardDetail?idx="+$("#board_idx").val();
+				},
+				error : function (error) {
+					console.log(error);
+				}
+			});
+		});
+		
+		//게시판삭제
+		var idx = ${dto.board_idx};
 		$("#delete").click(function () {
 			$.ajax({
 				type : "post",
@@ -85,5 +307,6 @@
 				}
 			});
 		});
+		
 	</script>
 </html>

@@ -115,7 +115,7 @@
         .bigPhoto{
         	width: 505px;
         	height: 250px;
-        	background-color: pink;
+        	background-color: white;
         	display: none;
         }
         
@@ -423,16 +423,27 @@ input[type=button]{
 	//사진 리스트
 	var img="";
 	function printPhoto(photo,elem){
+		var phoSrc ="";
+  		var photoArr;
 		img="";
 		photo.forEach(function(item){
-			img += "<div id='photo'><img onclick='PhotoClick("+elem+")' width='60px' height='50px' src='"+item.revPhoto_Photo+"'/></div>";
+			phoSrc=item.revPhoto_Photo;
+			photoArr=phoSrc.split(".").join('\\.')
+			img += "<div onclick='PhotoClick(this,"+elem+")' id='photo'><img id='PhotoImg"+item.revPhoto_Photo+"'  width='60px' height='50px' src='"+item.revPhoto_Photo+"'/></div>";
 		})
 		$("#reviewList_photo"+elem).append(img);
 	}
 	
-	function PhotoClick(elem){
-		console.log(elem);
-		$("#bigPhoto"+elem).css("display","block");
+
+	function PhotoClick(elem, idx){
+		$("#bigPhoto"+idx).empty();
+		console.log($(elem).children().attr("src"));
+		var pho="";
+		$("#bigPhoto"+idx).toggle(500,function(){			
+			pho="<img id='BigPho' src='"+$(elem).children().attr("src")+"' width='250px' height='250px'/>";
+			$("#bigPhoto"+idx).append(pho);	
+		});
+		}
 		
 	}
 	

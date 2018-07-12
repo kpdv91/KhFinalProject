@@ -31,6 +31,7 @@
             outline: 0px;
             border: 0px;
         }
+        
         #write{
         vertical-align: middle;
             padding: 0px 5px;
@@ -174,6 +175,7 @@
 <input type="button" value="크기" onclick="resizeMap()"/> -->
 
 	<div id ="formDiv">
+	<input type="hidden" name="review_idx" value="${review_updateForm.review_idx }"/>
 	작성자 : <input id="user_Id" name="id" type="text" value="${ sessionScope.loginId}" readonly/><br/><br/>
     상호명 : <input id="review_storeName" type="text" name="review_storeName" value="${review_updateForm.review_storeName}"/><button type="button" id="search"><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/><br/>
     <div id="searchList">
@@ -251,6 +253,7 @@
     <div id="editable"></div>
     </div><br/><br/>
     <button id="write">작성하기</button>
+    <input type="button" value="취소" id="reviewWriteCancel"/>
     </div>
     </form>
      
@@ -260,6 +263,46 @@
 	var loginId = "${sessionScope.loginId}";
 	console.log(loginId);
 	var div = "";//div 추가 변수
+	
+	$("#reviewWriteCancel").click(function(){
+		location.href="./";
+	});
+	if("${review_updateForm.review_content }" != ""){
+		$("#write").text("수정하기");
+		$("#reviewWriteCancel").css("display","none");
+	}
+	$(document).ready(function(){
+		$("#Logo").css("pointer-events","none");
+		
+		window.history.forward(1);
+		history.pushState(null, document.title, location.href); 
+		window.addEventListener('popstate', function(event) { history.pushState(null, document.title, location.href); });
+
+	//새로고침, 뒤로가기 막기
+	document.onkeydown = function(e){
+	      key = (e) ? e.keyCode : event.keyCode;
+	      if(key==116){
+	         if(e){
+	            e.preventDefault();
+	         }
+	         else{
+	            event.keyCode = 0;
+	            event.returnValue = false;
+	         }
+	      }
+	      document.onkeydown = LockF5;
+	}
+	//오른쪽마우스 막기
+	document.oncontextmenu = function(e){
+	     if(e){
+	        e.preventDefault();
+	     }
+	     else{
+	        event.keyCode = 0;
+	        event.returnValue = false;
+	     }
+	} 
+	});
 	
 	$("#write").click(function(){
 		//해시태그 삭제버튼 제거

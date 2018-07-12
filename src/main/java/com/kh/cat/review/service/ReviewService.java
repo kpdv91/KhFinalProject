@@ -266,4 +266,47 @@ public class ReviewService {
 		return mav;
 	}
 
+	public String review_update(ArrayList<String> hash_tag, ArrayList<String> review_photo, HashMap<String, String> map,
+			String loginId) {
+		logger.info("리뷰 작성 서비스 도착");
+		ModelAndView mav = new ModelAndView();
+		String page = "redirect:/reviewWritePage";
+		ReviewDTO dto = new ReviewDTO();
+		dto.setReview_idx(Integer.parseInt(map.get("review_idx")));
+		dto.setReview_storeName(map.get("review_storeName"));
+		logger.info(map.get("review_storeName"));
+		dto.setId(map.get("id"));
+		logger.info(map.get("id"));
+		dto.setReview_star(Double.parseDouble(map.get("star-input")));
+		logger.info(""+Double.parseDouble(map.get("star-input")));
+		dto.setReview_content(map.get("review_content"));
+		logger.info(map.get("review_content"));
+		
+		logger.info("리뷰 수정 시작");
+		inter = sqlSession.getMapper(ReviewInter.class);
+		
+		if(inter.review_update(dto) == 1) {
+			logger.info("리뷰번호 : "+dto.getReview_idx());
+			inter.review_HashDel(dto.getReview_idx());
+			inter.review_PhotoDel(dto.getReview_idx());
+			if(hash_tag.size() > 0) {
+				for(int i=0; i<hash_tag.size(); i++) {
+					String tag = hash_tag.get(i);
+					int success = inter.hashtag(tag,dto.getReview_idx());
+				}
+			}
+			if(review_photo.size() > 0) {
+				photoReview_point(loginId);//photoReview_point 메소드(포인트100)
+				for(int i=1; i<review_photo.size();i++) {
+					String rePhoto = review_photo.get(i);
+					int result = inter.reviewPhotoWrite(dto.getReview_idx(),rePhoto);
+				}
+			}else {
+				review_point(loginId);//review_point 메소드(포인트 50)
+			}
+		}
+		fileList.clear();
+		return "redirect:/";
+	}
+
 }

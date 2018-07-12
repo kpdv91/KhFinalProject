@@ -111,5 +111,19 @@
 	 <select id="review_updateForm" resultType="review">
 	 	SELECT * FROM review WHERE review_idx = #{param1}
 	 </select>
+	 
+	 <!-- 리뷰수정 -->
+	 <update id="review_update">
+	 	UPDATE review SET review_storeName=#{review_storeName}, review_star = #{review_star}, review_content=#{review_content} WHERE review_idx=#{review_idx}
+	 </update>
 	
+	<!-- 해시태그 삭제 -->
+	<delete id="review_HashDel">
+		DELETE FROM hash WHERE review_idx = #{param1}
+	</delete>
+	
+	<!-- 리뷰 사진 삭제 -->
+	<delete id="review_PhotoDel">
+		DELETE FROM revPhoto WHERE review_idx = #{param1}
+	</delete>
 </mapper>

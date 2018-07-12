@@ -148,4 +148,10 @@ public class CommonController {
 		logger.info("댓글 리뷰 리스트 요청");		
 		return commonservice.timelinereviewreply(params);
 	}
+	
+	@RequestMapping(value = "/complainList")
+	public @ResponseBody HashMap<String, Object> complainList(@RequestParam Map<String,String> params) {
+		logger.info("신고 리스트 요청");		
+		return commonservice.timeLineComplainList(params);
+	}
 }

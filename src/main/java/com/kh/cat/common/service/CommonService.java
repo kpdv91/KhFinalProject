@@ -240,4 +240,10 @@ public class CommonService {
 		return map;
 	}
 
+	//관리자 신고 리스트
+	public HashMap<String, Object> timeLineComplainList(Map<String, String> params) {
+		logger.info("신고 리스트 서비스 요청");
+		return null;
+	}
+
 }

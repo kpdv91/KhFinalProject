@@ -247,27 +247,6 @@
 		}),function(){
 			$("#reviewReply"+idx).css("display","none");
 		}
-		/* replyClick *= -1;
-		if(replyClick == -1){
-			$("#reviewReply").css("display","block");
-			$.ajax({
-				url:"./timelinereviewreply",
-				type:"post",
-				data:{
-					idx : idx
-				},
-				dataType:"json",
-				success:function(d){
-					console.log(d);
-					replylist(d.replylist,idx);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
-		}else{
-			$("#reviewReply").css("display","none");
-		} */
 	}
 	 function replylist(list,idx){
 		var reply = "";

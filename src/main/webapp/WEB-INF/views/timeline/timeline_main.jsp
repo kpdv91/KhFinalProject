@@ -33,7 +33,7 @@
 			button#store_regist_yes{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
 			button#store_regist_no{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
 			
-			#content{margin-left : 100px;position: relative; width: 800px;height: auto;left : 350px;}
+			#content{position: absolute; width: 800px;height: auto;left : 400px;}
 			hr{margin-top:200px;}
 			#review{border: 2px solid #142e5b;width: 650px;height: 250px}
 			#listTop{border-bottom: 2px solid #142e5b;height: 50px;line-height: 50px;}
@@ -61,6 +61,9 @@
 			.reply_btn{width:50px;}
 			.reply_clk{display:none;}
 			.ddd{display:none;}
+			.storeTable{float: left;margin-left:1px; margin-right: 10px;margin-top: 10px;border:1px solid black;width:250px;height:250px;}
+			.storeImg{width: 250px;height: 100px;}
+			#hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;margin-right: 5px;}
 		</style>
 	</head>
 	<body>
@@ -251,27 +254,6 @@
 		}),function(){
 			$("#reviewReply"+idx).css("display","none");
 		}
-		/* replyClick *= -1;
-		if(replyClick == -1){
-			$("#reviewReply").css("display","block");
-			$.ajax({
-				url:"./timelinereviewreply",
-				type:"post",
-				data:{
-					idx : idx
-				},
-				dataType:"json",
-				success:function(d){
-					console.log(d);
-					replylist(d.replylist,idx);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
-		}else{
-			$("#reviewReply").css("display","none");
-		} */
 	}
 	 function replylist(list,idx){
 		var reply = "";
@@ -487,7 +469,7 @@
 	    	$("#content").load(page,function(res, stat) {});
 			ajaxCall(page);
 		}else if(e.target.id == "myreview") {
-			page = "reviewlist"
+			page = "reviewlist";
 			$("#myreview").css("background-color","darkblue");
 			$("#myreview").css("color","white");
 			$("#coupon").css("background-color","lightgray");
@@ -508,7 +490,7 @@
 	    	$("#timeline_reply").css("color","black");
 	    	ajaxCall(page);
 		}else if(e.target.id == "likereview") {
-			page = "likereview"
+			page = "likereview";
 				$("#likereview").css("background-color","darkblue");
 				$("#likereview").css("color","white");
 				$("#coupon").css("background-color","lightgray");
@@ -529,7 +511,7 @@
 		    	$("#timeline_reply").css("color","black");
 		    	ajaxCall(page);
 			}else if(e.target.id == "timeline_reply"){
-				page = "timeline_reply"
+				page = "timeline_reply";
 					$("#timeline_reply").css("background-color","darkblue");
 					$("#timeline_reply").css("color","white");
 					$("#coupon").css("background-color","lightgray");
@@ -550,7 +532,7 @@
 			    	$("#likereview").css("color","black");
 			    	ajaxCall(page);
 			}else if(e.target.id == "complain_list"){
-				page = "resources/timelinehtml/complainList.html"
+				page = "resources/timelinehtml/complainList.html";
 				$("#dm_write").css("background-color","lightgray");
 				$("#dm_write").css("color","black");
 				$("#message").css("background-color","lightgray");
@@ -562,7 +544,7 @@
 				$("#content").load(page,function(res, stat) {});
 				ajaxCall(page);
 			}else if(e.target.id == "store_regist_list"){
-				page = "resources/timelinehtml/store_regist_list.html"
+				page = "resources/timelinehtml/store_regist_list.html";
 					$("#dm_write").css("background-color","lightgray");
 					$("#dm_write").css("color","black");
 					$("#message").css("background-color","lightgray");
@@ -573,6 +555,27 @@
 					$("#complain_list").css("color","black");
 					$("#content").load(page,function(res, stat) {});
 					ajaxCall(page);
+				}else if(e.target.id == "likestore"){
+					page = "likestore";
+						$("#likestore").css("background-color","darkblue");
+						$("#likestore").css("color","white");
+						$("#coupon").css("background-color","lightgray");
+						$("#coupon").css("color","black");
+				    	$("#message").css("background-color","lightgray");
+				    	$("#message").css("color","black");
+				    	$("#point").css("background-color","lightgray");
+				    	$("#point").css("color","black");
+				    	$("#total").css("background-color","lightgray");
+				    	$("#total").css("color","black");
+				    	$("#update").css("background-color","lightgray");
+				    	$("#update").css("color","black");
+				    	$("#myreview").css("background-color","lightgray");
+				    	$("#myreview").css("color","black");
+				    	$("#timeline_reply").css("background-color","lightgray");
+				    	$("#timeline_reply").css("color","black");
+				    	$("#likereview").css("background-color","lightgray");
+				    	$("#likereview").css("color","black");
+				    	ajaxCall(page);
 				}
 	});		
 	function ajaxCall(page){
@@ -669,6 +672,8 @@
 				},
 				error:function(e){
 					console.log(e);
+					$("#content").empty();
+					alert("댓글이 없습니다");
 				}
 			});
 		}else if(page == "resources/timelinehtml/complainList.html"){
@@ -697,7 +702,49 @@
 					console.log(error);
 				}
 			});
+		}else if(page = "likestore"){
+			$.ajax({
+				url:"./timelinelikestore",
+				type:"post",
+				data:{
+					id : "${id}"
+				},
+				dataType:"json",
+				success:function(d){
+					//console.log(d.list);
+					//console.log(d.list_hash);
+					likestorelist(d.list,d.list_hash);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
 		}
+	}
+	function likestorelist(list,hash){
+		//console.log(list);
+		//console.log(hash);
+		var content ="";
+		list.forEach(function(i, idx){
+			i.forEach(function(item,idx){
+				content += "<table class='storeTable'>";
+				content += "<tr><td colspan='2'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' /></td></tr>";
+				content += "<tr>";
+				content += "<th><a href='#'>"+item.store_name+"</a></th><td rowspan='2'>하트</td></tr>";
+				content += "<tr>";
+				content += "<th>"+item.store_addr+"</th></tr>";
+				content += "<tr><td id='"+item.store_idx+"' colspan='2'>";
+				hash.forEach(function(ihash,idx){
+					ihash.forEach(function(hash,idx){
+						if(item.store_idx==hash.store_idx){
+							content += "<div id='hashtag'>#"+hash.hash_tag+"</div>";
+						}
+					})
+				})
+				content += "</td></tr></table>";
+			})
+		})
+		$("#content").append(content);
 	}
 	function couponlist(list){
 		var content = "";

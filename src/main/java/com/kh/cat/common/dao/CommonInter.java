@@ -75,5 +75,12 @@ public interface CommonInter {
 
 	int reply_delete(int idx);
 
+	ArrayList<Integer> likestore(String id);
+
+	ArrayList<StoreDTO> timelinelikestore(Integer integer);
+
+	ArrayList<HashDTO> likestorehash(Integer integer);
+	
+	
 
 }

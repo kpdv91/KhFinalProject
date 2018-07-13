@@ -180,6 +180,10 @@ public class CommonController {
 	public @ResponseBody HashMap<String, Object> reply_delete(@RequestParam Map<String,String> params) {
 		logger.info("댓글 수정 요청");		
 		return commonservice.reply_delete(params);
-
+	}
+	@RequestMapping(value = "/timelinelikestore")
+	public @ResponseBody HashMap<String, Object> timelinelikestore(@RequestParam Map<String,String> params) {
+		logger.info("댓글 수정 요청");		
+		return commonservice.timelinelikestore(params);
 	}
 }

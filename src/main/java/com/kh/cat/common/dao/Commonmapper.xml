@@ -127,7 +127,15 @@
 	<delete id="reply_delete">
 		DELETE FROM revreply WHERE revreply_idx=#{param1}
 	</delete>
-
+	<select id="likestore" resultType="Integer">
+		SELECT store_idx FROM storelike WHERE id=#{param1}
+	</select>
+	<select id="timelinelikestore" resultType="store">
+		SELECT * FROM store WHERE store_idx=#{param1}
+	</select>
+	<select id="likestorehash" resultType="hash">
+		SELECT * FROM hash WHERE store_idx=#{param1}
+	</select>
 </mapper>
 
 

@@ -23,13 +23,19 @@
 	<!-- 회원가입 -->	
 	<insert id="join" parameterType="member">
 		INSERT INTO member(id,pw,name,email,phone,profile,aut,pointCnt,revCnt,followCnt)
-			VALUES(#{id},#{pw},#{name},#{email},#{phone},#{profile},'user',0,0,0)
+			<!-- VALUES(#{id},#{pw},#{name},#{email},#{phone},#{profile},'user',0,0,0) -->
 		<!-- <if test="!email.equals('')">
 			VALUES(#{id},#{pw},#{name},#{age},#{gender},#{email})
 		</if>
 		<if test="email.equals('')">
 			VALUES(#{id},#{pw},#{name},#{age},#{gender},'없음')
 		</if> -->
+		<if test="profile == null">
+			VALUES(#{id},#{pw},#{name},#{email},#{phone},0,'user',0,0,0)
+		</if>
+		<if test="profile != null">
+			VALUES(#{id},#{pw},#{name},#{email},#{phone},#{profile},'user',0,0,0)
+		</if>
 	</insert>
 	
 	<select id="profileimg" resultType="member">
@@ -45,6 +51,9 @@
         SELECT id FROM member WHERE id=#{param1}
     </select>
 
+<select id="userdetail" resultType="member">
+        SELECT * FROM member WHERE id=#{param1}
+    </select>
 </mapper>
 
 

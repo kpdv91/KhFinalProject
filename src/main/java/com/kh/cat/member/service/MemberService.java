@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.cat.common.dao.CommonInter;
 import com.kh.cat.dto.MemberDTO;
 import com.kh.cat.member.dao.MemberInter;
 
@@ -92,6 +93,7 @@ public class MemberService {
 		dto.setName(map.get("userName"));
 		dto.setEmail(map.get("userEmail"));
 		dto.setPhone(map.get("userPhone"));
+		dto.setProfile(map.get("profile"));
 		
 		for(String key:fileList.keySet()) {//map에서 키를 뽑아온다.
 			dto.setProfile(key);
@@ -221,6 +223,16 @@ public class MemberService {
 			mav.addObject("msg",msg);
 			return mav;	
 		}
+
+
+	public HashMap<String, Object> timelineuserupdate(HashMap<String, String> params) {
+		inter = sqlSession.getMapper(MemberInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		logger.info(id);
+		map.put("update", inter.userdetail(id));
+		return map;
+	}
 
 	 
 

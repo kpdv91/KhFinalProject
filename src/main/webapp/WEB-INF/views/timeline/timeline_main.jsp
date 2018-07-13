@@ -108,6 +108,7 @@
 	var userid = "${sessionScope.loginId}";
 	var page = "";
 	var str = "";
+	var phone=[];
 	//console.log(userid);
 	//console.log("${id}")
 	if(userid==""){
@@ -702,7 +703,7 @@
 					console.log(error);
 				}
 			});
-		}else if(page = "likestore"){
+		}else if(page == "likestore"){
 			$.ajax({
 				url:"./timelinelikestore",
 				type:"post",
@@ -714,6 +715,33 @@
 					//console.log(d.list);
 					//console.log(d.list_hash);
 					likestorelist(d.list,d.list_hash);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}else if(page == "resources/timelinehtml/userupdate.html"){
+			$.ajax({
+				url:"./timelineuserupdate",
+				type:"post",
+				data:{
+					id : userid
+				},
+				dataType:"json",
+				success:function(d){
+					if(d.update.profile!=0){
+						$("#updateprofile").empty();
+						$("#updateprofile").append("<img id='updateprofilephoto' src='resources/upload/"+d.update.profile+"' height=150px width=150px/>");
+						$("#updateprofile").append("<input id='profilename' type='hidden' value='"+d.update.profile+"'/>")
+					}
+					console.log(d);
+					$("#userId").val(userid);
+					$("#userName").val(d.update.name);
+					$("#userEmail").val(d.update.email);
+					phone=d.update.phone.split("-");
+					$("#hp1").val(phone[0]);
+					$("#hp2").val(phone[1]);
+					$("#hp3").val(phone[2]);
 				},
 				error:function(e){
 					console.log(e);
@@ -946,6 +974,24 @@
 			});		
 			$("#store_tbody").empty();
 			$("#store_tbody").append(content);//내용 붙이기
+		}
+		function selPicturedelete(){
+			var photoname =$("#profilename").val();
+			console.log(photoname);
+			 /* $.ajax({
+				url:"./profilephotodelete",
+				type:"post",
+				data:{
+					profilname=photoname
+				},
+				dataType:"json",
+				success:function(d){
+					$("#updateprofilephoto").remove();						
+				},
+				error:function(e){
+					console.log(e);
+				}
+			}); */
 		}
 	</script>
 </html>

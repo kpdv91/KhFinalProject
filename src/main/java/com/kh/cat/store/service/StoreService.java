@@ -146,15 +146,15 @@ public class StoreService {
 
 	//가게 등록
 	@Transactional
-	public HashMap<String, Object> storeRegist(String[] tagArr, HashMap<String, String> data) {
+	public HashMap<String, Object> storeRegist(String loginId, String[] tagArr, HashMap<String, String> data) {
 		inter = sqlSession.getMapper(StoreInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		StoreDTO dto = new StoreDTO();
-		String id = "user";
-		dto.setId(id);
+		
 		if(storePhoto.equals("")) {
 			storePhoto="storeD.jpg";
 		}
+		dto.setId(loginId);
 		dto.setStore_photo(storePhoto);
 		dto.setStore_name(data.get("store_name"));
 		dto.setStore_ceo(data.get("store_ceo"));
@@ -186,9 +186,11 @@ public class StoreService {
 		ModelAndView mav = new ModelAndView();
 		inter = sqlSession.getMapper(StoreInter.class);
 		
-		mav.addObject("storeDetail", inter.storeDetail(store_idx));
-		mav.addObject("store_idx",store_idx);
+		mav.addObject("storeDetail", inter.storeDetail(store_idx));//가게 기본 정보
+		mav.addObject("storeHash", inter.storeHash(store_idx));//해쉬태그불러오기
+		
 		mav.setViewName("store/storeDetail");
+		
 		return mav;
 	}
 }

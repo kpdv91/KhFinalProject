@@ -107,7 +107,7 @@
             <td></td>
             
             <td>
-                <input id="cancel" type="button" onclick="location.href='#'" value="취소"/>
+                <input id="cancel" type="button" onclick="location.href='main'" value="취소"/>
                 <input id="joinId" type="button" value="가입"/>
                 <!-- <input type="button" id="chkemail" onclick="location.href='./emailChkForm'" value="E-mail 중복확인"> -->
             </td>
@@ -115,7 +115,7 @@
         </div>
 	</table>
 	</form>
-	<input type="button" value="체크체크" onclick="chkVal()"/>
+	<!-- <input type="button" value="체크체크" onclick="chkVal()"/> -->
 	</body>
 	<script>
 	
@@ -240,7 +240,7 @@
         }else if(pwVal==0){
         	alert("비밀번호값이 변경 되었습니다. 다시 확인 해주세요.");
         }else if(!idReg.test( $("input[name='userId']").val() )){	//id 유효성
-           	alert("아이디는 영문자로 시작하는 5~20자리의 영문자 또는 숫자이어야 합니다.");
+           	alert("아이디는 5~20자리의 영문자 또는 숫자이어야 합니다.");
         }else{	
 
 			//핸드폰 번호 합치기

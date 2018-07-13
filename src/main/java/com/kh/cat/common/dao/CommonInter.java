@@ -3,6 +3,7 @@ package com.kh.cat.common.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.CouponBoxDTO;
 import com.kh.cat.dto.DMDTO;
 import com.kh.cat.dto.HashDTO;
@@ -64,6 +65,11 @@ public interface CommonInter {
 	ArrayList<HashDTO> storeHash(int store_idx);
 
 	ArrayList<RevReplyDTO> timelinereviewreply(String idx);
+
+
+	ArrayList<ComplainDTO> complainList();//신고 리스트(관리자)
+
+	ArrayList<StoreDTO> storeRegistList();//가게 등록 리스트(관리자)
 
 	int reply_update(int idx, String content);
 

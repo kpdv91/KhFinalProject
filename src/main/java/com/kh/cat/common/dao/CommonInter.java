@@ -67,13 +67,20 @@ public interface CommonInter {
 	ArrayList<RevReplyDTO> timelinereviewreply(String idx);
 
 
-	ArrayList<ComplainDTO> complainList();//신고 리스트(관리자)
+	//ArrayList<ComplainDTO> complainList();//신고 리스트(관리자)
 
-	ArrayList<StoreDTO> storeRegistList();//가게 등록 리스트(관리자)
+	//ArrayList<StoreDTO> storeRegistList();//가게 등록 리스트(관리자)
 
 	int reply_update(int idx, String content);
 
 	int reply_delete(int idx);
 
+	ArrayList<Integer> likestore(String id);
+
+	ArrayList<StoreDTO> timelinelikestore(Integer integer);
+
+	ArrayList<HashDTO> likestorehash(Integer integer);
+	
+	
 
 }

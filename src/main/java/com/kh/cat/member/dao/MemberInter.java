@@ -15,5 +15,7 @@ public interface MemberInter {
 	String overlay(String id); //ID 중복체크
 
 	String getprofile(String id); //프로필 가져오기
+
+	String findId(String name, String email);//ID 찾기
 	
 }

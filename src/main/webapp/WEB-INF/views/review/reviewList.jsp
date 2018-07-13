@@ -443,7 +443,7 @@ input[type=button]{
 			pho="<img id='BigPho' src='"+$(elem).children().attr("src")+"' width='250px' height='250px'/>";
 			$("#bigPhoto"+idx).append(pho);	
 		});
-		}
+	}
 		
 	
 	

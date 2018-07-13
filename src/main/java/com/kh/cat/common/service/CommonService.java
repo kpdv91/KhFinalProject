@@ -300,7 +300,7 @@ public class CommonService {
 		return map;
 	}
 
-	//관리자 신고 리스트
+	/*//관리자 신고 리스트
 	public HashMap<String, Object> timeLineComplainList(Map<String, String> params) {
 		logger.info("신고 리스트 서비스 요청");
 		inter = sqlSession.getMapper(CommonInter.class);
@@ -318,7 +318,7 @@ public class CommonService {
 		ArrayList<StoreDTO> list = inter.storeRegistList();
 		map.put("list", list);
 		return map;
-	}
+	}*/
 
 	public HashMap<String, Object> reply_update(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
@@ -346,6 +346,25 @@ public class CommonService {
 			deletecheck=true;
 		}
 		map.put("del",deletecheck);
+		return map;
+	}
+
+	public HashMap<String, Object> timelinelikestore(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		ArrayList<Integer> likestore = inter.likestore(id);
+		logger.info("store 개수 "+likestore.size());
+		logger.info("storeidx"+likestore.get(0));
+		//ArrayList<ReviewDTO> list = new ArrayList<ReviewDTO>();
+		ArrayList<ArrayList<StoreDTO>> list = new ArrayList<ArrayList<StoreDTO>>();
+		ArrayList<ArrayList<HashDTO>> list_hash = new ArrayList<ArrayList<HashDTO>>();
+		for(int i=0;i<likestore.size();i++) {
+			list.add(inter.timelinelikestore(likestore.get(i)));
+			list_hash.add(inter.likestorehash(likestore.get(i)));
+		}
+		map.put("list",list);
+		map.put("list_hash",list_hash);
 		return map;
 	}
 

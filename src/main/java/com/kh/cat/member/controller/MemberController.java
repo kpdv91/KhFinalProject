@@ -98,6 +98,27 @@ public class MemberController {
 		logger.info("프로필 사진 불러오기 요청");			
 		return memberService.profileunder(params);
 	}
+	
+	//ID 찾기 폼
+	@RequestMapping(value = "/findIdForm", method = RequestMethod.GET)
+	public String findIdForm() {
+		logger.info("ID 찾기 페이지 요청");
+		return "member/findIdForm";
+	}
+
+	/*//ID 찾기
+	@RequestMapping(value = "/findId")
+	public @ResponseBody HashMap<String, String> map (@RequestParam Map<String,String> params) {
+		logger.info("ID 찾기 요청");
+		return memberService.findId(params);
+	}*/
+	
+	//ID 찾기
+	@RequestMapping(value = "/findId")
+	public ModelAndView findId (@RequestParam HashMap<String,String> params) {
+		logger.info("ID 찾기 요청");
+		return memberService.findId(params);
+	}
 
 
 }

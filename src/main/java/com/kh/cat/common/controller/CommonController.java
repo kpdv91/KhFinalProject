@@ -157,7 +157,7 @@ public class CommonController {
 		logger.info("댓글 리뷰 리스트 요청");		
 		return commonservice.timelinereviewreply(params);
 	}
-	//신고 리스트(관리자)
+	/*//신고 리스트(관리자)
 	@RequestMapping(value = "/complainList")
 	public @ResponseBody HashMap<String, Object> complainList(@RequestParam Map<String,String> params) {
 		logger.info("신고 리스트 요청");		
@@ -169,7 +169,7 @@ public class CommonController {
 	public @ResponseBody HashMap<String, Object> storeRegistList(@RequestParam Map<String,String> params) {
 		logger.info("가게 등록 리스트 요청");		
 		return commonservice.timeLineStoreRegistList(params);
-	}
+	}*/
 	
 	@RequestMapping(value = "/reply_update")
 	public @ResponseBody HashMap<String, Object> reply_update(@RequestParam Map<String,String> params) {

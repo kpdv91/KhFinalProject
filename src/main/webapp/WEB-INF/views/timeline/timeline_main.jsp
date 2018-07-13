@@ -949,12 +949,37 @@
 				content +="<td>"+item.complain_cate+"</td>";
 				var date = new Date(item.complain_date);			
 				content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
-				content +="<td><button id='complain_move'>보 기</button></td>";
+				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+")'>보 기</button></td>";
 				content += "</tr>";			
 			});		
 			$("#complail_tbody").empty();
 			$("#complail_tbody").append(content);//내용 붙이기
 		}
+		
+		function complain_move(rev_idx, revReply_idx) {
+			console.log("클릭");
+			console.log(rev_idx, revReply_idx);
+			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+
+					"&revReply_idx="+revReply_idx,"신고리뷰페이지","width=500,height=500");
+			/* $.ajax({
+				url:"./reviewList",
+				type:"post",
+				data:{
+					rev_idx : rev_idx,
+					revReply_idx : revReply_idx
+				},
+				dataType:"json",
+				success:function(data){
+					console.log(data);		
+				},
+				error:function(error){
+					console.log(error);
+				}
+			}); */
+			
+			
+		}
+		
 		
 		//가게 등록 리스트
 		function store_regist_list(list) {

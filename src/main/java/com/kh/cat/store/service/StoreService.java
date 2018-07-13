@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.cat.dto.MenuDTO;
 import com.kh.cat.dto.StoreDTO;
 import com.kh.cat.store.dao.StoreInter;
 
@@ -187,10 +190,20 @@ public class StoreService {
 		inter = sqlSession.getMapper(StoreInter.class);
 		
 		mav.addObject("storeDetail", inter.storeDetail(store_idx));//가게 기본 정보
-		mav.addObject("storeHash", inter.storeHash(store_idx));//해쉬태그불러오기
+		mav.addObject("storeHash", inter.storeHash(store_idx));//해쉬태그 
 		
+		ArrayList<MenuDTO> dtoList = inter.menuPhoto(store_idx);
+		ArrayList<String> menuList = new ArrayList<String>();
+		for(MenuDTO dto : dtoList) {
+			menuList.add(dto.getMenu_photo());
+		}
+		Collections.sort(menuList);
+		mav.addObject("storeMenu", menuList);//메뉴사진
+		mav.addObject("storeMenuD", menuList.get(0));//메뉴사진
+	
 		mav.setViewName("store/storeDetail");
 		
 		return mav;
 	}
+
 }

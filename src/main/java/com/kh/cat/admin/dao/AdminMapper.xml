@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace=연결되는 인터페이스 -->    
+<mapper namespace="com.kh.cat.admin.dao.AdminInter">
+	<!-- 글쓰기(등록된 글의 idx 컬럼을 반환해야한다.(몇가지 옵션이 필요하다.)) -->
+	<!-- 
+		parameterType 지정 (파라메터로 사용될 dto(bean))
+		useGenertedKeys = "true" (insert 후 키 생성 여부)
+		keyProperty = "idx" (키가 될 필드(dto변수))
+		keyColumn = "idx" (키가 저장될 DB 컬럼)
+	-->
+
+	<!-- 신고리스트(관리자) -->
+	<select id="complainList" resultType="complain">
+		SELECT * FROM complain ORDER BY complain_idx
+	</select>
+	
+	<!-- 가게 등록 리스트(관리자) -->
+	<select id="storeRegistList" resultType="store">
+		SELECT * FROM store ORDER BY store_idx
+	</select>
+	
+	<select id="comp_reviewList" resultType="review">
+		SELECT * FROM review WHERE review_idx = #{param1}
+	</select>
+	
+	<select id="revWrite" resultType="String" parameterType="String">
+		SELECT id FROM review WHERE review_idx = #{param1}
+	</select>
+	
+	<update id="blackListAdd" parameterType="String">
+		UPDATE member SET aut = 'black' WHERE id = #{param1}
+	</update>
+	
+	<select id="reviewHash" resultType="hash">
+	 	SELECT hash_tag FROM hash WHERE hash_cate='review' AND review_idx = #{param1}
+	 </select>
+	 
+	 <select id="reviewPhoto" resultType="revPhoto">
+	 	SELECT revPhoto_photo FROM revPhoto WHERE review_idx = #{param1}
+	 </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

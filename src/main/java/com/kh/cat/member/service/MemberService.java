@@ -14,6 +14,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -84,6 +85,15 @@ public class MemberService {
 	
 	//회원가입
 	public ModelAndView join(HashMap<String, String> map) {
+		
+		/*logger.info("등록 요청 : "+pass);
+		//평문의 암호화
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		hash = encoder.encode(pass);
+		//salt 값으로 인하여 같은 평문도 다른 해시로 만든다.
+		logger.info("암호문 : "+hash);
+		logger.info("암호문 길이: "+hash.length());*/
+		
 		
 		inter = sqlSession.getMapper(MemberInter.class);
 		/*map -> dto*/

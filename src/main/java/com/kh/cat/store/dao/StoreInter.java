@@ -3,6 +3,7 @@ package com.kh.cat.store.dao;
 import java.util.ArrayList;
 
 import com.kh.cat.dto.HashDTO;
+import com.kh.cat.dto.MenuDTO;
 import com.kh.cat.dto.StoreDTO;
 
 public interface StoreInter {
@@ -16,5 +17,7 @@ public interface StoreInter {
 	StoreDTO storeDetail(int store_idx);
 
 	ArrayList<HashDTO> storeHash(int store_idx);
+
+	ArrayList<MenuDTO> menuPhoto(int store_idx);
 
 }

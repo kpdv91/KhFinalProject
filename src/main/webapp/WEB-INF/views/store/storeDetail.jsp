@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -10,7 +11,7 @@
 		<title>맛집 상세보기</title>
 		<style>
 			/* h1{color: #2637a4;} */
-			#detailFrame{position: relative;top: 50px; left: 20%;height: 700px;}
+			#detailFrame{position: relative;top: 50px; left: 20%;height: 600px;}
 			#detailFrame ul{width: 800px;}
 			#detailFrame ul li{list-style: none;  display: inline;	padding: 0px 10px; border: solid 2px #2637a4;
 				font-size: x-large; width: 100px;}
@@ -87,14 +88,24 @@
 					</table>
 					<img src="resources/upload/store/${storeDetail.store_photo}"  width="400" height="270"/>
 				</div>
-				<div class="divChg" id="menu">메뉴
-				
+				<div class="divChg" id="menu">
+					<div>
+						<input type="hidden" id="currMenuSrc" value="">
+						<input type="button" onclick="nextPreMenu(0)" value="<">
+						<img id="menuD" alt="menu1" src="resources/upload/store/${storeMenuD}" width="200" height="200">
+						<input type="button" onclick="nextPreMenu(1)" value=">">
+					</div>
+					<c:set var="i" value="1"/>
+					<c:forEach items="${storeMenu}" var="menu">
+						<img alt="메뉴" id="menu${i}" src="resources/upload/store/${menu}" width="50" height="50" onclick="menuShow(this)">
+						<c:set var="i" value="${i+1}"/>
+					</c:forEach>
 				</div>
 				<div class="divChg" id="loca">
 					<div id="map" style="width:100%;height:100%;"></div>
 					<p>
-						<button onclick="setZoomable(false)">지도 확대/축소 끄기</button>
 						<button onclick="setZoomable(true)">지도 확대/축소 켜기</button>
+						<button onclick="setZoomable(false)">지도 확대/축소 끄기</button>
 					</p>
 				</div>
 			</div>
@@ -102,7 +113,7 @@
 	
 	
 
-
+		<br><br><br><br>
 		<c:import url="/WEB-INF/views/review/reviewList.jsp">
 			<c:param name="idx" value="${storeDetail.store_idx}"/>
 		</c:import>
@@ -117,6 +128,8 @@
 		$("#info").css("display","inline");
 	}
 	
+	var mapContaine;
+	var map;
 	//선택에 따라 정보,메뉴,위치 보기
 	function divSnH(e) {
 		$(".tab").css("background-color","white");
@@ -132,14 +145,15 @@
 		}else if($(e).html()=="위치"){
 			$("#loca").css("display","inline");
 			
-			var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+			mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		    mapOption = {
 		        center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
 		        level: 3 // 지도의 확대 레벨
+		        
 		    };  
 
 			// 지도를 생성합니다    
-			var map = new daum.maps.Map(mapContainer, mapOption); 
+			map = new daum.maps.Map(mapContainer, mapOption); 
 			
 			// 주소-좌표 변환 객체를 생성합니다
 			var geocoder = new daum.maps.services.Geocoder();
@@ -167,12 +181,51 @@
 			        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
 			        map.setCenter(coords);
 			    } 
-			});  
+			});
+			map.setZoomable(false);
 		}else{
 			alert("올바른 명령이 아닙니다.")
 		}
 		
 	}
+	
+	// 버튼 클릭에 따라 지도 확대, 축소 기능을 막거나 풀고 싶은 경우에는 map.setZoomable 함수를 사용합니다
+	function setZoomable(zoomable) {
+	    // 마우스 휠로 지도 확대,축소 가능여부를 설정합니다
+	    map.setZoomable(zoomable);    
+	}
+	
+	//메뉴판 선택
+	function menuShow(e) {
+		$("#menuD").attr("src",$(e).attr("src"));
+		$("#menuD").attr("alt",$(e).attr("id"));
+	}
+	
+	//이전 , 다음 메뉴판
+	var currMenu="";
+	var currMenuNum=0;
+	var menuSize = ${storeMenu.size()};
+	function nextPreMenu(pm) {
+		currMenu = $("#menuD").attr("alt");
+		currMenuNum = parseInt(currMenu[4]);
+		if(pm==1){
+			if(currMenuNum<menuSize){
+				currMenuNum += 1;
+			}else{
+				currMenuNum = 1;
+			}
+		}else{
+			if(currMenuNum>1){
+				currMenuNum -= 1;
+			}else{
+				currMenuNum = menuSize;
+			}
+		}
+		currMenu = "menu"+currMenuNum;
+		$("#menuD").attr("alt",currMenu);
+		$("#menuD").attr("src",$("#"+currMenu).attr("src"))
+	}
+
 
 	</script>
 </html>

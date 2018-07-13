@@ -44,5 +44,10 @@
 	 <select id="storeHash" resultType="hash">
 	 	SELECT * FROM hash WHERE hash_cate = 'store' AND store_idx = #{param1}
 	 </select>
+	 
+	 <!-- 맛집 해쉬태그 불러오기 -->
+	 <select id="menuPhoto" resultType="menu">
+	 	SELECT * FROM menu WHERE store_idx = #{param1} 
+	 </select>
 	
 </mapper>

@@ -93,4 +93,22 @@ public class StoreController {
 		logger.info("가게 상세 페이지 요청.");
 		return storeService.storeDetail(store_idx);
 	}
+	
+	//찜 확인
+	@RequestMapping(value = "/storeLikeChk")
+	public @ResponseBody HashMap<String, Object> 
+	storeLikeChk(@RequestParam("store_idx") int store_idx, HttpServletRequest session) {
+			logger.info("맛집 찜 여부 요청.");
+			String loginId = (String) session.getSession().getAttribute("loginId");
+			return storeService.storeLikeChk(loginId, store_idx);
+	}
+	
+	//찜 하기
+		@RequestMapping(value = "/storeLike")
+		public @ResponseBody HashMap<String, Object> 
+		storeLike(@RequestParam HashMap<String, String> params, HttpServletRequest session) {
+				logger.info("맛집 찜 요청.");
+				String loginId = (String) session.getSession().getAttribute("loginId");
+				return storeService.storeLike(loginId, params);
+		}
 }

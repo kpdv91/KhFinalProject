@@ -117,7 +117,7 @@ console.log(loginid);
 				},
 				dataType:"json",
 				success:function(d){
-					console.log(d.profileimg.profile);
+					//console.log(d.profileimg.profile);
 					if(d.profileimg.profile==0){
 						$("#profileimg").attr("src",'resources/img/member/noprofile.jpg');
 					}else{

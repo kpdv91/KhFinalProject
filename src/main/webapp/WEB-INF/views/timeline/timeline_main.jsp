@@ -64,6 +64,12 @@
 			.storeTable{float: left;margin-left:1px; margin-right: 10px;margin-top: 10px;border:1px solid black;width:250px;height:250px;}
 			.storeImg{width: 250px;height: 100px;}
 			#hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;margin-right: 5px;}
+			#fallowlist{border: 1px solid #33aaaaff;display:none;position:absolute;left:810px;width:410px;top:154px;background-color:white;z-index:1;}
+			.followbtn{border:1px solid lightgray;}
+			#follower{background-color:darkblue;color:white;width:50px;}
+			#following{width:50px;position:absolute;left:50px;top:0px;}
+			.friendprofile{width:60px;height:60px;float:left;}
+			.followdiv{width:200px;float:left;padding:1px;}
 		</style>
 	</head>
 	<body>
@@ -76,8 +82,9 @@
 				<div id="myreview"></div>
 				<div id="likereview"></div>
 				<div id="likestore"></div>
-				<div id="friend"></div>
+				<div id="friend" onclick="fallowlist()"></div>
 			</div>
+			<div id="fallowlist"></div>
 		</div>		
 		<br/>
 		<hr/>
@@ -109,13 +116,16 @@
 	var page = "";
 	var str = "";
 	var phone=[];
+	var fallowbtn=1;
 	if(userid==""){
 		$("#fallow").css("display","none");
 		$("#dm").css("display","none");
+		$("#userdetai").css("display","none");
 	}
 	if(userid=="${id}"){
 		$("#fallow").css("display","none");
 		$("#dm").css("display","none");
+		
 	}else{
 		$("#userdetai").css("display","none");
 		$.ajax({
@@ -165,13 +175,204 @@
 			},
 			dataType:"json",
 			success:function(d){
-				$("#profileim").attr("src",'resources/upload/'+d.profile);
+				//console.log(d.profile);
+				if(d.profile==0){
+					$("#profileim").attr("src",'resources/img/member/noprofile.jpg');
+				}else{
+					$("#profileim").attr("src",'resources/upload/'+d.profile);
+				}
 			},
 			error:function(e){
 				console.log(e);
 			}
 		});
 	});
+	function fallowlist(){
+		if(fallowbtn==1){
+			console.log(fallowbtn);
+			$.ajax({
+				url:"./timelinefallowlist",
+				type:"post",
+				data:{
+					id : "${id}"
+				},
+				dataType:"json",
+				success:function(d){
+					$("#friend").css("background-color","darkblue");
+					$("#friend").css("color","white");
+					var content = "<div id='userfallow'>";
+					content += "<div class='followbtn' id='follower' onclick='follower()'>팔로워</div><div class='followbtn' id='following' onclick='following()'>팔로잉</div>";
+					content += "<div id='followlistdiv'>팔로워 목록이 없습니다</div></div>"
+					$("#fallowlist").append(content);
+					$("#fallowlist").css('display','block');
+					var cont="";
+					  for(var i =0;i<d.fallowlist.length;i++){
+						 for(var j=0;j<d.fallowlist[i].length;j++){
+							 cont += "<div id='followdiv"+d.fallowlist[i][j].id+"' class='followdiv'>";
+							 if(d.fallowlist[i][j].profile==0){
+								 cont += "<img id='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='gotimeline(id)'/>";
+							 }else{
+								 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/upload/"+d.fallowlist[i][j].profile+"' onclick='gotimeline(id)'/>";
+							 }
+							cont += "<p>"+d.fallowlist[i][j].id+"</p>";
+							if("${id}"==userid){
+							cont += "<button class='fbtn' id='"+d.fallowlist[i][j].id+"' onclick='followck(id)'>팔로우 추가</button>"
+							}
+							cont += "</div>";	
+						 }
+						}
+					  $("#followlistdiv").empty();
+					  $("#followlistdiv").append(cont);
+					timelinefallowlist(d);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+			fallowbtn=0;
+		}else{
+			fallowbtn=1;
+			$("#fallowlist").empty();
+			$("#friend").css("background-color","lightgray");
+			$("#friend").css("color","black");
+			$("#fallowlist").css('display','none');
+		}
+	}
+	function gotimeline(e){
+		console.log(e);
+		var gotime=[];
+		gotime = e.split("_");
+		console.log(gotime[1]);
+		location.href="./timeline?id="+gotime[1];
+	}
+	function timelinefallowlist(d){		
+		  for(var i =0;i<d.fallowing.length;i++){
+				 for(var j=0;j<d.fallowing[i].length;j++){
+					$("#"+d.fallowing[i][j].id).html("팔로우 취소");
+				 }
+			}
+	}
+	function follower(){
+		$.ajax({
+			url:"./timelinefallowlist",
+			type:"post",
+			data:{
+				id : "${id}"
+			},
+			dataType:"json",
+			success:function(d){
+				$("#following").css("background-color","lightgray");
+				$("#following").css("color","black");
+				$("#follower").css("background-color","darkblue");
+				$("#follower").css("color","white");
+				var cont="";
+				  for(var i =0;i<d.fallowlist.length;i++){
+					 for(var j=0;j<d.fallowlist[i].length;j++){
+						 cont += "<div id='followdiv"+d.fallowlist[i][j].id+"' class='followdiv'>";
+						 if(d.fallowlist[i][j].profile==0){
+							 cont += "<img id='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='gotimeline(id)'/>";
+						 }else{
+							 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/upload/"+d.fallowlist[i][j].profile+"' onclick='gotimeline(id)'/>";
+						 }
+						cont += "<p>"+d.fallowlist[i][j].id+"</p>";
+						if("${id}"==userid){
+							cont += "<button class='fbtn' id='"+d.fallowlist[i][j].id+"' onclick='followck(id)'>팔로우 추가</button>"
+							}
+						cont += "</div>";	
+					 }
+					}
+				  $("#followlistdiv").empty();
+				  $("#followlistdiv").append(cont);
+				timelinefallowlist(d);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	function following(){
+		$.ajax({
+			url:"./timelinefallowlist",
+			type:"post",
+			data:{
+				id : "${id}"
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d);
+				$("#follower").css("background-color","lightgray");
+				$("#follower").css("color","black");
+				$("#following").css("background-color","darkblue");
+				$("#following").css("color","white");
+				var cont="";
+				  for(var i =0;i<d.fallowing.length;i++){
+					 for(var j=0;j<d.fallowing[i].length;j++){
+						 cont += "<div id='followdiv"+d.fallowing[i][j].id+"' class='followdiv'>";
+						 if(d.fallowlist[i][j].profile==0){
+							 cont += "<img id='friendprofile' id='img_"+d.fallowing[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='gotimeline(id)'/>";
+						 }else{
+							 cont += "<img class='friendprofile' id='img_"+d.fallowing[i][j].id+"' src='resources/upload/"+d.fallowing[i][j].profile+"' onclick='gotimeline(id)'/>";
+						 }
+						cont += "<p>"+d.fallowing[i][j].id+"</p>";
+						if("${id}"==userid){
+							cont += "<button class='fbtn' id='"+d.fallowlist[i][j].id+"' onclick='followck(id)'>팔로우 취소</button>"
+						}
+						cont += "</div>";	
+					 }
+					}
+				  $("#followlistdiv").empty();
+				  $("#followlistdiv").append(cont);				
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	};
+	function followck(id){
+		console.log($("#"+id).html());
+		if($("#"+id).html()=="팔로우 추가"){
+			$.ajax({
+				url:"./followinsert",
+				type:"post",
+				data:{
+					userid : userid,
+					id : id
+				},
+				dataType:"json",
+				success:function(d){
+					if(d.success>0){
+						$("#"+id).html("팔로우 취소");	
+					}else{
+						alert("팔로우가 안되었습니다.");
+					}									
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}else if($("#"+id).html()=="팔로우 취소"){
+			$.ajax({
+				url:"./followdelete",
+				type:"post",
+				data:{
+					userid : userid,
+					id : id
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d);
+					if(d.success>0){
+						$("#followdiv"+id).remove();
+					}else{
+						alert("팔로우 취소가 안되었습니다.");
+					}									
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}
+	}
 	function timelinereview(){
 		$.ajax({
 			url:"./timelinereviewlist",
@@ -923,35 +1124,17 @@
 				content +="<td>"+item.complain_cate+"</td>";
 				var date = new Date(item.complain_date);			
 				content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
-				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+")'>보 기</button></td>";
+				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\")'>보 기</button></td>";
 				content += "</tr>";			
 			});		
 			$("#complail_tbody").empty();
 			$("#complail_tbody").append(content);//내용 붙이기
 		}
 		
-		function complain_move(rev_idx, revReply_idx) {
-			console.log("클릭");
-			console.log(rev_idx, revReply_idx);
-			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+
-					"&revReply_idx="+revReply_idx,"신고리뷰페이지","width=500,height=500");
-			/* $.ajax({
-				url:"./reviewList",
-				type:"post",
-				data:{
-					rev_idx : rev_idx,
-					revReply_idx : revReply_idx
-				},
-				dataType:"json",
-				success:function(data){
-					console.log(data);		
-				},
-				error:function(error){
-					console.log(error);
-				}
-			}); */
-			
-			
+		function complain_move(rev_idx, revReply_idx, id) {
+			console.log("클릭");   
+			console.log(rev_idx, revReply_idx, id);  
+			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id, "신고 리뷰 페이지","width=500,height=500");		
 		}
 		
 		
@@ -960,20 +1143,52 @@
 			var content = "";		
 			list.forEach(function(item, idx){
 				if(item.store_regist == 0){
+					var id = new String(item.id);
 					content +="<tr>";
 					content +="<td>"+item.store_name+"</td>";
 					content +="<td>"+item.store_ceo+"</td>";
 					content +="<td>"+item.store_addr+"</td>";
 					var date = new Date(item.store_revDate);			
 					content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
-					content +="<td><button id='store_regist_move'>보 기</button></td>";
-					content +="<td><button id='store_regist_yes'>승인</button> / <button id='store_regist_no'>취소</button></td>";
+					content +="<td><button id='store_regist_move'>보 기</button></td>";  
+		            content +="<td><button id='store_regist_yes' onclick='registYes("+item.store_idx+", \""+item.id+"\")'>승인</button> / "+
+		            	"<button id='store_regist_no' onclick='registNo("+item.store_idx+", \""+item.id+"\")'>취소</button></td>";
 					content += "</tr>";		
 				}	
 			});		
 			$("#store_tbody").empty();
 			$("#store_tbody").append(content);//내용 붙이기
+
 		}
+		
+		//가게 등록 승인
+		function registYes(store_idx, id) {
+			console.log(store_idx, id);
+			$.ajax({
+				url:"./registYes",
+				type:"post",
+				data:{
+					store_idx : store_idx,
+					id : id
+				},
+				dataType:"json",
+				success:function(data){
+					console.log(data);			
+					alert(data.msg);
+					location.href="./storeRegistList";
+				},
+				error:function(error){
+					console.log(error);
+				}
+			});
+		}
+		
+		function registNo(store_idx, id) {
+			console.log(store_idx, id);
+			var myWin= window.open("./registNoWin?store_idx="+store_idx+
+					"&id="+id,"가게 등록 거절","width=500,height=500");	
+		}
+		
 		function selPicturedelete(){
 			var photoname =$("#profilename").val();
 			console.log(photoname);

@@ -10,14 +10,24 @@
 		SELECT id FROM member WHERE id=#{param1} AND pw=#{param2}
 	</select>
 	
+	<!-- DB 비밀번호 가져오기 -->
+	<select id="getPw" resultType="String" parameterType="String">
+		SELECT pw FROM member WHERE id=#{param1}
+	</select>
+	
 	<!-- 프로필사진 가져오기 -->
 	<select id="getprofile" resultType="String" parameterType="String">
 		SELECT profile FROM member WHERE id=#{param1}
 	</select>
 	
 	<!-- id 가져오기 -->
-	<select id="findId" resultType="member">
+	<select id="findId" resultType="String" parameterType="String">
 		SELECT id FROM member WHERE name=#{param1} AND email=#{param2}
+	</select>
+	
+	<!-- id 가져오기2 -->
+	<select id="findId2" resultType="int" parameterType="String">
+		SELECT COUNT(*) FROM member WHERE name=#{param1} AND email=#{param2}
 	</select>
 	
 	<!-- 회원가입 -->	

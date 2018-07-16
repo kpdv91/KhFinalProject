@@ -18,9 +18,7 @@
             outline: 0px;
             border: 0px;
         }
-			form {
-				
-			}
+
 			body{
 			background-color: #142e5b;
 				color: white;
@@ -84,10 +82,9 @@
 			},
 			success:function(d){
 				console.log(d.success);
-				if(d.success == 1){
+				 if(d.success == 1){
 					self.close();
-				}
-				
+				} 
 			},
 			error:function(e){console.log(e);}
 		});

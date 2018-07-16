@@ -109,8 +109,6 @@
 	var page = "";
 	var str = "";
 	var phone=[];
-	//console.log(userid);
-	//console.log("${id}")
 	if(userid==""){
 		$("#fallow").css("display","none");
 		$("#dm").css("display","none");
@@ -120,7 +118,6 @@
 		$("#dm").css("display","none");
 	}else{
 		$("#userdetai").css("display","none");
-		//$("#content").css("left","150px");
 		$.ajax({
 			url:"./followcheck",
 			type:"post",
@@ -130,7 +127,6 @@
 			},
 			dataType:"json",
 			success:function(d){
-				//console.log(d);
 				if(d.id==true){
 					$("#fallow").html("팔로우 취소");
 				}else{
@@ -169,7 +165,6 @@
 			},
 			dataType:"json",
 			success:function(d){
-				console.log(d.profile);
 				$("#profileim").attr("src",'resources/upload/'+d.profile);
 			},
 			error:function(e){
@@ -186,7 +181,6 @@
 			},
 			dataType:"json",
 			success:function(d){
-				console.log(d.list);
 				printList(d.list);
 			},
 			error:function(e){
@@ -197,7 +191,6 @@
 	function printList(list){		 
 		var content = "";
 		list.forEach(function(item){
-				console.log(item.review_replyCnt);
 				content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 				content += "<div id='listTop'><div id='listTop_C'>"+item.id+"</div><div id='listTop_R'><br/>"+item.review_likeCnt+"명이 좋아합니다.</div></div>";
 				content += "<div id='table_div'><table id='review_table'><tr class='review_tabletr'><td id='storeName_td' class='review_tabletr'>"+item.review_storeName+"</td>";
@@ -217,7 +210,6 @@
 		var content = "";
 		list.forEach(function(i){
 			i.forEach(function(item){
-				//console.log(item.review_replyCnt);
 				content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 				content += "<div id='listTop'><div id='listTop_C'>"+item.id+"</div><div id='listTop_R'><br/>"+item.review_likeCnt+"명이 좋아합니다.</div></div>";
 				content += "<div id='table_div'><table id='review_table'><tr class='review_tabletr'><td id='storeName_td' class='review_tabletr'>"+item.review_storeName+"</td>";
@@ -244,8 +236,6 @@
 				},
 				dataType:"json",
 				success:function(d){
-					console.log(d);
-					
 					replylist(d.replylist,idx);
 				},
 				error:function(e){
@@ -297,7 +287,6 @@
 					content:text
 				},
 				success:function(d){
-					console.log(d)
 					if(d.update>0){
 						$("#reply_textarea"+idx).val(text);
 						$("#reply_update"+idx).css("display","inline-block");
@@ -327,7 +316,6 @@
 		$("#reply_textarea"+idx).val(name);
 	 }
 	 function reply_delete(idx){
-		 console.log("delete"+idx);
 		 $.ajax({
 				url:"./reply_delete",
 				type:"post",
@@ -336,7 +324,6 @@
 					revreply_idx:idx
 				},
 				success:function(d){
-					console.log(d)
 					if(d.del>0){
 						$("#reply_table"+idx).remove();
 					}else{
@@ -376,7 +363,6 @@
 		$("#reviewList_photo"+elem).append(img);
 	}
 	$(".userdetail").click(function(e) {
-		console.log(e.target.id);	
 		if(e.target.id == "message") {
 			page = "resources/timelinehtml/messagebox.html";
 			$("#message").css("background-color","darkblue");
@@ -604,7 +590,6 @@
 				},
 				dataType:"json",
 				success:function(d){
-					console.log(d);
 					pointlist(d);
 				},
 				error:function(e){
@@ -620,7 +605,6 @@
 				},
 				dataType:"json",
 				success:function(d){
-					console.log(d);
 					couponlist(d.list);
 				},
 				error:function(e){
@@ -636,7 +620,6 @@
 				},
 				dataType:"json",
 				success:function(d){
-					console.log(d.list);
 					printList(d.list);
 				},
 				error:function(e){
@@ -652,7 +635,6 @@
 				},
 				dataType:"json",
 				success:function(d){
-					console.log(d.list);
 					revreplyList(d.list);
 				},
 				error:function(e){
@@ -668,7 +650,6 @@
 				},
 				dataType:"json",
 				success:function(d){
-					console.log(d.list);
 					revreplyList(d.list);
 				},
 				error:function(e){
@@ -683,7 +664,6 @@
 				type:"post",
 				dataType:"json",
 				success:function(data){
-					console.log(data);
 					complain_list(data.list);
 				},
 				error:function(error){
@@ -696,7 +676,6 @@
 				type:"post",
 				dataType:"json",
 				success:function(data){
-					console.log(data);
 					store_regist_list(data.list);
 				},
 				error:function(error){
@@ -712,8 +691,6 @@
 				},
 				dataType:"json",
 				success:function(d){
-					//console.log(d.list);
-					//console.log(d.list_hash);
 					likestorelist(d.list,d.list_hash);
 				},
 				error:function(e){
@@ -750,8 +727,6 @@
 		}
 	}
 	function likestorelist(list,hash){
-		//console.log(list);
-		//console.log(hash);
 		var content ="";
 		list.forEach(function(i, idx){
 			i.forEach(function(item,idx){
@@ -903,7 +878,6 @@
 				},
 				dataType:"json",
 				success:function(d){
-					console.log(d);
 					if(d.success>0){
 						e.target.innerHTML="팔로우 취소";	
 					}else{
@@ -949,35 +923,17 @@
 				content +="<td>"+item.complain_cate+"</td>";
 				var date = new Date(item.complain_date);			
 				content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
-				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+")'>보 기</button></td>";
+				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\")'>보 기</button></td>";
 				content += "</tr>";			
 			});		
 			$("#complail_tbody").empty();
 			$("#complail_tbody").append(content);//내용 붙이기
 		}
 		
-		function complain_move(rev_idx, revReply_idx) {
-			console.log("클릭");
-			console.log(rev_idx, revReply_idx);
-			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+
-					"&revReply_idx="+revReply_idx,"신고리뷰페이지","width=500,height=500");
-			/* $.ajax({
-				url:"./reviewList",
-				type:"post",
-				data:{
-					rev_idx : rev_idx,
-					revReply_idx : revReply_idx
-				},
-				dataType:"json",
-				success:function(data){
-					console.log(data);		
-				},
-				error:function(error){
-					console.log(error);
-				}
-			}); */
-			
-			
+		function complain_move(rev_idx, revReply_idx, id) {
+			console.log("클릭");   
+			console.log(rev_idx, revReply_idx, id);  
+			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id, "신고 리뷰 페이지","width=500,height=500");		
 		}
 		
 		
@@ -986,6 +942,7 @@
 			var content = "";		
 			list.forEach(function(item, idx){
 				if(item.store_regist == 0){
+					var id = new String(item.id);
 					content +="<tr>";
 					content +="<td>"+item.store_name+"</td>";
 					content +="<td>"+item.store_ceo+"</td>";
@@ -993,19 +950,43 @@
 					var date = new Date(item.store_revDate);			
 					content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
 					content +="<td><button id='store_regist_move'>보 기</button></td>";  
-					/* content +="<td><button id='store_regist_yes' onclick='registYes("+item.store_idx+", "+item.id+")'>승인</button> / <button id='store_regist_no'>취소</button></td>"; */
-					content +="<td><button id='store_regist_yes' onclick='registYes("+item.store_idx+", \""+item.id+"\")'>승인</button> / <button id='store_regist_no'>취소</button></td>";
+		            content +="<td><button id='store_regist_yes' onclick='registYes("+item.store_idx+", \""+item.id+"\")'>승인</button> / "+
+		            	"<button id='store_regist_no' onclick='registNo("+item.store_idx+", \""+item.id+"\")'>취소</button></td>";
 					content += "</tr>";		
 				}	
 			});		
 			$("#store_tbody").empty();
 			$("#store_tbody").append(content);//내용 붙이기
+
 		}
 		
+		//가게 등록 승인
 		function registYes(store_idx, id) {
 			console.log(store_idx, id);
+			$.ajax({
+				url:"./registYes",
+				type:"post",
+				data:{
+					store_idx : store_idx,
+					id : id
+				},
+				dataType:"json",
+				success:function(data){
+					console.log(data);			
+					alert(data.msg);
+					location.href="./storeRegistList";
+				},
+				error:function(error){
+					console.log(error);
+				}
+			});
 		}
 		
+		function registNo(store_idx, id) {
+			console.log(store_idx, id);
+			var myWin= window.open("./registNoWin?store_idx="+store_idx+
+					"&id="+id,"가게 등록 거절","width=500,height=500");	
+		}
 		
 		function selPicturedelete(){
 			var photoname =$("#profilename").val();

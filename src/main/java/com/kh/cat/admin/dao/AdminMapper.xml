@@ -22,26 +22,57 @@
 		SELECT * FROM store ORDER BY store_idx
 	</select>
 	
+	<!-- 신고된 리뷰 리스트 -->
 	<select id="comp_reviewList" resultType="review">
 		SELECT * FROM review WHERE review_idx = #{param1}
 	</select>
 	
-	<select id="revWrite" resultType="String" parameterType="String">
+	<!-- 리뷰 작성자 아이디 조회 -->
+	<select id="revWriter" resultType="String" parameterType="String">
 		SELECT id FROM review WHERE review_idx = #{param1}
 	</select>
 	
+	<!-- 블랙리스트 추가 -->
 	<update id="blackListAdd" parameterType="String">
 		UPDATE member SET aut = 'black' WHERE id = #{param1}
 	</update>
 	
+	<!-- 해시태그  -->
 	<select id="reviewHash" resultType="hash">
 	 	SELECT hash_tag FROM hash WHERE hash_cate='review' AND review_idx = #{param1}
 	 </select>
 	 
+	 <!-- 리뷰 사진 -->
 	 <select id="reviewPhoto" resultType="revPhoto">
 	 	SELECT revPhoto_photo FROM revPhoto WHERE review_idx = #{param1}
 	 </select>
-
+	 
+	 <!-- 가게 등록 승인 -->
+	<update id="registYes" parameterType="String">
+		UPDATE store SET store_regist = 1 WHERE store_idx = #{param1}
+	</update>
+	 
+	 <!-- 등록 승인 시 쪽지 -->
+	<insert id="regY_dm_Write" parameterType="String">
+		INSERT INTO dm(dm_idx, id, dm_id, dm_content, dm_date)
+			VALUES(seq_dm.NEXTVAL, #{param2}, #{param1}, '가게등록이 승인되었습니다.', SYSDATE)
+	</insert>
+	
+	<!-- 등록 거절 시 쪽지 -->
+	<insert id="regNo_dmWrite" parameterType="String">
+		INSERT INTO dm(dm_idx, id, dm_id, dm_content, dm_date)
+			VALUES(seq_dm.NEXTVAL, #{param2}, #{param1}, #{param3}, SYSDATE)
+	</insert>
+	
+	<!-- 등록 거절 시 삭제 -->
+	<delete id="storeDel" parameterType="String">
+		DELETE FROM store WHERE store_idx = #{param1}
+	</delete>
+	
+	<!-- 신고 취하 -->
+	<delete id="complainDel">
+		DELETE FROM complain WHERE review_idx = #{param1} AND id = #{param2}
+	</delete>
 </mapper>
 
 

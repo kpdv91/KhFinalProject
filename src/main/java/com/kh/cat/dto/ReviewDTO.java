@@ -10,7 +10,7 @@ public class ReviewDTO {
 	private String review_content;
 	private int review_likeCnt;
 	private Date review_date;
-	private String profile;
+	private String review_profile;
 	private String review_storeName;
 	private int review_replyCnt;
 	
@@ -68,12 +68,13 @@ public class ReviewDTO {
 	public void setReview_date(Date review_date) {
 		this.review_date = review_date;
 	}
-	public String getProfile() {
-		return profile;
+	public String getReview_profile() {
+		return review_profile;
 	}
-	public void setProfile(String profile) {
-		this.profile = profile;
+	public void setReview_profile(String review_profile) {
+		this.review_profile = review_profile;
 	}
+	
 	
 	
 }

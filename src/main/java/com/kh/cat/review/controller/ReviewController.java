@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.cat.dto.RevLikeDTO;
 import com.kh.cat.review.service.ReviewService;
 
 @Controller
@@ -60,6 +61,7 @@ public class ReviewController {
 		logger.info("글쓰기 or 수정 요청");	
 		logger.info(""+map);
 		String loginId = (String) request.getSession().getAttribute("loginId");
+		String profile = (String) request.getSession().getAttribute("loginProfile");
 		logger.info(map.get("review_idx"));
 		
 		if(map.get("review_idx") != "") {
@@ -125,7 +127,7 @@ public class ReviewController {
 	@RequestMapping(value = "/complain")
 	public @ResponseBody HashMap<String, Integer> complain(@RequestParam HashMap<String, String>map) {		
 		System.out.println("신고 요청");
-		logger.info(""+service.complain(map).get("success"));
+		//logger.info(""+service.complain(map).get("success"));
 		return service.complain(map);
 	}
 	
@@ -142,6 +144,18 @@ public class ReviewController {
 	public ModelAndView review_updateForm(@RequestParam("review_idx") String review_idx){
 		logger.info("리뷰 수정 페이지 이동");
 		return service.review_updateForm(review_idx);
+	}
+	
+	@RequestMapping(value = "/reviewLike")
+	public @ResponseBody String reviewLike(@RequestParam("review_idx") String review_idx,@RequestParam("loginId") String loginId) {		
+		logger.info("리뷰 좋아요 요청");
+		return service.reviewLike(review_idx,loginId);
+	}
+	
+	@RequestMapping(value = "/reviewLikeSelect")
+	public @ResponseBody ArrayList<RevLikeDTO> reviewLikeSelect(@RequestParam("loginId") String loginId) {		
+		logger.info("리뷰 좋아요 select요청");
+		return service.reviewLikeSelect(loginId);
 	}
 	
 }

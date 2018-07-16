@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.cat.dto.ComplainDTO;
+import com.kh.cat.dto.RevLikeDTO;
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.review.dao.ReviewInter;
 
@@ -104,8 +105,8 @@ public class ReviewService {
 		ModelAndView mav = new ModelAndView();
 		String page = "redirect:/reviewWritePage";
 		ReviewDTO dto = new ReviewDTO();
-		dto.setProfile(map.get("review_profile"));
-		logger.info(dto.getProfile());
+		dto.setReview_profile(map.get("review_profile"));
+		logger.info(dto.getReview_profile());
 		dto.setReview_storeName(map.get("review_storeName"));
 		logger.info(map.get("review_storeName"));
 		dto.setId(map.get("id"));
@@ -309,6 +310,30 @@ public class ReviewService {
 		}
 		fileList.clear();
 		return "redirect:/";
+	}
+
+	public String reviewLike(String review_idx, String loginid) {
+		inter=sqlSession.getMapper(ReviewInter.class);
+		String result=inter.likeSel(review_idx,loginid);
+		String success="";
+		logger.info("좋아요 : "+result);
+		if(result == null) {
+			logger.info("result는 0 insert 해야함");
+			inter.likeInsert(review_idx,loginid);
+			success = "insert";
+		}else {
+			logger.info("result는 0이 아님 delete 해야함");
+			inter.likeDelete(review_idx, loginid);
+			success = "delete";
+		}
+		return success;
+	}
+
+	public ArrayList<RevLikeDTO> reviewLikeSelect(String loginId) {
+		inter=sqlSession.getMapper(ReviewInter.class);
+		ArrayList<RevLikeDTO> likeList = new ArrayList<>();
+		likeList = inter.likeList(loginId);
+		return likeList;
 	}
 
 }

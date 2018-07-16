@@ -64,7 +64,8 @@
 </form>
 </body>
 <script>
-
+	
+	${find}
 
 	function join() {
 		location.href="./joinForm";

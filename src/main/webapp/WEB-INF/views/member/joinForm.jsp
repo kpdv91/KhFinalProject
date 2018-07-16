@@ -53,8 +53,8 @@
 	<body>
 		<form action="join" id="join" method="post">
 		<div id="div1" >
-			<div id="profile" onchange="testBB()">
-				
+			<div id="profile" name="profile" onchange="testBB()" >
+				<img alt="noprofile" src="resources/img/member/noprofile.jpg" height=150px width=150px>
 			</div>
             <!--<div id="pic">-->
 			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -67,15 +67,6 @@
             <th>아이디 : </th> 
             <td><input type="text" id="userId" name="userId" placeholder="아이디" onchange="chgId()"></td>
             <td><input id="overlay" type="button" value="중복체크"/></td>
-            
-            <!-- <input type="hidden" id="idChk" value="N" />ID체크 했는지, 안했는지. -->
-            <!-- 아이디 : <input type="text" name="id" id="insertId" maxlength="30" /><input type="button" value="Id체크" onclick="javascript:chkDupId();" /> -->
-            
-            <!-- <input type="email" id="email" placeholder="email" /> -->
-    		<!-- <input type="button" id="chkid" onclick="chkid()" value="중복확인"> -->
-    		
-    		<!-- <input type="button" id="chkemail" onclick="chkemail()" value="E-mail 중복확인"> -->
-
             </td>
          </tr>
          <tr>
@@ -86,8 +77,7 @@
             <th>비밀번호확인 : </th>
             <td><input type="password" id="userPwChk" name="userPwChk" placeholder="비밀번호확인" onkeyup="chgPw()"></td>           
          </tr>
-         <tr>
-          
+         <tr>          
             <td id="confirmPw" colspan="2"><span></span></td>           
          </tr>   
          <th>이름 : </th>
@@ -109,13 +99,11 @@
             <td>
                 <input id="cancel" type="button" onclick="location.href='main'" value="취소"/>
                 <input id="joinId" type="button" value="가입"/>
-                <!-- <input type="button" id="chkemail" onclick="location.href='./emailChkForm'" value="E-mail 중복확인"> -->
             </td>
         </tr>
         </div>
 	</table>
 	</form>
-	<!-- <input type="button" value="체크체크" onclick="chkVal()"/> -->
 	</body>
 	<script>
 	
@@ -177,7 +165,8 @@
 
 	function chkVal(){
 
-		 
+		 //console.log($("#profile"));
+		 console.log(document.getElementById('profile').innerHTML);
 		 /* console.log(imgLen);
 		 console.log("나len",$("#profile img").length);
 		 console.log("가",$("#profile").val());
@@ -211,8 +200,8 @@
         }else if($("input[name='userPwChk']").val()==""){//비밀번호
         	alert("비밀번호확인을 입력해주세요!!");
         	$("input[name='userPwChk']").focus();	
-        }else if($("#profile img").length==0){//사진
-        	alert("프로필 사진을 등록해주세요!!");
+        /* }else if($("#profile img").length==0){//사진
+        	alert("프로필 사진을 등록해주세요!!"); */
         }else if($("input[name='userName']").val()==""){//이름
         	alert("이름을 입력해주세요!!");
             $("input[name='userName']").focus();

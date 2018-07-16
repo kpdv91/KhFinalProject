@@ -71,7 +71,7 @@
 				<img id="profileimg" src="" onclick="profileclick()">
 			</div>
 			<div id="profi"></div>
-       	</c:if>	
+       	</c:if>
 	</div>
        	
 	<div id="menuFrame">
@@ -84,13 +84,6 @@
 			</c:if>
 			<c:if test="${sessionScope.loginId != null}">
 				<li><a href="./couponShopPage">쿠폰샵</a></li>
-
- 				
- 				<!-- <div> 					
-					<img id="profileimg" src="" onclick="profileclick()">
-				</div> -->
-				<!-- <div id="profi"></div> -->
-				
 			</c:if>	
 			</ul>
 		</div>
@@ -124,8 +117,12 @@ console.log(loginid);
 				},
 				dataType:"json",
 				success:function(d){
-					//console.log(d);
-					$("#profileimg").attr("src",'resources/upload/'+d.profileimg.profile);
+					console.log(d.profileimg.profile);
+					if(d.profileimg.profile==0){
+						$("#profileimg").attr("src",'resources/img/member/noprofile.jpg');
+					}else{
+						$("#profileimg").attr("src",'resources/upload/'+d.profileimg.profile);
+					}
 				},
 				error:function(e){
 					console.log(e);
@@ -159,7 +156,12 @@ console.log(loginid);
 		
 	}
 	function profileunder(data){
-		var content="<div id='profileck'><img id='proimg' src='resources/upload/"+data.profile+"'>";
+		var content="<div id='profileck'>";
+		if(data.profile==0){
+			content +="<img id='proimg' src='resources/img/member/noprofile.jpg'>";
+		}else{
+		content +="<img id='proimg' src='resources/upload/"+data.profile+"'>";
+		}
 		content += "<h3 id='userid'>"+data.id+"</h3>";
 		content += "<h4>보유 포인트 : "+data.pointCnt+"point</h4>";
 		content += "<div class='btn' id='"+data.id+"' onclick='gotimeline(id)'>타임라인</div>";

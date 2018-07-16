@@ -1,34 +1,33 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
-		#userId{left:243px;top:77px}
-        #div1 {height : 200px;width : 200px;float : left;}
-         #selPicture{position: absolute;}
-         #selPicturedelete{position: absolute;left:80px;}
-         #updateprofile {height : 128px;width : 128px;border : 1px solid black;text-align: center;}
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+		<title>Insert title here</title>
+		<style> 
+         #div1 {height : 200px;width : 200px;float : left;}
+         #selPicture{}
+         #profile {height : 128px;width : 128px;border : 1px solid black;text-align: center;}
          button {margin-top: 5px;background-color:#088A85;color: aliceblue;}
          #bottom{text-align: center;}
       </style>
-
-</head>
-<body>
-      <h2>회원정보 수정</h2>
+	</head>
+	<body>
+		<h2>회원정보 수정</h2>
       <div id="div1">
-         <div id="updateprofile" style='display:table-cell;vertical-align:middle'>
-           	 현재 프로필
+         <div id="profile" style='display:table-cell;vertical-align:middle'/>
+           	 프로필 사진
          </div>
          <div id="pic">
           	<button id="selPicture">사진선택</button>
-          	<button id="selPicturedelete" onclick="selPicturedelete()">사진삭제</button>
          </div>
       </div>
       <table>
         <tr>
             <th>아이디 : </th>
-            <td><input type="text" id="userId" value="${sessionScope.loginId}" readonly></td>
+            <td><input type="text" id="userId" placeholder="아이디" readonly></td>
          </tr>
          <tr>
             <th>현재비밀번호 : </th>
@@ -43,7 +42,7 @@
             <td><input type="password" id="userPwChk" placeholder="비밀번호확인"></td>            
          </tr>
          <th>이름 : </th>
-            <td><input type="text" id="userName" placeholder="이름"></td>
+            <td><input type="text" id="userId" placeholder="이름"></td>
          <tr>
             <th>이메일 : </th>
             <td><input type="email" id="userEmail" placeholder="이메일"></td>
@@ -51,9 +50,9 @@
          <tr>
          <th>핸드폰번호</th>
         <td>
-            <input id="hp1" name="hp1" type="text" class="frm_input tel" size="3" maxlength="3" placeholder="01X"/>-
-            <input id="hp2" name="hp2" type="text" class="frm_input tel" size="3" maxlength="4" placeholder="XXXX"/>-
-            <input id="hp3" name="hp3" type="text" class="frm_input tel" size="3" maxlength="4" placeholder="XXXX"/>
+            <input name="hp1" type="text" class="frm_input tel" size="3" maxlength="3" placeholder="01X"/>-
+            <input name="hp2" type="text" class="frm_input tel" size="3" maxlength="4" placeholder="XXXX"/>-
+            <input name="hp3" type="text" class="frm_input tel" size="3" maxlength="4" placeholder="XXXX"/>
         </td>    
         </tr>   
    </table>
@@ -61,7 +60,8 @@
             <button id="confirm">확인</button>
             <button id="leave">탈퇴하기</button>
       </div>
+	</body>
+	<script>
 
-</body>
-
+	</script>
 </html>

@@ -71,6 +71,7 @@
 			alert(msg);
 		}	
 	}
+
 	function join() {
 		location.href="./joinForm";
 	};

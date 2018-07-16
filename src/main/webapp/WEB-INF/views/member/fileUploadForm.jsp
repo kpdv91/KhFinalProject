@@ -35,6 +35,11 @@
 			content +="<br/>";*/
 			elem.innerHTML = content;
 			self.close();
+		}else{
+			var content = "";//img 태그
+			var elem = window.opener.document.getElementById("profile");
+			content ="<img width='150' height='150' src=resources/img/member/noprofile.jpg/>";
+			elem.innerHTML = content;
 		}
 	</script>
 </html>

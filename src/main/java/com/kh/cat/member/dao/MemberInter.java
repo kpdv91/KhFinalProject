@@ -17,5 +17,7 @@ public interface MemberInter {
 	String getprofile(String id); //프로필 가져오기
 
 	String findId(String name, String email);//ID 찾기
+
+	MemberDTO userdetail(String id);
 	
 }

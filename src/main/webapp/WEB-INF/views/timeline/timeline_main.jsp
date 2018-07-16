@@ -108,6 +108,7 @@
 	var userid = "${sessionScope.loginId}";
 	var page = "";
 	var str = "";
+	var phone=[];
 	if(userid==""){
 		$("#fallow").css("display","none");
 		$("#dm").css("display","none");
@@ -681,7 +682,7 @@
 					console.log(error);
 				}
 			});
-		}else if(page = "likestore"){
+		}else if(page == "likestore"){
 			$.ajax({
 				url:"./timelinelikestore",
 				type:"post",
@@ -691,6 +692,33 @@
 				dataType:"json",
 				success:function(d){
 					likestorelist(d.list,d.list_hash);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}else if(page == "resources/timelinehtml/userupdate.html"){
+			$.ajax({
+				url:"./timelineuserupdate",
+				type:"post",
+				data:{
+					id : userid
+				},
+				dataType:"json",
+				success:function(d){
+					if(d.update.profile!=0){
+						$("#updateprofile").empty();
+						$("#updateprofile").append("<img id='updateprofilephoto' src='resources/upload/"+d.update.profile+"' height=150px width=150px/>");
+						$("#updateprofile").append("<input id='profilename' type='hidden' value='"+d.update.profile+"'/>")
+					}
+					console.log(d);
+					$("#userId").val(userid);
+					$("#userName").val(d.update.name);
+					$("#userEmail").val(d.update.email);
+					phone=d.update.phone.split("-");
+					$("#hp1").val(phone[0]);
+					$("#hp2").val(phone[1]);
+					$("#hp3").val(phone[2]);
 				},
 				error:function(e){
 					console.log(e);
@@ -895,12 +923,37 @@
 				content +="<td>"+item.complain_cate+"</td>";
 				var date = new Date(item.complain_date);			
 				content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
-				content +="<td><button id='complain_move'>보 기</button></td>";
+				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+")'>보 기</button></td>";
 				content += "</tr>";			
 			});		
 			$("#complail_tbody").empty();
 			$("#complail_tbody").append(content);//내용 붙이기
 		}
+		
+		function complain_move(rev_idx, revReply_idx) {
+			console.log("클릭");
+			console.log(rev_idx, revReply_idx);
+			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+
+					"&revReply_idx="+revReply_idx,"신고리뷰페이지","width=500,height=500");
+			/* $.ajax({
+				url:"./reviewList",
+				type:"post",
+				data:{
+					rev_idx : rev_idx,
+					revReply_idx : revReply_idx
+				},
+				dataType:"json",
+				success:function(data){
+					console.log(data);		
+				},
+				error:function(error){
+					console.log(error);
+				}
+			}); */
+			
+			
+		}
+		
 		
 		//가게 등록 리스트
 		function store_regist_list(list) {
@@ -920,6 +973,24 @@
 			});		
 			$("#store_tbody").empty();
 			$("#store_tbody").append(content);//내용 붙이기
+		}
+		function selPicturedelete(){
+			var photoname =$("#profilename").val();
+			console.log(photoname);
+			 /* $.ajax({
+				url:"./profilephotodelete",
+				type:"post",
+				data:{
+					profilname=photoname
+				},
+				dataType:"json",
+				success:function(d){
+					$("#updateprofilephoto").remove();						
+				},
+				error:function(e){
+					console.log(e);
+				}
+			}); */
 		}
 	</script>
 </html>

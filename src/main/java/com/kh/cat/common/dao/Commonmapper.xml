@@ -112,14 +112,14 @@
 	</select>
 	
 	<!-- 신고리스트(관리자) -->
-	<select id="complainList" resultType="complain">
+	<!-- <select id="complainList" resultType="complain">
 		SELECT * FROM complain ORDER BY complain_idx
-	</select>
+	</select> -->
 	
 	<!-- 가게 등록 리스트(관리자) -->
-	<select id="storeRegistList" resultType="store">
+	<!-- <select id="storeRegistList" resultType="store">
 		SELECT * FROM store ORDER BY store_idx
-	</select>
+	</select> -->
 
 	<update id="reply_update">
 		UPDATE revreply SET revreply_content=#{param2} WHERE revreply_idx=#{param1}

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -67,8 +68,15 @@ public class MemberController {
 		logger.info("name : {}",map.get("userName"));
 		logger.info("email : {}",map.get("userEmail"));
 		logger.info("phone : {}",map.get("userPhone"));
-		//logger.info("profile : {}",map.get("profile"));
+		logger.info("profile : {}",map.get("profile"));
 		//성공 = result.jsp, 실패 = writeForm.jsp
+		/*logger.info("등록 요청 : "+pass);
+		//평문의 암호화
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		hash = encoder.encode(pass);
+		//salt 값으로 인하여 같은 평문도 다른 해시로 만든다.
+		logger.info("암호문 : "+hash);
+		logger.info("암호문 길이: "+hash.length());*/
 		return memberService.join(map);
 	}	
 		
@@ -119,6 +127,11 @@ public class MemberController {
 		logger.info("ID 찾기 요청");
 		return memberService.findId(params);
 	}
-
-
+	
+	//회원정보수정
+	@RequestMapping(value = "/timelineuserupdate")
+	public @ResponseBody HashMap<String, Object> timelineuserupdate (@RequestParam HashMap<String,String> params) {
+		logger.info("회원 정보 요청");
+		return memberService.timelineuserupdate(params);
+	}
 }

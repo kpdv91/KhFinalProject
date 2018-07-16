@@ -14,10 +14,12 @@ import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.cat.common.dao.CommonInter;
 import com.kh.cat.dto.MemberDTO;
 import com.kh.cat.member.dao.MemberInter;
 
@@ -84,6 +86,15 @@ public class MemberService {
 	//회원가입
 	public ModelAndView join(HashMap<String, String> map) {
 		
+		/*logger.info("등록 요청 : "+pass);
+		//평문의 암호화
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		hash = encoder.encode(pass);
+		//salt 값으로 인하여 같은 평문도 다른 해시로 만든다.
+		logger.info("암호문 : "+hash);
+		logger.info("암호문 길이: "+hash.length());*/
+		
+		
 		inter = sqlSession.getMapper(MemberInter.class);
 		/*map -> dto*/
 		MemberDTO dto = new MemberDTO();
@@ -92,6 +103,7 @@ public class MemberService {
 		dto.setName(map.get("userName"));
 		dto.setEmail(map.get("userEmail"));
 		dto.setPhone(map.get("userPhone"));
+		dto.setProfile(map.get("profile"));
 		
 		for(String key:fileList.keySet()) {//map에서 키를 뽑아온다.
 			dto.setProfile(key);
@@ -221,6 +233,16 @@ public class MemberService {
 			mav.addObject("msg",msg);
 			return mav;	
 		}
+
+
+	public HashMap<String, Object> timelineuserupdate(HashMap<String, String> params) {
+		inter = sqlSession.getMapper(MemberInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		logger.info(id);
+		map.put("update", inter.userdetail(id));
+		return map;
+	}
 
 	 
 

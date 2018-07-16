@@ -90,7 +90,6 @@ public class ReviewController {
 		return "review/reviewList";
 	}
 	@RequestMapping(value = "/reviewList")
-
 	public @ResponseBody HashMap<String, Object> reviewList(@RequestParam("store_idx") int store_idx, @RequestParam("range") String range) {
 		logger.info("리뷰 리스트 요청");
 		logger.info(range);

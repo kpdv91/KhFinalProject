@@ -193,7 +193,9 @@
 		<input type="hidden" name='review_profile' value="resources/upload/${sessionScope.loginProfile }"/>
 	</div>
 	<br/>작성자 : <input id="user_Id" name="id" type="text" value="${ sessionScope.loginId}" readonly/><br/><br/><br/><br/>
-    상호명 : <input id="review_storeName" type="text" name="review_storeName" value="${review_updateForm.review_storeName}"/><button type="button" id="search"><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/><br/>
+    상호명 : <input id="review_storeName" type="text" name="review_storeName" value="${review_updateForm.review_storeName}"/>
+    <input type='hidden'  id="review_storeidx"  name='review_storeidx' value="null"/>
+    <button type="button" id="search"><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/><br/>
     <div id="searchList">
     	
     	
@@ -416,7 +418,8 @@
 				}else{
 					for(var i=0; i<data.list.length; i++){
 						storeList += "<div><a class='store_list' href='#' onclick='mapDiv(this)'>"+data.list[i].store_name+"</a><br/>";
-						storeList += "<a class='store_addr' href = '#'>"+data.list[i].store_addr+"</a><hr/></div>";
+						storeList += "<a class='store_addr' href = '#'>"+data.list[i].store_addr+"</a><hr/>";
+						storeList += "<input type='hidden' id='store_idx' value='"+data.list[i].store_idx+"'/></div>";
 					}
 				}
 				$("#searchList").append(storeList);
@@ -436,6 +439,7 @@
 	
 	
 	 function mapDiv(elem){
+		 console.log($(elem).next().next().next().next().val());
 		console.log(elem.parentNode.children[2].text);
 		mapLocation=elem.parentNode.children[2].text;
 		$("#mapDiv").css("display","block");		
@@ -495,6 +499,7 @@
 		     // 마커에 클릭이벤트를 등록합니다
 		        daum.maps.event.addListener(marker, 'click', function() {
 				      $("#review_storeName").val(elem.text);
+				      $("#review_storeidx").val($(elem).next().next().next().next().val());
 				      $("#searchList").css("display","none");
 						$("#mapDiv").css("display","none");
 						$("#starDIV").css("pointer-events", "");

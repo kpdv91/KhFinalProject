@@ -158,4 +158,16 @@ public class ReviewController {
 		return service.reviewLikeSelect(loginId);
 	}
 	
+	@RequestMapping(value = "/replySelect")
+	public @ResponseBody HashMap<String, Object> replySelect(@RequestParam("review_idx") String review_idx) {
+		logger.info("리뷰댓글 리스트 요청");
+		return service.replySelect(review_idx);
+	}
+	
+	/*@RequestMapping(value = "/replyWrite")
+	public @ResponseBody String replyWrite(@RequestParam("review_idx") String review_idx,@RequestParam("loginId") String loginId) {		
+		logger.info("리뷰 좋아요 요청");
+		return service.reviewLike(review_idx,loginId);
+	}*/
+	
 }

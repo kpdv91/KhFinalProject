@@ -992,14 +992,21 @@
 					content +="<td>"+item.store_addr+"</td>";
 					var date = new Date(item.store_revDate);			
 					content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
-					content +="<td><button id='store_regist_move'>보 기</button></td>";
-					content +="<td><button id='store_regist_yes'>승인</button> / <button id='store_regist_no'>취소</button></td>";
+					content +="<td><button id='store_regist_move'>보 기</button></td>";  
+					/* content +="<td><button id='store_regist_yes' onclick='registYes("+item.store_idx+", "+item.id+")'>승인</button> / <button id='store_regist_no'>취소</button></td>"; */
+					content +="<td><button id='store_regist_yes' onclick='registYes("+item.store_idx+", \""+item.id+"\")'>승인</button> / <button id='store_regist_no'>취소</button></td>";
 					content += "</tr>";		
 				}	
 			});		
 			$("#store_tbody").empty();
 			$("#store_tbody").append(content);//내용 붙이기
 		}
+		
+		function registYes(store_idx, id) {
+			console.log(store_idx, id);
+		}
+		
+		
 		function selPicturedelete(){
 			var photoname =$("#profilename").val();
 			console.log(photoname);

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,9 +29,14 @@ public class MemberController {
 	
 	//로그인 폼
 	@RequestMapping(value = "/loginForm", method = RequestMethod.GET)
-	public String loginForm() {
+	public ModelAndView loginForm(HttpServletRequest request) {
 		logger.info("loginForm 페이지 요청");
-		return "member/loginForm";
+		String msg = (String) request.getAttribute("msg");
+		ModelAndView mav = new ModelAndView();
+		logger.info(msg);
+		mav.addObject("msg", msg);
+		mav.setViewName("member/loginForm");
+		return mav;
 	}
 	
 	//로그인

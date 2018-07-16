@@ -243,11 +243,8 @@ public class MemberService {
 		map.put("update", inter.userdetail(id));
 		return map;
 	}
-
-	 
-
-	    
-	}
+   
+}
 
 
 

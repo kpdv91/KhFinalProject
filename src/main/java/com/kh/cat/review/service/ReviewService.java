@@ -105,6 +105,7 @@ public class ReviewService {
 		ModelAndView mav = new ModelAndView();
 		String page = "redirect:/reviewWritePage";
 		ReviewDTO dto = new ReviewDTO();
+		dto.setStore_idx(Integer.parseInt(map.get("review_storeidx")));
 		dto.setReview_profile(map.get("review_profile"));
 		logger.info(dto.getReview_profile());
 		dto.setReview_storeName(map.get("review_storeName"));
@@ -320,10 +321,12 @@ public class ReviewService {
 		if(result == null) {
 			logger.info("result는 0 insert 해야함");
 			inter.likeInsert(review_idx,loginid);
+			inter.likeCntUp(review_idx);
 			success = "insert";
 		}else {
 			logger.info("result는 0이 아님 delete 해야함");
 			inter.likeDelete(review_idx, loginid);
+			inter.likeCntDown(review_idx);
 			success = "delete";
 		}
 		return success;
@@ -334,6 +337,13 @@ public class ReviewService {
 		ArrayList<RevLikeDTO> likeList = new ArrayList<>();
 		likeList = inter.likeList(loginId);
 		return likeList;
+	}
+
+	public HashMap<String, Object> replySelect(String review_idx) {
+		inter=sqlSession.getMapper(ReviewInter.class);
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("replySelect", inter.replySelect(review_idx));
+		return map;
 	}
 
 }

@@ -123,6 +123,33 @@
 			});
 		});
 		
+		$("#comp_cancel").click(function () {
+			console.log("클릭");
+			var rev_idx = ${rev_idx};
+			var revReply_idx = ${revReply_idx};
+			var id = "${id}";
+			$.ajax({
+				url : "./comp_cancel",
+				type : "get",
+				dataType : "json",
+				data : {
+					rev_idx : rev_idx,
+					revReply_idx : revReply_idx,
+					id : id
+				},
+				success : function(data){
+					console.log(data);
+					if(data.result > 0){
+						alert(data.msg);
+					}
+				},
+				error : function(error){
+					console.log(error);
+				}
+			});
+		});
+		
+		//블랙리스트 추가
 		$("#blackListBtn").click(function () {
 			console.log("클릭");  
 			var rev_idx = ${rev_idx};
@@ -137,6 +164,9 @@
 				},
 				success : function(data){
 					console.log(data);
+					if(data.result > 0){
+						alert(data.msg);
+					}
 				},
 				error : function(error){
 					console.log(error);

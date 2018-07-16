@@ -1,5 +1,6 @@
 package com.kh.cat.common.service;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,12 +15,15 @@ public class PreCheck extends HandlerInterceptorAdapter {
 			throws Exception {
 		System.out.println("controller 요청 전에 실행 -- preHandle()");
 		System.out.println("세션 검사");
+		RequestDispatcher rd = request.getRequestDispatcher("loginForm");
 		HttpSession session = request.getSession();
 		String id = (String) session.getAttribute("loginId");
 		boolean pass = false;
 		if(id==null) {
 			System.out.println("로그인 안됨");
-			response.sendRedirect("/cat/main");
+			//response.sendRedirect("/cat/loginForm");
+			request.setAttribute("msg", "로그인이 필요한 서비스입니다");
+			rd.forward(request, response);
 		}else {
 			System.out.println("로그인 됨");
 			pass = true;

@@ -923,35 +923,17 @@
 				content +="<td>"+item.complain_cate+"</td>";
 				var date = new Date(item.complain_date);			
 				content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
-				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+")'>보 기</button></td>";
+				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\")'>보 기</button></td>";
 				content += "</tr>";			
 			});		
 			$("#complail_tbody").empty();
 			$("#complail_tbody").append(content);//내용 붙이기
 		}
 		
-		function complain_move(rev_idx, revReply_idx) {
-			console.log("클릭");
-			console.log(rev_idx, revReply_idx);
-			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+
-					"&revReply_idx="+revReply_idx,"신고리뷰페이지","width=500,height=500");
-			/* $.ajax({
-				url:"./reviewList",
-				type:"post",
-				data:{
-					rev_idx : rev_idx,
-					revReply_idx : revReply_idx
-				},
-				dataType:"json",
-				success:function(data){
-					console.log(data);		
-				},
-				error:function(error){
-					console.log(error);
-				}
-			}); */
-			
-			
+		function complain_move(rev_idx, revReply_idx, id) {
+			console.log("클릭");   
+			console.log(rev_idx, revReply_idx, id);  
+			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id, "신고 리뷰 페이지","width=500,height=500");		
 		}
 		
 		
@@ -960,20 +942,52 @@
 			var content = "";		
 			list.forEach(function(item, idx){
 				if(item.store_regist == 0){
+					var id = new String(item.id);
 					content +="<tr>";
 					content +="<td>"+item.store_name+"</td>";
 					content +="<td>"+item.store_ceo+"</td>";
 					content +="<td>"+item.store_addr+"</td>";
 					var date = new Date(item.store_revDate);			
 					content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
-					content +="<td><button id='store_regist_move'>보 기</button></td>";
-					content +="<td><button id='store_regist_yes'>승인</button> / <button id='store_regist_no'>취소</button></td>";
+					content +="<td><button id='store_regist_move'>보 기</button></td>";  
+		            content +="<td><button id='store_regist_yes' onclick='registYes("+item.store_idx+", \""+item.id+"\")'>승인</button> / "+
+		            	"<button id='store_regist_no' onclick='registNo("+item.store_idx+", \""+item.id+"\")'>취소</button></td>";
 					content += "</tr>";		
 				}	
 			});		
 			$("#store_tbody").empty();
 			$("#store_tbody").append(content);//내용 붙이기
+
 		}
+		
+		//가게 등록 승인
+		function registYes(store_idx, id) {
+			console.log(store_idx, id);
+			$.ajax({
+				url:"./registYes",
+				type:"post",
+				data:{
+					store_idx : store_idx,
+					id : id
+				},
+				dataType:"json",
+				success:function(data){
+					console.log(data);			
+					alert(data.msg);
+					location.href="./storeRegistList";
+				},
+				error:function(error){
+					console.log(error);
+				}
+			});
+		}
+		
+		function registNo(store_idx, id) {
+			console.log(store_idx, id);
+			var myWin= window.open("./registNoWin?store_idx="+store_idx+
+					"&id="+id,"가게 등록 거절","width=500,height=500");	
+		}
+		
 		function selPicturedelete(){
 			var photoname =$("#profilename").val();
 			console.log(photoname);

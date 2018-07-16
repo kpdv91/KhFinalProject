@@ -18,7 +18,7 @@
 	 	keyProperty="review_idx"
 	 	keyColumn="review_idx">
 	 	INSERT INTO review(review_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile)
-	 		VALUES(seq_review.NEXTVAL,#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{profile})
+	 		VALUES(seq_review.NEXTVAL,#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{review_profile})
 	 </insert>
 	 
 	 <insert id="hashtag">
@@ -126,4 +126,24 @@
 	<delete id="review_PhotoDel">
 		DELETE FROM revPhoto WHERE review_idx = #{param1}
 	</delete>
+	
+	<!-- 리뷰 좋아요 select -->
+	<select id="likeSel" resultType="String">
+		SELECT * FROM revLike WHERE review_idx=#{param1} AND id=#{param2}
+	</select>
+	
+	<!-- 리뷰 좋아요 insert -->
+	<insert id="likeInsert">
+		INSERT INTO revLike VALUES(seq_revLike.NEXTVAL,#{param1},#{param2},SYSDATE)
+	</insert>
+	
+	<!-- 리뷰 좋아요 delete -->
+	<delete id="likeDelete">
+		DELETE FROM revLike WHERE review_idx=#{param1} AND id=#{param2}
+	</delete>
+	
+	<!-- 리뷰 좋아요 select(List) -->
+	<select id="likeList" resultType="revLike">
+		SELECT review_idx FROM revLike WHERE id=#{param1}
+	</select>
 </mapper>

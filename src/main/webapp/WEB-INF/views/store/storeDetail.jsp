@@ -35,8 +35,9 @@
 					<li>별점 ${storeDetail.store_star}</li>
 					<li>조회 ${storeDetail.store_bHit}</li>
 					<li>리뷰 ${storeDetail.store_revCnt}</li>
-					<li>찜수 ${storeDetail.store_storeLikeCnt}</li>
+					<li id="likeCnt">찜수 ${storeDetail.store_storeLikeCnt}</li>
 				</ul>
+				<input type="button" id="storeLike" value="찜" onclick="storeLike()">
 			</div>
 			<div id="contFrame">
 				<div class="divChg" id="info">
@@ -119,7 +120,10 @@
 		</c:import>
 	</body>
 	<script>
+	var id="";
+	var likeChk=0;
 	infoDefau();
+	storeLikeChk();
 	
 	//정보로 초기화
 	function infoDefau() {
@@ -224,6 +228,56 @@
 		currMenu = "menu"+currMenuNum;
 		$("#menuD").attr("alt",currMenu);
 		$("#menuD").attr("src",$("#"+currMenu).attr("src"))
+	}
+	
+	//찜 확인
+	function storeLikeChk() {
+		$.ajax({
+			url:"./storeLikeChk",
+			type:"get",
+			data:{
+				"store_idx":${storeDetail.store_idx}
+			},
+			success:function(data){
+				id=data.loginId;
+				if(data.likeChk==1){
+					$("#storeLike").css("background-color","red");
+					likeChk=1;
+				}else{
+					$("#storeLike").css("background-color","#2637a4");
+					likeChk=0;
+				}
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	
+	//찜하기
+	function storeLike() {
+		if(id==null){
+			alert("로그인이 필요한 서비스입니다.");
+		}else{
+			$.ajax({
+				url:"./storeLike",
+				type:"get",
+				data:{
+					"likeChk":likeChk,
+					"store_idx":${storeDetail.store_idx}
+				},
+				success:function(data){
+					alert(data.msg);
+					storeLikeChk();
+					$("#likeCnt").html("찜수 "+data.likeCnt);
+					
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}
+		
 	}
 
 

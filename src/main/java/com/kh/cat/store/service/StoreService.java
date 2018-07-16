@@ -185,6 +185,7 @@ public class StoreService {
 		storePhoto = "";
 	}
 
+	//맛집 상세 보기
 	public ModelAndView storeDetail(int store_idx) {
 		ModelAndView mav = new ModelAndView();
 		inter = sqlSession.getMapper(StoreInter.class);
@@ -194,16 +195,65 @@ public class StoreService {
 		
 		ArrayList<MenuDTO> dtoList = inter.menuPhoto(store_idx);
 		ArrayList<String> menuList = new ArrayList<String>();
-		for(MenuDTO dto : dtoList) {
-			menuList.add(dto.getMenu_photo());
+		if(dtoList.size()==0) {
+			mav.addObject("storeMenuD", "storeMenuD.png");//기본 메뉴 사진
+		}else{
+			for(MenuDTO dto : dtoList) {
+				menuList.add(dto.getMenu_photo());
+			}
+			mav.addObject("storeMenuD", menuList.get(0));//첫 메뉴 사진
 		}
-		Collections.sort(menuList);
-		mav.addObject("storeMenu", menuList);//메뉴사진
-		mav.addObject("storeMenuD", menuList.get(0));//메뉴사진
+		mav.addObject("storeMenu", menuList);//메뉴사진 리스트
+		
 	
 		mav.setViewName("store/storeDetail");
 		
 		return mav;
+	}
+
+	//가게 찜 확인
+	public HashMap<String, Object> storeLikeChk(String loginId, int store_idx) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		inter = sqlSession.getMapper(StoreInter.class);
+		String chk;
+		int likeChk=0;
+		if(loginId!=null) {
+			chk = inter.storeLikeChk(loginId, store_idx);
+			if(chk!=null) {
+				likeChk=1;
+			}
+		}
+		map.put("likeChk", likeChk);
+		map.put("loginId", loginId);
+		return map;
+	}
+
+	@Transactional
+	public HashMap<String, Object> storeLike(String loginId, HashMap<String, String> params) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		inter = sqlSession.getMapper(StoreInter.class);
+		String msg;
+		String store_idx = params.get("store_idx");
+		String likeChk = params.get("likeChk");
+		StoreDTO dto = new StoreDTO();
+		if(likeChk.equals("0")) {//찜을 아직 안했을 경우
+			inter.storeLike(loginId, store_idx);
+			msg="찜 했습니다.";
+			inter.storeLikeCntUp(store_idx);
+		}else {
+			inter.storeLikeDel(loginId, store_idx);
+			msg="찜 취소했습니다.";
+			inter.storeLikeCntDown(store_idx);
+		}
+		int cnt = inter.storeLikeCnt(store_idx);
+		map.put("msg", msg);
+		map.put("likeCnt", cnt);
+		return map;
+	}
+	
+	//조회수 증가
+	public void upHits(int store_idx) {
+		
 	}
 
 }

@@ -6,7 +6,9 @@ import java.util.HashMap;
 import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.CouponBoxDTO;
 import com.kh.cat.dto.DMDTO;
+import com.kh.cat.dto.FollowDTO;
 import com.kh.cat.dto.HashDTO;
+import com.kh.cat.dto.MemberDTO;
 import com.kh.cat.dto.PointListDTO;
 import com.kh.cat.dto.RevReplyDTO;
 import com.kh.cat.dto.ReviewDTO;
@@ -80,7 +82,13 @@ public interface CommonInter {
 	ArrayList<StoreDTO> timelinelikestore(Integer integer);
 
 	ArrayList<HashDTO> likestorehash(Integer integer);
-	
-	
+
+	ArrayList<String> followlist(String id);
+
+	ArrayList<String> following(String id);
+
+	ArrayList<MemberDTO> followlistprofile(String string);
+
+	ArrayList<MemberDTO> followingprofile(String string);	
 
 }

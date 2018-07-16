@@ -81,7 +81,6 @@ public class MemberService {
 		logger.info("로그인 체크요청");
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		
 		MemberDTO dto = new MemberDTO();
 		inter = sqlSession.getMapper(MemberInter.class);
 		

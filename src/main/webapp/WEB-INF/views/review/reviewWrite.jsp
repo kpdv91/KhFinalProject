@@ -194,7 +194,7 @@
 	</div>
 	<br/>작성자 : <input id="user_Id" name="id" type="text" value="${ sessionScope.loginId}" readonly/><br/><br/><br/><br/>
     상호명 : <input id="review_storeName" type="text" name="review_storeName" value="${review_updateForm.review_storeName}"/>
-    <input type='hidden'  id="review_storeidx"  name='review_storeidx' value="null"/>
+    <input type='hidden'  id="review_storeidx"  name='review_storeidx' />
     <button type="button" id="search"><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/><br/>
     <div id="searchList">
     	

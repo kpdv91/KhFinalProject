@@ -127,13 +127,16 @@ public class ReviewService {
 				}
 			}
 			if(review_photo.size() > 0) {
-				photoReview_point(loginId);//photoReview_point 메소드(포인트100)
+				//logger.info("사진 : {}", review_photo.get(0));
+				//logger.info("사진있음");
+				//photoReview_point(loginId);//photoReview_point 메소드(포인트100)
 				for(int i=1; i<review_photo.size();i++) {
 					String rePhoto = review_photo.get(i);
 					int result = inter.reviewPhotoWrite(dto.getReview_idx(),rePhoto);
 				}
 			}else {
-				review_point(loginId);//review_point 메소드(포인트 50)
+				//logger.info("사진없음");
+				//review_point(loginId);//review_point 메소드(포인트 50)
 			}
 		}
 		fileList.clear();

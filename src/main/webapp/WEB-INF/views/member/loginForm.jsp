@@ -64,6 +64,8 @@
 </form>
 </body>
 <script>
+
+
 	printMsg();
 	function printMsg(){
 		var msg="${msg}";
@@ -75,17 +77,7 @@
 	function join() {
 		location.href="./joinForm";
 	};
-	
-	function findId() {
-		//location.href="./findIdForm";
 		
-		 /* window.open("./findIdForm","","top=0, left=0, width=800, height=556, directories='no', location=no, menubar=no, resizable=no, status=yes, toolbar=no")  ;
-	     
-	     window.opener = "nothing";
-	     window.open('', '_parent', '');
-	     window.close(); */
-	};
-	
 	function popupOpen(){
 
 		var popUrl = "./findIdForm";	//팝업창에 출력될 페이지 URL
@@ -104,20 +96,6 @@ if( !idReg.test( $("input[name=id]").val() ) ) {
     return; 
 }  */
 
-
-
-/* if(UserPassword.value.length<8) {
-    alert("비밀번호는 영문(대소문자구분),숫자,특수문자(~!@#$%^&*()-_? 만 허용)를 혼용하여 8~16자를 입력해주세요.");
-    return false;
-  } 
-  
-   if(!UserPassword.value.match(/([a-zA-Z0-9].*[!,@,#,$,%,^,&,*,?,_,~,-])|([!,@,#,$,%,^,&,*,?,_,~,-].*[a-zA-Z0-9])/)) {
-      alert("비밀번호는 영문(대소문자구분),숫자,특수문자(~!@#$%^&*()-_? 만 허용)를 혼용하여 8~16자를 입력해주세요.");
-    return false;
-  }
- 
-  return true;
-} */
 
 //var idReg = /^[a-z0-9]+[a-z0-9]{4,19}$/g;
 var idReg = /^[A-za-z0-9]{5,20}/g;
@@ -148,6 +126,8 @@ $("#loginBtn").click(function(){
    		$("#login").submit();//submit
    }
 });		
+
+
 
 
 

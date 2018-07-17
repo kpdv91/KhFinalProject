@@ -184,16 +184,11 @@ public class CommonService {
 		search_content_OrMap.put("content", search_content_Split);
 		search_content_OrMap.put("sort", "리뷰 최신 순");
 		
-		HashMap<String, Object> search_content_Hash = new HashMap<String, Object>();
-		search_content_Hash.put("map", params.get("search_map"));
-		search_content_Hash.put("content", search_content_Split);
-		search_content_Hash.put("sort", "리뷰 최신 순");
-		
 		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_AndMap);
 		if(result.isEmpty()) {
 			result = inter.storeSearch_Or(search_content_OrMap);
 			if(result.isEmpty()) {
-				result = inter.storeSearch_Hash(search_content_Hash);
+				result = inter.storeSearch_Hash(search_content_OrMap);
 			}
 		}
 		
@@ -227,16 +222,11 @@ public class CommonService {
 		search_content_OrMap.put("content", search_content_Split);
 		search_content_OrMap.put("sort", params.get("data"));
 		
-		HashMap<String, Object> search_content_Hash = new HashMap<String, Object>();
-		search_content_Hash.put("map", params.get("search_map"));
-		search_content_Hash.put("content", search_content_Split);
-		search_content_Hash.put("sort", "리뷰 최신 순");
-		
 		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_AndMap);
 		if(result.isEmpty()) {
 			result = inter.storeSearch_Or(search_content_OrMap);
 			if(result.isEmpty()) {
-				result = inter.storeSearch_Hash(search_content_Hash);
+				result = inter.storeSearch_Hash(search_content_OrMap);
 			}
 		}
 		

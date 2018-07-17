@@ -83,7 +83,6 @@
 	     window.opener = "nothing";
 	     window.open('', '_parent', '');
 	     window.close(); */
-	};
 	
 	function pwFind() {
 		var myWin= window.open("./pwFindWin", "PW 찾기","width=500,height=500");	

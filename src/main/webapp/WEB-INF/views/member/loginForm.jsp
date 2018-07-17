@@ -64,7 +64,13 @@
 </form>
 </body>
 <script>
-
+	printMsg();
+	function printMsg(){
+		var msg="${msg}";
+		if(msg!=""){
+			alert(msg);
+		}	
+	}
 
 	function join() {
 		location.href="./joinForm";

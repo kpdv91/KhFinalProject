@@ -5,7 +5,9 @@ import java.util.HashMap;
 
 import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.HashDTO;
+import com.kh.cat.dto.RevLikeDTO;
 import com.kh.cat.dto.RevPhotoDTO;
+import com.kh.cat.dto.RevReplyDTO;
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.dto.StoreDTO;
 
@@ -51,8 +53,18 @@ public interface ReviewInter {
 
 	void review_PhotoDel(int review_idx);
 
-	
+	String likeSel(String review_idx, String id);
 
-	
+	int likeInsert(String review_idx, String loginid);
+
+	int likeDelete(String review_idx, String loginid);
+
+	ArrayList<RevLikeDTO> likeList(String loginId);
+
+	void likeCntUp(String review_idx);
+
+	void likeCntDown(String review_idx);
+
+	ArrayList<RevReplyDTO> replySelect(String review_idx);
 
 }

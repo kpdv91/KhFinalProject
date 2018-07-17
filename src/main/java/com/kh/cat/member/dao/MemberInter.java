@@ -4,7 +4,7 @@ import com.kh.cat.dto.MemberDTO;
 
 public interface MemberInter {
 
-	String login(String id, String pw); //로그인
+	String login(String id, String hash); //로그인
 
 	int join(MemberDTO dto);//회원가입. 
 
@@ -19,5 +19,11 @@ public interface MemberInter {
 	String findId(String name, String email);//ID 찾기
 
 	MemberDTO userdetail(String id);
+
+	String getPw(String id); //암호화된 비밀번호 가져오기
+
+	int findId2(String name, String email);
+
+	String idSearchPage(String name, String email);//ID 찾기
 	
 }

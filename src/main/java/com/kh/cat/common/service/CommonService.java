@@ -17,6 +17,7 @@ import com.kh.cat.common.dao.CommonInter;
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.HashDTO;
+import com.kh.cat.dto.MemberDTO;
 import com.kh.cat.dto.StoreDTO;
 
 @Service
@@ -355,6 +356,26 @@ public class CommonService {
 		}
 		map.put("list",list);
 		map.put("list_hash",list_hash);
+		return map;
+	}
+
+	public HashMap<String, Object> timelinefollowlist(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		logger.info(id);
+		ArrayList<String> followlist = inter.followlist(id);
+		ArrayList<String> following = inter.following(id);
+		ArrayList<ArrayList<MemberDTO>> list = new ArrayList<ArrayList<MemberDTO>>();
+		ArrayList<ArrayList<MemberDTO>> listing = new ArrayList<ArrayList<MemberDTO>>();
+		for(int i =0; i<followlist.size();i++) {
+			list.add(inter.followlistprofile(followlist.get(i)));
+		}
+		for(int j =0; j<following.size();j++) {
+			listing.add(inter.followingprofile(following.get(j)));
+		}
+		map.put("fallowlist", list);
+		map.put("fallowing",listing);
 		return map;
 	}
 

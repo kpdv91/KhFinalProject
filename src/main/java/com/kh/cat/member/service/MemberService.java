@@ -16,8 +16,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.cat.common.dao.CommonInter;
 import com.kh.cat.dto.MemberDTO;
@@ -30,80 +33,24 @@ public class MemberService {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired SqlSession sqlSession;
 	MemberInter inter;
-
-	//로그인
-	public ModelAndView login(HashMap<String, String> params,HttpSession session) {
-		logger.info("로그인 체크요청");
-		MemberDTO dto = new MemberDTO();
-		inter = sqlSession.getMapper(MemberInter.class);
 		
-		String id = params.get("id");
-		String pw = params.get("pw");
-		//String profile = params.get("profile");
-		logger.info("아이디 : "+id+" / 비밀번호 : "+pw);
-		
-		String profile = inter.getprofile(id);
-		String result = inter.login(id, pw);
-		//logger.info("해당 ID의 aut : "+result);
-				
-		/*String page = "main";
-		String msg = "success";
-		System.out.println(result);
-		if(result == null) {
-			page = "member/loginForm";
-			msg = "fail";
-		}else if(result == "admin"){
-			page = "member/joinForm";
-			msg = "관리자 메인 페이지";
-		}else {
-			session.setAttribute("loginId", id); 
-			logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
-		}*/
-		
-		String page = "main";
-		String msg = "success";
-		System.out.println(result);
-		if(result == null) {
-			page = "member/loginForm";
-			msg = "로그인 실패";
-		}else{
-			page = "main";
-			msg = "로그인 성공";
-			session.setAttribute("loginId", id);
-			session.setAttribute("loginProfile", profile);
-			logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
-			logger.info("세션값 체크 : {}", session.getAttribute("loginProfile"));
-		}
-		
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("msg", msg);//모델에 들어갈 내용
-		mav.setViewName(page);//반환 페이지
-		
-		return mav;
-	}
-
+	String hash = "";
 	
 	//회원가입
-	public ModelAndView join(HashMap<String, String> map) {
-		
-		/*logger.info("등록 요청 : "+pass);
-		//평문의 암호화
+	public ModelAndView join(HashMap<String, String> map,@RequestParam("userPw") String pass) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		hash = encoder.encode(pass);
-		//salt 값으로 인하여 같은 평문도 다른 해시로 만든다.
-		logger.info("암호문 : "+hash);
-		logger.info("암호문 길이: "+hash.length());*/
-		
+		hash = encoder.encode(pass);				
 		
 		inter = sqlSession.getMapper(MemberInter.class);
 		/*map -> dto*/
 		MemberDTO dto = new MemberDTO();
 		dto.setId(map.get("userId"));
-		dto.setPw(map.get("userPw"));
+		//dto.setPw(map.get("userPw"));
+		dto.setPw(hash);
 		dto.setName(map.get("userName"));
 		dto.setEmail(map.get("userEmail"));
 		dto.setPhone(map.get("userPhone"));
-		dto.setProfile(map.get("profile"));
+		//dto.setProfile(map.get("profile"));
 		
 		for(String key:fileList.keySet()) {//map에서 키를 뽑아온다.
 			dto.setProfile(key);
@@ -125,6 +72,124 @@ public class MemberService {
 		mav.setViewName(page);//반환 페이지 내용
 		return mav;
 	}
+	
+	
+	
+	
+	//로그인
+	public ModelAndView login(HashMap<String, String> params,HttpSession session, @RequestParam("pw") String pass) {
+		logger.info("로그인 체크요청");
+		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		MemberDTO dto = new MemberDTO();
+		inter = sqlSession.getMapper(MemberInter.class);
+		
+		String id = params.get("id");
+		String pw = params.get("pw");
+		hash = inter.getPw(id);
+		logger.info(hash);
+		
+		
+	/*	boolean success = encoder.matches(pass, hash);
+		logger.info("pass : "+pass);
+		logger.info("hash : "+hash);
+		logger.info("일치 여부 : "+success);*/
+		//String msg = "not matched.";
+		/*if(success) {
+			msg = "matched.";
+		}*/		
+
+		//String profile = params.get("profile");
+		logger.info("아이디 : "+id+" / 평문화 비밀번호 : "+pw);
+		logger.info("아이디 : "+id+" / 암호화 비밀번호 : "+hash);
+		String profile = inter.getprofile(id);
+		//String result = inter.login(id, hash);
+		String result = inter.login(id, pw);
+		logger.info("result는 ? : "+result);
+		
+		boolean success = encoder.matches(pw, hash);
+		logger.info("일치 여부 : "+success);
+		
+		//String msg = "로그인 성공";
+		String page = "main";
+		
+		/*String msg = "로그인 실패";
+		String page = "member/loginForm";*/
+		if(result==null) {
+			//msg = "로그인 실패";
+			page = "member/loginForm";
+			
+			if(success==true){
+				//msg = "로그인 성공";
+				//page = "main";
+				session.setAttribute("loginId", id);
+				session.setAttribute("loginProfile", profile);
+				//msg = "로그인 성공";
+				page = "main";
+				logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
+				logger.info("세션값 체크 : {}", session.getAttribute("loginProfile"));
+				logger.info("이동할 페이지 : {}", page);
+				//logger.info("발생할 메시지 : {}", msg);
+			}
+		
+		}
+		
+		logger.info("이동할 페이지 2 : {}", page);
+		//logger.info("발생할 메시지 2: {}", msg);
+		ModelAndView mav = new ModelAndView();
+		//mav.addObject("msg", msg);//모델에 들어갈 내용
+		mav.setViewName(page);//반환 페이지
+		
+		return mav;
+	}
+		
+		
+
+		
+		//logger.info("해당 ID의 aut : "+result);
+				
+		/*String page = "main";
+		String msg = "success";
+		System.out.println(result);
+		if(result == null) {
+			page = "member/loginForm";
+			msg = "fail";
+		}else if(result == "admin"){
+			page = "member/joinForm";
+			msg = "관리자 메인 페이지";
+		}else {
+			session.setAttribute("loginId", id); 
+			logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
+		}*/
+		
+		/*String page = "main";
+		String msg = "success";
+		System.out.println(result);
+		if(pw == hash) {
+			page = "member/loginForm";
+			msg = "로그인 실패";
+		}		
+		if(result == null) {
+			page = "member/loginForm";
+			msg = "로그인 실패";
+		}else{
+			page = "main";
+			msg = "로그인 성공";
+			session.setAttribute("loginId", id);
+			session.setAttribute("loginProfile", profile);
+			logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
+			logger.info("세션값 체크 : {}", session.getAttribute("loginProfile"));
+		}
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("msg", msg);//모델에 들어갈 내용
+		mav.setViewName(page);//반환 페이지
+	
+		return mav;
+	} */
+
+	
 	
 	//ID 중복 체크
     public Map<String, String> overlay(String id) {
@@ -194,45 +259,81 @@ public class MemberService {
 		return map;
 	}
 
-	/*//ID 찾기
-	public HashMap<String, String> findId(Map<String, String> params) {
+/*	//ID 찾기
+	public HashMap<String, Object> findId(Map<String, String> params) {
 		inter = sqlSession.getMapper(MemberInter.class);
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		String name = params.get("userName");
 		String email = params.get("userEmail");
 		logger.info("이름 : "+name+" / 이메일 : "+email);
 		map.put("findId", inter.findId(name,email));
-		logger.info("찾는 id : " +inter.findId(name,email));
+		//logger.info("찾는 id : " +inter.findId(name,email));
 		return map;	
 	}*/
 	
-	//ID 찾기
-	public ModelAndView findId(Map<String, String> params) {
+	//ID 중복 체크
+    public Map<String, String> findId(String name,String email) {
+        inter = sqlSession.getMapper(MemberInter.class);
+        Map<String, String> json = new HashMap<String, String>();
+        String use = "N";
+        
+        if(inter.findId(name,email) == null){
+        	use = "Y";
+            
+        }   
+        json.put("test", inter.findId(name,email));
+        json.put("use", use);
+        return json;
+    }
+	
+	
+	
+	/*//ID 찾기
+	public String findId(Map<String, String> params, HttpSession session,Model model) {
 		inter = sqlSession.getMapper(MemberInter.class);
 		HashMap<String, String> map = new HashMap<String, String>();
 		String name = params.get("userName");
 		String email = params.get("userEmail");
 		logger.info("이름 : "+name+" / 이메일 : "+email);
-		map.put("findId", inter.findId(name,email));
 		String find = inter.findId(name,email);
+		int find2 = inter.findId2(name,email);
 		logger.info("찾는 id : " +find);
-		ModelAndView mav = new ModelAndView();
-		String msg = "";
+		logger.info("찾는 id 일치 갯수 : " +find2);
 		
-		if(find == null) {
-			//page = "member/loginForm";
-			msg = "정보 불일치";
-		}else{
-			//page = "main";
-			msg = "정보 일치";
-			/*session.setAttribute("loginId", id);
-			session.setAttribute("loginProfile", profile);
-			logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
-			logger.info("세션값 체크 : {}", session.getAttribute("loginProfile"));*/
+		StringBuffer sb = new StringBuffer(find);
+		
+		if(find.length()==5) {
+			sb.replace(2, find.length()-1, "**");
+		}else if(find.length()==6) {
+			sb.replace(2, find.length()-1, "***");
+		}else if(find.length()==7) {
+			sb.replace(2, find.length()-1, "****");
+		}else if(find.length()==8) {
+			sb.replace(2, find.length()-1, "*****");
+		}else if(find.length()>8) {
+			sb.replace(2, find.length()-1, "******");
 		}
-			mav.addObject("msg",msg);
-			return mav;	
+		 //session.setAttribute("findId", sb);
+
+	
+		logger.info("치환된 문자열 : "+sb);
+		map.put("test", find);
+		
+		//String msg = "";
+		
+		if(find2>0){
+			if(sb != null ) {
+				logger.info("ID는 "+sb+"입니다.");
+			}
 		}
+		model.addAttribute("find",find);
+		model.addAttribute("findId",sb);
+		model.addAttribute("findId2",find2);
+		return "member/findIdForm";	
+		
+		}*/
+	
+
 
 
 	public HashMap<String, Object> timelineuserupdate(HashMap<String, String> params) {
@@ -243,6 +344,28 @@ public class MemberService {
 		map.put("update", inter.userdetail(id));
 		return map;
 	}
+
+   /*아이디 찾기 요청 서비스*/
+   public String idSearchPage(String[] allData) {
+      logger.info("아이디 찾기 요청");
+      
+      inter = sqlSession.getMapper(MemberInter.class);
+      
+      String name = allData[0]; 
+      String email = allData[1]; 
+      
+      String result = inter.idSearchPage(name, email); 
+      
+      String success = "아이디가 존재하지 않습니다.";
+      
+      if(result != null) {
+         success = "당신의 아이디는 ' "+result+" ' 입니다.";
+      }
+
+      return success;
+   }
+
+	
 
 	 
 

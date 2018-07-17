@@ -134,7 +134,6 @@ public class ReviewService {
 					String rePhoto = review_photo.get(i);
 					int result = inter.reviewPhotoWrite(dto.getReview_idx(),rePhoto);
 				}
-				
 			}else {				
 				review_point(loginId);//review_point 메소드(포인트 50)
 			}

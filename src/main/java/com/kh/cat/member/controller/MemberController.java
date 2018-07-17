@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,7 +48,6 @@ public class MemberController {
 		return memberService.join(map,pass);
 	}	
 	
-	
 	//pw 찾기 새창 열기
 	@RequestMapping("/pwFindWin")
 	public String pwFindWin(){
@@ -63,8 +61,6 @@ public class MemberController {
 		logger.info("pwFind 요청");
 		return memberService.pwFind(params);
 	}
-	
-	
 	//로그인 폼
 	@RequestMapping(value = "/loginForm", method = RequestMethod.GET)
 	public ModelAndView loginForm(HttpServletRequest request) {
@@ -100,10 +96,7 @@ public class MemberController {
 	public String joinForm() {
 		logger.info("joinForm 페이지 요청");
 		return "member/joinForm";
-	}
-	
-	
-	
+	}	
 	
 	//파일 업로드 폼
 	@RequestMapping(value = "/fileUploadForm")
@@ -138,22 +131,8 @@ public class MemberController {
 		logger.info("ID 찾기 페이지 요청");
 		return "member/findIdForm";
 	}
-
-/*	//ID 찾기
-	@RequestMapping(value = "/findId")
-	public @ResponseBody HashMap<String, Object> map (@RequestParam Map<String,String> params) {
-		logger.info("ID 찾기 요청");
-		return memberService.findId(params);
-	}*/
 	
-	/*//ID 찾기
-	@RequestMapping(value = "/findId")
-	public String findId (@RequestParam HashMap<String,String> params, HttpSession session,Model model) {
-		logger.info("ID 찾기 요청");
-		return memberService.findId(params,session,model);
-	}*/
-	
-	/*아이디 찾기*/
+	//ID 찾기
    @RequestMapping(value="/idSearchPage")
    public @ResponseBody HashMap<String, String> idSearchPage(@RequestParam HashMap<String, String> params) {
       logger.info("아이디 찾기");
@@ -164,9 +143,7 @@ public class MemberController {
       map.put("findId", findId);
       return map;
    }
-	
-
-	
+		
 	//회원정보수정
 	@RequestMapping(value = "/timelineuserupdate")
 	public @ResponseBody HashMap<String, Object> timelineuserupdate (@RequestParam HashMap<String,String> params) {

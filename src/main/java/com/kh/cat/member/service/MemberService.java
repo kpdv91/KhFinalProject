@@ -81,6 +81,7 @@ public class MemberService {
 		logger.info("로그인 체크요청");
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
 		MemberDTO dto = new MemberDTO();
 		inter = sqlSession.getMapper(MemberInter.class);
 		
@@ -270,21 +271,37 @@ public class MemberService {
 		return map;	
 	}*/
 	
-	//ID 찾기
+	//ID 중복 체크
+    public Map<String, String> findId(String name,String email) {
+        inter = sqlSession.getMapper(MemberInter.class);
+        Map<String, String> json = new HashMap<String, String>();
+        String use = "N";
+        
+        if(inter.findId(name,email) == null){
+        	use = "Y";
+            
+        }   
+        json.put("test", inter.findId(name,email));
+        json.put("use", use);
+        return json;
+    }
+	
+	
+	
+	/*//ID 찾기
 	public String findId(Map<String, String> params, HttpSession session,Model model) {
 		inter = sqlSession.getMapper(MemberInter.class);
 		HashMap<String, String> map = new HashMap<String, String>();
 		String name = params.get("userName");
 		String email = params.get("userEmail");
 		logger.info("이름 : "+name+" / 이메일 : "+email);
-		//map.put("findId", inter.findId(name,email));
 		String find = inter.findId(name,email);
 		int find2 = inter.findId2(name,email);
 		logger.info("찾는 id : " +find);
-		logger.info("찾는 id2 : " +find2);
-		//session.setAttribute("findId", find);
-		//ModelAndView mav = new ModelAndView();
+		logger.info("찾는 id 일치 갯수 : " +find2);
+		
 		StringBuffer sb = new StringBuffer(find);
+		
 		if(find.length()==5) {
 			sb.replace(2, find.length()-1, "**");
 		}else if(find.length()==6) {
@@ -296,30 +313,27 @@ public class MemberService {
 		}else if(find.length()>8) {
 			sb.replace(2, find.length()-1, "******");
 		}
-		 session.setAttribute("findId", sb);
-		 session.setAttribute("findId2", sb);
+		 //session.setAttribute("findId", sb);
+
 	
 		logger.info("치환된 문자열 : "+sb);
+		map.put("test", find);
 		
-		String msg = "";
+		//String msg = "";
 		
-		/*if(find == null) {
-			//page = "member/loginForm";
-			msg = "정보 불일치";
-		}else{
-			//page = "main";
-			msg = "정보 일치";
-			session.setAttribute("loginId", id);
-			session.setAttribute("loginProfile", profile);
-			logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
-			logger.info("세션값 체크 : {}", session.getAttribute("loginProfile"));
-		}*/
-			/*mav.addObject("find",find);
-			mav.addObject("msg",msg);*/
-			model.addAttribute("find",find);
-			//return "member/findIdForm";	
-			return "redirect:/";
+		if(find2>0){
+			if(sb != null ) {
+				logger.info("ID는 "+sb+"입니다.");
+			}
 		}
+		model.addAttribute("find",find);
+		model.addAttribute("findId",sb);
+		model.addAttribute("findId2",find2);
+		return "member/findIdForm";	
+		
+		}*/
+	
+
 
 
 	public HashMap<String, Object> timelineuserupdate(HashMap<String, String> params) {
@@ -330,9 +344,33 @@ public class MemberService {
 		map.put("update", inter.userdetail(id));
 		return map;
 	}
-   
-}	    
 
+   /*아이디 찾기 요청 서비스*/
+   public String idSearchPage(String[] allData) {
+      logger.info("아이디 찾기 요청");
+      
+      inter = sqlSession.getMapper(MemberInter.class);
+      
+      String name = allData[0]; 
+      String email = allData[1]; 
+      
+      String result = inter.idSearchPage(name, email); 
+      
+      String success = "아이디가 존재하지 않습니다.";
+      
+      if(result != null) {
+         success = "당신의 아이디는 ' "+result+" ' 입니다.";
+      }
+
+      return success;
+   }
+
+	
+
+	 
+
+	    
+	}
 
 
 

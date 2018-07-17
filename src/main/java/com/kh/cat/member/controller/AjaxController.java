@@ -33,6 +33,19 @@ public class AjaxController {
         
         return service.overlay(id);
     }
+    
+    //ID 찾기
+    @RequestMapping(value="/findId")
+    public  @ResponseBody Map<String, String> 
+        findId(@RequestParam("userName") String name,@RequestParam("userEmail") String email){
+        
+        logger.info("ID 찾기 실행  : ");
+        
+        return service.findId(name,email);
+    }
+    
+    
+    
 }
     
 /*    //회원가입

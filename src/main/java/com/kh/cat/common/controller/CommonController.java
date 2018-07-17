@@ -186,4 +186,9 @@ public class CommonController {
 		logger.info("댓글 수정 요청");		
 		return commonservice.timelinelikestore(params);
 	}
+	@RequestMapping(value = "/timelinefallowlist")
+	public @ResponseBody HashMap<String, Object> timelinefallowlist(@RequestParam Map<String,String> params) {
+		logger.info("팔로우 리스트 요청");		
+		return commonservice.timelinefollowlist(params);
+	}
 }

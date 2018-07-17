@@ -17,8 +17,8 @@
 	 	useGeneratedKeys="true"
 	 	keyProperty="review_idx"
 	 	keyColumn="review_idx">
-	 	INSERT INTO review(review_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile)
-	 		VALUES(seq_review.NEXTVAL,#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{review_profile})
+	 	INSERT INTO review(review_idx,store_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile)
+	 		VALUES(seq_review.NEXTVAL,#{store_idx},#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{review_profile})
 	 </insert>
 	 
 	 <insert id="hashtag">
@@ -41,10 +41,40 @@
 	 		<when test="store_idx==0">
 	 			SELECT * FROM review
 	 		</when>
-	 		<otherwise>
+	 		<when test="store_idx>0">
 	 			SELECT * FROM review WHERE store_idx= #{store_idx}
+	 		</when>
+	 		<otherwise>
+	 			SELECT * FROM review WHERE review_storeName LIKE '%'||#{review_search}||'%'
 	 		</otherwise>
 	 	</choose>
+	 	<if test="range.equals('최신순')">
+	 		ORDER BY review_date DESC
+		</if>		
+		<if test="range.equals('좋아요순')">
+			ORDER BY review_likeCnt DESC
+		</if>
+	</select>
+	
+	<select id="reviewList_or" resultType="review" parameterType="hashmap">
+	 	SELECT * FROM review WHERE
+		<foreach collection="review_search" item="review_search" index="index" separator="OR">
+			review_storeName LIKE '%'||#{review_search}||'%'
+		</foreach>
+	 	<if test="range.equals('최신순')">
+	 		ORDER BY review_date DESC
+		</if>		
+		<if test="range.equals('좋아요순')">
+			ORDER BY review_likeCnt DESC
+		</if>
+	</select>
+	
+	<select id="reviewList_hash" resultType="review" parameterType="hashmap">
+	 	SELECT * FROM review, (SELECT * FROM hash WHERE 
+		<foreach collection="review_search" item="review_search" index="index" separator="OR">
+			hash_tag LIKE '%'||#{review_search}||'%'
+		</foreach>
+		) hashtag WHERE review.review_idx=hashtag.review_idx
 	 	<if test="range.equals('최신순')">
 	 		ORDER BY review_date DESC
 		</if>		
@@ -137,6 +167,16 @@
 		INSERT INTO revLike VALUES(seq_revLike.NEXTVAL,#{param1},#{param2},SYSDATE)
 	</insert>
 	
+	<!-- 좋아요 수 증가 -->
+	<update id="likeCntUp">
+		UPDATE review SET review_likeCnt = review_likeCnt+1 WHERE review_idx=#{param1}
+	</update>
+	
+	<!-- 좋아요 수 감소 -->
+	<update id="likeCntDown">
+		UPDATE review SET review_likeCnt = review_likeCnt-1 WHERE review_idx=#{param1}
+	</update>
+	
 	<!-- 리뷰 좋아요 delete -->
 	<delete id="likeDelete">
 		DELETE FROM revLike WHERE review_idx=#{param1} AND id=#{param2}
@@ -146,4 +186,11 @@
 	<select id="likeList" resultType="revLike">
 		SELECT review_idx FROM revLike WHERE id=#{param1}
 	</select>
+	
+	<!-- 댓글 리스트 -->
+	<select id="replySelect" resultType="revReply">
+		SELECT * FROM revReply WHERE review_idx=#{param1}
+	</select>
+	
+	
 </mapper>

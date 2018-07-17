@@ -134,12 +134,26 @@ public class MemberController {
 		return memberService.findId(params);
 	}*/
 	
-	//ID 찾기
+	/*//ID 찾기
 	@RequestMapping(value = "/findId")
 	public String findId (@RequestParam HashMap<String,String> params, HttpSession session,Model model) {
 		logger.info("ID 찾기 요청");
 		return memberService.findId(params,session,model);
-	}
+	}*/
+	
+	/*아이디 찾기*/
+   @RequestMapping(value="/idSearchPage")
+   public @ResponseBody HashMap<String, String> idSearchPage(@RequestParam HashMap<String, String> params) {
+      logger.info("아이디 찾기");
+      String allData[] = {params.get("name"), params.get("email")};
+      String findId = null;
+      HashMap<String, String> map = new HashMap<String, String>();
+      findId = memberService.idSearchPage(allData);
+      map.put("findId", findId);
+      return map;
+   }
+	
+
 	
 	//회원정보수정
 	@RequestMapping(value = "/timelineuserupdate")

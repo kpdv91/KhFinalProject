@@ -255,6 +255,7 @@ input[type=button]{
 	</div><br/>
 	
 	<input id="storeIdx" type="hidden" value="<c:out value="${param.idx} "/>">
+	<input id="reviewSearch" type="hidden" value="<c:out value="${param.reviewSearch}"/>">
 	
 	</body>
 	<script>
@@ -286,6 +287,7 @@ input[type=button]{
 			type:"post",
 			dataType:"json",
 			data:{"store_idx":$("#storeIdx").val(),
+				"review_search":$("#reviewSearch").val(),
 				"range":elem
 				},
 			success:function(d){

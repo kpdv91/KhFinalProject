@@ -107,6 +107,12 @@
 			</table>
 		</c:forEach>
 		</div>
+		<br/><br/><br/>
+		
+		<c:import url="/WEB-INF/views/review/reviewList.jsp">
+			<c:param name="idx" value="-1"/>
+			<c:param name="reviewSearch" value="<%=request.getParameter(\"search_content\") %>"/>
+		</c:import>
 	</body>
 	<script>
 	
@@ -158,7 +164,7 @@
 					console.log(data.list);
 					console.log(data.list_hash);
 					$("#searchPage").empty();
-					printList(data.list,data.list_hash);
+					storePrintList(data.list,data.list_hash);
 					removeMarker();
 					markerRefresh();
 				},
@@ -169,10 +175,10 @@
 		}
 		
 		//가게 리스트 출력
-		function printList(list,list_hash){		 
+		function storePrintList(list,list_hash){		 
 			var content = "";
 			list.forEach(function(item,index){
-				content += "<table class='storeTable'>";
+				content += "<table class='storeTable' style='cursor:pointer;' onclick=location.href='storeDetail?store_idx="+item.store_idx+"'>";
 				content += "<tr><td colspan='3'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' /></td></tr>";
 				content += "<tr><td>상호명</td>";
 				content += "<th><a href='#'>"+item.store_name+"</a></th><td rowspan='2'>하트</td></tr>";

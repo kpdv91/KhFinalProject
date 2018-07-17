@@ -23,5 +23,7 @@ public interface MemberInter {
 	String getPw(String id); //암호화된 비밀번호 가져오기
 
 	int findId2(String name, String email);
+
+	String idSearchPage(String name, String email);//ID 찾기
 	
 }

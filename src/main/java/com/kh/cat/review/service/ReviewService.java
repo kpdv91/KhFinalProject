@@ -156,18 +156,32 @@ public class ReviewService {
 	
 	//리뷰 리스트
 
-	public HashMap<String, Object> reviewList(int store_idx, String range) {
+	public HashMap<String, Object> reviewList(int store_idx, String range, String review_search) {
 		logger.info("리뷰 리스트 서비스");
 		inter = sqlSession.getMapper(ReviewInter.class);
-		HashMap<String, String> ra = new HashMap<String, String>();
+		String search_content_And = review_search.replaceAll(" ", "%");
+		String[] search_content_Split = review_search.split(" ");
+		
+		HashMap<String, Object> ra = new HashMap<String, Object>();
 		ra.put("range", range);
 		ra.put("store_idx", String.valueOf(store_idx));
+		ra.put("review_search", search_content_And);
 		logger.info("*****************");
-		logger.info(ra.get("store_idx"));
+		logger.info(""+ra.get("store_idx"));
+		logger.info(""+ra.get("review_search"));
 		HashMap<String, Object> map = new HashMap<String, Object>();
 
-		map.put("reviewList", inter.reviewList(ra));
+		ArrayList<ReviewDTO> list = inter.reviewList(ra);
 		
+		if(list.isEmpty()) {//and 검색이 안되면
+			ra.put("review_search", search_content_Split);//검색어를 or로 바꿔서
+			list = inter.reviewList_or(ra);//or검색
+			if(list.isEmpty()) {//or 검색이 안되면
+				list = inter.reviewList_hash(ra);//해쉬검색
+			}
+		}
+		map.put("reviewList", list);
+
 		return map;
 	}
 

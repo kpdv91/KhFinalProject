@@ -56,10 +56,10 @@ public class ReviewController {
 		return service.fileDel(root,fileName);
 	}
 	@RequestMapping(value= "/reviewWrite")
-	public String wirte(@RequestParam("hash_tag") ArrayList<String> hash_tag,
+	public String wirte(@RequestParam(value ="review_storeidx", required = false, defaultValue = "0") String review_storeidx,@RequestParam("hash_tag") ArrayList<String> hash_tag,
 			@RequestParam(value ="review_photo", required = false, defaultValue = "0") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map, HttpServletRequest request) {
 		logger.info("글쓰기 or 수정 요청");	
-		logger.info(""+map);
+		logger.info(""+review_storeidx);
 		String loginId = (String) request.getSession().getAttribute("loginId");
 		String profile = (String) request.getSession().getAttribute("loginProfile");
 		logger.info(map.get("review_idx"));
@@ -67,7 +67,7 @@ public class ReviewController {
 		if(map.get("review_idx") != "") {
 			return service.review_update(hash_tag, review_photo, map, loginId);
 		}else {
-			return service.write(hash_tag, review_photo, map, loginId);
+			return service.write(review_storeidx,hash_tag, review_photo, map, loginId);
 		}
 	}
 	

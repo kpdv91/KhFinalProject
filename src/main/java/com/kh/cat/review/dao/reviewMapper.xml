@@ -165,7 +165,6 @@
 	<select id="replySelect" resultType="revReply">
 		SELECT * FROM revReply WHERE review_idx=#{param1} ORDER BY revReply_date 
 	</select>
-<<<<<<< HEAD
 	
 	<!-- 댓글 작성 -->
 	<insert id="replyWrite">
@@ -183,7 +182,4 @@
 		UPDATE review SET review_replyCnt = review_replyCnt-1 WHERE review_idx=#{param1}
 	</update>
 	 
-	
-=======
->>>>>>> 52eff8ac834e969e262973c103d893f19bd986a4
 </mapper>

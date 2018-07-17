@@ -19,7 +19,11 @@ public interface ReviewInter {
 
 	ArrayList<StoreDTO> storeList(String params);
 
-	ArrayList<ReviewDTO> reviewList(HashMap<String, String> ra);
+	ArrayList<ReviewDTO> reviewList(HashMap<String, Object> ra);
+	
+	ArrayList<ReviewDTO> reviewList_or(HashMap<String, Object> ra);
+	
+	ArrayList<ReviewDTO> reviewList_hash(HashMap<String, Object> ra);
 
 	ArrayList<HashDTO> reviewHash(String review_idx);
 
@@ -46,5 +50,9 @@ public interface ReviewInter {
 	void review_HashDel(int review_idx);
 
 	void review_PhotoDel(int review_idx);
+
+	
+
+	
 
 }

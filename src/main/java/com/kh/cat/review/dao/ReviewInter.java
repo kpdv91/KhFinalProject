@@ -35,9 +35,9 @@ public interface ReviewInter {
 
 	void photoReview_point(String loginId);//리뷰 작성시 100포인트
 
-	int review_likeCnt(int idx);//리뷰 좋아요 수
+	ArrayList<ReviewDTO> review_likeCnt(String idx);//리뷰 좋아요 수
 
-	void likePoint(String loginId);//좋아요 수 포인트
+	void likePoint(String id);//좋아요 수 포인트(1000)
 
 	Integer complain(ComplainDTO dto);
 
@@ -66,5 +66,7 @@ public interface ReviewInter {
 	void likeCntDown(String review_idx);
 
 	ArrayList<RevReplyDTO> replySelect(String review_idx);
+
+	void likePointt(String id);//좋아요 10개 이상 100포인트
 
 }

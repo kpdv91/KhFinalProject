@@ -223,14 +223,22 @@ public class ReviewService {
 	}
 	
 	//좋아요 받을 시 포인트 적립
-	public void review_likeCnt(int idx, String id) {
+	public void review_likeCnt(String idx) {
 		logger.info("리뷰 번호 : {}", idx);
 		//리뷰 좋아요 수 : SELECT review_likecnt FROM review WHERE review_idx=리뷰번호; 
 		inter = sqlSession.getMapper(ReviewInter.class);
-		int likeCnt = inter.review_likeCnt(idx);
-		logger.info("좋아요 수 : {}", likeCnt);
+		ArrayList<ReviewDTO> likeCntAndId = inter.review_likeCnt(idx);
+		
+		int likeCnt = likeCntAndId.get(0).getReview_likeCnt();
+		String id = likeCntAndId.get(0).getId();
+		
+		logger.info("좋아요 : {}", likeCnt);
+		logger.info("아이디 : {}", id);
+		
 		if(likeCnt == 10) {
 			inter.likePoint(id);
+		}else if(likeCnt>10) {
+			inter.likePointt(id);
 		}
 	}
 
@@ -342,6 +350,7 @@ public class ReviewService {
 			logger.info("result는 0 insert 해야함");
 			inter.likeInsert(review_idx,loginid);
 			inter.likeCntUp(review_idx);
+			review_likeCnt(review_idx);
 			success = "insert";
 		}else {
 			logger.info("result는 0이 아님 delete 해야함");

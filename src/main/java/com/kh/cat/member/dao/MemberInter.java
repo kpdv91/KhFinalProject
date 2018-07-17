@@ -25,5 +25,10 @@ public interface MemberInter {
 	int findId2(String name, String email);
 
 	String idSearchPage(String name, String email);//ID 찾기
+
+	String pw(String id, String name, String email);//비밀번호 조회
+
+	int pwChange(String id, String hash);
+
 	
 }

@@ -50,7 +50,19 @@ public class MemberController {
 	}	
 	
 	
+	//pw 찾기 새창 열기
+	@RequestMapping("/pwFindWin")
+	public String pwFindWin(){
+		logger.info("pwFindWin 요청");
+		return "member/pwFind";
+	}
 	
+	//pw 찾기 새창 열기
+	@RequestMapping("/pwFind")
+	public @ResponseBody HashMap<String, Object> pwFind(@RequestParam HashMap<String, String> params){
+		logger.info("pwFind 요청");
+		return memberService.pwFind(params);
+	}
 	
 	
 	//로그인 폼

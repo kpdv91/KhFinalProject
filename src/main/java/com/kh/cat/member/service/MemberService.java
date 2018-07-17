@@ -7,22 +7,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kh.cat.common.dao.CommonInter;
 import com.kh.cat.dto.MemberDTO;
 import com.kh.cat.member.dao.MemberInter;
 
@@ -32,6 +33,8 @@ public class MemberService {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired SqlSession sqlSession;
+	@Autowired JavaMailSender mailSender;
+	
 	MemberInter inter;
 		
 	String hash = "";
@@ -365,13 +368,80 @@ public class MemberService {
       return success;
    }
 
-	
 
-	 
 
-	    
+
+   	public HashMap<String, Object> pwFind(HashMap<String, String> params) {
+		logger.info("비밀번호 찾기 서비스");
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		inter = sqlSession.getMapper(MemberInter.class);
+		
+		String hash = "";
+		int pwChange = 0;
+		
+		String id = params.get("id");
+		String name = params.get("name");
+		String email = params.get("email");
+		
+		logger.info("아이디 : {}", id);
+		logger.info("이름 : {}", name);
+		logger.info("이메일 : {}", email);
+		
+		String pass = inter.pw(id, name, email);
+		logger.info(pass);
+		
+		String setFrom = "jaewook-@naver.com";//보내는 사람 이메일
+	    String toMail  = email;// 받는 사람 이메일
+	    String title   = "";// 제목
+	    String content = "";// 내용
+		
+	    try {
+		      MimeMessage message = mailSender.createMimeMessage();
+		      MimeMessageHelper messageHelper 
+		                        = new MimeMessageHelper(message, true, "UTF-8");
+		 
+		      if(pass != null) {//조회된 비밀번호가 있으면
+		    	  Random rnd = new Random();
+		    	  StringBuffer tmpPw = new StringBuffer();
+
+		    	  for(int i = 0; i < 8; i++){
+		    		  if(rnd.nextBoolean()){
+		    			  tmpPw.append((char)((int)(rnd.nextInt(26))+97));
+		    			  logger.info("소문자 : {}", tmpPw);
+		    		  }else if(rnd.nextBoolean()){
+		    			  tmpPw.append((char)((int)(rnd.nextInt(26))+65));
+		    			  logger.info("대문자 : {}", tmpPw);
+		    		  }else {
+		    			  tmpPw.append((rnd.nextInt(10)));
+		    			  logger.info("숫자 : {}", tmpPw);
+		    		  }
+		    	  }
+
+		    	  logger.info("임시 비밀번호 : {}", tmpPw);
+		    	  BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		    	  hash = encoder.encode(tmpPw);//임시 비밀번호 암호화
+		    	  pwChange = inter.pwChange(id, hash);//암호화된 비밀번호 DB 에 저장
+		    	  logger.info("암호화된 임시 비빌번호 DB 저장 결과 : {}", pwChange);
+		    	  if(pwChange > 0) {
+		    		  title = "CAT";
+		    		  content = id+" 님의 임시 비밀번호는 ["+tmpPw+"] 입니다.";
+		    		  messageHelper.setFrom(setFrom, "CAT");  // 보내는사람 생략하거나 하면 정상작동을 안함
+				      messageHelper.setTo(toMail);     // 받는사람 이메일
+				      messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+				      messageHelper.setText(content);  // 메일 내용
+		    	  }  
+		    	  map.put("msg", "입력한 이메일로 임시비밀번호 전송");
+		    	  map.put("changeResult", pwChange);
+		      }else {
+		    	  map.put("msg", "해당 아이디 없음");
+		    	  map.put("changeResult", pwChange);
+		      }
+
+		      mailSender.send(message);
+		    } catch(Exception e){
+		      System.out.println(e);
+		    }
+		return map;
 	}
-
-
-
-
+    
+}

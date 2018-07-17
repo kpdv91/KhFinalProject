@@ -55,7 +55,7 @@
            <td colspan="3">
            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <input onclick ="join()" type="button" value="회원가입">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
            <input type="button" onclick ="popupOpen()" value="ID 찾기">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <input type="button" value="PW 찾기">
+            <input type="button" onclick="pwFind()" value="PW 찾기">
            </td>
          </tr>
    </table>
@@ -85,6 +85,11 @@
 	     window.open('', '_parent', '');
 	     window.close(); */
 	};
+	
+	function pwFind() {
+		var myWin= window.open("./pwFindWin", "PW 찾기","width=500,height=500");	
+	}
+	
 	
 	function popupOpen(){
 

@@ -72,6 +72,17 @@
 <select id="userdetail" resultType="member">
         SELECT * FROM member WHERE id=#{param1}
     </select>
+    
+    <!-- 비밀번호 조회 -->
+    <select id="pw" resultType="String">
+    	SELECT pw FROM member WHERE id = #{param1} AND name = #{param2} AND email = #{param3}
+    </select>
+    
+    <!-- 암호화된 비밀번호로 변경 -->
+    <update id="pwChange">
+		UPDATE member SET pw = #{param2} WHERE id = #{param1}
+	</update>
+    
 </mapper>
 
 

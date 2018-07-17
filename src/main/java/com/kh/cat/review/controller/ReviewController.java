@@ -106,7 +106,7 @@ public class ReviewController {
 	
 	@RequestMapping(value = "/review_star")
 	public @ResponseBody HashMap<String, Object> review_star(@RequestParam("review_idx") String review_idx) {
-		logger.info("리뷰 해시태그, 사진 요청");
+		logger.info("별점 요청");
 		return service.review_star(review_idx);
 	}
 	

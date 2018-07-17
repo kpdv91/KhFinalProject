@@ -164,10 +164,18 @@ public class ReviewController {
 		return service.replySelect(review_idx);
 	}
 	
-	/*@RequestMapping(value = "/replyWrite")
-	public @ResponseBody String replyWrite(@RequestParam("review_idx") String review_idx,@RequestParam("loginId") String loginId) {		
-		logger.info("리뷰 좋아요 요청");
-		return service.reviewLike(review_idx,loginId);
-	}*/
+	@RequestMapping(value = "/replyWrite")
+	public @ResponseBody Integer replyWrite(@RequestParam("review_idx") String review_idx,@RequestParam("loginId") String loginId,@RequestParam("reply_content") String reply_content,@RequestParam("profile") String profile,@RequestParam("name") String name) {		
+		logger.info("리뷰 댓글 작성");
+		System.out.println(review_idx+"/"+loginId+"/"+reply_content+"/"+profile);
+		return service.replyWrite(review_idx,loginId,reply_content,profile,name);
+	}
+	
+	@RequestMapping(value = "/Revreply_delete")
+	public @ResponseBody Integer Revreply_delete(@RequestParam("reply_idx") String reply_idx,@RequestParam("review_idx") String review_idx) {		
+		System.out.println("댓글 삭제 요청");		
+		return service.Revreply_delete(reply_idx,review_idx);
+	}
+	
 	
 }

@@ -368,4 +368,22 @@ public class ReviewService {
 		return map;
 	}
 
+	//댓글 작성
+	public Integer replyWrite(String review_idx, String loginId, String reply_content,String profile, String name) {
+		inter=sqlSession.getMapper(ReviewInter.class);
+		int result=inter.replyWrite(review_idx,loginId,reply_content,profile);
+		inter.replyCntUp(review_idx);
+		/*inter.alamReply(name,);*/
+		return result;
+	}
+
+	//댓글 삭제
+	public Integer Revreply_delete(String reply_idx, String review_idx) {
+		logger.info("댓글 삭제");
+		inter=sqlSession.getMapper(ReviewInter.class);
+		int success = inter.Revreply_delete(reply_idx);
+		inter.replyCntDown(review_idx);
+		return success;
+	}
+
 }

@@ -189,8 +189,24 @@
 	
 	<!-- 댓글 리스트 -->
 	<select id="replySelect" resultType="revReply">
-		SELECT * FROM revReply WHERE review_idx=#{param1}
+		SELECT * FROM revReply WHERE review_idx=#{param1} ORDER BY revReply_date 
 	</select>
 	
+	<!-- 댓글 작성 -->
+	<insert id="replyWrite">
+		INSERT INTO revReply VALUES(seq_revReply.NEXTVAL,#{param1},#{param2},#{param3},SYSDATE,#{param4})
+	</insert>
+	<update id="replyCntUp">
+		UPDATE review SET review_replyCnt = review_replyCnt+1 WHERE review_idx=#{param1}
+	</update>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="Revreply_delete">
+	 	DELETE FROM revReply WHERE revReply_idx = #{param1}
+	 </delete>
+	 <update id="replyCntDown">
+		UPDATE review SET review_replyCnt = review_replyCnt-1 WHERE review_idx=#{param1}
+	</update>
+	 
 	
 </mapper>

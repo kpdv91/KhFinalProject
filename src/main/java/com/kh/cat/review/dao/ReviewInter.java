@@ -67,4 +67,12 @@ public interface ReviewInter {
 
 	ArrayList<RevReplyDTO> replySelect(String review_idx);
 
+	int replyWrite(String review_idx, String loginId, String reply_content, String profile );
+
+	void replyCntUp(String review_idx);
+
+	int Revreply_delete(String review_idx);
+
+	void replyCntDown(String review_idx);
+
 }

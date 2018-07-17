@@ -47,7 +47,20 @@ public class MemberController {
 		logger.info("암호문 길이: "+hash.length());
 		return memberService.join(map,pass);
 	}	
-		
+	
+	//pw 찾기 새창 열기
+	@RequestMapping("/pwFindWin")
+	public String pwFindWin(){
+		logger.info("pwFindWin 요청");
+		return "member/pwFind";
+	}
+	
+	//pw 찾기 새창 열기
+	@RequestMapping("/pwFind")
+	public @ResponseBody HashMap<String, Object> pwFind(@RequestParam HashMap<String, String> params){
+		logger.info("pwFind 요청");
+		return memberService.pwFind(params);
+	}
 	//로그인 폼
 	@RequestMapping(value = "/loginForm", method = RequestMethod.GET)
 	public ModelAndView loginForm(HttpServletRequest request) {

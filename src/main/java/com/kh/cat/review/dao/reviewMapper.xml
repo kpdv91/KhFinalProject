@@ -17,8 +17,8 @@
 	 	useGeneratedKeys="true"
 	 	keyProperty="review_idx"
 	 	keyColumn="review_idx">
-	 	INSERT INTO review(review_idx,store_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile)
-	 		VALUES(seq_review.NEXTVAL,#{store_idx},#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{review_profile})
+	 	INSERT INTO review(review_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile)
+	 		VALUES(seq_review.NEXTVAL,#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{review_profile})
 	 </insert>
 	 
 	 <insert id="hashtag">
@@ -41,40 +41,10 @@
 	 		<when test="store_idx==0">
 	 			SELECT * FROM review
 	 		</when>
-	 		<when test="store_idx>0">
-	 			SELECT * FROM review WHERE store_idx= #{store_idx}
-	 		</when>
 	 		<otherwise>
-	 			SELECT * FROM review WHERE review_storeName LIKE '%'||#{review_search}||'%'
+	 			SELECT * FROM review WHERE store_idx= #{store_idx}
 	 		</otherwise>
 	 	</choose>
-	 	<if test="range.equals('최신순')">
-	 		ORDER BY review_date DESC
-		</if>		
-		<if test="range.equals('좋아요순')">
-			ORDER BY review_likeCnt DESC
-		</if>
-	</select>
-	
-	<select id="reviewList_or" resultType="review" parameterType="hashmap">
-	 	SELECT * FROM review WHERE
-		<foreach collection="review_search" item="review_search" index="index" separator="OR">
-			review_storeName LIKE '%'||#{review_search}||'%'
-		</foreach>
-	 	<if test="range.equals('최신순')">
-	 		ORDER BY review_date DESC
-		</if>		
-		<if test="range.equals('좋아요순')">
-			ORDER BY review_likeCnt DESC
-		</if>
-	</select>
-	
-	<select id="reviewList_hash" resultType="review" parameterType="hashmap">
-	 	SELECT * FROM review, (SELECT * FROM hash WHERE 
-		<foreach collection="review_search" item="review_search" index="index" separator="OR">
-			hash_tag LIKE '%'||#{review_search}||'%'
-		</foreach>
-		) hashtag WHERE review.review_idx=hashtag.review_idx
 	 	<if test="range.equals('최신순')">
 	 		ORDER BY review_date DESC
 		</if>		
@@ -106,13 +76,17 @@
 	 </update>
 	 
 	 <!-- 좋아요 수 조회 -->
-	 <select id="review_likeCnt" resultType="Integer">
-	 	SELECT review_likecnt FROM review WHERE review_idx= #{param1}
+	 <select id="review_likeCnt" resultType="Review">
+	 	SELECT review_likecnt, id FROM review WHERE review_idx= #{param1}
 	 </select>
 	 
 	 <!-- 좋아요 10일 때 포인트 적립 -->
 	 <update id="likePoint">
 	 	UPDATE member SET pointcnt = pointcnt + 1000 WHERE id=#{param1}
+	 </update>
+	 
+	 <update id="likePointt">
+	 	UPDATE member SET pointcnt = pointcnt + 100 WHERE id = #{param1}
 	 </update>
 	 
 	 <!-- 신고하기 -->
@@ -191,6 +165,7 @@
 	<select id="replySelect" resultType="revReply">
 		SELECT * FROM revReply WHERE review_idx=#{param1} ORDER BY revReply_date 
 	</select>
+<<<<<<< HEAD
 	
 	<!-- 댓글 작성 -->
 	<insert id="replyWrite">
@@ -209,4 +184,6 @@
 	</update>
 	 
 	
+=======
+>>>>>>> 52eff8ac834e969e262973c103d893f19bd986a4
 </mapper>

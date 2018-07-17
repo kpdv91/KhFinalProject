@@ -31,6 +31,8 @@
 	<beans:import resource="classpath:config/intercepter.xml"/>
 	<!-- 스케쥴러 설정 -->
 	<beans:import resource="classpath:config/scheduler.xml"/>
+	<!-- 메일 설정 -->
+	<beans:import resource="classpath:config/mail.xml"/>
 	
 	<!-- 파일 첨부 설정 -->	
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

@@ -55,7 +55,7 @@
            <td colspan="3">
            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <input onclick ="join()" type="button" value="회원가입">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
            <input type="button" onclick ="popupOpen()" value="ID 찾기">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            <input type="button" value="PW 찾기">
+            <input type="button" onclick="pwFind()" value="PW 찾기">
            </td>
          </tr>
    </table>
@@ -78,6 +78,17 @@
 		location.href="./joinForm";
 	};
 		
+		 /* window.open("./findIdForm","","top=0, left=0, width=800, height=556, directories='no', location=no, menubar=no, resizable=no, status=yes, toolbar=no")  ;
+	     
+	     window.opener = "nothing";
+	     window.open('', '_parent', '');
+	     window.close(); */
+	
+	function pwFind() {
+		var myWin= window.open("./pwFindWin", "PW 찾기","width=500,height=500");	
+	}
+	
+	
 	function popupOpen(){
 
 		var popUrl = "./findIdForm";	//팝업창에 출력될 페이지 URL

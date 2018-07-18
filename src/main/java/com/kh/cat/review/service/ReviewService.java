@@ -18,8 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.cat.dto.AlarmDTO;
 import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.RevLikeDTO;
+import com.kh.cat.dto.RevReplyDTO;
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.review.dao.ReviewInter;
 
@@ -191,13 +193,14 @@ public class ReviewService {
 		inter = sqlSession.getMapper(ReviewInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("reviewHash", inter.reviewHash(review_idx));
-		//map.put("reviewPhoto",  inter.reviewPhoto(review_idx));
+		map.put("reviewPhoto",  inter.reviewPhoto(review_idx));
 		logger.info(""+map.get("reviewHash"));
 		return map;
 	}
 	
 	
 	//사진 미포함 50포인트
+	
 	public void review_point(String loginId) {
 		logger.info("로그인 세션 : {}", loginId);
 		
@@ -342,15 +345,21 @@ public class ReviewService {
 	}
 
 	//리뷰 좋아요
-	public String reviewLike(String review_idx, String loginid) {
+	public String reviewLike(String review_idx, String loginid, String name) {
 		inter=sqlSession.getMapper(ReviewInter.class);
 		String result=inter.likeSel(review_idx,loginid);
 		String success="";
+		RevLikeDTO dto = new RevLikeDTO();
 		logger.info("좋아요 : "+result);
 		if(result == null) {
 			logger.info("result는 0 insert 해야함");
-			inter.likeInsert(review_idx,loginid);
-			inter.likeCntUp(review_idx);
+			
+			dto.setReview_idx(Integer.parseInt(review_idx));
+			dto.setId(loginid);
+			inter.likeInsert(dto);			
+			System.out.println("좋아요 idx : "+dto.getRevLike_idx());
+			inter.likeCntUp(review_idx);			
+			inter.alarmLike(name,dto.getRevLike_idx());
 			review_likeCnt(review_idx);
 			success = "insert";
 		}else {
@@ -381,9 +390,15 @@ public class ReviewService {
 	//댓글 작성
 	public Integer replyWrite(String review_idx, String loginId, String reply_content,String profile, String name) {
 		inter=sqlSession.getMapper(ReviewInter.class);
-		int result=inter.replyWrite(review_idx,loginId,reply_content,profile);
+		RevReplyDTO dto = new RevReplyDTO();
+		dto.setReview_idx(Integer.parseInt(review_idx));
+		dto.setId(loginId);
+		dto.setRevreply_content(reply_content);
+		dto.setRevreply_profile(profile);
+		int result=inter.replyWrite(dto);		
 		inter.replyCntUp(review_idx);
-		/*inter.alamReply(name,);*/
+		
+		inter.alamReply(name,dto.getRevreply_idx());
 		return result;
 	}
 
@@ -394,6 +409,12 @@ public class ReviewService {
 		int success = inter.Revreply_delete(reply_idx);
 		inter.replyCntDown(review_idx);
 		return success;
+	}
+
+	//댓글
+	public Integer Revreply_update(String reply_idx, String review_idx) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

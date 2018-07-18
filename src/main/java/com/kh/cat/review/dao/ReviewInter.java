@@ -55,7 +55,7 @@ public interface ReviewInter {
 
 	String likeSel(String review_idx, String id);
 
-	int likeInsert(String review_idx, String loginid);
+	int likeInsert(RevLikeDTO dto);
 
 	int likeDelete(String review_idx, String loginid);
 
@@ -67,7 +67,7 @@ public interface ReviewInter {
 
 	ArrayList<RevReplyDTO> replySelect(String review_idx);
 
-	int replyWrite(String review_idx, String loginId, String reply_content, String profile );
+	int replyWrite(RevReplyDTO dto);
 
 	void replyCntUp(String review_idx);
 
@@ -76,6 +76,14 @@ public interface ReviewInter {
 	void replyCntDown(String review_idx);
 
 	void likePointt(String id);//좋아요 10개 이상 100포인트
+
+	void alamReply(String name, int revreply_idx);
+
+	void alarmLike(String name, int revLike_idx);
+
+	void alarmLikeDel(int alarm_idx);
+
+	
 
 
 }

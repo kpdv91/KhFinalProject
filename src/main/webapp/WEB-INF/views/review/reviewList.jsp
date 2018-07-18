@@ -321,7 +321,7 @@ input[type=button]{
 		list.forEach(function(item){
 			content += "<div id='abc'>"
 			content += "<div id='review'><img id='reviewListPro' width='50px' height='50px' src='"+item.review_profile+"'/><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-			content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'><img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick("+item.review_idx+")' /><br/><span id='complain' class='span' href='#' onclick='complain(this)'>신고</span></div></div>";
+			content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'><img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' /><br/><span id='complain' class='span' href='#' onclick='complain(this)'>신고</span></div></div>";
 			content += "<table id='review_table'><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
 			content += "<td id='starTd"+item.review_idx+"' class='starTd'></td></tr>";
 			content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
@@ -383,9 +383,11 @@ input[type=button]{
 				reply +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
 				reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td></tr><tr>";
 				if(item.id==loginId){
-					reply+="<td  class='reply_btn' ><span class='reply_ck' id='reply_update"+item.revreply_idx+"' onclick='reply_updateform("+item.revreply_idx+")' >수정</span>";
+					reply+="<td  class='reply_btn' >";					
+					reply+="<span class='reply_ck' id='reply_update"+item.revreply_idx+"' onclick='reply_updateform(this,"+item.revreply_idx+","+idx+")' >수정</span>";
+					//reply+="<span class='reply_ck' id='reply_save' onclick='reply_update(this,"+item.revreply_idx+")' >저장</span>";
 					reply+="<span class='reply_ck' id='reply_delete"+item.revreply_idx+"' onclick='reply_delete(this,"+item.revreply_idx+","+idx+")' >삭제</span>";
-					reply+="<span class='reply_ck' id='reply_save"+item.revreply_idx+"' onclick='reply_update(this,"+item.revreply_idx+")' >저장</span></td>";
+					reply+="</td>";
 					//reply+="<td class='reply_btn' ><input type='button' class='reply_clk'  id='reply_cancel"+item.revreply_idx+"' name='"+item.revreply_content+"' onclick='reply_cancel("+item.revreply_idx+",name)'>취소</td>";
 				}
 				reply +="</tr>";			
@@ -395,6 +397,31 @@ input[type=button]{
 			$("#reviewReply"+idx).append(reply);
 		}
 	 
+		//댓글 수정폼
+		function reply_updateform(elem,reply_idx,review_idx){
+			console.log($(elem).parent().parent().parent());
+			$(elem).parent().append("<span class='reply_ck' id='reply_save' onclick='reply_update(this,"+reply_idx+","+review_idx+")' >저장</span>");
+			$(elem).css("display","none");
+			$("#reply_textarea"+reply_idx).removeAttr("readonly");
+			$("#reply_textarea"+reply_idx).focus();
+				
+		}
+		
+		//댓글 수정
+		function reply_update(elem,reply_idx,review_idx){
+			console.log(idx);
+			$.ajax({
+				url:"./Revreply_update",
+				type:"post",
+				dataType:"json",
+				data:{"reply_idx":reply_idx,"review_idx":review_idx},
+				success:function(d){
+					console.log(d);			 
+				},
+				error:function(e){console.log(e);}
+			});   
+		}
+		
 		//댓글 삭제
 		function reply_delete(elem,reply_idx,review_idx){
 			console.log($(elem).parent().parent()[0]);
@@ -450,14 +477,15 @@ input[type=button]{
 		});
 	}
 	//좋아요 클릭
-	function likeClick(idx){
+	function likeClick(elem,idx){
+		var name=$(elem).parents()[1].childNodes[0].data;
 		flag=idx;
 		console.log(idx+"/"+loginId);
 		$.ajax({
 			url:"./reviewLike",
 			type:"post",
 			dataType:"text",
-			data:{"review_idx":idx, "loginId":loginId},
+			data:{"review_idx":idx, "loginId":loginId,"name":name},
 			success:function(d){
 				//console.log(d);
 				 if(d == "insert"){
@@ -592,7 +620,7 @@ input[type=button]{
 			data:{"review_idx":elem},
 			success:function(d){
 				printHash(d.reviewHash,elem);		
-				//printPhoto(d.reviewPhoto,elem);				
+				printPhoto(d.reviewPhoto,elem);				
 			},
 			error:function(e){console.log(e);}
 		});	

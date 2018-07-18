@@ -27,11 +27,6 @@
 		SELECT * FROM review WHERE review_idx = #{param1}
 	</select>
 	
-	<!-- 리뷰 작성자 아이디 조회 -->
-	<select id="revWriter" resultType="String" parameterType="String">
-		SELECT id FROM review WHERE review_idx = #{param1}
-	</select>
-	
 	<!-- 블랙리스트 추가 -->
 	<update id="blackListAdd" parameterType="String">
 		UPDATE member SET aut = 'black' WHERE id = #{param1}

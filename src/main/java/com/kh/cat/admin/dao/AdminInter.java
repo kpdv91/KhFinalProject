@@ -21,8 +21,6 @@ public interface AdminInter {
 
 	ArrayList<RevPhotoDTO> reviewPhoto(String rev_idx);//신고된 리뷰의 사진
 
-	String revWriter(String rev_idx);//리뷰 작성자 아이디
-
 	int blackListAdd(String complain_id);//블랙리스트 추가
 
 	int registYes(String store_idx);//가게 등록 승인

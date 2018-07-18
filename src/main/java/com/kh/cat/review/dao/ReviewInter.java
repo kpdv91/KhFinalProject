@@ -85,6 +85,10 @@ public interface ReviewInter {
 
 	int Revreply_update(String reply_content, String reply_idx, String review_idx);
 
+	void storeReviewUpdate(String review_storeidx, double star);
+
+	double starAvg(String review_storeidx);
+
 	
 
 

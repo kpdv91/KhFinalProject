@@ -139,7 +139,13 @@ public class ReviewService {
 			}else {				
 				review_point(loginId);//review_point 메소드(포인트 50)
 			}
+			if(Integer.parseInt(review_storeidx) != 0) {
+				double star =  inter.starAvg(review_storeidx);
+				logger.info("평균 별점"+star);
+				inter.storeReviewUpdate(review_storeidx,star);
+			}
 		}
+		
 		fileList.clear();
 		return "redirect:/";
 	}

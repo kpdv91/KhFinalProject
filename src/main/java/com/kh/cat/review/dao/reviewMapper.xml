@@ -12,6 +12,7 @@
 		keyProperty="idx" <- 키가 될 필드
 		keyColumn="idx" <- 키가 저장될 컬럼
 	 -->
+	 <!-- 리뷰 작성 -->
 	 <insert id="reviewWrite" 
 	 	parameterType="review"
 	 	useGeneratedKeys="true"
@@ -20,6 +21,14 @@
 	 	INSERT INTO review(review_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile,review_replyCnt)
 	 		VALUES(seq_review.NEXTVAL,#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{review_profile},0)
 	 </insert>
+	 <select id="starAvg" resultType="Double">
+	 	SELECT ROUND(AVG(review_star), 2) FROM review WHERE store_idx = #{param1}
+	 </select>
+	 
+	 <update id="storeReviewUpdate">
+	 	UPDATE store SET store_revCnt = store_revCnt+1, store_revDate = SYSDATE, store_star=#{param2} WHERE store_idx=#{param1}
+	 </update>
+	 
 	 
 	 <insert id="hashtag">
 	 	INSERT INTO hash(hash_tag,hash_cate,review_idx)

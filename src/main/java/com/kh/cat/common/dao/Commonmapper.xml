@@ -35,8 +35,8 @@
 	<select id="messagesendidcheck" resultType="String">
 		SELECT id FROM member WHERE id=#{param1}
 	</select>
-	<insert id="sendmsg">
-		INSERT INTO dm VALUES(seq_dm.NEXTVAL,#{param1},#{param2},#{param3},SYSDATE)
+	<insert id="sendmsg" useGeneratedKeys="true" keyColumn="dm_idx" keyProperty="dm_idx" parameterType="dm">
+		INSERT INTO dm VALUES(seq_dm.NEXTVAL,#{id},#{dm_id},#{dm_content},SYSDATE)
 	</insert>
 	<select id="reviewtimelinecnt" resultType="Integer">
 		SELECT COUNT(*) FROM review WHERE id=#{param1}
@@ -53,8 +53,8 @@
 	<select id="timelinereviewlist" resultType="review">
 		SELECT * FROM review WHERE id=#{param1} ORDER BY review_date DESC
 	</select>
-	<insert id="followinsert">
-		INSERT INTO follow VALUES(seq_follow.NEXTVAL,#{param1},#{param2})
+	<insert id="followinsert" useGeneratedKeys="true" keyColumn="follow_idx" keyProperty="follow_idx" parameterType="follow">
+		INSERT INTO follow VALUES(seq_follow.NEXTVAL,#{id},#{follow_id})
 	</insert>
 	<select id="followcheck" resultType="String">
 		SELECT id FROM follow WHERE id=#{param1} AND follow_id=#{param2}
@@ -149,6 +149,18 @@
 	<select id="followingprofile" resultType="member">
 		SELECT id,profile FROM member WHERE id=#{param1}
 	</select>
+	<select id="alarmlist" resultType="alarm">
+		SELECT * FROM alarm WHERE alarm_id=#{param1} AND alarm_read=0
+	</select>
+	<insert id="alarminsert">
+		INSERT INTO alarm(alarm_idx,alarm_id,alarm_cate,follow_idx,alarm_read) VALUES(seq_alarm.NEXTVAL,#{param2},'팔로우',#{param1},0)
+	</insert>
+	<update id="alarmread">
+		UPDATE alarm SET alarm_read=1 WHERE alarm_idx=#{param1} 
+	</update>	
+	<insert id="alarmdminsert">
+		INSERT INTO alarm(alarm_idx,alarm_id,alarm_cate,dm_idx,alarm_read) VALUES(seq_alarm.NEXTVAL,#{param2},'메세지',#{param1},0)
+	</insert>
 </mapper>
 
 

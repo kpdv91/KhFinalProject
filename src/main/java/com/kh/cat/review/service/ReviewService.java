@@ -224,14 +224,22 @@ public class ReviewService {
 	}
 	
 	//좋아요 받을 시 포인트 적립
-	public void review_likeCnt(int idx, String id) {
+	public void review_likeCnt(String idx) {
 		logger.info("리뷰 번호 : {}", idx);
 		//리뷰 좋아요 수 : SELECT review_likecnt FROM review WHERE review_idx=리뷰번호; 
 		inter = sqlSession.getMapper(ReviewInter.class);
-		int likeCnt = inter.review_likeCnt(idx);
-		logger.info("좋아요 수 : {}", likeCnt);
+		ArrayList<ReviewDTO> likeCntAndId = inter.review_likeCnt(idx);
+		
+		int likeCnt = likeCntAndId.get(0).getReview_likeCnt();
+		String id = likeCntAndId.get(0).getId();
+		
+		logger.info("좋아요 : {}", likeCnt);
+		logger.info("아이디 : {}", id);
+		
 		if(likeCnt == 10) {
 			inter.likePoint(id);
+		}else if(likeCnt>10) {
+			inter.likePointt(id);
 		}
 	}
 
@@ -343,6 +351,7 @@ public class ReviewService {
 			logger.info("result는 0 insert 해야함");
 			inter.likeInsert(review_idx,loginid);
 			inter.likeCntUp(review_idx);
+			review_likeCnt(review_idx);
 			success = "insert";
 		}else {
 			logger.info("result는 0이 아님 delete 해야함");
@@ -367,6 +376,24 @@ public class ReviewService {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("replySelect", inter.replySelect(review_idx));
 		return map;
+	}
+
+	//댓글 작성
+	public Integer replyWrite(String review_idx, String loginId, String reply_content,String profile, String name) {
+		inter=sqlSession.getMapper(ReviewInter.class);
+		int result=inter.replyWrite(review_idx,loginId,reply_content,profile);
+		inter.replyCntUp(review_idx);
+		/*inter.alamReply(name,);*/
+		return result;
+	}
+
+	//댓글 삭제
+	public Integer Revreply_delete(String reply_idx, String review_idx) {
+		logger.info("댓글 삭제");
+		inter=sqlSession.getMapper(ReviewInter.class);
+		int success = inter.Revreply_delete(reply_idx);
+		inter.replyCntDown(review_idx);
+		return success;
 	}
 
 }

@@ -17,8 +17,8 @@
 	 	useGeneratedKeys="true"
 	 	keyProperty="review_idx"
 	 	keyColumn="review_idx">
-	 	INSERT INTO review(review_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile)
-	 		VALUES(seq_review.NEXTVAL,#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{review_profile})
+	 	INSERT INTO review(review_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile,review_replyCnt)
+	 		VALUES(seq_review.NEXTVAL,#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{review_profile},0)
 	 </insert>
 	 
 	 <insert id="hashtag">
@@ -122,12 +122,14 @@
 	 <!-- 신고하기 -->
 	 <insert id="complain" parameterType="complain">
 	 	INSERT INTO complain
-	 	<if test="!review_idx.equals('')">
-			VALUES(seq_complain.NEXTVAL,#{id},#{complain_id},#{complain_type},#{complain_content},#{complain_cate},SYSDATE,0,#{review_idx},null)
-		</if>		
-		<if test="review_idx.equals('')">
-			VALUES(seq_complain.NEXTVAL,#{id},#{complain_id},#{complain_type},#{complain_content},#{complain_cate},SYSDATE,0,null,#{rev_reply_idx})
-		</if>
+	 	<choose>
+	 		<when test="review_idx == ''">
+				VALUES(seq_complain.NEXTVAL,#{id},#{complain_id},#{complain_type},#{complain_content},#{complain_cate},SYSDATE,0,null,#{rev_reply_idx})
+			</when>
+			<otherwise>
+				VALUES(seq_complain.NEXTVAL,#{id},#{complain_id},#{complain_type},#{complain_content},#{complain_cate},SYSDATE,0,#{review_idx},null)
+	 		</otherwise>
+	 	</choose>
 	 </insert>
 	 
 	 
@@ -234,6 +236,11 @@
 	 </delete>
 	 <update id="replyCntDown">
 		UPDATE review SET review_replyCnt = review_replyCnt-1 WHERE review_idx=#{param1}
+	</update>
+	
+	<!-- 댓글 수정 -->
+	<update id="Revreply_update">
+		UPDATE revReply SET revReply_content = #{param1} WHERE revReply_idx=#{param2} AND review_idx=#{param3}
 	</update>
 	 
 </mapper>

@@ -250,6 +250,8 @@ public class ReviewService {
 	public HashMap<String, Integer> complain(HashMap<String, String> map) {
 		logger.info("신고하기 서비스");
 		ComplainDTO dto = new ComplainDTO();
+		logger.info(map.get("Id"));
+		logger.info(map.get("compId"));
 		dto.setId(map.get("Id"));
 		dto.setComplain_id(map.get("compId"));
 		dto.setComplain_cate(map.get("complain_cate"));
@@ -412,9 +414,11 @@ public class ReviewService {
 	}
 
 	//댓글
-	public Integer Revreply_update(String reply_idx, String review_idx) {
-		// TODO Auto-generated method stub
-		return null;
+	public Integer Revreply_update(String reply_content, String reply_idx, String review_idx) {
+		logger.info("댓글 수정");
+		inter=sqlSession.getMapper(ReviewInter.class);
+		int success = inter.Revreply_update(reply_content, reply_idx,review_idx);
+		return success;
 	}
 
 }

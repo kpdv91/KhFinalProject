@@ -141,12 +141,7 @@ public class AdminController {
 		String revReply_idx = params.get("revReply_idx");
 		
 		
-		if(rev_idx != null && revReply_idx == null) return adminService.complain_reviewList(params);
-		
-	
-		return adminService.complain_revReply(params);
-		
-		
+		return adminService.complain_reviewList(params);
 	}
 	//신고된 리뷰 해시태그, 사진
 	@RequestMapping(value = "/comp_rev_hash_photo")

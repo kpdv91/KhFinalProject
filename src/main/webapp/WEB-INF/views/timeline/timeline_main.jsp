@@ -1229,7 +1229,7 @@
 				content +="<td class='comp_detail1'>"+item.complain_cate+"</td>";
 				var date = new Date(item.complain_date);			
 				content +="<td class='comp_detail1'>"+date.toLocaleDateString("ko-KR")+"</td>";
-				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.rev_reply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
+				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
 				content += "</tr>";
 				content += "<tr>";
 				content +="<td style='display: none;'>신고 내용 : </td>";

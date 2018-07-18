@@ -13,6 +13,7 @@ import com.kh.cat.admin.dao.AdminInter;
 import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.HashDTO;
 import com.kh.cat.dto.RevPhotoDTO;
+import com.kh.cat.dto.RevReplyDTO;
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.dto.StoreDTO;
 
@@ -84,8 +85,16 @@ public class AdminService {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		inter = sqlSession.getMapper(AdminInter.class);
-		ArrayList<ReviewDTO> list = inter.comp_reviewList(rev_idx);
-		map.put("list", list);
+		
+		if(rev_idx != null && revReply_idx.equals("0")) {
+			ArrayList<ReviewDTO> list1 = inter.comp_reviewList(rev_idx);
+			map.put("list1", list1);
+		}else if(rev_idx != null && revReply_idx != null) {
+			//SELECT * FROM revReply WHERE review_idx=#{param1} ORDER BY revReply_date 
+			ArrayList<RevReplyDTO> list2 = inter.comp_revReplyList(rev_idx, revReply_idx);
+			map.put("list2", list2);
+		}
+		
 		return map;
 	}
 
@@ -142,7 +151,7 @@ public class AdminService {
 		return map;
 	}
 
-	//신고 취소
+	//신고 취하
 	public HashMap<String, Object> comp_cancel(HashMap<String, String> params) {
 		logger.info("신고 취소 서비스 실행");
 		
@@ -156,11 +165,17 @@ public class AdminService {
 		inter = sqlSession.getMapper(AdminInter.class);
 		
 		//리뷰 신고 내역 삭제
-		if(rev_idx !=null && revReply_idx == null) {
+		if(rev_idx !=null && revReply_idx.equals("0")) {
 			int result = inter.complainDel(rev_idx, id);
 			if(result > 0) {
 				map.put("result", result);
-				map.put("msg", "신고 취하 완료");
+				map.put("msg", "리뷰 신고 취하 완료");
+			}
+		}else if(rev_idx !=null && revReply_idx != null) {
+			int result = inter.complainDel2(rev_idx, revReply_idx, id);//신고내역 지우기
+			if(result > 0) {
+				map.put("result", result);
+				map.put("msg", "리뷰댓글 신고 취하 완료");
 			}
 		}
 		
@@ -201,32 +216,28 @@ public class AdminService {
 		logger.info("complain_id : {}", complain_id);
 		logger.info("dm_content : {}", dm_content);
 		
-		if(rev_idx != null && revReply_idx.equals("undefined")) {//리뷰 삭제
+		if(rev_idx != null && revReply_idx.equals("0")) {//리뷰 삭제
 			//complain_id = 받는사람(신고당한사람), loginId = 보내는사람(관리자), dm_content = 쪽지 내용
 			int review_del_dm = inter.review_del_dm(complain_id, loginId, dm_content);
 			if(review_del_dm > 0) {
 				//id = 신고한사람, loginId = 관리자
 				inter.review_del_dm2(id, loginId);//게시물 삭제후 신고한 사람에게 쪽지 보내기
-				int review_del = inter.review_del(rev_idx);
+				int review_del = inter.review_del(rev_idx);//리뷰 삭제
 				inter.complainDel(rev_idx, id);//신고내역에서 지우기
-				map.put("result", review_del);
+				map.put("result", review_del);//리뷰 삭제 결과 result 에 저장
 				map.put("msg", "리뷰가 삭제되었습니다.");
 			}
 		}else if(rev_idx != null && revReply_idx != null) {//댓글 삭제
-			
+			int review_del_dm = inter.review_del_dm(complain_id, loginId, dm_content);
+			if(review_del_dm > 0) {
+				inter.revReply_del_dm3(id, loginId);//게시물 삭제후 신고한 사람에게 쪽지
+				//inter.complainDel2(rev_idx, revReply_idx, id);//신고내역 지우기
+			}
 		}
 		
 		return map;
 	}
 
-	//신고된 리뷰댓글
-	public HashMap<String, Object> complain_revReply(HashMap<String, String> params) {
-		logger.info("신고된 리뷰 댓글 서비스");
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		inter = sqlSession.getMapper(AdminInter.class);
-		
-		return map;
-	}
 
 	
 

@@ -35,21 +35,7 @@
 			
 			#content{position: absolute; width: 800px;height: auto;left : 400px;}
 			hr{margin-top:200px;}
-			#review{border: 2px solid #142e5b;width: 650px;height: 250px}
-			#listTop{border-bottom: 2px solid #142e5b;height: 50px;line-height: 50px;}
-	        #listTop_C{position :absolute;margin-left:5px;}
-	        #listTop_R{float: right;height: 50px;width: 150px;line-height: 25px;}
-	        #reply_div{position :absolute;margin-top:170px;}
-	        .review_tabletr{border-collapse: collapse;margin:0 auto;}
-	        #review_table{position :absolute;height: 170px;border-bottom: 2px solid #142e5b;border-collapse: collapse;width: 650px;margin-top:1px;}
-	        #star{text-align: right;}
-	        #hashtag{border: 2px solid black;width: 60px;height: 25px;font-size: 12px;text-align: center;line-height: 25px;float: left;margin-left: 5px;}
-	        textarea{border: 0px;width: 99%;height: 100%;resize: none;}
-	        #photo{width: 60px;height: 50px;float: left;margin-left: 5px;}
-	        #reviewReply{border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;width: 650px;display: none;}
-	        #starDiv{width: 100%;height: 30px;}
-	        #reviewList_hash,#reviewList_photo{width: 600px;height: auto;overflow: hidden;}
-	        #hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;}
+			
 	        #storeName_td{font-weight: bold;}
 	        #reply{border: 1px solid #142e5b;height: 50px;width: 650px;height:auto;}
 			#reply_img{width: 50px;height: 40px;padding: 5px;}
@@ -70,6 +56,26 @@
 			#following{width:50px;position:absolute;left:50px;top:0px;}
 			.friendprofile{width:60px;height:60px;float:left;}
 			.followdiv{width:200px;float:left;padding:1px;}
+			
+			#review_profile{width:50px;height: 50px;float:left;}
+			#reviewListDiv{margin-left: 490px;}
+			#review{border: 2px solid #142e5b;width: 500px;height: auto;}
+        	#listTop{border-bottom: 2px solid #142e5b;height: 50px;line-height: 50px;}
+        	#listTop_R{float: right;height: 50px;width: 150px;line-height: 25px;text-align: right;font-size: 13px;}
+       		#review_table tr,#review_table td{border-collapse: collapse;margin:0 auto;}
+        	#review_table{height: 170px;border-bottom: 2px solid #142e5b;border-collapse: collapse;width: 500px;margin:0 auto;}
+        	.starTd{text-align: right; overflow: hidden;}
+	        #hashtag{border: 2px solid black;width: 60px;height: 25px;font-size: 12px;text-align: center;line-height: 25px;float: left;margin-left: 5px;}
+	        #review_content{border: 0px;width: 99%;height: 100%;resize: none;}
+	        #photo{width: 60px;height: 50px;float: left;margin-left: 5px;}
+	        .reviewReply{border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;width: 500px;display: none;}
+	        #starDiv{width: 100%;height: 30px;}
+	        #reviewList_hash,#reviewList_photo{width: 600px;height: auto;overflow: hidden;}
+	        #hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;}
+	        #storeName_td{font-weight: bold;width: 300px;}
+	        #tableTop{height: 40px;}
+	        .span{text-decoration: none;color: black;font-size: 13px;}
+	        .span:hover{color: red;}
 		</style>
 	</head>
 	<body>
@@ -150,7 +156,7 @@
 	    	$("#complain_list").css("color","black");
 			$("#content").load(page,function(res, stat) {});
 			console.log($("#content"));
-	    	//ajaxCall(page);	
+	    	ajaxCall(page);	
 		}
 	});
 	
@@ -198,10 +204,9 @@
 				$("#likereview").html("좋아요 "+d.reviewlike);
 				$("#likestore").html("찜한가게 "+d.storelike);
 				$("#friend").html("팔로우 목록 "+d.follow);
-				if("${cate}"==""){
+				if("${cate}"=="" || "${cate}"=="팔로우"){
 				timelinereview();
 				}
-				//console.log("timelinereview() 실행완료");
 			},
 			error:function(e){
 				console.log(e);
@@ -422,6 +427,7 @@
 			},
 			dataType:"json",
 			success:function(d){
+				console.log(d);
 				printList(d.list);
 			},
 			error:function(e){
@@ -429,18 +435,31 @@
 			}
 		});
 	};
-	function printList(list){		 
+	function printList(list){
 		var content = "";
 		list.forEach(function(item){
-				content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-				content += "<div id='listTop'><div id='listTop_C'>"+item.id+"</div><div id='listTop_R'><br/>"+item.review_likeCnt+"명이 좋아합니다.</div></div>";
-				content += "<div id='table_div'><table id='review_table'><tr class='review_tabletr'><td id='storeName_td' class='review_tabletr'>"+item.review_storeName+"</td>";
-				content += "<td id='star'></td></tr>";			
-				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2'><textarea id='review_text' readonly>"+item.review_content+"</textarea></td></tr>";
-				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
-				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table></div>";
-				content += "<div id='reply_div'><a id='"+item.review_idx+"' href='#' onclick='reply(id)'>댓글"+item.review_replyCnt+"개</a></div></div>";
-				content += "<div id='reviewReply'>댓글이 없습니다<br/></div><br/></div>";			
+			content += "<div id='abc'>"
+				content += "<div id='review'>"
+				//console.log(item.review_profile);
+				if(item.review_profile=="resources/upload/0"){
+				content += "<img id='review_profile' src='resources/img/member/noprofile.jpg'";
+				}else{
+				content += "<img id='review_profile' src='"+item.review_profile+"'";
+				}
+				content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
+				content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
+				if(userid != "${id}"){
+					content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick("+item.review_idx+")' />";
+				}
+				content += "<br/></div></div>";
+				content += "<table id='review_table'><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
+				content += "<td id='starTd"+item.review_idx+"' class='starTd'></td></tr>";
+				content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
+				content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
+				content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'></td></tr><tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
+				content += "<span id='replySpan' onclick='replySelect("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</span></div>";
+				content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
+				content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";		
 				idx=item.review_idx;
 				hashtag(idx);
 		})
@@ -451,17 +470,30 @@
 		var content = "";
 		list.forEach(function(i){
 			i.forEach(function(item){
-				content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-				content += "<div id='listTop'><div id='listTop_C'>"+item.id+"</div><div id='listTop_R'><br/>"+item.review_likeCnt+"명이 좋아합니다.</div></div>";
-				content += "<div id='table_div'><table id='review_table'><tr class='review_tabletr'><td id='storeName_td' class='review_tabletr'>"+item.review_storeName+"</td>";
-				content += "<td id='star'></td></tr>";			
-				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2'><textarea id='review_text' readonly>"+item.review_content+"</textarea></td></tr>";
-				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
-				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table></div>";
-				content += "<div id='reply_div'><a id='a"+item.review_idx+"' href='#' onclick='reply("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</a></div></div>";
-				content += "<div class='ddd' id='reviewReply"+item.review_idx+"'><br/></div><br/></div>";			
-				idx=item.review_idx;
-				hashtag(idx);
+				content += "<div id='abc'>"
+					content += "<div id='review'>"
+					//console.log(item.review_profile);
+					if(item.review_profile=="resources/upload/0"){
+					content += "<img id='review_profile' src='resources/img/member/noprofile.jpg'";
+					}else{
+					content += "<img id='review_profile' src='"+item.review_profile+"'";
+					}
+					content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
+					content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
+					if(userid != "${id}"){
+						content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick("+item.review_idx+")' />";
+					}
+					content += "<br/></div></div>";
+					content += "<table id='review_table'><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
+					content += "<td id='starTd"+item.review_idx+"' class='starTd'></td></tr>";
+					content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
+					content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
+					content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'></td></tr><tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
+					content += "<span id='replySpan' onclick='replySelect("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</span></div>";
+					content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
+					content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";		
+					idx=item.review_idx;
+					hashtag(idx);
 			})
 		})
 		$("#content").empty();
@@ -493,7 +525,11 @@
 		list.forEach(function(item){
 			var date = new Date(item.revreply_date);
 			reply +="<tr id='reply_table"+item.revreply_idx+"'>";
-			reply +="<td><img id='reply_img' src='resources/upload/"+item.revreply_profile+"'/></td>";
+			if(item.revreply_profile==0){
+				reply +="<td><img id='reply_img' src='resources/img/member/noprofile.jpg'/></td>";
+			}else{
+				reply +="<td><img id='reply_img' src='resources/upload/"+item.revreply_profile+"'/></td>";
+			}
 			reply +="<td id='reply_id'>"+item.id+"</td>";
 			reply +="<td id='reply_content'><textarea id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
 			reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td>";
@@ -575,7 +611,7 @@
 			});
 	 }
 	function hashtag(elem){
-		 $.ajax({
+		$.ajax({
 			url:"./reviewHashPhoto",
 			type:"post",
 			dataType:"json",
@@ -583,25 +619,51 @@
 			success:function(d){
 				printHash(d.reviewHash,elem);		
 				printPhoto(d.reviewPhoto,elem);
+				console.log(d.reviewPhoto);
 			},
 			error:function(e){console.log(e);}
-		});	 
+		});
 	}
 	
+	var tag="";
 	function printHash(hash,elem){
-		var tag="";
+		tag="";
 		hash.forEach(function(item){
 			tag += "<div id='hashtag'>#"+item.hash_tag+"</div>";
 		});
 		$("#reviewList_hash"+elem).append(tag);
 	}
 	
+	var img="";
 	function printPhoto(photo,elem){
-		var img="";
+		var phoSrc ="";
+  		var photoArr="";
+		img="";
 		photo.forEach(function(item){
-			img += "<div id='photo'><img width='60px' height='50px' src='"+item.revPhoto_Photo+"'/></div>";
+			phoSrc=item.revPhoto_Photo;
+			photoArr=phoSrc.split(".").join('\\.')
+			img += "<div onclick='PhotoClick(this,"+elem+")' id='photo'><img id='PhotoImg"+item.revPhoto_Photo+"'  width='60px' height='50px' src='"+item.revPhoto_Photo+"'/></div>";
 		})
 		$("#reviewList_photo"+elem).append(img);
+	}
+	function likeClick(idx){
+		flag=idx;
+		console.log(idx+"/"+userid);
+		$.ajax({
+			url:"./reviewLike",
+			type:"post",
+			dataType:"text",
+			data:{"review_idx":idx, "loginId":userid},
+			success:function(d){
+				//console.log(d);
+				 if(d == "insert"){
+					 $("#reviewLike"+idx).attr("src","resources/img/reviewLike/reviewLike2.png");
+				}else if(d == "delete"){
+					$("#reviewLike"+idx).attr("src","resources/img/reviewLike/reviewLike.png");
+				} 
+			},
+			error:function(e){console.log(e);}
+		});
 	}
 	$(".userdetail").click(function(e) {
 		if(e.target.id == "message") {

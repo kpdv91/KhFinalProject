@@ -109,10 +109,10 @@
 		</div>
 		<br/><br/><br/>
 		
-		<%-- <c:import url="/WEB-INF/views/review/reviewList.jsp">
+		<c:import url="/WEB-INF/views/review/reviewList.jsp">
 			<c:param name="idx" value="-1"/>
 			<c:param name="reviewSearch" value="<%=request.getParameter(\"search_content\") %>"/>
-		</c:import> --%>
+		</c:import>
 	</body>
 	<script>
 	

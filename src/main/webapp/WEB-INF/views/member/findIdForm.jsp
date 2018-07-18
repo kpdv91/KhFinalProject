@@ -15,7 +15,7 @@
         background-color: #163D7B;
         margin: -150px 0 0 -75px;
         top: 50%;
-        left: 40%;      
+        left: 30%;      
     }
     table,th,td{
 		border-collapse: collapse;

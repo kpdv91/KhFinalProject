@@ -195,21 +195,17 @@ public class CommonService {
 		String search_content_And = search_content.replaceAll(" ", "%");
 		String[] search_content_Split = search_content.split(" ");
 		
-		HashMap<String, Object> search_content_AndMap = new HashMap<String, Object>();
-		search_content_AndMap.put("map", params.get("search_map"));
-		search_content_AndMap.put("content", search_content_And);
-		search_content_AndMap.put("sort", "리뷰 최신 순");
+		HashMap<String, Object> search_content_Map = new HashMap<String, Object>();
+		search_content_Map.put("map", params.get("search_map"));
+		search_content_Map.put("content", search_content_And);
+		search_content_Map.put("sort", "리뷰 최신 순");
 		
-		HashMap<String, Object> search_content_OrMap = new HashMap<String, Object>();
-		search_content_OrMap.put("map", params.get("search_map"));
-		search_content_OrMap.put("content", search_content_Split);
-		search_content_OrMap.put("sort", "리뷰 최신 순");
-		
-		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_AndMap);
+		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_Map);
 		if(result.isEmpty()) {
-			result = inter.storeSearch_Or(search_content_OrMap);
+			search_content_Map.put("content", search_content_Split);
+			result = inter.storeSearch_Or(search_content_Map);
 			if(result.isEmpty()) {
-				result = inter.storeSearch_Hash(search_content_OrMap);
+				result = inter.storeSearch_Hash(search_content_Map);
 			}
 		}
 		
@@ -233,21 +229,17 @@ public class CommonService {
 		String search_content_And = search_content.replaceAll(" ", "%");
 		String[] search_content_Split = search_content.split(" ");
 		
-		HashMap<String, Object> search_content_AndMap = new HashMap<String, Object>();
-		search_content_AndMap.put("map", params.get("search_map"));
-		search_content_AndMap.put("content", search_content_And);
-		search_content_AndMap.put("sort", params.get("data"));
+		HashMap<String, Object> search_content_Map = new HashMap<String, Object>();
+		search_content_Map.put("map", params.get("search_map"));
+		search_content_Map.put("content", search_content_And);
+		search_content_Map.put("sort", params.get("data"));
 		
-		HashMap<String, Object> search_content_OrMap = new HashMap<String, Object>();
-		search_content_OrMap.put("map", params.get("search_map"));
-		search_content_OrMap.put("content", search_content_Split);
-		search_content_OrMap.put("sort", params.get("data"));
-		
-		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_AndMap);
+		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_Map);
 		if(result.isEmpty()) {
-			result = inter.storeSearch_Or(search_content_OrMap);
+			search_content_Map.put("content", search_content_Split);
+			result = inter.storeSearch_Or(search_content_Map);
 			if(result.isEmpty()) {
-				result = inter.storeSearch_Hash(search_content_OrMap);
+				result = inter.storeSearch_Hash(search_content_Map);
 			}
 		}
 		

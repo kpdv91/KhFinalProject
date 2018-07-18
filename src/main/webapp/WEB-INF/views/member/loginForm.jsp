@@ -93,8 +93,8 @@
 
 		var popUrl = "./findIdForm";	//팝업창에 출력될 페이지 URL
 
-		var popOption = "top=0, left=0, width=800, height=556, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
-
+		//var popOption = "top=0, left=0, width=800, height=556, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
+		var popOption = "top=0, left=0, width=500, height=500, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
 			window.open(popUrl,"",popOption);
 
 		}

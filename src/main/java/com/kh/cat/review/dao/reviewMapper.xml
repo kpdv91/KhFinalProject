@@ -41,10 +41,40 @@
 	 		<when test="store_idx==0">
 	 			SELECT * FROM review
 	 		</when>
-	 		<otherwise>
-	 			SELECT * FROM review WHERE store_idx= #{store_idx}
+	 		<when test="store_idx>0">
+				SELECT * FROM review WHERE store_idx= #{store_idx}
+			</when>
+			<otherwise>
+				SELECT * FROM review WHERE review_storeName LIKE '%'||#{review_search}||'%'
 	 		</otherwise>
 	 	</choose>
+	 	<if test="range.equals('최신순')">
+	 		ORDER BY review_date DESC
+		</if>		
+		<if test="range.equals('좋아요순')">
+			ORDER BY review_likeCnt DESC
+		</if>
+	</select>
+	
+	<select id="reviewList_or" resultType="review" parameterType="hashmap">
+	 	SELECT * FROM review WHERE
+		<foreach collection="review_search" item="review_search" index="index" separator="OR">
+			review_storeName LIKE '%'||#{review_search}||'%'
+		</foreach>
+	 	<if test="range.equals('최신순')">
+	 		ORDER BY review_date DESC
+		</if>		
+		<if test="range.equals('좋아요순')">
+			ORDER BY review_likeCnt DESC
+		</if>
+	</select>
+	
+	<select id="reviewList_hash" resultType="review" parameterType="hashmap">
+	 	SELECT * FROM review, (SELECT * FROM hash WHERE 
+		<foreach collection="review_search" item="review_search" index="index" separator="OR">
+			hash_tag LIKE '%'||#{review_search}||'%'
+		</foreach>
+		) hashtag WHERE review.review_idx=hashtag.review_idx
 	 	<if test="range.equals('최신순')">
 	 		ORDER BY review_date DESC
 		</if>		
@@ -137,9 +167,19 @@
 	</select>
 	
 	<!-- 리뷰 좋아요 insert -->
-	<insert id="likeInsert">
-		INSERT INTO revLike VALUES(seq_revLike.NEXTVAL,#{param1},#{param2},SYSDATE)
+	<insert id="likeInsert"
+		parameterType="revLike"
+	 	useGeneratedKeys="true"
+	 	keyProperty="revLike_idx"
+	 	keyColumn="revLike_idx"
+	>
+		INSERT INTO revLike VALUES(seq_revLike.NEXTVAL,#{review_idx},#{id},SYSDATE)
 	</insert>
+	<!-- 좋아요시 알람 추가 -->
+	<insert id="alarmLike"	>
+		INSERT INTO alarm (alarm_idx,alarm_id,alarm_cate,revLike_idx,alarm_read) VALUES (seq_alarm.NEXTVAL,#{param1},'좋아요',#{param2},0)
+	</insert>
+	
 	
 	<!-- 좋아요 수 증가 -->
 	<update id="likeCntUp">
@@ -155,6 +195,11 @@
 	<delete id="likeDelete">
 		DELETE FROM revLike WHERE review_idx=#{param1} AND id=#{param2}
 	</delete>
+	<!-- 좋아요 취소시 알람 지우기 -->
+	<delete id="alarmLikeDel">
+		DELETE FROM alarm WHERE alarm_idx=#{param1} 
+	</delete>
+	
 	
 	<!-- 리뷰 좋아요 select(List) -->
 	<select id="likeList" resultType="revLike">
@@ -167,12 +212,21 @@
 	</select>
 	
 	<!-- 댓글 작성 -->
-	<insert id="replyWrite">
-		INSERT INTO revReply VALUES(seq_revReply.NEXTVAL,#{param1},#{param2},#{param3},SYSDATE,#{param4})
+	<insert id="replyWrite"
+		parameterType="revReply"
+	 	useGeneratedKeys="true"
+	 	keyProperty="revreply_idx"
+	 	keyColumn="revreply_idx">
+		INSERT INTO revReply VALUES(seq_revReply.NEXTVAL,#{review_idx},#{id},#{revreply_content},SYSDATE,#{revreply_profile})
 	</insert>
 	<update id="replyCntUp">
 		UPDATE review SET review_replyCnt = review_replyCnt+1 WHERE review_idx=#{param1}
 	</update>
+	<!-- 알람  -->
+	<insert id="alamReply">
+		INSERT INTO alarm (alarm_idx,alarm_id,alarm_cate,revReply_idx,alarm_read) VALUES (seq_alarm.NEXTVAL,#{param1},'댓글',#{param2},0)
+	</insert>
+	
 	
 	<!-- 댓글 삭제 -->
 	<delete id="Revreply_delete">

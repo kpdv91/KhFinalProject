@@ -171,12 +171,13 @@ public class ReviewService {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 
 		ArrayList<ReviewDTO> list = inter.reviewList(ra);
-		
-		if(list.isEmpty()) {//and 검색이 안되면
-			ra.put("review_search", search_content_Split);//검색어를 or로 바꿔서
-			list = inter.reviewList_or(ra);//or검색
-			if(list.isEmpty()) {//or 검색이 안되면
-				list = inter.reviewList_hash(ra);//해쉬검색
+		if(store_idx == -1) {
+			if(list.isEmpty()) {//and 검색이 안되면
+				ra.put("review_search", search_content_Split);//검색어를 or로 바꿔서
+				list = inter.reviewList_or(ra);//or검색
+				if(list.isEmpty()) {//or 검색이 안되면
+					list = inter.reviewList_hash(ra);//해쉬검색
+				}
 			}
 		}
 		map.put("reviewList", list);

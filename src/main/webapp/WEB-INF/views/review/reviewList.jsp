@@ -11,15 +11,12 @@
 		<!-- <link rel="stylesheet" type="text/css" href="star.css"> -->
 		<title>Insert title here</title>
 		<style>
-		#reviewListDiv{
-			margin-left: 490px;
-		}
+		#reviewListDiv{margin-left: 490px;}
 		
-			 #review{
+		#review{
             border: 2px solid #142e5b;
             width: 500px;
-            height: auto;
-            
+            height: auto;            
         }
         #listTop{
             border-bottom: 2px solid #142e5b;
@@ -102,17 +99,14 @@
         	font-weight: bold;
         	width: 300px;
         }
-        #tableTop{
-        	height: 40px;
-        }
+        #tableTop{height: 40px;}
         .span{
         	text-decoration: none;
         	color: black;
         	font-size: 13px;
+        	cursor: pointer;
         }
-        .span:hover{
-        	color: red;
-        }
+        .span:hover{	color: red;}
         .bigPhoto{
         	width: 505px;
         	height: 250px;
@@ -197,9 +191,7 @@ input[type=button]{
             outline: 0px;
             border: 0px;
        }
-       #review_Write{
-       		margin-left: 490px;
-       }
+       #review_Write{	margin-left: 490px;}
        
        #review_range{
 				width: 80px;
@@ -215,9 +207,7 @@ input[type=button]{
 				border-radius: 8px;
 				overflow: hidden;
 			}
-			#likeCntTr{
-				height: 30px;
-			}
+			#likeCntTr{height: 30px;}
 			#replySpan{
 				display: table-cell;
 				height: 30px;
@@ -228,35 +218,30 @@ input[type=button]{
 				width: 30px;
 				height: 30px;
 			}
-			#reply_table{
-				font-size: 13px;
-			}
+			#reply_table{font-size: 13px;}
 			.reply_textarea{				
 				 resize: none;
 				 width: 330px;
 				 border-radius: 5px;
 			}
-			#replyWrite{
-				width: 50px;
-			}
+			#replyWrite{width: 50px;}
 			.reply_ck{
 				width: 50px;
 				font-size: 12px;
 				margin-right: 5px;
+				cursor: pointer;
 			}
-			.reply_ck:hover{
-				color: red;
-			}
-			#reply_id{
-				height: 50px;
-			}
+			.reply_ck:hover{color: red;}
+			#reply_id{height: 50px;}
 			.replyDiv{
 				border-bottom: 1px solid #142e5b;
 				border-left: 1px solid #142e5b;
 				border-right: 1px solid #142e5b;
 				width: 500px;
 			}
-			
+			.reviewLikeImg{cursor: pointer;	}
+			.PhotoImg{cursor: pointer;}
+			#complain{cursor: pointer;}
 		</style>
 		
 	</head>
@@ -327,7 +312,7 @@ input[type=button]{
 		list.forEach(function(item){
 			content += "<div id='abc'>"
 			content += "<div id='review'><img id='reviewListPro' width='50px' height='50px' src='"+item.review_profile+"'/><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-			content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'><img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' /><br/>";
+			content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'><img class='reviewLikeImg' id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' /><br/>";
 			if(item.id != loginId || loginId == ""){
 			content += "<span id='complain' class='span' href='#' onclick='complain(this)'>신고</span>";
 			}
@@ -668,7 +653,7 @@ input[type=button]{
 		photo.forEach(function(item){
 			phoSrc=item.revPhoto_Photo;
 			photoArr=phoSrc.split(".").join('\\.')
-			img += "<div onclick='PhotoClick(this,"+elem+")' id='photo'><img id='PhotoImg"+item.revPhoto_Photo+"'  width='60px' height='50px' src='"+item.revPhoto_Photo+"'/></div>";
+			img += "<div onclick='PhotoClick(this,"+elem+")' id='photo'><img class='PhotoImg' id='PhotoImg"+item.revPhoto_Photo+"'  width='60px' height='50px' src='"+item.revPhoto_Photo+"'/></div>";
 		})
 		$("#reviewList_photo"+elem).append(img);
 	}

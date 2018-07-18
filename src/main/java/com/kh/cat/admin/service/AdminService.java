@@ -171,8 +171,8 @@ public class AdminService {
 				map.put("result", result);
 				map.put("msg", "리뷰 신고 취하 완료");
 			}
-		}else if(rev_idx !=null && revReply_idx != null) {
-			int result = inter.complainDel2(rev_idx, revReply_idx, id);//신고내역 지우기
+		}else if(rev_idx.equals("0") && revReply_idx != null) {
+			int result = inter.complainDel2(revReply_idx, id);//신고내역 지우기
 			if(result > 0) {
 				map.put("result", result);
 				map.put("msg", "리뷰댓글 신고 취하 완료");

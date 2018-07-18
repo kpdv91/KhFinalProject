@@ -100,7 +100,7 @@
 	
 	<!-- 댓글 신고 취하 -->
 	<delete id="complainDel2">
-		DELETE FROM complain WHERE review_idx = #{param1} AND revReply_idx = #{param2} AND id = #{param3}
+		DELETE FROM complain WHERE revReply_idx = #{param1} AND id = #{param2}
 	</delete>
 	
 	

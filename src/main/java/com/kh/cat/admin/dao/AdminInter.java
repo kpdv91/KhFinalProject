@@ -45,7 +45,7 @@ public interface AdminInter {
 
 	void revReply_del_dm3(String id, String loginId);
 
-	int complainDel2(String rev_idx, String revReply_idx, String id);
+	int complainDel2(String rev_idx, String revReply_idx);
 
 
 	

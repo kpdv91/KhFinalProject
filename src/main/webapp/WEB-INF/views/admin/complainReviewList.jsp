@@ -92,7 +92,7 @@
 		</style>
 	</head>
 	<body>
-		<h1>신고된 리뷰 리스트</h1>
+		<h1>신고된 리뷰&댓글</h1>
 		<hr/>
 		<div id="btnDiv">
 			<button class="btn" id="blackListBtn">블랙리스트 추가</button>

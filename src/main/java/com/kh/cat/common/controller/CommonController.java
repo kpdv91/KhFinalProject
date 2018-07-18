@@ -191,4 +191,25 @@ public class CommonController {
 		logger.info("팔로우 리스트 요청");		
 		return commonservice.timelinefollowlist(params);
 	}
+	@RequestMapping(value = "/alarmlist")
+	public @ResponseBody HashMap<String, Object> alarmlist(@RequestParam Map<String,String> params) {
+		logger.info("알람 리스트 요청");		
+		return commonservice.alarmlist(params);
+	}
+	@RequestMapping(value = "/alarmtimeline")
+	public ModelAndView alarmtimeline(@RequestParam Map<String,String> params) {
+		System.out.println("알람 타임라인 요청");
+		String id=params.get("id");
+		String cate=params.get("cate");
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("id",id);
+		mav.addObject("cate",cate);
+		mav.setViewName("timeline/timeline_main");
+		return mav;
+	}
+	@RequestMapping(value = "/alarmread")
+	public @ResponseBody HashMap<String, Object> alarmread(@RequestParam Map<String,String> params) {
+		logger.info("알람 읽기 요청");		
+		return commonservice.alarmread(params);
+	}
 }

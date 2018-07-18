@@ -15,7 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.cat.common.dao.CommonInter;
 
 import com.kh.cat.dto.ReviewDTO;
+import com.kh.cat.dto.AlarmDTO;
 import com.kh.cat.dto.ComplainDTO;
+import com.kh.cat.dto.DMDTO;
+import com.kh.cat.dto.FollowDTO;
 import com.kh.cat.dto.HashDTO;
 import com.kh.cat.dto.MemberDTO;
 import com.kh.cat.dto.StoreDTO;
@@ -97,14 +100,22 @@ public class CommonService {
 		map.put("id",idcheck);
 		return map;
 	}
+	@Transactional
 	public HashMap<String, Object> sendmsg(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		DMDTO dto = new DMDTO();
 		String userid=params.get("userid");
 		String id=params.get("id");		
 		String content=params.get("content");
+		dto.setId(userid);
+		dto.setDm_id(id);
+		dto.setDm_content(content);
 		logger.info(userid+"/"+id+"/"+content);		
-		int a = inter.sendmsg(userid,id,content);
+		int a = inter.sendmsg(dto);
+		if(a>0) {
+			inter.alarmdminsert(dto.getDm_idx(),id);
+		}
 		map.put("success",a);
 		return map;
 	}
@@ -133,13 +144,22 @@ public class CommonService {
 		return map;
 	}
 
+	@Transactional
 	public HashMap<String, Object> followinsert(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		FollowDTO dto = new FollowDTO();
 		String userid=params.get("userid");
-		String id=params.get("id");		
+		String id=params.get("id");
+		dto.setId(userid);
+		dto.setFollow_id(id);
 		logger.info(userid+"/"+id+"/");		
-		int a = inter.followinsert(userid,id);
+		int a = inter.followinsert(dto);
+		System.out.println("a"+a);
+		System.out.println(dto.getFollow_idx());
+		if(a>0) {
+			inter.alarminsert(dto.getFollow_idx(),id);
+		}
 		map.put("success",a);
 		return map;
 	}
@@ -175,21 +195,17 @@ public class CommonService {
 		String search_content_And = search_content.replaceAll(" ", "%");
 		String[] search_content_Split = search_content.split(" ");
 		
-		HashMap<String, Object> search_content_AndMap = new HashMap<String, Object>();
-		search_content_AndMap.put("map", params.get("search_map"));
-		search_content_AndMap.put("content", search_content_And);
-		search_content_AndMap.put("sort", "리뷰 최신 순");
+		HashMap<String, Object> search_content_Map = new HashMap<String, Object>();
+		search_content_Map.put("map", params.get("search_map"));
+		search_content_Map.put("content", search_content_And);
+		search_content_Map.put("sort", "리뷰 최신 순");
 		
-		HashMap<String, Object> search_content_OrMap = new HashMap<String, Object>();
-		search_content_OrMap.put("map", params.get("search_map"));
-		search_content_OrMap.put("content", search_content_Split);
-		search_content_OrMap.put("sort", "리뷰 최신 순");
-		
-		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_AndMap);
+		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_Map);
 		if(result.isEmpty()) {
-			result = inter.storeSearch_Or(search_content_OrMap);
+			search_content_Map.put("content", search_content_Split);
+			result = inter.storeSearch_Or(search_content_Map);
 			if(result.isEmpty()) {
-				result = inter.storeSearch_Hash(search_content_OrMap);
+				result = inter.storeSearch_Hash(search_content_Map);
 			}
 		}
 		
@@ -213,21 +229,17 @@ public class CommonService {
 		String search_content_And = search_content.replaceAll(" ", "%");
 		String[] search_content_Split = search_content.split(" ");
 		
-		HashMap<String, Object> search_content_AndMap = new HashMap<String, Object>();
-		search_content_AndMap.put("map", params.get("search_map"));
-		search_content_AndMap.put("content", search_content_And);
-		search_content_AndMap.put("sort", params.get("data"));
+		HashMap<String, Object> search_content_Map = new HashMap<String, Object>();
+		search_content_Map.put("map", params.get("search_map"));
+		search_content_Map.put("content", search_content_And);
+		search_content_Map.put("sort", params.get("data"));
 		
-		HashMap<String, Object> search_content_OrMap = new HashMap<String, Object>();
-		search_content_OrMap.put("map", params.get("search_map"));
-		search_content_OrMap.put("content", search_content_Split);
-		search_content_OrMap.put("sort", params.get("data"));
-		
-		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_AndMap);
+		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_Map);
 		if(result.isEmpty()) {
-			result = inter.storeSearch_Or(search_content_OrMap);
+			search_content_Map.put("content", search_content_Split);
+			result = inter.storeSearch_Or(search_content_Map);
 			if(result.isEmpty()) {
-				result = inter.storeSearch_Hash(search_content_OrMap);
+				result = inter.storeSearch_Hash(search_content_Map);
 			}
 		}
 		
@@ -376,6 +388,27 @@ public class CommonService {
 		}
 		map.put("fallowlist", list);
 		map.put("fallowing",listing);
+		return map;
+	}
+
+	public HashMap<String, Object> alarmlist(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		map.put("list", inter.alarmlist(id));
+		return map;
+	}
+
+	public HashMap<String, Object> alarmread(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int idx=Integer.parseInt(params.get("idx"));
+		int a = inter.alarmread(idx);
+		boolean alarmread = false;
+		if(a>0) {
+			alarmread = true;
+		}
+		map.put("success", alarmread);
 		return map;
 	}
 

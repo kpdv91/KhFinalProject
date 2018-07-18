@@ -76,13 +76,17 @@
 	 </update>
 	 
 	 <!-- 좋아요 수 조회 -->
-	 <select id="review_likeCnt" resultType="Integer">
-	 	SELECT review_likecnt FROM review WHERE review_idx= #{param1}
+	 <select id="review_likeCnt" resultType="Review">
+	 	SELECT review_likecnt, id FROM review WHERE review_idx= #{param1}
 	 </select>
 	 
 	 <!-- 좋아요 10일 때 포인트 적립 -->
 	 <update id="likePoint">
 	 	UPDATE member SET pointcnt = pointcnt + 1000 WHERE id=#{param1}
+	 </update>
+	 
+	 <update id="likePointt">
+	 	UPDATE member SET pointcnt = pointcnt + 100 WHERE id = #{param1}
 	 </update>
 	 
 	 <!-- 신고하기 -->
@@ -137,6 +141,16 @@
 		INSERT INTO revLike VALUES(seq_revLike.NEXTVAL,#{param1},#{param2},SYSDATE)
 	</insert>
 	
+	<!-- 좋아요 수 증가 -->
+	<update id="likeCntUp">
+		UPDATE review SET review_likeCnt = review_likeCnt+1 WHERE review_idx=#{param1}
+	</update>
+	
+	<!-- 좋아요 수 감소 -->
+	<update id="likeCntDown">
+		UPDATE review SET review_likeCnt = review_likeCnt-1 WHERE review_idx=#{param1}
+	</update>
+	
 	<!-- 리뷰 좋아요 delete -->
 	<delete id="likeDelete">
 		DELETE FROM revLike WHERE review_idx=#{param1} AND id=#{param2}
@@ -146,4 +160,26 @@
 	<select id="likeList" resultType="revLike">
 		SELECT review_idx FROM revLike WHERE id=#{param1}
 	</select>
+	
+	<!-- 댓글 리스트 -->
+	<select id="replySelect" resultType="revReply">
+		SELECT * FROM revReply WHERE review_idx=#{param1} ORDER BY revReply_date 
+	</select>
+	
+	<!-- 댓글 작성 -->
+	<insert id="replyWrite">
+		INSERT INTO revReply VALUES(seq_revReply.NEXTVAL,#{param1},#{param2},#{param3},SYSDATE,#{param4})
+	</insert>
+	<update id="replyCntUp">
+		UPDATE review SET review_replyCnt = review_replyCnt+1 WHERE review_idx=#{param1}
+	</update>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="Revreply_delete">
+	 	DELETE FROM revReply WHERE revReply_idx = #{param1}
+	 </delete>
+	 <update id="replyCntDown">
+		UPDATE review SET review_replyCnt = review_replyCnt-1 WHERE review_idx=#{param1}
+	</update>
+	 
 </mapper>

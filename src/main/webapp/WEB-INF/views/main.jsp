@@ -21,18 +21,7 @@
 	
 		<c:import url="/WEB-INF/views/include/main/footer.jsp"/>
 	</body>
-	
+	<script>
 
-
-<script>
-<<<<<<< HEAD
-	
-	
-=======
-
->>>>>>> 3174b79d0722cd1c91cc4d4b04719869fc3c75e1
-
-
-   
-</script>
+	</script>
 </html>

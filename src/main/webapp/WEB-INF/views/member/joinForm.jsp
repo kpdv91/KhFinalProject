@@ -53,7 +53,7 @@
 	<body>
 		<form action="join" id="join" method="post">
 		<div id="div1" >
-			<div id="profile" name="profile" onchange="testBB()" >
+			<div id="profile" name="profile">
 				<img alt="noprofile" src="resources/img/member/noprofile.jpg" height=150px width=150px>
 			</div>
             <!--<div id="pic">-->
@@ -67,7 +67,6 @@
             <th>아이디 : </th> 
             <td><input type="text" id="userId" name="userId" placeholder="아이디" onchange="chgId()"></td>
             <td><input id="overlay" type="button" value="중복체크"/></td>
-            </td>
          </tr>
          <tr>
             <th>비밀번호 : </th>
@@ -84,7 +83,8 @@
             <td><input type="text" id="userName" name="userName" placeholder="이름"></td>
          <tr>
             <th>이메일 : </th>
-            <td><input type="email" id="userEmail" name="userEmail" placeholder="이메일"></td>
+            <td><input type="email" id="userEmail" name="userEmail" placeholder="이메일" onchange="chgMail()"></td>
+            <td><input id="overlayMail" type="button" value="중복체크"/></td>
          </tr>
          <th>핸드폰번호</th>
         <td>
@@ -107,12 +107,16 @@
 	</body>
 	<script>
 	
-	var chkSum = 0;
+	
     // 중복확인과 회원가입 아작스 사용하기 위해 url,data를 선언
     var url;
     var data;
+    
+    var chkSum = 0;//ID 중복확인 클릭시 1, 중복확인 후 값 바뀔시 0
+    var chkMail = 0;//Email 중복확인 클릭시 1, 중복확인 후 값 바뀔시 0
     var idVal=0;//ID 중복확인 체크해주는 값
     var pwVal=0;//PW 중복확인 체크해주는 값
+    var mailVal=0;//Email 중복확인 체크해주는 값
     
     
 	var imgLen = $("#profile img").length;
@@ -120,8 +124,12 @@
     function chgId(){//ID 중복확인 후, ID의 값이 변경되면 실행.
     	idVal=0;
     }
+    
+    function chgMail(){//Mail 중복확인 후, Mail의 값이 변경되면 실행.
+    	mailVal=0;
+    }
       
-    //중복 확인
+    //ID 중복 확인
     $("#overlay").click(function(){
         data ={};
         data.id = $("#userId").val();
@@ -161,6 +169,50 @@
             }                
         });            
     }
+    
+  //Email 중복 확인
+    $("#overlayMail").click(function(){
+        data ={};
+        data.email = $("#userEmail").val();
+        ajaxCallMail("./rest/overlayMail",data);
+        
+    });   
+    
+    //ajax 실행
+    function ajaxCallMail(reqUrl, reqData){
+        $.ajax({
+            url:reqUrl,
+            type:'get',
+            dataType:'json',
+            data: reqData,
+            success:function(d){
+                console.log(d);
+                if(reqUrl=="./rest/overlayMail"){
+                    if(d.use == "Y"){
+                        chkMail ++;
+                        alert("사용 가능한 이메일 입니다.");
+                        mailVal=1;
+                    }else{
+                        alert("누군가가 사용 하고 있는 이메일 입니다.");
+                        $("#userEmail").val("");
+                    }
+                }else{
+                    if(d.success == 1){
+                        alert("가입에 성공 하였습니다.");
+                        location.href="./";
+                    }else{
+                        alert("가입에 실패 하였습니다. 다시 입력 해 주세요!");
+                    }
+                }
+            },
+            error:function(e){
+                console.log(e);
+            }                
+        });            
+    }
+    
+    
+    
 
 
 	function chkVal(){
@@ -222,8 +274,12 @@
            	alert("비밀번호는 8~16자를 입력해주세요.");
         }else if(chkSum<1){
         	alert("아이디 중복체크 확인이 필요 합니다.");
+        }else if(chkMail<1){
+        	alert("이메일 중복체크 확인이 필요 합니다.");
         }else if(idVal<1){
         	alert("아이디값이 변경 되었습니다. 다시 중복체크 확인이 필요 합니다.");
+        }else if(mailVal<1){
+        	alert("이메일값이 변경 되었습니다. 다시 중복체크 확인이 필요 합니다.");
         }else if(pwChkVal==0){
             alert("비밀번호를 확인 하세요.");
         }else if(pwVal==0){
@@ -234,7 +290,7 @@
 
 			//핸드폰 번호 합치기
 	    	var phone = $("#hp1").val()+"-"+$("#hp2").val()+"-"+$("#hp3").val();
-		    	console.log("phone", phone);//나중에 지워도 됨
+		    	console.log("phone", phone);
 		    	$("#userPhone").val(phone);//userPhone에 합친 값 넣었음
 				$("#join").submit();//submit
 				}

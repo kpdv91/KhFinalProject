@@ -56,10 +56,10 @@ public class ReviewController {
 		return service.fileDel(root,fileName);
 	}
 	@RequestMapping(value= "/reviewWrite")
-	public String wirte(@RequestParam("hash_tag") ArrayList<String> hash_tag,
+	public String wirte(@RequestParam(value ="review_storeidx", required = false, defaultValue = "0") String review_storeidx,@RequestParam("hash_tag") ArrayList<String> hash_tag,
 			@RequestParam(value ="review_photo", required = false, defaultValue = "0") ArrayList<String> review_photo,@RequestParam HashMap<String, String>map, HttpServletRequest request) {
 		logger.info("글쓰기 or 수정 요청");	
-		logger.info(""+map);
+		logger.info(""+review_storeidx);
 		String loginId = (String) request.getSession().getAttribute("loginId");
 		String profile = (String) request.getSession().getAttribute("loginProfile");
 		logger.info(map.get("review_idx"));
@@ -67,7 +67,7 @@ public class ReviewController {
 		if(map.get("review_idx") != "") {
 			return service.review_update(hash_tag, review_photo, map, loginId);
 		}else {
-			return service.write(hash_tag, review_photo, map, loginId);
+			return service.write(review_storeidx,hash_tag, review_photo, map, loginId);
 		}
 	}
 	
@@ -92,10 +92,10 @@ public class ReviewController {
 		return "review/reviewList";
 	}
 	@RequestMapping(value = "/reviewList")
-	public @ResponseBody HashMap<String, Object> reviewList(@RequestParam("store_idx") int store_idx, @RequestParam("range") String range) {
+	public @ResponseBody HashMap<String, Object> reviewList(@RequestParam("review_search") String review_search, @RequestParam("store_idx") int store_idx, @RequestParam("range") String range) {
 		logger.info("리뷰 리스트 요청");
 		logger.info(range);
-		return service.reviewList(store_idx, range);
+		return service.reviewList(store_idx, range, review_search);
 	}
 	@RequestMapping(value = "/reviewHashPhoto")
 	public @ResponseBody HashMap<String, Object> reviewHashPhoto(@RequestParam("review_idx") String review_idx,HttpSession session) {
@@ -106,7 +106,7 @@ public class ReviewController {
 	
 	@RequestMapping(value = "/review_star")
 	public @ResponseBody HashMap<String, Object> review_star(@RequestParam("review_idx") String review_idx) {
-		logger.info("리뷰 해시태그, 사진 요청");
+		logger.info("별점 요청");
 		return service.review_star(review_idx);
 	}
 	
@@ -157,5 +157,25 @@ public class ReviewController {
 		logger.info("리뷰 좋아요 select요청");
 		return service.reviewLikeSelect(loginId);
 	}
+	
+	@RequestMapping(value = "/replySelect")
+	public @ResponseBody HashMap<String, Object> replySelect(@RequestParam("review_idx") String review_idx) {
+		logger.info("리뷰댓글 리스트 요청");
+		return service.replySelect(review_idx);
+	}
+	
+	@RequestMapping(value = "/replyWrite")
+	public @ResponseBody Integer replyWrite(@RequestParam("review_idx") String review_idx,@RequestParam("loginId") String loginId,@RequestParam("reply_content") String reply_content,@RequestParam("profile") String profile,@RequestParam("name") String name) {		
+		logger.info("리뷰 댓글 작성");
+		System.out.println(review_idx+"/"+loginId+"/"+reply_content+"/"+profile);
+		return service.replyWrite(review_idx,loginId,reply_content,profile,name);
+	}
+	
+	@RequestMapping(value = "/Revreply_delete")
+	public @ResponseBody Integer Revreply_delete(@RequestParam("reply_idx") String reply_idx,@RequestParam("review_idx") String review_idx) {		
+		System.out.println("댓글 삭제 요청");		
+		return service.Revreply_delete(reply_idx,review_idx);
+	}
+	
 	
 }

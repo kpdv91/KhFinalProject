@@ -93,12 +93,12 @@
 		<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
 	</select>
 	<select id="storeSearch_Hash" resultType="store" parameterType="hashmap">
-		SELECT * FROM (SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%') sto,
+		SELECT DISTINCT (sto.store_idx),hashtag.hash_tag FROM (SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%') sto,
 		(SELECT * FROM hash WHERE 
 		<foreach collection="content" item="content" index="index" separator="OR">
 			hash_tag LIKE '%'||#{content}||'%'
 		</foreach>
-		) hashtag WHERE sto.store_idx=hashtag.store_idx
+		) hashtag WHERE sto.store_idx=hashtag.store_idx GROUP BY sto.store_idx
 		<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
 		<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
 		<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>

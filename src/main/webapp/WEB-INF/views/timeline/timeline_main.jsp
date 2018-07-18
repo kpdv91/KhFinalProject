@@ -111,12 +111,47 @@
 		</div>
 	</body>
 	<script>
+	console.log("${cate}");
 	var replyClick = 1;
 	var userid = "${sessionScope.loginId}";
 	var page = "";
 	var str = "";
 	var phone=[];
 	var fallowbtn=1;
+	$(document).ready(function(){
+		if("${cate}"=="팔로우"){
+			fallowlist();
+		}else if("${cate}"=="메세지"){
+			console.log("ddd");
+			page = "resources/timelinehtml/messagebox.html";
+			$("#message").css("background-color","darkblue");
+			$("#message").css("color","white");
+			$("#update").css("background-color","lightgray");
+			$("#update").css("color","black");
+	    	$("#coupon").css("background-color","lightgray");
+	    	$("#coupon").css("color","black");
+	    	$("#point").css("background-color","lightgray");
+	    	$("#point").css("color","black");
+	    	$("#total").css("background-color","lightgray");
+	    	$("#total").css("color","black");
+	    	$("#myreview").css("background-color","lightgray");
+	    	$("#myreview").css("color","black");
+	    	$("#likereview").css("background-color","lightgray");
+	    	$("#likereview").css("color","black");
+	    	$("#likestore").css("background-color","lightgray");	    	
+	    	$("#likestore").css("color","black");
+	    	$("#timeline_reply").css("background-color","lightgray");
+	    	$("#timeline_reply").css("color","black");
+	    	$("#store_regist_list").css("background-color","lightgray");	    	
+	    	$("#store_regist_list").css("color","black");
+	    	$("#complain_list").css("background-color","lightgray");
+	    	$("#complain_list").css("color","black");
+			$("#content").load(page,function(res, stat) {});
+			console.log($("#content"));
+	    	//ajaxCall(page);	
+		}
+	});
+	
 	if(userid==""){
 		$("#fallow").css("display","none");
 		$("#dm").css("display","none");
@@ -161,7 +196,10 @@
 				$("#likereview").html("좋아요 "+d.reviewlike);
 				$("#likestore").html("찜한가게 "+d.storelike);
 				$("#friend").html("팔로우 목록 "+d.follow);
+				if("${cate}"==""){
 				timelinereview();
+				}
+				//console.log("timelinereview() 실행완료");
 			},
 			error:function(e){
 				console.log(e);
@@ -210,9 +248,9 @@
 						 for(var j=0;j<d.fallowlist[i].length;j++){
 							 cont += "<div id='followdiv"+d.fallowlist[i][j].id+"' class='followdiv'>";
 							 if(d.fallowlist[i][j].profile==0){
-								 cont += "<img id='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='gotimeline(id)'/>";
+								 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
 							 }else{
-								 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/upload/"+d.fallowlist[i][j].profile+"' onclick='gotimeline(id)'/>";
+								 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/upload/"+d.fallowlist[i][j].profile+"' onclick='usertimeline(id)'/>";
 							 }
 							cont += "<p>"+d.fallowlist[i][j].id+"</p>";
 							if("${id}"==userid){
@@ -238,7 +276,7 @@
 			$("#fallowlist").css('display','none');
 		}
 	}
-	function gotimeline(e){
+	function usertimeline(e){
 		console.log(e);
 		var gotime=[];
 		gotime = e.split("_");
@@ -270,9 +308,9 @@
 					 for(var j=0;j<d.fallowlist[i].length;j++){
 						 cont += "<div id='followdiv"+d.fallowlist[i][j].id+"' class='followdiv'>";
 						 if(d.fallowlist[i][j].profile==0){
-							 cont += "<img id='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='gotimeline(id)'/>";
+							 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
 						 }else{
-							 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/upload/"+d.fallowlist[i][j].profile+"' onclick='gotimeline(id)'/>";
+							 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/upload/"+d.fallowlist[i][j].profile+"' onclick='usertimeline(id)'/>";
 						 }
 						cont += "<p>"+d.fallowlist[i][j].id+"</p>";
 						if("${id}"==userid){
@@ -309,9 +347,9 @@
 					 for(var j=0;j<d.fallowing[i].length;j++){
 						 cont += "<div id='followdiv"+d.fallowing[i][j].id+"' class='followdiv'>";
 						 if(d.fallowlist[i][j].profile==0){
-							 cont += "<img id='friendprofile' id='img_"+d.fallowing[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='gotimeline(id)'/>";
+							 cont += "<img class='friendprofile' id='img_"+d.fallowing[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
 						 }else{
-							 cont += "<img class='friendprofile' id='img_"+d.fallowing[i][j].id+"' src='resources/upload/"+d.fallowing[i][j].profile+"' onclick='gotimeline(id)'/>";
+							 cont += "<img class='friendprofile' id='img_"+d.fallowing[i][j].id+"' src='resources/upload/"+d.fallowing[i][j].profile+"' onclick='usertimeline(id)'/>";
 						 }
 						cont += "<p>"+d.fallowing[i][j].id+"</p>";
 						if("${id}"==userid){
@@ -589,6 +627,7 @@
 	    	$("#complain_list").css("background-color","lightgray");
 	    	$("#complain_list").css("color","black");
 	    	$("#content").load(page,function(res, stat) {});
+	    	console.log($("#content"));
 			ajaxCall(page);
 		} else if(e.target.id == "coupon") {
 			page = "resources/timelinehtml/couponbox.html";
@@ -776,6 +815,7 @@
 				},
 				dataType:"json",
 				success:function(d){
+					console.log(d);
 					receivelist(d.list);
 				},
 				error:function(e){

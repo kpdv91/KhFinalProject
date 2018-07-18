@@ -15,7 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.cat.common.dao.CommonInter;
 
 import com.kh.cat.dto.ReviewDTO;
+import com.kh.cat.dto.AlarmDTO;
 import com.kh.cat.dto.ComplainDTO;
+import com.kh.cat.dto.DMDTO;
+import com.kh.cat.dto.FollowDTO;
 import com.kh.cat.dto.HashDTO;
 import com.kh.cat.dto.MemberDTO;
 import com.kh.cat.dto.StoreDTO;
@@ -97,14 +100,22 @@ public class CommonService {
 		map.put("id",idcheck);
 		return map;
 	}
+	@Transactional
 	public HashMap<String, Object> sendmsg(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		DMDTO dto = new DMDTO();
 		String userid=params.get("userid");
 		String id=params.get("id");		
 		String content=params.get("content");
+		dto.setId(userid);
+		dto.setDm_id(id);
+		dto.setDm_content(content);
 		logger.info(userid+"/"+id+"/"+content);		
-		int a = inter.sendmsg(userid,id,content);
+		int a = inter.sendmsg(dto);
+		if(a>0) {
+			inter.alarmdminsert(dto.getDm_idx(),id);
+		}
 		map.put("success",a);
 		return map;
 	}
@@ -133,13 +144,22 @@ public class CommonService {
 		return map;
 	}
 
+	@Transactional
 	public HashMap<String, Object> followinsert(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		FollowDTO dto = new FollowDTO();
 		String userid=params.get("userid");
-		String id=params.get("id");		
+		String id=params.get("id");
+		dto.setId(userid);
+		dto.setFollow_id(id);
 		logger.info(userid+"/"+id+"/");		
-		int a = inter.followinsert(userid,id);
+		int a = inter.followinsert(dto);
+		System.out.println("a"+a);
+		System.out.println(dto.getFollow_idx());
+		if(a>0) {
+			inter.alarminsert(dto.getFollow_idx(),id);
+		}
 		map.put("success",a);
 		return map;
 	}
@@ -386,6 +406,27 @@ public class CommonService {
 		}
 		map.put("fallowlist", list);
 		map.put("fallowing",listing);
+		return map;
+	}
+
+	public HashMap<String, Object> alarmlist(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id=params.get("id");
+		map.put("list", inter.alarmlist(id));
+		return map;
+	}
+
+	public HashMap<String, Object> alarmread(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int idx=Integer.parseInt(params.get("idx"));
+		int a = inter.alarmread(idx);
+		boolean alarmread = false;
+		if(a>0) {
+			alarmread = true;
+		}
+		map.put("success", alarmread);
 		return map;
 	}
 

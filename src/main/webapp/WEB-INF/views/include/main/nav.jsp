@@ -23,8 +23,11 @@
 	#profileimg{width: 80px;height : 80px;position:absolute;left:1450px;top:1px;cursor: pointer;}
 	.btn{background-color:blue; color:white;width:80px;border: 2px solid white;cursor: pointer;}
 	#proimg{width: 50px;height : 50px;}
-	#profileck{background-color:white;border: 1px solid #2637a4;position:absolute;left:1350px;width:175px;top:80px;z-index:1;}
+	#profileck{background-color:white;border: 1px solid #2637a4;position:absolute;left:1350px;width:175px;top:80px;z-index:3;}
 	#userid{margin-left:70px;top:5px;position:absolute;}
+	#alarm{background-color:#088A85;width:50px;height:25px;position:absolute;left:1370px;top:40px;text-align: center;color:white;font-size: 20px;cursor:pointer;}
+	#alarmlist{text-align: center;display:none;width:200px;position:absolute;left:1220px;top:65px;background-color:white;border:1px solid #2637a4;z-index:1;}
+	.alarmlistdiv{border:1px solid #2637a4;cursor:pointer;width:200px;z-index:2;}
 </style>
 
 <nav id="nav">
@@ -67,6 +70,8 @@
             <button type="button" onclick="search()">검색</button>
        	</div>
        	<c:if test="${sessionScope.loginId != null}">
+			<div id="alarm" onclick="alarmclick()">알람</div>
+			<div id="alarmlist">알람이 없습니다</div>
        		<div> 					
 				<img id="profileimg" src="" onclick="profileclick()">
 			</div>
@@ -93,6 +98,7 @@
 
 <script>
 var profilecli=1;
+var alarmck=1;
 console.log(profilecli);
 var loginid="${sessionScope.loginId}";
 console.log(loginid);
@@ -156,6 +162,7 @@ console.log(loginid);
 		
 	}
 	function profileunder(data){
+		console.log(data.id);
 		var content="<div id='profileck'>";
 		if(data.profile==0){
 			content +="<img id='proimg' src='resources/img/member/noprofile.jpg'>";
@@ -178,5 +185,71 @@ console.log(loginid);
 		console.log("로그아웃 실행");
 		location.href="./logout"
 	}
-	
+	function alarmclick(){
+		if(alarmck==1){
+			$.ajax({
+				url:"./alarmlist",
+				type:"post",
+				data:{
+					id : loginid
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d);
+					$("#alarmlist").css("display","inline");
+					if(d.list.length>0){
+						alarmlist(d.list);
+					}			
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+			alarmck=0;
+		}else{
+			alarmck=1;
+			$("#alarmlist").css("display","none");
+		}
+	}
+	function alarmlist(list){
+		var content="";
+		list.forEach(function(item){
+			content+="<div class='alarmlistdiv' id='"+item.alarm_cate+"' onclick='alarmtime(id)'>";
+			content+="<input id='alarmid' type='hidden' value='"+item.alarm_id+"'/>";
+			content+="<input id='alarmread' type='hidden' value='"+item.alarm_read+"'/>";
+			content+="<input id='alarmidx' type='hidden' value='"+item.alarm_idx+"'/>";
+			if(item.alarm_cate=="팔로우"){
+				content+="팔로우한 사람이 있습니다";
+			}else if(item.alarm_cate=="메세지"){
+				content+="새로운 메세지가 있습니다";
+			}
+			content+="</div>";
+		})
+		$("#alarmlist").empty();
+		$("#alarmlist").append(content);
+	}
+	function alarmtime(id){
+		var alarmuserid=$("#alarmid").val();
+		var idx = $("#alarmidx").val();
+		 $.ajax({
+			url:"./alarmread",
+			type:"post",
+			data:{
+				idx : idx
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d);
+				if(d.success==true){
+					location.href="./alarmtimeline?id="+alarmuserid+"&cate="+id;
+				}else{
+					alert("페이지 이동에 실패 하였습니다.");
+				}				
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+		
+	}
 </script>

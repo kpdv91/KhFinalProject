@@ -41,10 +41,40 @@
 	 		<when test="store_idx==0">
 	 			SELECT * FROM review
 	 		</when>
-	 		<otherwise>
-	 			SELECT * FROM review WHERE store_idx= #{store_idx}
+	 		<when test="store_idx>0">
+				SELECT * FROM review WHERE store_idx= #{store_idx}
+			</when>
+			<otherwise>
+				SELECT * FROM review WHERE review_storeName LIKE '%'||#{review_search}||'%'
 	 		</otherwise>
 	 	</choose>
+	 	<if test="range.equals('최신순')">
+	 		ORDER BY review_date DESC
+		</if>		
+		<if test="range.equals('좋아요순')">
+			ORDER BY review_likeCnt DESC
+		</if>
+	</select>
+	
+	<select id="reviewList_or" resultType="review" parameterType="hashmap">
+	 	SELECT * FROM review WHERE
+		<foreach collection="review_search" item="review_search" index="index" separator="OR">
+			review_storeName LIKE '%'||#{review_search}||'%'
+		</foreach>
+	 	<if test="range.equals('최신순')">
+	 		ORDER BY review_date DESC
+		</if>		
+		<if test="range.equals('좋아요순')">
+			ORDER BY review_likeCnt DESC
+		</if>
+	</select>
+	
+	<select id="reviewList_hash" resultType="review" parameterType="hashmap">
+	 	SELECT * FROM review, (SELECT * FROM hash WHERE 
+		<foreach collection="review_search" item="review_search" index="index" separator="OR">
+			hash_tag LIKE '%'||#{review_search}||'%'
+		</foreach>
+		) hashtag WHERE review.review_idx=hashtag.review_idx
 	 	<if test="range.equals('최신순')">
 	 		ORDER BY review_date DESC
 		</if>		

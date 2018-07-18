@@ -130,10 +130,6 @@ $("#loginBtn").click(function(){
   		alert("아이디는 5~20자리의 영문자 또는 숫자이어야 합니다.");
   		return false;
    } */else{
-	   var msg= "${msg}";
-		if(msg!=""){
-		alert(msg);
-		}
    		$("#login").submit();//submit
    }
 });		

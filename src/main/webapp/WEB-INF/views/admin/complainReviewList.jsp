@@ -139,11 +139,13 @@
 			
 		});
 		
+		//신고취하
 		$("#comp_cancel").click(function () {
 			console.log("클릭");
 			var rev_idx = ${rev_idx};
 			var revReply_idx = ${revReply_idx};
 			var id = "${id}";
+			var complain_id = "${complain_id}";
 			$.ajax({
 				url : "./comp_cancel",
 				type : "get",
@@ -151,7 +153,8 @@
 				data : {
 					rev_idx : rev_idx,
 					revReply_idx : revReply_idx,
-					id : id
+					id : id,
+					complain_id : complain_id
 				},
 				success : function(data){
 					console.log(data);
@@ -171,6 +174,7 @@
 			var rev_idx = ${rev_idx};
 			var revReply_idx = ${revReply_idx};
 			var id = "${id}";//신고한 사람의 아이디
+			var complain_id = "${complain_id}";
 			$.ajax({
 				url : "./blackListAdd",
 				type : "get",
@@ -178,7 +182,8 @@
 				data : {
 					rev_idx : rev_idx,
 					revReply_idx : revReply_idx,
-					id : id
+					id : id,
+					complain_id : complain_id
 				},
 				success : function(data){
 					console.log(data);
@@ -192,6 +197,7 @@
 			});
 		});
 		
+		//신고된 리뷰 리스트
 		function comp_reviewList(list){		 
 			var content = "";
 			list.forEach(function(item){
@@ -214,6 +220,7 @@
 			$("#reviewListDiv").append(content);		
 		}
 		
+		//신고된 댓글리스트
 		function comp_revReplyList(list) {
 			var content = "";
 			list.forEach(function(item){

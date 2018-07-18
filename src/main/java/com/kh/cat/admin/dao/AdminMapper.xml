@@ -102,12 +102,16 @@
 	<delete id="complainDel2">
 		DELETE FROM complain WHERE revReply_idx = #{param1} AND id = #{param2}
 	</delete>
-	
-	
+
 	<!-- 신고된 리뷰댓글 리스트 -->
 	<select id="comp_revReplyList" resultType="revReply">
-		SELECT * FROM revReply WHERE review_idx=#{param1} AND revReply_idx = #{param2}
+		SELECT * FROM revReply WHERE revReply_idx = #{param1}
 	</select>
+	
+	<!-- 신고된 댓글 삭제 -->
+	<delete id="revReply_del">
+		DELETE FROM revReply WHERE revReply_idx = #{param1}
+	</delete>
 </mapper>
 
 

@@ -23,7 +23,7 @@ public interface AdminInter {
 
 	String revWriter(String rev_idx);//리뷰 작성자 아이디
 
-	int blackListAdd(String revWriter);//블랙리스트 추가
+	int blackListAdd(String complain_id);//블랙리스트 추가
 
 	int registYes(String store_idx);//가게 등록 승인
 
@@ -41,11 +41,13 @@ public interface AdminInter {
 
 	void review_del_dm2(String id, String loginId);//게시물 삭제시 신고한 사람에게 쪽지
 
-	ArrayList<RevReplyDTO> comp_revReplyList(String rev_idx, String revReply_idx);//신고된 리뷰댓글 리스트
+	ArrayList<RevReplyDTO> comp_revReplyList(String rev_idx);//신고된 리뷰댓글 리스트
 
 	void revReply_del_dm3(String id, String loginId);
 
-	int complainDel2(String rev_idx, String revReply_idx);
+	int complainDel2(String revReply, String id);
+
+	int revReply_del(String revReply_idx);//댓글 삭제
 
 
 	

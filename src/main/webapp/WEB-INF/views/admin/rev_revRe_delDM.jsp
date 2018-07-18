@@ -39,6 +39,10 @@
 				success:function(data){
 					console.log(data.result);
 					console.log(data.msg);
+					if(data.result > 0){
+						alert(data.msg);
+						self.close();
+					}
 				},
 				error:function(error){
 					console.log(error);

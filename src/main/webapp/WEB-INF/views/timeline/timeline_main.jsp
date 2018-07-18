@@ -78,12 +78,14 @@
 		<h1 id="timelineuserId">${id}</h1>
 			<div id="fallow">팔로우 신청</div>
 			<div id="dm">메세지 보내기</div>
-			<div class="userdetail">
-				<div id="myreview"></div>
-				<div id="likereview"></div>
-				<div id="likestore"></div>
-				<div id="friend" onclick="fallowlist()"></div>
-			</div>
+			<c:if test="${sessionScope.loginId != '관리자' }">
+				<div class="userdetail">
+					<div id="myreview"></div>
+					<div id="likereview"></div>
+					<div id="likestore"></div>
+					<div id="friend" onclick="fallowlist()"></div>
+				</div>
+			</c:if>
 			<div id="fallowlist"></div>
 		</div>		
 		<br/>

@@ -262,7 +262,7 @@ public class MemberService {
 		return map;
 	}
 
-   /*아이디 찾기 요청 서비스*/
+   //아이디 찾기 요청 서비스
    public String idSearchPage(String[] allData) {
       logger.info("아이디 찾기 요청");
       
@@ -295,6 +295,7 @@ public class MemberService {
       return success;
    }
    
+    //비밀번호 찾기 서비스
    	public HashMap<String, Object> pwFind(HashMap<String, String> params) {
 		logger.info("비밀번호 찾기 서비스");
 		HashMap<String, Object> map = new HashMap<String, Object>();

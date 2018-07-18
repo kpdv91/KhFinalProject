@@ -12,7 +12,7 @@ public class ComplainDTO {
 	private Date complain_date;
 	private int complain_black;
 	private int review_idx;
-	private int rev_reply_idx;
+	private int revReply_idx;
 	
 	public int getComplain_idx() {
 		return complain_idx;
@@ -68,12 +68,13 @@ public class ComplainDTO {
 	public void setReview_idx(int review_idx) {
 		this.review_idx = review_idx;
 	}
-	public int getRev_reply_idx() {
-		return rev_reply_idx;
+	public int getRevReply_idx() {
+		return revReply_idx;
 	}
-	public void setRev_reply_idx(int rev_reply_idx) {
-		this.rev_reply_idx = rev_reply_idx;
+	public void setRevReply_idx(int revReply_idx) {
+		this.revReply_idx = revReply_idx;
 	}
+	
 	
 	
 }

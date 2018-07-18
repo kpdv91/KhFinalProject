@@ -92,7 +92,7 @@
 		</style>
 	</head>
 	<body>
-		<h1>신고된 리뷰 리스트</h1>
+		<h1>신고된 리뷰&댓글</h1>
 		<hr/>
 		<div id="btnDiv">
 			<button class="btn" id="blackListBtn">블랙리스트 추가</button>
@@ -115,12 +115,28 @@
 				}, 
 				dataType:"json",
 				success:function(data){
-					comp_reviewList(data.list);
+					if(data.list1 != null){
+						comp_reviewList(data.list1);	
+					}
+					if(data.list2 != null){
+						comp_revReplyList(data.list2);
+					}
+					
 				},
 				error:function(error){
 					console.log(error);
 				} 
 			});
+		});
+		
+		$("#comp_rev_reply_del").click(function () {
+			console.log("클릭");
+			var rev_idx = ${rev_idx};
+			var revReply_idx = ${revReply_idx};
+			var id = "${id}";
+			var complain_id = "${complain_id}";
+			var myWin= window.open("./rev_revRe_delDM?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");
+			
 		});
 		
 		$("#comp_cancel").click(function () {
@@ -154,13 +170,15 @@
 			console.log("클릭");  
 			var rev_idx = ${rev_idx};
 			var revReply_idx = ${revReply_idx};
+			var id = "${id}";//신고한 사람의 아이디
 			$.ajax({
 				url : "./blackListAdd",
 				type : "get",
 				dataType : "json",
 				data : {
 					rev_idx : rev_idx,
-					revReply_idx : revReply_idx
+					revReply_idx : revReply_idx,
+					id : id
 				},
 				success : function(data){
 					console.log(data);
@@ -185,7 +203,7 @@
 				content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
 				content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
 				content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table>";
-				content += "<a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div>";
+				//content += "<a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div>";
 				content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div>";	
 				content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";
 				
@@ -195,6 +213,23 @@
 			$("#reviewListDiv").empty();
 			$("#reviewListDiv").append(content);		
 		}
+		
+		function comp_revReplyList(list) {
+			var content = "";
+			list.forEach(function(item){
+				var date = new Date(item.revreply_date);
+				content +="<table>";
+				content +="<tr class='reply_table' id='reply_table"+item.revreply_idx+"'>";
+				content +="<td rowspan='2'><img id='reply_img' src='resources/upload/"+item.revreply_profile+"'/></td>";
+				content +="<td rowspan='2' id='reply_id'>"+item.id+"</td>";
+				content +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
+				content +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td></tr>";
+				content +="</table>";
+			});
+			$("#reviewListDiv").empty();
+			$("#reviewListDiv").append(content);		
+		}
+		
 		
 		//해시태그,사진
 		function hashtag(rev_idx){

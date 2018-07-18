@@ -37,6 +37,12 @@
 		UPDATE member SET aut = 'black' WHERE id = #{param1}
 	</update>
 	
+	<!-- 리뷰 삭제 -->
+	<delete id="review_del">
+		DELETE FROM review WHERE review_idx = #{param1}
+	</delete>
+	
+	
 	<!-- 해시태그  -->
 	<select id="reviewHash" resultType="hash">
 	 	SELECT hash_tag FROM hash WHERE hash_cate='review' AND review_idx = #{param1}
@@ -51,7 +57,25 @@
 	<update id="registYes" parameterType="String">
 		UPDATE store SET store_regist = 1 WHERE store_idx = #{param1}
 	</update>
-	 
+	
+	<!-- 게시물 삭제시 신고당한 사람에게 쪽지 -->
+	<insert id="review_del_dm" parameterType="String">
+		INSERT INTO dm(dm_idx, id, dm_id, dm_content, dm_date)
+			VALUES(seq_dm.NEXTVAL, #{param2}, #{param1}, #{param3}, SYSDATE)
+	</insert>
+	
+	<!-- 게시물 삭제시 신고한 사람에게 쪽지 -->
+	<insert id="review_del_dm2" parameterType="String">
+		INSERT INTO dm(dm_idx, id, dm_id, dm_content, dm_date)
+			VALUES(seq_dm.NEXTVAL, #{param2}, #{param1}, '신고한 게시물(리뷰)이 삭제되었습니다.', SYSDATE)
+	</insert>
+	
+	<!-- 게시물(댓글) 삭제시 신고한 사람에게 쪽지 -->
+	<insert id="revReply_del_dm3">
+		INSERT INTO dm(dm_idx, id, dm_id, dm_content, dm_date)
+			VALUES(seq_dm.NEXTVAL, #{param2}, #{param1}, '신고한 게시물(댓글)이 삭제되었습니다.', SYSDATE)
+	</insert>
+	
 	 <!-- 등록 승인 시 쪽지 -->
 	<insert id="regY_dm_Write" parameterType="String">
 		INSERT INTO dm(dm_idx, id, dm_id, dm_content, dm_date)
@@ -69,10 +93,21 @@
 		DELETE FROM store WHERE store_idx = #{param1}
 	</delete>
 	
-	<!-- 신고 취하 -->
+	<!-- 리뷰 신고 취하 -->
 	<delete id="complainDel">
 		DELETE FROM complain WHERE review_idx = #{param1} AND id = #{param2}
 	</delete>
+	
+	<!-- 댓글 신고 취하 -->
+	<delete id="complainDel2">
+		DELETE FROM complain WHERE revReply_idx = #{param1} AND id = #{param2}
+	</delete>
+	
+	
+	<!-- 신고된 리뷰댓글 리스트 -->
+	<select id="comp_revReplyList" resultType="revReply">
+		SELECT * FROM revReply WHERE review_idx=#{param1} AND revReply_idx = #{param2}
+	</select>
 </mapper>
 
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.HashDTO;
 import com.kh.cat.dto.RevPhotoDTO;
+import com.kh.cat.dto.RevReplyDTO;
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.dto.StoreDTO;
 
@@ -33,6 +34,19 @@ public interface AdminInter {
 	void storeDel(String store_idx);//등록 거절 시 삭제
 
 	int complainDel(String rev_idx, String id);//신고 취소
+
+	int review_del(String rev_idx);//리뷰 삭제
+
+	int review_del_dm(String complain_id, String loginId, String dm_content);//게시물 삭제시 신고당한 사람에게 쪽지
+
+	void review_del_dm2(String id, String loginId);//게시물 삭제시 신고한 사람에게 쪽지
+
+	ArrayList<RevReplyDTO> comp_revReplyList(String rev_idx, String revReply_idx);//신고된 리뷰댓글 리스트
+
+	void revReply_del_dm3(String id, String loginId);
+
+	int complainDel2(String rev_idx, String revReply_idx);
+
 
 	
 

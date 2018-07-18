@@ -147,9 +147,9 @@ public class ReviewController {
 	}
 	
 	@RequestMapping(value = "/reviewLike")
-	public @ResponseBody String reviewLike(@RequestParam("review_idx") String review_idx,@RequestParam("loginId") String loginId) {		
+	public @ResponseBody String reviewLike(@RequestParam("review_idx") String review_idx,@RequestParam("loginId") String loginId,@RequestParam("name") String name) {		
 		logger.info("리뷰 좋아요 요청");
-		return service.reviewLike(review_idx,loginId);
+		return service.reviewLike(review_idx,loginId,name);
 	}
 	
 	@RequestMapping(value = "/reviewLikeSelect")
@@ -177,5 +177,9 @@ public class ReviewController {
 		return service.Revreply_delete(reply_idx,review_idx);
 	}
 	
-	
+	@RequestMapping(value = "/Revreply_update")
+	public @ResponseBody Integer Revreply_update(@RequestParam("reply_content") String reply_content,@RequestParam("reply_idx") String reply_idx,@RequestParam("review_idx") String review_idx) {		
+		System.out.println("댓글 수정 요청");		
+		return service.Revreply_update(reply_content,reply_idx,review_idx);
+	}
 }

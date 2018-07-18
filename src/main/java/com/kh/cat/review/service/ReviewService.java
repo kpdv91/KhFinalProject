@@ -18,8 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.cat.dto.AlarmDTO;
 import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.RevLikeDTO;
+import com.kh.cat.dto.RevReplyDTO;
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.review.dao.ReviewInter;
 
@@ -137,7 +139,13 @@ public class ReviewService {
 			}else {				
 				review_point(loginId);//review_point 메소드(포인트 50)
 			}
+			if(Integer.parseInt(review_storeidx) != 0) {
+				double star =  inter.starAvg(review_storeidx);
+				logger.info("평균 별점"+star);
+				inter.storeReviewUpdate(review_storeidx,star);
+			}
 		}
+		
 		fileList.clear();
 		return "redirect:/";
 	}
@@ -191,13 +199,14 @@ public class ReviewService {
 		inter = sqlSession.getMapper(ReviewInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("reviewHash", inter.reviewHash(review_idx));
-		//map.put("reviewPhoto",  inter.reviewPhoto(review_idx));
+		map.put("reviewPhoto",  inter.reviewPhoto(review_idx));
 		logger.info(""+map.get("reviewHash"));
 		return map;
 	}
 	
 	
 	//사진 미포함 50포인트
+	
 	public void review_point(String loginId) {
 		logger.info("로그인 세션 : {}", loginId);
 		
@@ -247,6 +256,8 @@ public class ReviewService {
 	public HashMap<String, Integer> complain(HashMap<String, String> map) {
 		logger.info("신고하기 서비스");
 		ComplainDTO dto = new ComplainDTO();
+		logger.info(map.get("Id"));
+		logger.info(map.get("compId"));
 		dto.setId(map.get("Id"));
 		dto.setComplain_id(map.get("compId"));
 		dto.setComplain_cate(map.get("complain_cate"));
@@ -254,11 +265,11 @@ public class ReviewService {
 		if(map.get("complain_cate").equals("리뷰")) {
 			dto.setReview_idx(Integer.parseInt(map.get("idx")));
 		}else {
-			dto.setRev_reply_idx(Integer.parseInt(map.get("idx")));
+			dto.setRevReply_idx(Integer.parseInt(map.get("idx")));
 		}
 		dto.setComplain_type(map.get("complain_type"));
 		dto.setComplain_content(map.get("complain_content"));
-		System.out.println(dto.getId()+"/"+dto.getComplain_id()+"/"+dto.getComplain_cate()+"/"+dto.getReview_idx()+"/"+dto.getRev_reply_idx()+"/"+dto.getComplain_type()+"/"+dto.getComplain_content());
+		System.out.println(dto.getId()+"/"+dto.getComplain_id()+"/"+dto.getComplain_cate()+"/"+dto.getReview_idx()+"/"+dto.getRevReply_idx()+"/"+dto.getComplain_type()+"/"+dto.getComplain_content());
 		inter = sqlSession.getMapper(ReviewInter.class);
 		HashMap<String, Integer> hash = new HashMap<String, Integer>();
 		hash.put("success", inter.complain(dto));
@@ -342,15 +353,21 @@ public class ReviewService {
 	}
 
 	//리뷰 좋아요
-	public String reviewLike(String review_idx, String loginid) {
+	public String reviewLike(String review_idx, String loginid, String name) {
 		inter=sqlSession.getMapper(ReviewInter.class);
 		String result=inter.likeSel(review_idx,loginid);
 		String success="";
+		RevLikeDTO dto = new RevLikeDTO();
 		logger.info("좋아요 : "+result);
 		if(result == null) {
 			logger.info("result는 0 insert 해야함");
-			inter.likeInsert(review_idx,loginid);
-			inter.likeCntUp(review_idx);
+			
+			dto.setReview_idx(Integer.parseInt(review_idx));
+			dto.setId(loginid);
+			inter.likeInsert(dto);			
+			System.out.println("좋아요 idx : "+dto.getRevLike_idx());
+			inter.likeCntUp(review_idx);			
+			inter.alarmLike(name,dto.getRevLike_idx());
 			review_likeCnt(review_idx);
 			success = "insert";
 		}else {
@@ -381,9 +398,15 @@ public class ReviewService {
 	//댓글 작성
 	public Integer replyWrite(String review_idx, String loginId, String reply_content,String profile, String name) {
 		inter=sqlSession.getMapper(ReviewInter.class);
-		int result=inter.replyWrite(review_idx,loginId,reply_content,profile);
+		RevReplyDTO dto = new RevReplyDTO();
+		dto.setReview_idx(Integer.parseInt(review_idx));
+		dto.setId(loginId);
+		dto.setRevreply_content(reply_content);
+		dto.setRevreply_profile(profile);
+		int result=inter.replyWrite(dto);		
 		inter.replyCntUp(review_idx);
-		/*inter.alamReply(name,);*/
+		
+		inter.alamReply(name,dto.getRevreply_idx());
 		return result;
 	}
 
@@ -393,6 +416,14 @@ public class ReviewService {
 		inter=sqlSession.getMapper(ReviewInter.class);
 		int success = inter.Revreply_delete(reply_idx);
 		inter.replyCntDown(review_idx);
+		return success;
+	}
+
+	//댓글
+	public Integer Revreply_update(String reply_content, String reply_idx, String review_idx) {
+		logger.info("댓글 수정");
+		inter=sqlSession.getMapper(ReviewInter.class);
+		int success = inter.Revreply_update(reply_content, reply_idx,review_idx);
 		return success;
 	}
 

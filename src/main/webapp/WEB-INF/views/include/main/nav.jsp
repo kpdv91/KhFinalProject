@@ -222,6 +222,10 @@ console.log(loginid);
 				content+="팔로우한 사람이 있습니다";
 			}else if(item.alarm_cate=="메세지"){
 				content+="새로운 메세지가 있습니다";
+			}else if(item.alarm_cate=="좋아요"){
+				content+="좋아요수가 증가했습니다";
+			}else if(item.alarm_cate=="댓글"){
+				content+="새로운 댓글이 있습니다"
 			}
 			content+="</div>";
 		})
@@ -231,25 +235,28 @@ console.log(loginid);
 	function alarmtime(id){
 		var alarmuserid=$("#alarmid").val();
 		var idx = $("#alarmidx").val();
-		 $.ajax({
-			url:"./alarmread",
-			type:"post",
-			data:{
-				idx : idx
-			},
-			dataType:"json",
-			success:function(d){
-				console.log(d);
-				if(d.success==true){
-					location.href="./alarmtimeline?id="+alarmuserid+"&cate="+id;
-				}else{
-					alert("페이지 이동에 실패 하였습니다.");
-				}				
-			},
-			error:function(e){
-				console.log(e);
-			}
-		});
-		
+		if(id=="메세지"||id=="팔로우"){
+			$.ajax({
+				url:"./alarmread",
+				type:"post",
+				data:{
+					idx : idx
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d);
+					if(d.success==true){
+						location.href="./alarmtimeline?id="+alarmuserid+"&cate="+id;
+					}else{
+						alert("페이지 이동에 실패 하였습니다.");
+					}				
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}else{
+			location.href="./timeline?id="+alarmuserid;
+		}		
 	}
 </script>

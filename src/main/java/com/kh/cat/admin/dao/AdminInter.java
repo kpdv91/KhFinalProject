@@ -34,6 +34,12 @@ public interface AdminInter {
 
 	int complainDel(String rev_idx, String id);//신고 취소
 
+	int review_del(String rev_idx);//리뷰 삭제
+
+	int review_del_dm(String complain_id, String loginId, String dm_content);//게시물 삭제시 신고당한 사람에게 쪽지
+
+	void review_del_dm2(String id, String loginId);//게시물 삭제시 신고한 사람에게 쪽지
+
 	
 
 

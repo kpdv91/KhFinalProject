@@ -123,6 +123,16 @@
 			});
 		});
 		
+		$("#comp_rev_reply_del").click(function () {
+			console.log("클릭");
+			var rev_idx = ${rev_idx};
+			var revReply_idx = ${revReply_idx};
+			var id = "${id}";
+			var complain_id = "${complain_id}";
+			var myWin= window.open("./rev_revRe_delDM?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");
+			
+		});
+		
 		$("#comp_cancel").click(function () {
 			console.log("클릭");
 			var rev_idx = ${rev_idx};
@@ -154,13 +164,15 @@
 			console.log("클릭");  
 			var rev_idx = ${rev_idx};
 			var revReply_idx = ${revReply_idx};
+			var id = "${id}";//신고한 사람의 아이디
 			$.ajax({
 				url : "./blackListAdd",
 				type : "get",
 				dataType : "json",
 				data : {
 					rev_idx : rev_idx,
-					revReply_idx : revReply_idx
+					revReply_idx : revReply_idx,
+					id : id
 				},
 				success : function(data){
 					console.log(data);
@@ -185,7 +197,7 @@
 				content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
 				content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
 				content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table>";
-				content += "<a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div>";
+				//content += "<a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div>";
 				content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div>";	
 				content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";
 				

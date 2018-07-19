@@ -3,7 +3,9 @@ package com.kh.cat.common.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -51,6 +53,7 @@ public class CommonController {
 		logger.info("지역 : "+params.get("search_map"));
 		logger.info("정렬 : "+params.get("data"));
 		logger.info("검색어 : "+params.get("search_content"));
+		logger.info("메인인지 검색인지 : "+params.get("mainStore"));
 		return commonservice.storeSearchSort(params);
 	}
 	
@@ -193,6 +196,22 @@ public class CommonController {
 	public @ResponseBody HashMap<String, Object> timelinelikestore(@RequestParam Map<String,String> params) {
 		logger.info("댓글 수정 요청");		
 		return commonservice.timelinelikestore(params);
+	}
+	
+	//등록한 가게 리스트
+	@RequestMapping(value = "/statList")
+	public @ResponseBody HashMap<String, Object> statList(@RequestParam("id") String id) {
+		logger.info("등록한 가게 리스트 요청");		
+		return commonservice.statList(id);
+	}
+	
+	//가게 통계 보기
+	@RequestMapping(value = "/showStat", method = RequestMethod.GET)
+	public ModelAndView storeDetail(@RequestParam("store_idx") int store_idx) {
+		logger.info("가게 통계 페이지 요청.");
+		String sIdx = Integer.toString(store_idx);
+
+		return commonservice.showStat(store_idx);
 	}
 	@RequestMapping(value = "/timelinefallowlist")
 	public @ResponseBody HashMap<String, Object> timelinefallowlist(@RequestParam Map<String,String> params) {

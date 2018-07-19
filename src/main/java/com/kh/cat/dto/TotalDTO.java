@@ -6,7 +6,9 @@ public class TotalDTO {
 	private int store_idx;
 	private Date total_date;
 	private int total_revCnt;
+	private int total_bhitCnt;
 	private double total_starAvg;
+	
 	
 	public int getStore_idx() {
 		return store_idx;
@@ -25,6 +27,12 @@ public class TotalDTO {
 	}
 	public void setTotal_revCnt(int total_revCnt) {
 		this.total_revCnt = total_revCnt;
+	}
+	public int getTotal_bhitCnt() {
+		return total_bhitCnt;
+	}
+	public void setTotal_bhitCnt(int total_bhitCnt) {
+		this.total_bhitCnt = total_bhitCnt;
 	}
 	public double getTotal_starAvg() {
 		return total_starAvg;

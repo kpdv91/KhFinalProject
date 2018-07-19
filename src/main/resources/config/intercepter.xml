@@ -28,10 +28,15 @@
 			<mvc:mapping path="/messagesendidcheck"/>			
 			<mvc:mapping path="/sendmsg"/>		
 			<mvc:mapping path="/followinsert"/>		
-			<mvc:mapping path="/followdelete"/>
+			<mvc:mapping path="/followdelete"/>			
+			<mvc:mapping path="/complain"/>
+			<mvc:mapping path="/reviewWrite"/>
 			<mvc:mapping path="/replyWrite"/>		
 			<mvc:mapping path="/reviewLike"/>
-			<mvc:mapping path="review_updateForm"/>
+			<mvc:mapping path="/review_updateForm"/>
+			<mvc:mapping path="/review_delete"/>
+			<mvc:mapping path="/Revreply_delete"/>
+			<mvc:mapping path="/Revreply_update"/>
 					
 			<!-- 인터셉터 한 내용에 대한 클래스 매핑 -->
 			<bean class="com.kh.cat.common.service.PreCheck"></bean>

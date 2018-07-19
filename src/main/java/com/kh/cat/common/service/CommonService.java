@@ -1,13 +1,17 @@
 package com.kh.cat.common.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
@@ -189,7 +193,7 @@ public class CommonService {
 		return map;
 	}
 
-	public ModelAndView storeSearch(Map<String, String> params) {
+	/*public ModelAndView storeSearch(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		String search_content = params.get("search_content");
 		String search_content_And = search_content.replaceAll(" ", "%");
@@ -219,7 +223,7 @@ public class CommonService {
 		mav.addObject("list_hash", result_hash);
 		mav.setViewName("include/common/search");
 		return mav;
-	}
+	}*/
 	
 	public HashMap<String, Object> storeSearchSort(HashMap<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
@@ -233,6 +237,7 @@ public class CommonService {
 		search_content_Map.put("map", params.get("search_map"));
 		search_content_Map.put("content", search_content_And);
 		search_content_Map.put("sort", params.get("data"));
+		search_content_Map.put("mainStore", params.get("mainStore"));
 		
 		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_Map);
 		if(result.isEmpty()) {
@@ -371,6 +376,31 @@ public class CommonService {
 		return map;
 	}
 
+	//등록한 가게 리스트
+	public HashMap<String, Object> statList(String id) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("storeList", inter.statList(id));
+		
+		return map;
+	}
+
+	public ModelAndView showStat(int store_idx) {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("store/showStat");
+		return mav;
+	}
+	
+	@Scheduled(cron="0 0/1 11 * * *")//0시 1분에 실행
+	public void cron() {
+		inter = sqlSession.getMapper(CommonInter.class);
+		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yy/MM/dd");
+		Date today = new Date();
+		String mTime = mSimpleDateFormat.format ( today );
+		System.out.println ( mTime );
+	}
+
 	public HashMap<String, Object> timelinefollowlist(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -410,6 +440,7 @@ public class CommonService {
 		}
 		map.put("success", alarmread);
 		return map;
+
 	}
 
 }

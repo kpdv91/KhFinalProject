@@ -83,6 +83,14 @@ public interface ReviewInter {
 
 	void alarmLikeDel(int alarm_idx);
 
+	int Revreply_update(String reply_content, String reply_idx, String review_idx);
+
+	void storeReviewUpdate(String review_storeidx, double star);
+
+	double starAvg(String review_storeidx);
+
+	void totalUpdate(String review_storeidx, double star);
+
 	
 
 

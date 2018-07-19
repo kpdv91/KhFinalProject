@@ -23,14 +23,16 @@ public interface StoreInter {
 
 	String storeLikeChk(String loginId, int store_idx);
 
-	void storeLike(String loginId, String store_idx);
+	void storeLike(String loginId, int store_idx);
 
-	void storeLikeDel(String loginId, String store_idx);
+	void storeLikeDel(String loginId, int store_idx);
 
-	void storeLikeCntUp(String store_idx);
+	void storeLikeCntUp(int store_idx);
 
-	void storeLikeCntDown(String store_idx);
+	void storeLikeCntDown(int store_idx);
 
-	int storeLikeCnt(String store_idx);
+	int storeLikeCnt(int store_idx);
+
+	void storeUphits(int store_idx);
 
 }

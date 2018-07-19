@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <html>
 	<head>
 	<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
@@ -884,6 +883,28 @@
 				    	$("#likereview").css("background-color","lightgray");
 				    	$("#likereview").css("color","black");
 				    	ajaxCall(page);
+				}else if(e.target.id == "total"){
+					page = "resources/timelinehtml/statList.html";
+					$("#total").css("background-color","darkblue");
+					$("#total").css("color","white");
+					$("#coupon").css("background-color","lightgray");
+					$("#coupon").css("color","black");
+			    	$("#message").css("background-color","lightgray");
+			    	$("#message").css("color","black");
+			    	$("#point").css("background-color","lightgray");
+			    	$("#point").css("color","black");
+			    	$("#update").css("background-color","lightgray");
+			    	$("#update").css("color","black");
+			    	$("#myreview").css("background-color","lightgray");
+			    	$("#myreview").css("color","black");
+			    	$("#likereview").css("background-color","lightgray");
+			    	$("#likereview").css("color","black");
+			    	$("#likestore").css("background-color","lightgray");
+			    	$("#likestore").css("color","black");
+			    	$("#timeline_reply").css("background-color","lightgray");
+			    	$("#timeline_reply").css("color","black");
+			    	$("#content").load(page,function(res, stat) {});
+			    	ajaxCall(page)
 				}
 	});		
 	function ajaxCall(page){
@@ -1044,6 +1065,21 @@
 				},
 				error:function(e){
 					console.log(e);
+				}
+			});
+		}else if(page == "resources/timelinehtml/statList.html"){
+			$.ajax({
+				url:"./statList",
+				type:"get",
+				data:{
+					id : userid
+				},
+				dataType:"json",
+				success:function(data){
+					print_statList(data.storeList);
+				},
+				error:function(error){
+					console.log(error);
 				}
 			});
 		}
@@ -1246,11 +1282,11 @@
 				content +="<td class='comp_detail1'>"+item.complain_cate+"</td>";
 				var date = new Date(item.complain_date);			
 				content +="<td class='comp_detail1'>"+date.toLocaleDateString("ko-KR")+"</td>";
-				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\")'>보 기</button></td>";
+				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
 				content += "</tr>";
 				content += "<tr>";
-				content +="<td class='comp_detail2' style='display: none;'>신고 내용 : </td>";
-				content +="<td class='comp_detail2' style='display: none;' colspan='5'>"+item.complain_content+"</td>";
+				content +="<td style='display: none;'>신고 내용 : </td>";
+				content +="<td style='display: none;' colspan='5'>"+item.complain_content+"</td>";
 				content += "</tr>";
 			});		
 			$("#complail_tbody").empty();
@@ -1260,19 +1296,19 @@
 			$(".comp_detail1").click(function () {
 				console.log("클릭");
 				if(flag == false){
-					$(".comp_detail2").css("display", "");
+					$(this).parent().next().children('td').css("display", "");
 					flag = true;
 				}else{
-					$(".comp_detail2").css("display", "none");
+					$(this).parent().next().children('td').css("display", "none");
 					flag = false;
 				}
 			});
 		}
 		
-		function complain_move(rev_idx, revReply_idx, id) {
+		function complain_move(rev_idx, revReply_idx, id, complain_id) {
 			console.log("클릭");   
-			console.log(rev_idx, revReply_idx, id);  
-			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id, "신고 리뷰 페이지","width=500,height=500");		
+			console.log(rev_idx, revReply_idx, id, complain_id);  
+			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");		
 		}
 		
 		
@@ -1430,6 +1466,7 @@
 				}
 			});
 		}
+
 		//회원정보 수정 새로운 비밀번호 체크
 		function chgPw(){
 	    	console.log("비교실행");
@@ -1445,5 +1482,17 @@
 	            $("#confirmPw").css("color","red");
 	        }
 	    }
+		function print_statList(list) {
+			var content = "";
+			list.forEach(function(item){
+				content += "<tr><td>"+item.store_name+"</td>";
+				content += "<td><input type='button' value='보기' onclick='moveStat("+item.store_idx+")'></td></tr>";
+				
+			})
+			$("#storeList").append(content);
+		}
+		function moveStat(idx) {
+			location.href="./showStat?store_idx="+idx;			
+		}
 	</script>
 </html>

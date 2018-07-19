@@ -79,5 +79,11 @@
 	<!-- 찜 개수 세기 -->
 	<select id="storeLikeCnt" resultType="Integer">
 		SELECT store_storeLikeCnt FROM store WHERE store_idx = #{param1} 
-	 </select>
+	</select>
+	
+	 <!-- 조회수 증가 -->
+	 <update id="storeUphits">
+		UPDATE store SET store_bHit=store_bHit+1 WHERE store_idx = #{param1}
+	</update>
+	 
 </mapper>

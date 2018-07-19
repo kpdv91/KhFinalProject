@@ -490,6 +490,9 @@ input[type=button]{
 		var name=$(elem).parents()[1].childNodes[0].data;
 		flag=idx;
 		console.log(idx+"/"+loginId);
+		if(loginId == ""){
+			alert("로그인이 필요한 서비스 입니다.");
+		}else{		
 		$.ajax({
 			url:"./reviewLike",
 			type:"post",
@@ -505,6 +508,7 @@ input[type=button]{
 			},
 			error:function(e){console.log(e);}
 		});
+		}
 	}
 	
 	

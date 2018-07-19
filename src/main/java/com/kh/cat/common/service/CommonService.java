@@ -189,7 +189,7 @@ public class CommonService {
 		return map;
 	}
 
-	public ModelAndView storeSearch(Map<String, String> params) {
+	/*public ModelAndView storeSearch(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		String search_content = params.get("search_content");
 		String search_content_And = search_content.replaceAll(" ", "%");
@@ -219,7 +219,7 @@ public class CommonService {
 		mav.addObject("list_hash", result_hash);
 		mav.setViewName("include/common/search");
 		return mav;
-	}
+	}*/
 	
 	public HashMap<String, Object> storeSearchSort(HashMap<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
@@ -233,6 +233,7 @@ public class CommonService {
 		search_content_Map.put("map", params.get("search_map"));
 		search_content_Map.put("content", search_content_And);
 		search_content_Map.put("sort", params.get("data"));
+		search_content_Map.put("mainStore", params.get("mainStore"));
 		
 		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_Map);
 		if(result.isEmpty()) {

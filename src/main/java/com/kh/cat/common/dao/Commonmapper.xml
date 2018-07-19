@@ -76,11 +76,20 @@
 	</select>
 
 	<select id="storeSearch_And" resultType="store" parameterType="hashmap">
-		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{content}||'%'
-		<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
-		<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
-		<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
-		<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
+		<choose>
+	 		<when test="mainStore==3">
+	 			SELECT * FROM store  
+	 			<![CDATA[WHERE ROWNUM <= 3]]>
+ 				ORDER BY store_revdate DESC
+	 		</when>
+			<otherwise>
+				SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{content}||'%'
+				<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
+				<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
+				<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
+				<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
+	 		</otherwise>
+	 	</choose>
 	</select>
 	<select id="storeSearch_Or" resultType="store" parameterType="hashmap">
 		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND

@@ -51,6 +51,7 @@ public class CommonController {
 		logger.info("지역 : "+params.get("search_map"));
 		logger.info("정렬 : "+params.get("data"));
 		logger.info("검색어 : "+params.get("search_content"));
+		logger.info("메인인지 검색인지 : "+params.get("mainStore"));
 		return commonservice.storeSearchSort(params);
 	}
 	

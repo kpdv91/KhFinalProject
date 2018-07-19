@@ -80,6 +80,8 @@ public interface CommonInter {
 	ArrayList<StoreDTO> timelinelikestore(Integer integer);
 
 	ArrayList<HashDTO> likestorehash(Integer integer);
+
+	ArrayList<StoreDTO> statList(String id);//내가 등록한 가게 리스트
 	
 	
 

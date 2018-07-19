@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <html>
 	<head>
 	<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
@@ -563,6 +562,28 @@
 				    	$("#likereview").css("background-color","lightgray");
 				    	$("#likereview").css("color","black");
 				    	ajaxCall(page);
+				}else if(e.target.id == "total"){
+					page = "resources/timelinehtml/statList.html";
+					$("#total").css("background-color","darkblue");
+					$("#total").css("color","white");
+					$("#coupon").css("background-color","lightgray");
+					$("#coupon").css("color","black");
+			    	$("#message").css("background-color","lightgray");
+			    	$("#message").css("color","black");
+			    	$("#point").css("background-color","lightgray");
+			    	$("#point").css("color","black");
+			    	$("#update").css("background-color","lightgray");
+			    	$("#update").css("color","black");
+			    	$("#myreview").css("background-color","lightgray");
+			    	$("#myreview").css("color","black");
+			    	$("#likereview").css("background-color","lightgray");
+			    	$("#likereview").css("color","black");
+			    	$("#likestore").css("background-color","lightgray");
+			    	$("#likestore").css("color","black");
+			    	$("#timeline_reply").css("background-color","lightgray");
+			    	$("#timeline_reply").css("color","black");
+			    	$("#content").load(page,function(res, stat) {});
+			    	ajaxCall(page)
 				}
 	});		
 	function ajaxCall(page){
@@ -722,6 +743,21 @@
 				},
 				error:function(e){
 					console.log(e);
+				}
+			});
+		}else if(page == "resources/timelinehtml/statList.html"){
+			$.ajax({
+				url:"./statList",
+				type:"get",
+				data:{
+					id : userid
+				},
+				dataType:"json",
+				success:function(data){
+					print_statList(data.storeList);
+				},
+				error:function(error){
+					console.log(error);
 				}
 			});
 		}
@@ -1005,6 +1041,18 @@
 					console.log(e);
 				}
 			}); */
+		}
+		function print_statList(list) {
+			var content = "";
+			list.forEach(function(item){
+				content += "<tr><td>"+item.store_name+"</td>";
+				content += "<td><input type='button' value='보기' onclick='moveStat("+item.store_idx+")'></td></tr>";
+				
+			})
+			$("#storeList").append(content);
+		}
+		function moveStat(idx) {
+			location.href="./showStat?store_idx="+idx;			
 		}
 	</script>
 </html>

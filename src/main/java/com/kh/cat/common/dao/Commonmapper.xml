@@ -136,6 +136,10 @@
 	<select id="likestorehash" resultType="hash">
 		SELECT * FROM hash WHERE store_idx=#{param1}
 	</select>
+
+	<select id="statList" resultType="store">
+		SELECT * FROM store WHERE id=#{param1}
+	</select>
 </mapper>
 
 

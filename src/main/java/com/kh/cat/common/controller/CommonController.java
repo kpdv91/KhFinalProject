@@ -31,12 +31,20 @@ public class CommonController {
 		return "main";
 	}
 	
-	@RequestMapping(value = "/search")
+	/*@RequestMapping(value = "/search")
 	public ModelAndView search(@RequestParam HashMap<String,String> params) {
 		logger.info("검색 페이지 이동");
 		logger.info("지역 : "+params.get("search_map"));
 		logger.info("검색어 : "+params.get("search_content"));
 		return commonservice.storeSearch(params);
+	}*/
+	
+	@RequestMapping(value = "/search")
+	public String search(@RequestParam HashMap<String,String> params) {
+		logger.info("검색 페이지 이동");
+		logger.info("지역 : "+params.get("search_map"));
+		logger.info("검색어 : "+params.get("search_content"));
+		return "include/common/search";
 	}
 	
 	@RequestMapping(value = "/searchSort")
@@ -45,6 +53,7 @@ public class CommonController {
 		logger.info("지역 : "+params.get("search_map"));
 		logger.info("정렬 : "+params.get("data"));
 		logger.info("검색어 : "+params.get("search_content"));
+		logger.info("메인인지 검색인지 : "+params.get("mainStore"));
 		return commonservice.storeSearchSort(params);
 	}
 	
@@ -203,5 +212,31 @@ public class CommonController {
 		String sIdx = Integer.toString(store_idx);
 
 		return commonservice.showStat(store_idx);
+	}
+	@RequestMapping(value = "/timelinefallowlist")
+	public @ResponseBody HashMap<String, Object> timelinefallowlist(@RequestParam Map<String,String> params) {
+		logger.info("팔로우 리스트 요청");		
+		return commonservice.timelinefollowlist(params);
+	}
+	@RequestMapping(value = "/alarmlist")
+	public @ResponseBody HashMap<String, Object> alarmlist(@RequestParam Map<String,String> params) {
+		logger.info("알람 리스트 요청");		
+		return commonservice.alarmlist(params);
+	}
+	@RequestMapping(value = "/alarmtimeline")
+	public ModelAndView alarmtimeline(@RequestParam Map<String,String> params) {
+		System.out.println("알람 타임라인 요청");
+		String id=params.get("id");
+		String cate=params.get("cate");
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("id",id);
+		mav.addObject("cate",cate);
+		mav.setViewName("timeline/timeline_main");
+		return mav;
+	}
+	@RequestMapping(value = "/alarmread")
+	public @ResponseBody HashMap<String, Object> alarmread(@RequestParam Map<String,String> params) {
+		logger.info("알람 읽기 요청");		
+		return commonservice.alarmread(params);
 	}
 }

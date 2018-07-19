@@ -30,9 +30,34 @@ public class AdminController {
 		mav.addObject("rev_idx", params.get("rev_idx"));
 		mav.addObject("revReply_idx", params.get("revReply_idx"));
 		mav.addObject("id", params.get("id"));
+		mav.addObject("complain_id", params.get("complain_id"));
 		mav.setViewName("admin/complainReviewList");
 		return mav;
 	}
+	
+	//게시물 삭제시 쪽지보내기
+	@RequestMapping(value = "/rev_revRe_delDM")
+	public ModelAndView rev_revRe_delDM(@RequestParam HashMap<String, String> params) {
+		logger.info("신고된 리뷰 새창 요청");
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("rev_idx", params.get("rev_idx"));
+		mav.addObject("revReply_idx", params.get("revReply_idx"));
+		mav.addObject("id", params.get("id"));
+		mav.addObject("complain_id", params.get("complain_id"));
+		mav.setViewName("admin/rev_revRe_delDM");
+		return mav;
+	}
+	
+	// 게시물 삭제시 쪽지 보내기
+	@RequestMapping(value = "/dm_write_rev_revRe_del")
+	public @ResponseBody HashMap<String, Object> dm_write_rev_revRe_del(@RequestParam HashMap<String, String> params,
+			HttpServletRequest request) {
+		logger.info("게시물 삭제시 쪽지보내기 요청");
+		String loginId = (String) request.getSession().getAttribute("loginId");
+		return adminService.dm_write_rev_revRe_del(params, loginId);
+	}
+	
+	
 	
 	//가게 등록 취소시 새창열기
 	@RequestMapping(value = "/registNoWin")
@@ -66,9 +91,10 @@ public class AdminController {
 		logger.info("블랙리스트 추가 요청");
 		logger.info("리뷰 idx : {}", params.get("rev_idx"));
 		logger.info("리뷰 댓글 idx : {}", params.get("revReply_idx"));
+		logger.info("신고한 아이디 : {}", params.get("id"));
 		return adminService.blackListAdd(params);
 	}
-	
+
 	//신고 취하(관리자)
 	@RequestMapping(value = "/comp_cancel")
 	public @ResponseBody HashMap<String, Object> comp_cancel(@RequestParam HashMap<String, String> params) {
@@ -78,9 +104,7 @@ public class AdminController {
 		logger.info("신고한 아이디 : {}", params.get("id"));
 		return adminService.comp_cancel(params);
 	}
-	
-	
-	
+
 	//가게 등록 승인(관리자)
 	@RequestMapping(value = "/registYes")
 	public @ResponseBody HashMap<String, Object> registYes(@RequestParam HashMap<String, String> params, HttpServletRequest request) {
@@ -111,7 +135,12 @@ public class AdminController {
 	public @ResponseBody HashMap<String, Object> complain_review_move(@RequestParam HashMap<String, String> params) {
 		logger.info("신고 리뷰 리스트 요청");
 		logger.info("리뷰 idx : {}", params.get("rev_idx"));
-		logger.info("리뷰 댓글 idx : {}", params.get("revRepy_idx"));
+		logger.info("리뷰 댓글 idx : {}", params.get("revReply_idx"));
+		
+		String rev_idx = params.get("rev_idx");
+		String revReply_idx = params.get("revReply_idx");
+		
+		
 		return adminService.complain_reviewList(params);
 	}
 	//신고된 리뷰 해시태그, 사진

@@ -7,6 +7,7 @@ import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.HashDTO;
 import com.kh.cat.dto.RevLikeDTO;
 import com.kh.cat.dto.RevPhotoDTO;
+import com.kh.cat.dto.RevReplyDTO;
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.dto.StoreDTO;
 
@@ -20,7 +21,11 @@ public interface ReviewInter {
 
 	ArrayList<StoreDTO> storeList(String params);
 
-	ArrayList<ReviewDTO> reviewList(HashMap<String, String> ra);
+	ArrayList<ReviewDTO> reviewList(HashMap<String, Object> ra);
+	
+	ArrayList<ReviewDTO> reviewList_or(HashMap<String, Object> ra);
+	
+	ArrayList<ReviewDTO> reviewList_hash(HashMap<String, Object> ra);
 
 	ArrayList<HashDTO> reviewHash(String review_idx);
 
@@ -30,9 +35,9 @@ public interface ReviewInter {
 
 	void photoReview_point(String loginId);//리뷰 작성시 100포인트
 
-	int review_likeCnt(int idx);//리뷰 좋아요 수
+	ArrayList<ReviewDTO> review_likeCnt(String idx);//리뷰 좋아요 수
 
-	void likePoint(String loginId);//좋아요 수 포인트
+	void likePoint(String id);//좋아요 수 포인트(1000)
 
 	Integer complain(ComplainDTO dto);
 
@@ -50,10 +55,41 @@ public interface ReviewInter {
 
 	String likeSel(String review_idx, String id);
 
-	int likeInsert(String review_idx, String loginid);
+	int likeInsert(RevLikeDTO dto);
 
 	int likeDelete(String review_idx, String loginid);
 
 	ArrayList<RevLikeDTO> likeList(String loginId);
+
+	void likeCntUp(String review_idx);
+
+	void likeCntDown(String review_idx);
+
+	ArrayList<RevReplyDTO> replySelect(String review_idx);
+
+	int replyWrite(RevReplyDTO dto);
+
+	void replyCntUp(String review_idx);
+
+	int Revreply_delete(String review_idx);
+
+	void replyCntDown(String review_idx);
+
+	void likePointt(String id);//좋아요 10개 이상 100포인트
+
+	void alamReply(String name, int revreply_idx);
+
+	void alarmLike(String name, int revLike_idx);
+
+	void alarmLikeDel(int alarm_idx);
+
+	int Revreply_update(String reply_content, String reply_idx, String review_idx);
+
+	void storeReviewUpdate(String review_storeidx, double star);
+
+	double starAvg(String review_storeidx);
+
+	
+
 
 }

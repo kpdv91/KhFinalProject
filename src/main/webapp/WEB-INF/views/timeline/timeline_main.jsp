@@ -34,21 +34,7 @@
 			
 			#content{position: absolute; width: 800px;height: auto;left : 400px;}
 			hr{margin-top:200px;}
-			#review{border: 2px solid #142e5b;width: 650px;height: 250px}
-			#listTop{border-bottom: 2px solid #142e5b;height: 50px;line-height: 50px;}
-	        #listTop_C{position :absolute;margin-left:5px;}
-	        #listTop_R{float: right;height: 50px;width: 150px;line-height: 25px;}
-	        #reply_div{position :absolute;margin-top:170px;}
-	        .review_tabletr{border-collapse: collapse;margin:0 auto;}
-	        #review_table{position :absolute;height: 170px;border-bottom: 2px solid #142e5b;border-collapse: collapse;width: 650px;margin-top:1px;}
-	        #star{text-align: right;}
-	        #hashtag{border: 2px solid black;width: 60px;height: 25px;font-size: 12px;text-align: center;line-height: 25px;float: left;margin-left: 5px;}
-	        textarea{border: 0px;width: 99%;height: 100%;resize: none;}
-	        #photo{width: 60px;height: 50px;float: left;margin-left: 5px;}
-	        #reviewReply{border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;width: 650px;display: none;}
-	        #starDiv{width: 100%;height: 30px;}
-	        #reviewList_hash,#reviewList_photo{width: 600px;height: auto;overflow: hidden;}
-	        #hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;}
+			
 	        #storeName_td{font-weight: bold;}
 	        #reply{border: 1px solid #142e5b;height: 50px;width: 650px;height:auto;}
 			#reply_img{width: 50px;height: 40px;padding: 5px;}
@@ -63,6 +49,32 @@
 			.storeTable{float: left;margin-left:1px; margin-right: 10px;margin-top: 10px;border:1px solid black;width:250px;height:250px;}
 			.storeImg{width: 250px;height: 100px;}
 			#hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;margin-right: 5px;}
+			#fallowlist{border: 1px solid #33aaaaff;display:none;position:absolute;left:810px;width:410px;top:154px;background-color:white;z-index:1;}
+			.followbtn{border:1px solid lightgray;}
+			#follower{background-color:darkblue;color:white;width:50px;}
+			#following{width:50px;position:absolute;left:50px;top:0px;}
+			.friendprofile{width:60px;height:60px;float:left;}
+			.followdiv{width:200px;float:left;padding:1px;}
+			
+			#review_profile{width:50px;height: 50px;float:left;}
+			#reviewListDiv{margin-left: 490px;}
+			#review{border: 2px solid #142e5b;width: 500px;height: auto;}
+        	#listTop{border-bottom: 2px solid #142e5b;height: 50px;line-height: 50px;}
+        	#listTop_R{float: right;height: 50px;width: 150px;line-height: 25px;text-align: right;font-size: 13px;}
+       		#review_table tr,#review_table td{border-collapse: collapse;margin:0 auto;}
+        	#review_table{height: 170px;border-bottom: 2px solid #142e5b;border-collapse: collapse;width: 500px;margin:0 auto;}
+        	.starTd{text-align: right; overflow: hidden;}
+	        #hashtag{border: 2px solid black;width: 60px;height: 25px;font-size: 12px;text-align: center;line-height: 25px;float: left;margin-left: 5px;}
+	        #review_content{border: 0px;width: 99%;height: 100%;resize: none;}
+	        #photo{width: 60px;height: 50px;float: left;margin-left: 5px;}
+	        .reviewReply{border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;width: 500px;display: none;}
+	        #starDiv{width: 100%;height: 30px;}
+	        #reviewList_hash,#reviewList_photo{width: 600px;height: auto;overflow: hidden;}
+	        #hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;}
+	        #storeName_td{font-weight: bold;width: 300px;}
+	        #tableTop{height: 40px;}
+	        .span{text-decoration: none;color: black;font-size: 13px;}
+	        .span:hover{color: red;}
 		</style>
 	</head>
 	<body>
@@ -71,12 +83,15 @@
 		<h1 id="timelineuserId">${id}</h1>
 			<div id="fallow">팔로우 신청</div>
 			<div id="dm">메세지 보내기</div>
-			<div class="userdetail">
-				<div id="myreview"></div>
-				<div id="likereview"></div>
-				<div id="likestore"></div>
-				<div id="friend"></div>
-			</div>
+			<c:if test="${sessionScope.loginId != '관리자' }">
+				<div class="userdetail">
+					<div id="myreview"></div>
+					<div id="likereview"></div>
+					<div id="likestore"></div>
+					<div id="friend" onclick="fallowlist()"></div>
+				</div>
+			</c:if>
+			<div id="fallowlist"></div>
 		</div>		
 		<br/>
 		<hr/>
@@ -103,18 +118,56 @@
 		</div>
 	</body>
 	<script>
+	console.log("${cate}");
 	var replyClick = 1;
 	var userid = "${sessionScope.loginId}";
 	var page = "";
 	var str = "";
 	var phone=[];
+	var fallowbtn=1;
+	$(document).ready(function(){
+		if("${cate}"=="팔로우"){
+			fallowlist();
+		}else if("${cate}"=="메세지"){
+			console.log("ddd");
+			page = "resources/timelinehtml/messagebox.html";
+			$("#message").css("background-color","darkblue");
+			$("#message").css("color","white");
+			$("#update").css("background-color","lightgray");
+			$("#update").css("color","black");
+	    	$("#coupon").css("background-color","lightgray");
+	    	$("#coupon").css("color","black");
+	    	$("#point").css("background-color","lightgray");
+	    	$("#point").css("color","black");
+	    	$("#total").css("background-color","lightgray");
+	    	$("#total").css("color","black");
+	    	$("#myreview").css("background-color","lightgray");
+	    	$("#myreview").css("color","black");
+	    	$("#likereview").css("background-color","lightgray");
+	    	$("#likereview").css("color","black");
+	    	$("#likestore").css("background-color","lightgray");	    	
+	    	$("#likestore").css("color","black");
+	    	$("#timeline_reply").css("background-color","lightgray");
+	    	$("#timeline_reply").css("color","black");
+	    	$("#store_regist_list").css("background-color","lightgray");	    	
+	    	$("#store_regist_list").css("color","black");
+	    	$("#complain_list").css("background-color","lightgray");
+	    	$("#complain_list").css("color","black");
+			$("#content").load(page,function(res, stat) {});
+			console.log($("#content"));
+	    	ajaxCall(page);	
+		}
+	});
+	
 	if(userid==""){
 		$("#fallow").css("display","none");
 		$("#dm").css("display","none");
+		$("#userdetai").css("display","none");
 	}
 	if(userid=="${id}"){
 		$("#fallow").css("display","none");
 		$("#dm").css("display","none");
+		
 	}else{
 		$("#userdetai").css("display","none");
 		$.ajax({
@@ -150,7 +203,9 @@
 				$("#likereview").html("좋아요 "+d.reviewlike);
 				$("#likestore").html("찜한가게 "+d.storelike);
 				$("#friend").html("팔로우 목록 "+d.follow);
+				if("${cate}"=="" || "${cate}"=="팔로우"){
 				timelinereview();
+				}
 			},
 			error:function(e){
 				console.log(e);
@@ -164,13 +219,204 @@
 			},
 			dataType:"json",
 			success:function(d){
-				$("#profileim").attr("src",'resources/upload/'+d.profile);
+				//console.log(d.profile);
+				if(d.profile==0){
+					$("#profileim").attr("src",'resources/img/member/noprofile.jpg');
+				}else{
+					$("#profileim").attr("src",'resources/upload/'+d.profile);
+				}
 			},
 			error:function(e){
 				console.log(e);
 			}
 		});
 	});
+	function fallowlist(){
+		if(fallowbtn==1){
+			console.log(fallowbtn);
+			$.ajax({
+				url:"./timelinefallowlist",
+				type:"post",
+				data:{
+					id : "${id}"
+				},
+				dataType:"json",
+				success:function(d){
+					$("#friend").css("background-color","darkblue");
+					$("#friend").css("color","white");
+					var content = "<div id='userfallow'>";
+					content += "<div class='followbtn' id='follower' onclick='follower()'>팔로워</div><div class='followbtn' id='following' onclick='following()'>팔로잉</div>";
+					content += "<div id='followlistdiv'>팔로워 목록이 없습니다</div></div>"
+					$("#fallowlist").append(content);
+					$("#fallowlist").css('display','block');
+					var cont="";
+					  for(var i =0;i<d.fallowlist.length;i++){
+						 for(var j=0;j<d.fallowlist[i].length;j++){
+							 cont += "<div id='followdiv"+d.fallowlist[i][j].id+"' class='followdiv'>";
+							 if(d.fallowlist[i][j].profile==0){
+								 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
+							 }else{
+								 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/upload/"+d.fallowlist[i][j].profile+"' onclick='usertimeline(id)'/>";
+							 }
+							cont += "<p>"+d.fallowlist[i][j].id+"</p>";
+							if("${id}"==userid){
+							cont += "<button class='fbtn' id='"+d.fallowlist[i][j].id+"' onclick='followck(id)'>팔로우 추가</button>"
+							}
+							cont += "</div>";	
+						 }
+						}
+					  $("#followlistdiv").empty();
+					  $("#followlistdiv").append(cont);
+					timelinefallowlist(d);
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+			fallowbtn=0;
+		}else{
+			fallowbtn=1;
+			$("#fallowlist").empty();
+			$("#friend").css("background-color","lightgray");
+			$("#friend").css("color","black");
+			$("#fallowlist").css('display','none');
+		}
+	}
+	function usertimeline(e){
+		console.log(e);
+		var gotime=[];
+		gotime = e.split("_");
+		console.log(gotime[1]);
+		location.href="./timeline?id="+gotime[1];
+	}
+	function timelinefallowlist(d){		
+		  for(var i =0;i<d.fallowing.length;i++){
+				 for(var j=0;j<d.fallowing[i].length;j++){
+					$("#"+d.fallowing[i][j].id).html("팔로우 취소");
+				 }
+			}
+	}
+	function follower(){
+		$.ajax({
+			url:"./timelinefallowlist",
+			type:"post",
+			data:{
+				id : "${id}"
+			},
+			dataType:"json",
+			success:function(d){
+				$("#following").css("background-color","lightgray");
+				$("#following").css("color","black");
+				$("#follower").css("background-color","darkblue");
+				$("#follower").css("color","white");
+				var cont="";
+				  for(var i =0;i<d.fallowlist.length;i++){
+					 for(var j=0;j<d.fallowlist[i].length;j++){
+						 cont += "<div id='followdiv"+d.fallowlist[i][j].id+"' class='followdiv'>";
+						 if(d.fallowlist[i][j].profile==0){
+							 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
+						 }else{
+							 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/upload/"+d.fallowlist[i][j].profile+"' onclick='usertimeline(id)'/>";
+						 }
+						cont += "<p>"+d.fallowlist[i][j].id+"</p>";
+						if("${id}"==userid){
+							cont += "<button class='fbtn' id='"+d.fallowlist[i][j].id+"' onclick='followck(id)'>팔로우 추가</button>"
+							}
+						cont += "</div>";	
+					 }
+					}
+				  $("#followlistdiv").empty();
+				  $("#followlistdiv").append(cont);
+				timelinefallowlist(d);
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	function following(){
+		$.ajax({
+			url:"./timelinefallowlist",
+			type:"post",
+			data:{
+				id : "${id}"
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d);
+				$("#follower").css("background-color","lightgray");
+				$("#follower").css("color","black");
+				$("#following").css("background-color","darkblue");
+				$("#following").css("color","white");
+				var cont="";
+				  for(var i =0;i<d.fallowing.length;i++){
+					 for(var j=0;j<d.fallowing[i].length;j++){
+						 cont += "<div id='followdiv"+d.fallowing[i][j].id+"' class='followdiv'>";
+						 if(d.fallowlist[i][j].profile==0){
+							 cont += "<img class='friendprofile' id='img_"+d.fallowing[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
+						 }else{
+							 cont += "<img class='friendprofile' id='img_"+d.fallowing[i][j].id+"' src='resources/upload/"+d.fallowing[i][j].profile+"' onclick='usertimeline(id)'/>";
+						 }
+						cont += "<p>"+d.fallowing[i][j].id+"</p>";
+						if("${id}"==userid){
+							cont += "<button class='fbtn' id='"+d.fallowlist[i][j].id+"' onclick='followck(id)'>팔로우 취소</button>"
+						}
+						cont += "</div>";	
+					 }
+					}
+				  $("#followlistdiv").empty();
+				  $("#followlistdiv").append(cont);				
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	};
+	function followck(id){
+		console.log($("#"+id).html());
+		if($("#"+id).html()=="팔로우 추가"){
+			$.ajax({
+				url:"./followinsert",
+				type:"post",
+				data:{
+					userid : userid,
+					id : id
+				},
+				dataType:"json",
+				success:function(d){
+					if(d.success>0){
+						$("#"+id).html("팔로우 취소");	
+					}else{
+						alert("팔로우가 안되었습니다.");
+					}									
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}else if($("#"+id).html()=="팔로우 취소"){
+			$.ajax({
+				url:"./followdelete",
+				type:"post",
+				data:{
+					userid : userid,
+					id : id
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d);
+					if(d.success>0){
+						$("#followdiv"+id).remove();
+					}else{
+						alert("팔로우 취소가 안되었습니다.");
+					}									
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}
+	}
 	function timelinereview(){
 		$.ajax({
 			url:"./timelinereviewlist",
@@ -180,6 +426,7 @@
 			},
 			dataType:"json",
 			success:function(d){
+				console.log(d);
 				printList(d.list);
 			},
 			error:function(e){
@@ -187,18 +434,31 @@
 			}
 		});
 	};
-	function printList(list){		 
+	function printList(list){
 		var content = "";
 		list.forEach(function(item){
-				content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-				content += "<div id='listTop'><div id='listTop_C'>"+item.id+"</div><div id='listTop_R'><br/>"+item.review_likeCnt+"명이 좋아합니다.</div></div>";
-				content += "<div id='table_div'><table id='review_table'><tr class='review_tabletr'><td id='storeName_td' class='review_tabletr'>"+item.review_storeName+"</td>";
-				content += "<td id='star'></td></tr>";			
-				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2'><textarea id='review_text' readonly>"+item.review_content+"</textarea></td></tr>";
-				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
-				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table></div>";
-				content += "<div id='reply_div'><a id='"+item.review_idx+"' href='#' onclick='reply(id)'>댓글"+item.review_replyCnt+"개</a></div></div>";
-				content += "<div id='reviewReply'>댓글이 없습니다<br/></div><br/></div>";			
+			content += "<div id='abc'>"
+				content += "<div id='review'>"
+				//console.log(item.review_profile);
+				if(item.review_profile=="resources/upload/0"){
+				content += "<img id='review_profile' src='resources/img/member/noprofile.jpg'";
+				}else{
+				content += "<img id='review_profile' src='"+item.review_profile+"'";
+				}
+				content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
+				content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
+				if(userid != "${id}"){
+					content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick("+item.review_idx+")' />";
+				}
+				content += "<br/></div></div>";
+				content += "<table id='review_table'><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
+				content += "<td id='starTd"+item.review_idx+"' class='starTd'></td></tr>";
+				content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
+				content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
+				content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'></td></tr><tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
+				content += "<span id='replySpan' onclick='replySelect("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</span></div>";
+				content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
+				content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";		
 				idx=item.review_idx;
 				hashtag(idx);
 		})
@@ -209,17 +469,30 @@
 		var content = "";
 		list.forEach(function(i){
 			i.forEach(function(item){
-				content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-				content += "<div id='listTop'><div id='listTop_C'>"+item.id+"</div><div id='listTop_R'><br/>"+item.review_likeCnt+"명이 좋아합니다.</div></div>";
-				content += "<div id='table_div'><table id='review_table'><tr class='review_tabletr'><td id='storeName_td' class='review_tabletr'>"+item.review_storeName+"</td>";
-				content += "<td id='star'></td></tr>";			
-				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2'><textarea id='review_text' readonly>"+item.review_content+"</textarea></td></tr>";
-				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
-				content += "<tr class='review_tabletr'><td class='review_tabletr' colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table></div>";
-				content += "<div id='reply_div'><a id='a"+item.review_idx+"' href='#' onclick='reply("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</a></div></div>";
-				content += "<div class='ddd' id='reviewReply"+item.review_idx+"'><br/></div><br/></div>";			
-				idx=item.review_idx;
-				hashtag(idx);
+				content += "<div id='abc'>"
+					content += "<div id='review'>"
+					//console.log(item.review_profile);
+					if(item.review_profile=="resources/upload/0"){
+					content += "<img id='review_profile' src='resources/img/member/noprofile.jpg'";
+					}else{
+					content += "<img id='review_profile' src='"+item.review_profile+"'";
+					}
+					content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
+					content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
+					if(userid != "${id}"){
+						content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick("+item.review_idx+")' />";
+					}
+					content += "<br/></div></div>";
+					content += "<table id='review_table'><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
+					content += "<td id='starTd"+item.review_idx+"' class='starTd'></td></tr>";
+					content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
+					content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
+					content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'></td></tr><tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
+					content += "<span id='replySpan' onclick='replySelect("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</span></div>";
+					content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
+					content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";		
+					idx=item.review_idx;
+					hashtag(idx);
 			})
 		})
 		$("#content").empty();
@@ -251,7 +524,11 @@
 		list.forEach(function(item){
 			var date = new Date(item.revreply_date);
 			reply +="<tr id='reply_table"+item.revreply_idx+"'>";
-			reply +="<td><img id='reply_img' src='resources/upload/"+item.revreply_profile+"'/></td>";
+			if(item.revreply_profile==0){
+				reply +="<td><img id='reply_img' src='resources/img/member/noprofile.jpg'/></td>";
+			}else{
+				reply +="<td><img id='reply_img' src='resources/upload/"+item.revreply_profile+"'/></td>";
+			}
 			reply +="<td id='reply_id'>"+item.id+"</td>";
 			reply +="<td id='reply_content'><textarea id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
 			reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td>";
@@ -333,7 +610,7 @@
 			});
 	 }
 	function hashtag(elem){
-		 $.ajax({
+		$.ajax({
 			url:"./reviewHashPhoto",
 			type:"post",
 			dataType:"json",
@@ -341,25 +618,51 @@
 			success:function(d){
 				printHash(d.reviewHash,elem);		
 				printPhoto(d.reviewPhoto,elem);
+				console.log(d.reviewPhoto);
 			},
 			error:function(e){console.log(e);}
-		});	 
+		});
 	}
 	
+	var tag="";
 	function printHash(hash,elem){
-		var tag="";
+		tag="";
 		hash.forEach(function(item){
 			tag += "<div id='hashtag'>#"+item.hash_tag+"</div>";
 		});
 		$("#reviewList_hash"+elem).append(tag);
 	}
 	
+	var img="";
 	function printPhoto(photo,elem){
-		var img="";
+		var phoSrc ="";
+  		var photoArr="";
+		img="";
 		photo.forEach(function(item){
-			img += "<div id='photo'><img width='60px' height='50px' src='"+item.revPhoto_Photo+"'/></div>";
+			phoSrc=item.revPhoto_Photo;
+			photoArr=phoSrc.split(".").join('\\.')
+			img += "<div onclick='PhotoClick(this,"+elem+")' id='photo'><img id='PhotoImg"+item.revPhoto_Photo+"'  width='60px' height='50px' src='"+item.revPhoto_Photo+"'/></div>";
 		})
 		$("#reviewList_photo"+elem).append(img);
+	}
+	function likeClick(idx){
+		flag=idx;
+		console.log(idx+"/"+userid);
+		$.ajax({
+			url:"./reviewLike",
+			type:"post",
+			dataType:"text",
+			data:{"review_idx":idx, "loginId":userid},
+			success:function(d){
+				//console.log(d);
+				 if(d == "insert"){
+					 $("#reviewLike"+idx).attr("src","resources/img/reviewLike/reviewLike2.png");
+				}else if(d == "delete"){
+					$("#reviewLike"+idx).attr("src","resources/img/reviewLike/reviewLike.png");
+				} 
+			},
+			error:function(e){console.log(e);}
+		});
 	}
 	$(".userdetail").click(function(e) {
 		if(e.target.id == "message") {
@@ -387,6 +690,7 @@
 	    	$("#complain_list").css("background-color","lightgray");
 	    	$("#complain_list").css("color","black");
 	    	$("#content").load(page,function(res, stat) {});
+	    	console.log($("#content"));
 			ajaxCall(page);
 		} else if(e.target.id == "coupon") {
 			page = "resources/timelinehtml/couponbox.html";
@@ -596,6 +900,7 @@
 				},
 				dataType:"json",
 				success:function(d){
+					console.log(d);
 					receivelist(d.list);
 				},
 				error:function(e){
@@ -949,27 +1254,44 @@
 	});
 	
 		//신고리스트
+		var flag = false;
 		function complain_list(list) {
 			var content = "";		
 			list.forEach(function(item, idx){
 				content +="<tr>";
-				content +="<td>"+item.id+"</td>";
-				content +="<td>"+item.complain_type+"</td>";
-				content +="<td>"+item.complain_id+"</td>";
-				content +="<td>"+item.complain_cate+"</td>";
+				content +="<td class='comp_detail1'>"+item.id+"</td>";
+				content +="<td class='comp_detail1'>"+item.complain_type+"</td>";
+				content +="<td class='comp_detail1'>"+item.complain_id+"</td>";
+				content +="<td class='comp_detail1'>"+item.complain_cate+"</td>";
 				var date = new Date(item.complain_date);			
-				content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
-				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\")'>보 기</button></td>";
-				content += "</tr>";			
+				content +="<td class='comp_detail1'>"+date.toLocaleDateString("ko-KR")+"</td>";
+				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
+				content += "</tr>";
+				content += "<tr>";
+				content +="<td style='display: none;'>신고 내용 : </td>";
+				content +="<td style='display: none;' colspan='5'>"+item.complain_content+"</td>";
+				content += "</tr>";
 			});		
 			$("#complail_tbody").empty();
 			$("#complail_tbody").append(content);//내용 붙이기
+			
+			
+			$(".comp_detail1").click(function () {
+				console.log("클릭");
+				if(flag == false){
+					$(this).parent().next().children('td').css("display", "");
+					flag = true;
+				}else{
+					$(this).parent().next().children('td').css("display", "none");
+					flag = false;
+				}
+			});
 		}
 		
-		function complain_move(rev_idx, revReply_idx, id) {
+		function complain_move(rev_idx, revReply_idx, id, complain_id) {
 			console.log("클릭");   
-			console.log(rev_idx, revReply_idx, id);  
-			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id, "신고 리뷰 페이지","width=500,height=500");		
+			console.log(rev_idx, revReply_idx, id, complain_id);  
+			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");		
 		}
 		
 		

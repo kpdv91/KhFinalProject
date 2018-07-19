@@ -1,8 +1,7 @@
 package com.kh.cat.member.controller;
 
-import java.util.ArrayList;
 import java.util.Map;
- 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +32,24 @@ public class AjaxController {
         
         return service.overlay(id);
     }
+    
+    //중복체크
+    @RequestMapping(value="/overlayMail")
+    public  @ResponseBody Map<String, String> 
+        overlayMail(@RequestParam("email") String email){
+        
+        logger.info("중복이메일 체크 : {}",email);
+        
+        return service.overlayMail(email);
+    }
+    
+
+    
+    
+    
 }
     
-/*    //회원가입
-    @RequestMapping(value="/join")
-    public  @ResponseBody Map<String, Integer> 
-        overlay(@RequestParam Map<String, String> params){        
-        logger.info("회원 가입");        
-        return service.join(params);
-    }*/
+
 
 
 

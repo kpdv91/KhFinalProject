@@ -3,10 +3,13 @@ package com.kh.cat.common.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.kh.cat.dto.AlarmDTO;
 import com.kh.cat.dto.ComplainDTO;
 import com.kh.cat.dto.CouponBoxDTO;
 import com.kh.cat.dto.DMDTO;
+import com.kh.cat.dto.FollowDTO;
 import com.kh.cat.dto.HashDTO;
+import com.kh.cat.dto.MemberDTO;
 import com.kh.cat.dto.PointListDTO;
 import com.kh.cat.dto.RevReplyDTO;
 import com.kh.cat.dto.ReviewDTO;
@@ -30,8 +33,6 @@ public interface CommonInter {
 
 	String messagesendidcheck(String id);
 
-	int sendmsg(String userid, String id, String content);
-
 	ArrayList<StoreDTO> storeSearch_And(HashMap<String, Object> search_content_AndMap);
 
 	ArrayList<StoreDTO> storeSearch_Or(HashMap<String, Object> search_content_OrMap);
@@ -47,8 +48,6 @@ public interface CommonInter {
 	int followtimelinecnt(String id);
 
 	ArrayList<ReviewDTO> timelinereviewlist(String id);
-
-	int followinsert(String userid, String id);
 
 	String followcheck(String userid, String id);
 
@@ -83,6 +82,24 @@ public interface CommonInter {
 
 	ArrayList<StoreDTO> statList(String id);//내가 등록한 가게 리스트
 	
-	
+	ArrayList<String> followlist(String id);
+
+	ArrayList<String> following(String id);
+
+	ArrayList<MemberDTO> followlistprofile(String string);
+
+	ArrayList<MemberDTO> followingprofile(String string);
+
+	ArrayList<AlarmDTO> alarmlist(String id);
+
+	int followinsert(FollowDTO dto);
+
+	void alarminsert(int follow_idx, String id);
+
+	int alarmread(int idx);
+
+	int sendmsg(DMDTO dto);
+
+	void alarmdminsert(int dm_idx, String id);
 
 }

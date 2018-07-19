@@ -11,15 +11,12 @@
 		<!-- <link rel="stylesheet" type="text/css" href="star.css"> -->
 		<title>Insert title here</title>
 		<style>
-		#reviewListDiv{
-			margin-left: 490px;
-		}
+		#reviewListDiv{margin-left: 490px;}
 		
-			 #review{
+		#review{
             border: 2px solid #142e5b;
             width: 500px;
-            height: auto;
-            
+            height: auto;            
         }
         #listTop{
             border-bottom: 2px solid #142e5b;
@@ -45,7 +42,6 @@
     		border-bottom: 2px solid #142e5b;
             border-collapse: collapse;
 			width: 500px;
-			
 			margin:0 auto;
         }
         .starTd{
@@ -75,7 +71,7 @@
             float: left;
             margin-left: 5px;
         }
-        #reviewReply{
+        .reviewReply{
             border-bottom: 1px solid black;
             border-left: 1px solid black;
             border-right: 1px solid black;
@@ -103,17 +99,14 @@
         	font-weight: bold;
         	width: 300px;
         }
-        #tableTop{
-        	height: 40px;
-        }
+        #tableTop{height: 40px;}
         .span{
         	text-decoration: none;
         	color: black;
         	font-size: 13px;
+        	cursor: pointer;
         }
-        .span:hover{
-        	color: red;
-        }
+        .span:hover{	color: red;}
         .bigPhoto{
         	width: 505px;
         	height: 250px;
@@ -193,14 +186,12 @@ input[type=button]{
             background-color: #33aaaaff;
             color: white;
             border-radius: 7px;
-            width: 70px;
+            /* width: 70px; */
             height: 28px;
             outline: 0px;
             border: 0px;
        }
-       #review_Write{
-       		margin-left: 490px;
-       }
+       #review_Write{	margin-left: 490px;}
        
        #review_range{
 				width: 80px;
@@ -216,16 +207,41 @@ input[type=button]{
 				border-radius: 8px;
 				overflow: hidden;
 			}
-			#likeCntTr{
-				height: 30px;
-			}
+			#likeCntTr{height: 30px;}
 			#replySpan{
 				display: table-cell;
 				height: 30px;
 				vertical-align: middle;
 				cursor: pointer;
 			}
-			
+			#reply_img{
+				width: 30px;
+				height: 30px;
+			}
+			#reply_table{font-size: 13px;}
+			.reply_textarea{				
+				 resize: none;
+				 width: 330px;
+				 border-radius: 5px;
+			}
+			#replyWrite{width: 50px;}
+			.reply_ck{
+				width: 50px;
+				font-size: 12px;
+				margin-right: 5px;
+				cursor: pointer;
+			}
+			.reply_ck:hover{color: red;}
+			#reply_id{height: 50px;}
+			.replyDiv{
+				border-bottom: 1px solid #142e5b;
+				border-left: 1px solid #142e5b;
+				border-right: 1px solid #142e5b;
+				width: 500px;
+			}
+			.reviewLikeImg{cursor: pointer;	}
+			.PhotoImg{cursor: pointer;}
+			#complain{cursor: pointer;}
 		</style>
 		
 	</head>
@@ -243,6 +259,7 @@ input[type=button]{
 	</div><br/>
 	
 	<input id="storeIdx" type="hidden" value="<c:out value="${param.idx} "/>">
+	<input id="reviewSearch" type="hidden" value="<c:out value="${param.reviewSearch}"/>">
 	
 	</body>
 	<script>
@@ -274,44 +291,184 @@ input[type=button]{
 			type:"post",
 			dataType:"json",
 			data:{"store_idx":$("#storeIdx").val(),
+				"review_search":$("#reviewSearch").val(),
 				"range":elem
 				},
 			success:function(d){
 				$("#reviewListDiv").empty();
-				console.log(d.reviewList);
+				//console.log(d.reviewList);
 				printList(d.reviewList);
 				atagCreate(d.reviewList);
+				//hashtag(d.reviewList);
 			},
 			error:function(e){console.log(e);}
 		});
 	}
 	//리뷰 리스트
-	var idx="";
+	 var idx="";
 	var content="";
 	function printList(list){		 
 		content = "";
 		list.forEach(function(item){
 			content += "<div id='abc'>"
 			content += "<div id='review'><img id='reviewListPro' width='50px' height='50px' src='"+item.review_profile+"'/><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-			content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'><img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick("+item.review_idx+")' /><br/><span id='complain' class='span' href='#' onclick='complain(this)'>신고</span></div></div>";
+			content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'><img class='reviewLikeImg' id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' /><br/>";
+			if(item.id != loginId || loginId == ""){
+			content += "<span id='complain' class='span' href='#' onclick='complain(this)'>신고</span>";
+			}
+			content += "</div></div>";
 			content += "<table id='review_table'><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
 			content += "<td id='starTd"+item.review_idx+"' class='starTd'></td></tr>";
 			content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
 			content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
-			content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr><tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
-			content += "<span id='replySpan' onclick='reply()'>댓글"+item.review_replyCnt+"개</span></div>";
-			content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div>";	
+			content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'></td></tr><tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
+			content += "<span id='replySpan' onclick='replySelect("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</span></div>";
+			content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
 			content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";
 			
 			idx=item.review_idx;
 			hashtag(idx);//리뷰 해시태그
 			starSelect(idx);//리뷰 별점
-			likeSelect(idx);//리뷰 좋아요
 			
+			if(loginId != ""){
+			likeSelect(idx);//리뷰 좋아요
+			}
+			
+			replySelect(idx);//댓글
 		});
 		
 		$("#reviewListDiv").append(content);		
+		
+	} 
+
+	//댓글 리스트
+	function replySelect(idx){
+		$("#reviewReply"+idx).toggle(100,function(){
+			$.ajax({
+				url:"./replySelect",
+				type:"post",
+				dataType:"json",
+				data:{"review_idx":idx},
+				success:function(d){
+					//console.log(d.replySelect);
+					//댓글 리스트 출력
+					replylist(d.replySelect,idx);
+					
+				},
+				error:function(e){console.log(e);}
+			});
+		});
 	}
+	
+	var profileSession="${sessionScope.loginProfile }";
+	
+	//댓글 리스트 출력
+	 function replylist(list,idx){
+		 console.log("replylist");
+			var reply = "";
+			reply += "<div class='replyDiv' id='reply'><table  id='reply_table'>";
+			if(loginId != ""){			
+			reply += "<tr><td><img width='30px' height='30px' src='resources/upload/"+profileSession+"'/></td>";
+			reply += "<td id='reply_loginId'>"+loginId+"</td><td><textarea id='reply_textarea"+idx+"' class='reply_textarea'></textarea></td>";
+			reply += "<td><input id='replyWrite' type='button' value='작성' onclick='replyWrite(this,"+idx+")'/></td></tr>"
+			}
+			list.forEach(function(item){
+				var date = new Date(item.revreply_date);
+				reply +="<tr class='reply_table' id='reply_table"+item.revreply_idx+"'>";
+				reply +="<td rowspan='2'><input type='hidden' value='"+item.revreply_idx+"'/><img id='reply_img' src='resources/upload/"+item.revreply_profile+"'/></td>";
+				reply +="<td rowspan='2' id='reply_id'>"+item.id+"</td>";
+				reply +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
+				reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td></tr><tr>";
+				reply+="<td  class='reply_btn' >";
+				if(item.id==loginId){										
+					reply+="<span class='reply_ck' id='reply_delete"+item.revreply_idx+"' onclick='reply_delete(this,"+item.revreply_idx+","+idx+")' >삭제</span>";
+					reply+="<span class='reply_ck' id='reply_update"+item.revreply_idx+"' onclick='reply_updateform(this,"+item.revreply_idx+","+idx+")' >수정</span>";
+					//reply+="<span class='reply_ck' id='reply_save' onclick='reply_update(this,"+item.revreply_idx+")' >저장</span>";					
+					
+					//reply+="<td class='reply_btn' ><input type='button' class='reply_clk'  id='reply_cancel"+item.revreply_idx+"' name='"+item.revreply_content+"' onclick='reply_cancel("+item.revreply_idx+",name)'>취소</td>";
+				}else{
+					reply += "<span id='complain' class='span' href='#' onclick='replyComplain(this)'>신고</span>";
+				}
+				
+				reply+="</td>";
+				reply +="</tr>";			
+			})
+			reply+="</table></div>";
+			$("#reviewReply"+idx).empty();
+			$("#reviewReply"+idx).append(reply);
+		}
+	 
+		//댓글 수정폼
+		function reply_updateform(elem,reply_idx,review_idx){
+			//console.log($(elem).parent().parent().parent());
+			$(elem).parent().append("<span class='reply_ck' id='reply_save"+reply_idx+"' onclick='reply_update(this,"+reply_idx+","+review_idx+")' >저장</span>");
+			$(elem).remove();
+			$("#reply_textarea"+reply_idx).removeAttr("readonly");
+			$("#reply_textarea"+reply_idx).focus();
+				
+		}
+		
+		//댓글 수정
+		function reply_update(elem,reply_idx,review_idx){
+			console.log(idx);
+			$.ajax({
+				url:"./Revreply_update",
+				type:"post",
+				dataType:"json",
+				data:{"reply_content":$("#reply_textarea"+reply_idx).val(),"reply_idx":reply_idx,"review_idx":review_idx},
+				success:function(d){
+					console.log(d);	
+					if(d > 0){
+						$("#reply_textarea"+reply_idx).attr("readonly","true");
+						$(elem).parent().append("<span class='reply_ck' id='reply_update"+reply_idx+"' onclick='reply_updateform(this,"+reply_idx+","+review_idx+")' >수정</span>");
+						$(elem).remove();
+						//$("#reply_save"+reply_idx).css("display","none");
+						//$("#reply_update"+reply_idx).css("display","block");
+					}
+					
+				},
+				error:function(e){console.log(e);}
+			});   
+		}
+		
+		//댓글 삭제
+		function reply_delete(elem,reply_idx,review_idx){
+			console.log($(elem).parent().parent()[0]);
+			   $.ajax({
+				url:"./Revreply_delete",
+				type:"post",
+				dataType:"json",
+				data:{"reply_idx":reply_idx,"review_idx":review_idx},
+				success:function(d){
+					console.log(d);
+					 if(d != 0){
+						 $(elem).parent().parent().prev()[0].remove();
+						 $(elem).parent().parent()[0].remove();
+						 
+					} 
+				},
+				error:function(e){console.log(e);}
+			});   
+		}
+	
+	 //댓글 작성
+	 function replyWrite(elem,idx){
+		 var name=$(elem).parents().parents().parents()[4].childNodes[0].childNodes[2].childNodes[0].data;
+		 console.log($(elem).parents().parents().parents()[4].childNodes[0].childNodes[2].childNodes[0].data);
+		  $.ajax({
+				url:"./replyWrite",
+				type:"post",
+				dataType:"json",
+				data:{"review_idx":idx,"loginId":loginId,"reply_content":$("#reply_textarea"+idx).val(),"profile":"resources/upload/"+profileSession,"name":name},
+				success:function(d){
+					console.log(d);
+					replySelect(idx);
+				},
+				error:function(e){console.log(e);}
+			}); 
+		 
+	 }
+	
 	//좋아요
 	function likeSelect(idx){
 		$.ajax({
@@ -320,7 +477,7 @@ input[type=button]{
 			dataType:"json",
 			data:{"loginId":loginId},
 			success:function(d){
-				console.log(d);
+				//console.log(d);
 				for(var i=0; i<d.length; i++){
 					$("#reviewLike"+d[i].review_idx).attr("src","resources/img/reviewLike/reviewLike2.png");
 				}
@@ -329,16 +486,20 @@ input[type=button]{
 		});
 	}
 	//좋아요 클릭
-	function likeClick(idx){
+	function likeClick(elem,idx){
+		var name=$(elem).parents()[1].childNodes[0].data;
 		flag=idx;
 		console.log(idx+"/"+loginId);
+		if(loginId == ""){
+			alert("로그인이 필요한 서비스 입니다.");
+		}else{		
 		$.ajax({
 			url:"./reviewLike",
 			type:"post",
 			dataType:"text",
-			data:{"review_idx":idx, "loginId":loginId},
+			data:{"review_idx":idx, "loginId":loginId,"name":name},
 			success:function(d){
-				console.log(d);
+				//console.log(d);
 				 if(d == "insert"){
 					 $("#reviewLike"+idx).attr("src","resources/img/reviewLike/reviewLike2.png");
 				}else if(d == "delete"){
@@ -347,6 +508,7 @@ input[type=button]{
 			},
 			error:function(e){console.log(e);}
 		});
+		}
 	}
 	
 	
@@ -376,7 +538,7 @@ input[type=button]{
 					aTag += "<span class='span' id='review_delete' href='#' onclick='review_delete(this,"+idx+")'>삭제</span>&nbsp;";
 				}else if(loginId != item.id){
 					//aTag += "<span class='span' onclick='complain(this)'>신고</span>"
-					$("#complain").css("display","none");
+					//$("#complain").css("display","none");
 				} 
 			}
 			
@@ -421,10 +583,10 @@ input[type=button]{
 			error:function(e){console.log(e);}
 		});	 
 	}
-	var starCre = "";
+	 var starCre = "";
 	//리뷰 별점 리스트
 	function star_create(star,elem){
-		//console.log(star);
+		//console.log(star+"/"+elem);
 		starCre = "";
 		starCre +="<span id='star-input' class='star-input'><span id='input' class='input'>";		
 		starCre +="<input id='"+elem+"0.5' type='radio' name='star-input"+elem+"' value='0.5' id='p0.5'><label  id='"+elem+"0.5' for='p0.5'>0.5</label>";
@@ -443,24 +605,23 @@ input[type=button]{
   		var idArr=id.split(".").join('\\.');
   		$("#"+elem+idArr).attr('checked', true);
   		$("#starTd"+elem).css("pointer-events","none");
-	}
+	} 
 	
 	//신고하기
 	function complain(elem){
 		var complain_Id = $(elem).parents()[1].childNodes[0].data;
 		var review_idx = $(elem).parents().parents()[1].childNodes[1].value;
 		var Win = window.open("./complainPage?complain_Id="+complain_Id+"&idx="+review_idx+"&complain_cate=리뷰","Complain",'height=500,width=500,top=200,left=600');
-		console.log(review_idx);
-		console.log(complain_Id);
+		//console.log(review_idx);
+		//console.log(complain_Id);
 	}
 	
 	//댓글신고할때 idx 값이랑 cate만 바꿔서!
-	/* function complain(elem){
-		var complain_Id = $(elem).parents()[1].childNodes[0].data;
-		var review_idx = $(elem).parents().parents()[1].childNodes[0].value;
-		var Win = window.open("./complainPage?complain_Id="+complain_Id+"&idx="+review_idx+"&complain_cate=리뷰","Complain",'height=500,width=500,top=200,left=600');
-		console.log($(elem).parents().parents()[1].childNodes[0].value);
-	} */
+	function replyComplain(elem){
+		var reply_idx = $(elem).parents().parents().prev()[0].childNodes[0].childNodes[0].value;
+		var complain_Id = $(elem).parents().parents().prev()[0].childNodes[1].childNodes[0].data;
+		var Win = window.open("./complainPage?complain_Id="+complain_Id+"&idx="+reply_idx+"&complain_cate=댓글","Complain",'height=500,width=500,top=200,left=600');
+	} 
 	
 	//해시태그,사진
 	function hashtag(elem){
@@ -471,10 +632,10 @@ input[type=button]{
 			data:{"review_idx":elem},
 			success:function(d){
 				printHash(d.reviewHash,elem);		
-				printPhoto(d.reviewPhoto,elem);
+				printPhoto(d.reviewPhoto,elem);				
 			},
 			error:function(e){console.log(e);}
-		});	 
+		});	
 	}
 	
 	//해시태그 리스트
@@ -496,7 +657,7 @@ input[type=button]{
 		photo.forEach(function(item){
 			phoSrc=item.revPhoto_Photo;
 			photoArr=phoSrc.split(".").join('\\.')
-			img += "<div onclick='PhotoClick(this,"+elem+")' id='photo'><img id='PhotoImg"+item.revPhoto_Photo+"'  width='60px' height='50px' src='"+item.revPhoto_Photo+"'/></div>";
+			img += "<div onclick='PhotoClick(this,"+elem+")' id='photo'><img class='PhotoImg' id='PhotoImg"+item.revPhoto_Photo+"'  width='60px' height='50px' src='"+item.revPhoto_Photo+"'/></div>";
 		})
 		$("#reviewList_photo"+elem).append(img);
 	}
@@ -512,21 +673,11 @@ input[type=button]{
 		});
 	}
 		
-	
-	
-	
-	
-	
-		var replyClick = 1;
-		function reply(){			
-			replyClick *= -1;
-			if(replyClick == -1){
-				$("#reviewReply").css("display","block");
-			}else{
-				$("#reviewReply").css("display","none");
-			}						
-		}
-		
+	/* function reply(idx){
+		$("#reviewReply"+idx).toggle(100,function(){
+			
+		});
+	} */
 		
 	
 	</script>

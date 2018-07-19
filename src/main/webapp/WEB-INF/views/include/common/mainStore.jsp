@@ -8,7 +8,7 @@
 		<title>Insert title here</title>
 		<style>
 			#searchPage{
-				width:1010px;
+				width:1100px;
 				height: 500px;
 				margin-bottom: 50px;
 			}

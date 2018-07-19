@@ -23,6 +23,9 @@
 	<body>
 		<div id="detailFrame">
 			<div id="tabFrame">
+				<c:if test="${sessionScope.loginId == '관리자' }">
+					<button id="back" onclick="backBtn()">뒤로가기</button>
+				</c:if>
 				<ul>
 					<li class="tab" id="defau" onclick="divSnH(this)">정보</li>
 					<li class="tab" onclick="divSnH(this)">메뉴</li>
@@ -120,6 +123,11 @@
 		</c:import>
 	</body>
 	<script>
+	//뒤로가기 버튼 클릭이벤트
+	function backBtn() {
+		history.back();
+	}
+	
 	var id="";
 	var likeChk=0;
 	infoDefau();
@@ -231,8 +239,8 @@
 	}
 	
 	//찜 확인
-	function storeLikeChk() {
-		$.ajax({
+	function storeLikeChk() {    
+		$.ajax({  
 			url:"./storeLikeChk",
 			type:"get",
 			data:{

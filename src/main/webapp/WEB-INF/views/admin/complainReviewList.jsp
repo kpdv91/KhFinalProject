@@ -5,11 +5,13 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+		<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> 
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script> -->
 		<title>Insert title here</title>
 		<style>
 			#reviewListDiv{ margin-left: 0px; }
-			#review{ border: 2px solid #142e5b; width: 500px; }
-	        #listTop{ border-bottom: 2px solid #142e5b; height: 50px; line-height: 50px; }
+			#review{ border: 1px solid #142e5b; width: 500px; height: auto;}
+	        #listTop{ border-bottom: 1px solid #142e5b; height: 50px; line-height: 50px; }
 	        #listTop_R{float: right; height: 50px; width: 150px; line-height: 25px; 
 	        	text-align: right; font-size: 13px;}
 	       #review_table tr,#review_table td{ border-collapse: collapse; margin:0 auto;
@@ -87,7 +89,7 @@
 	       		width: auto; height: 30px; } 
 	       	button#comp_cancel{background-color: #2637a4; color: white; border: none;
 	       		width: auto; height: 30px; }               
-	       	 button.btn{margin: 0px 30px; border-radius: 5px;'}
+	        button.btn{margin: 0px 30px; border-radius: 5px;'}
 	       	
 		</style>
 	</head>
@@ -136,7 +138,6 @@
 			var id = "${id}";
 			var complain_id = "${complain_id}";
 			var myWin= window.open("./rev_revRe_delDM?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");
-			
 		});
 		
 		//신고취하
@@ -197,41 +198,88 @@
 			});
 		});
 		
+		var loginId = "${sessionScope.loginId}";
 		//신고된 리뷰 리스트
 		function comp_reviewList(list){		 
 			var content = "";
 			list.forEach(function(item){
 				content += "<div id='abc'>"
-				content += "<div id='review'><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-				content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'></div></div>";
+				content += "<div id='review'><img id='reviewListPro' width='50px' height='50px' src='"+item.review_profile+"'/><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
+				content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'><br/>";/* <img class='reviewLikeImg' id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' /> */
+				/* if(item.id != loginId || loginId == ""){
+					content += "<span id='complain' class='span' href='#' onclick='complain(this)'>신고</span>";
+				} */
+				content += "</div></div>";
 				content += "<table id='review_table'><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
 				content += "<td id='starTd"+item.review_idx+"' class='starTd'></td></tr>";
 				content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
 				content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
-				content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'><td></tr></table>";
-				//content += "<a href='#' onclick='reply()'>댓글"+item.review_replyCnt+"개</a></div>";
-				content += "<div id='reviewReply'>"+item.id+"<input type='text' readonly/><br/></div>";	
+				content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'></td></tr><tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
+				//content += "<span id='replySpan' onclick='replySelect("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</span></div>";
+				content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
 				content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";
 				
-				hashtag(item.review_idx);
+				hashtag(item.review_idx);//해시태그
+				starSelect(item.review_idx);//리뷰 별점
 
 			});
 			$("#reviewListDiv").empty();
 			$("#reviewListDiv").append(content);		
 		}
 		
+		//리뷰 별점
+		function starSelect(elem){
+			$.ajax({
+				url:"./review_star",
+				type:"post",
+				dataType:"json",
+				data:{"review_idx":elem},
+				success:function(d){
+					//console.log(d.reviewStar)
+					//console.log(d.reviewStar);
+					star_create(d.reviewStar,elem);		
+				},
+				error:function(e){console.log(e);}
+			});	 
+		}
+		 var starCre = "";
+		//리뷰 별점 리스트
+		function star_create(star,elem){
+			//console.log(star+"/"+elem);
+			starCre = "";
+			starCre +="<span id='star-input' class='star-input'><span id='input' class='input'>";		
+			starCre +="<input id='"+elem+"0.5' type='radio' name='star-input"+elem+"' value='0.5' id='p0.5'><label  id='"+elem+"0.5' for='p0.5'>0.5</label>";
+			starCre +="<input id='"+elem+"1' type='radio' name='star-input"+elem+"' value='1' id='p1.0'><label  id='"+elem+"1' for='p1.0'>1.0</label>";
+			starCre +="<input id='"+elem+"1.5' type='radio' name='star-input"+elem+"' value='1.5' id='p1.5'><label id='"+elem+"1.5' for='p1.5'>1.5</label>";
+			starCre +="<input id='"+elem+"2' type='radio' name='star-input"+elem+"' value='2' id='p2.0'><label id='"+elem+"2' for='p2.0'>2.0</label>";
+			starCre +="<input id='"+elem+"2.5' type='radio' name='star-input"+elem+"' value='2.5' id='p2.5'><label id='"+elem+"2.5' for='p2.5'>2.5</label>";
+			starCre +="<input id='"+elem+"3' type='radio' name='star-input"+elem+"' value='3' id='p3.0'><label id='"+elem+"3' for='p3.0'>3.0</label>";
+			starCre +="<input id='"+elem+"3.5' type='radio' name='star-input"+elem+"' value='3.5' id='p3.5'><label id='"+elem+"3.5' for='p3.5'>3.5</label>";
+			starCre +="<input id='"+elem+"4' type='radio' name='star-input"+elem+"' value='4' id='p4.0'><label id='"+elem+"4' for='p4.0'>4.0</label>";
+			starCre +="<input id='"+elem+"4.5' type='radio' name='star-input"+elem+"' value='4.5' id='p4.5'><label id='"+elem+"4.5' for='p4.5'>4.5</label>";
+			starCre +="<input id='"+elem+"5' type='radio' name='star-input"+elem+"' value='5' id='p5.0'><label id='"+elem+"5' for='p5.0'>5.0</label>";
+			starCre +="</span></span>";		
+	  		$("#starTd"+elem).append(starCre);
+	  		var id = star+"";
+	  		var idArr=id.split(".").join('\\.');
+	  		$("#"+elem+idArr).attr('checked', true);
+	  		$("#starTd"+elem).css("pointer-events","none");
+		} 
+		
 		//신고된 댓글리스트
 		function comp_revReplyList(list) {
 			var content = "";
 			list.forEach(function(item){
 				var date = new Date(item.revreply_date);
+				content += "<div class='replyDiv' id='reply_divz'  style='border: 1px solid black;'>";
 				content +="<table>";
 				content +="<tr class='reply_table' id='reply_table"+item.revreply_idx+"'>";
-				content +="<td rowspan='2'><img id='reply_img' src='resources/upload/"+item.revreply_profile+"'/></td>";
+				content +="<td rowspan='2'><img id='reply_img' width='30px' height='30px' src='resources/upload/"+item.revreply_profile+"'/></td>";
 				content +="<td rowspan='2' id='reply_id'>"+item.id+"</td>";
-				content +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
+				content +="<td rowspan='2' id='reply_content'><textarea cols='40' rows='auto' style='resize: none;'"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
 				content +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td></tr>";
 				content +="</table>";
+				content +="</div>"
 			});
 			$("#reviewListDiv").empty();
 			$("#reviewListDiv").append(content);		
@@ -279,7 +327,7 @@
 			})
 			$("#reviewList_photo"+rev_idx).append(img);
 		}
-		
+		//사진클릭시 커짐
 		function PhotoClick(elem, idx){
 			$("#bigPhoto"+idx).empty();
 			//console.log($(elem).children().attr("src"));

@@ -12,14 +12,23 @@
 		keyProperty="idx" <- 키가 될 필드
 		keyColumn="idx" <- 키가 저장될 컬럼
 	 -->
+	 <!-- 리뷰 작성 -->
 	 <insert id="reviewWrite" 
 	 	parameterType="review"
 	 	useGeneratedKeys="true"
 	 	keyProperty="review_idx"
 	 	keyColumn="review_idx">
-	 	INSERT INTO review(review_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile)
-	 		VALUES(seq_review.NEXTVAL,#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{review_profile})
+	 	INSERT INTO review(review_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile,review_replyCnt)
+	 		VALUES(seq_review.NEXTVAL,#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{review_profile},0)
 	 </insert>
+	 <select id="starAvg" resultType="Double">
+	 	SELECT ROUND(AVG(review_star), 2) FROM review WHERE store_idx = #{param1}
+	 </select>
+	 
+	 <update id="storeReviewUpdate">
+	 	UPDATE store SET store_revCnt = store_revCnt+1, store_revDate = SYSDATE, store_star=#{param2} WHERE store_idx=#{param1}
+	 </update>
+	 
 	 
 	 <insert id="hashtag">
 	 	INSERT INTO hash(hash_tag,hash_cate,review_idx)
@@ -122,12 +131,14 @@
 	 <!-- 신고하기 -->
 	 <insert id="complain" parameterType="complain">
 	 	INSERT INTO complain
-	 	<if test="!review_idx.equals('')">
-			VALUES(seq_complain.NEXTVAL,#{id},#{complain_id},#{complain_type},#{complain_content},#{complain_cate},SYSDATE,0,#{review_idx},null)
-		</if>		
-		<if test="review_idx.equals('')">
-			VALUES(seq_complain.NEXTVAL,#{id},#{complain_id},#{complain_type},#{complain_content},#{complain_cate},SYSDATE,0,null,#{rev_reply_idx})
-		</if>
+	 	<choose>
+	 		<when test="review_idx == ''">
+				VALUES(seq_complain.NEXTVAL,#{id},#{complain_id},#{complain_type},#{complain_content},#{complain_cate},SYSDATE,0,null,#{revReply_idx})
+			</when>
+			<otherwise>
+				VALUES(seq_complain.NEXTVAL,#{id},#{complain_id},#{complain_type},#{complain_content},#{complain_cate},SYSDATE,0,#{review_idx},null)
+	 		</otherwise>
+	 	</choose>
 	 </insert>
 	 
 	 
@@ -167,9 +178,19 @@
 	</select>
 	
 	<!-- 리뷰 좋아요 insert -->
-	<insert id="likeInsert">
-		INSERT INTO revLike VALUES(seq_revLike.NEXTVAL,#{param1},#{param2},SYSDATE)
+	<insert id="likeInsert"
+		parameterType="revLike"
+	 	useGeneratedKeys="true"
+	 	keyProperty="revLike_idx"
+	 	keyColumn="revLike_idx"
+	>
+		INSERT INTO revLike VALUES(seq_revLike.NEXTVAL,#{review_idx},#{id},SYSDATE)
 	</insert>
+	<!-- 좋아요시 알람 추가 -->
+	<insert id="alarmLike"	>
+		INSERT INTO alarm (alarm_idx,alarm_id,alarm_cate,revLike_idx,alarm_read) VALUES (seq_alarm.NEXTVAL,#{param1},'좋아요',#{param2},0)
+	</insert>
+	
 	
 	<!-- 좋아요 수 증가 -->
 	<update id="likeCntUp">
@@ -185,6 +206,11 @@
 	<delete id="likeDelete">
 		DELETE FROM revLike WHERE review_idx=#{param1} AND id=#{param2}
 	</delete>
+	<!-- 좋아요 취소시 알람 지우기 -->
+	<delete id="alarmLikeDel">
+		DELETE FROM alarm WHERE alarm_idx=#{param1} 
+	</delete>
+	
 	
 	<!-- 리뷰 좋아요 select(List) -->
 	<select id="likeList" resultType="revLike">
@@ -197,12 +223,21 @@
 	</select>
 	
 	<!-- 댓글 작성 -->
-	<insert id="replyWrite">
-		INSERT INTO revReply VALUES(seq_revReply.NEXTVAL,#{param1},#{param2},#{param3},SYSDATE,#{param4})
+	<insert id="replyWrite"
+		parameterType="revReply"
+	 	useGeneratedKeys="true"
+	 	keyProperty="revreply_idx"
+	 	keyColumn="revreply_idx">
+		INSERT INTO revReply VALUES(seq_revReply.NEXTVAL,#{review_idx},#{id},#{revreply_content},SYSDATE,#{revreply_profile})
 	</insert>
 	<update id="replyCntUp">
 		UPDATE review SET review_replyCnt = review_replyCnt+1 WHERE review_idx=#{param1}
 	</update>
+	<!-- 알람  -->
+	<insert id="alamReply">
+		INSERT INTO alarm (alarm_idx,alarm_id,alarm_cate,revReply_idx,alarm_read) VALUES (seq_alarm.NEXTVAL,#{param1},'댓글',#{param2},0)
+	</insert>
+	
 	
 	<!-- 댓글 삭제 -->
 	<delete id="Revreply_delete">
@@ -210,6 +245,11 @@
 	 </delete>
 	 <update id="replyCntDown">
 		UPDATE review SET review_replyCnt = review_replyCnt-1 WHERE review_idx=#{param1}
+	</update>
+	
+	<!-- 댓글 수정 -->
+	<update id="Revreply_update">
+		UPDATE revReply SET revReply_content = #{param1} WHERE revReply_idx=#{param2} AND review_idx=#{param3}
 	</update>
 	 
 </mapper>

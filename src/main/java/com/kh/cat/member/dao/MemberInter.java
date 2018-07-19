@@ -28,5 +28,7 @@ public interface MemberInter {
 
 	int pwChange(String id, String hash);
 
-	
+	int userupdate(MemberDTO dto);
+
+	int userpwupdate(MemberDTO dto);	
 }

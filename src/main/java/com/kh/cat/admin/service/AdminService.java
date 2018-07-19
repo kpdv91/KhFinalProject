@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.cat.admin.dao.AdminInter;
 import com.kh.cat.dto.ComplainDTO;
+import com.kh.cat.dto.DMDTO;
 import com.kh.cat.dto.HashDTO;
 import com.kh.cat.dto.RevPhotoDTO;
 import com.kh.cat.dto.RevReplyDTO;
@@ -61,12 +62,24 @@ public class AdminService {
 	
 		//String revWriter = inter.revWriter(rev_idx);//리뷰 작성자 아이디 조회 쿼리문
 		//logger.info("리뷰 작성자 : {}", revWriter);
-		int result = inter.blackListAdd(complain_id);
-		if(result > 0) {
-			map.put("result", result);
-			map.put("msg", "블랙리스트 추가 완료");
-			inter.complainDel(rev_idx, id);//신고내역에서 지우기
-			logger.info("블랙리스트 추가(리뷰) 여부 : {}", result);
+		if(rev_idx != null && revReply_idx.equals("0")) {
+			int result = inter.blackListAdd(complain_id);//블랙리스트에 추가
+			if(result > 0) {
+				map.put("result", result);
+				map.put("msg", "블랙리스트 추가 완료");
+				inter.complainDel(rev_idx, id);//신고내역에서 지우기
+				logger.info("블랙리스트 추가(리뷰) 여부 : {}", result);
+			}
+		}
+		
+		if(rev_idx.equals("0") && revReply_idx != null) {
+			int result = inter.blackListAdd(complain_id);//블랙리스트에 추가
+			if(result > 0) {
+				map.put("result", result);
+				map.put("msg", "블랙리스트 추가 완료");
+				inter.complainDel2(revReply_idx, id);//신고내역에서 지우기
+				logger.info("블랙리스트 추가(리뷰) 여부 : {}", result);
+			}
 		}
 		
 		return map;
@@ -88,7 +101,8 @@ public class AdminService {
 		if(rev_idx != null && revReply_idx.equals("0")) {
 			ArrayList<ReviewDTO> list1 = inter.comp_reviewList(rev_idx);
 			map.put("list1", list1);
-		}else if(rev_idx.equals("0") && revReply_idx != null) {
+		}
+		if(rev_idx.equals("0") && revReply_idx != null) {
 			//SELECT * FROM revReply WHERE review_idx=#{param1} ORDER BY revReply_date 
 			ArrayList<RevReplyDTO> list2 = inter.comp_revReplyList(revReply_idx);
 			map.put("list2", list2);
@@ -121,12 +135,20 @@ public class AdminService {
 		String store_idx = params.get("store_idx");
 		String id = params.get("id");
 		
+		DMDTO dto = new DMDTO();
+		dto.setId(loginId);
+		dto.setDm_id(id);
+		
+		
+		
 		int result = inter.registYes(store_idx);
 		if(result > 0) {
-			inter.regY_dm_Write(id, loginId);
+			inter.regY_dm_Write(dto);//가게 등록 승인시 쪽지
+			logger.info("쪽지 idx : {}", dto.getDm_idx());
+			logger.info("받을 아이디 : {}", id);
+			inter.alarm_registYN(dto);
 			map.put("msg", "승인 완료");
 		}
-		
 		return map;
 	}
 
@@ -138,12 +160,18 @@ public class AdminService {
 		String id = params.get("id");
 		String dm_content = params.get("dm_content");
 		
+		DMDTO dto = new DMDTO();
+		dto.setId(loginId);
+		dto.setDm_id(id);
+		dto.setDm_content(dm_content);
+		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		inter = sqlSession.getMapper(AdminInter.class);
 		//id = 받는사람, loginId = 보내는사람, dm_content = 쪽지 내용
-		int result = inter.regNo_dmWrite(id, loginId, dm_content);
+		int result = inter.regNo_dmWrite(dto);
 		if(result > 0) {
 			inter.storeDel(store_idx);
+			inter.alarm_registYN(dto);
 			map.put("msg", "등록 취소 완료");
 		}
 		
@@ -170,7 +198,8 @@ public class AdminService {
 				map.put("result", result);
 				map.put("msg", "리뷰 신고 취하 완료");
 			}
-		}else if(rev_idx.equals("0") && revReply_idx != null) {
+		}
+		if(rev_idx.equals("0") && revReply_idx != null) {
 			int result = inter.complainDel2(revReply_idx, id);//신고내역 지우기
 			if(result > 0) {
 				map.put("result", result);
@@ -182,7 +211,7 @@ public class AdminService {
 	}
 
 	//게시물 삭제
-	public HashMap<String, Object> comp_rev_reply_del(HashMap<String, String> params) {
+	/*public HashMap<String, Object> comp_rev_reply_del(HashMap<String, String> params) {
 		logger.info("게시물(리뷰&댓글) 삭제 서비스");
 		
 		String rev_idx = params.get("rev_idx");
@@ -194,7 +223,7 @@ public class AdminService {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		inter = sqlSession.getMapper(AdminInter.class);
 		return map;
-	}
+	}*/
 
 	//게시물 삭제시 쪽지보내기
 	public HashMap<String, Object> dm_write_rev_revRe_del(HashMap<String, String> params, String loginId) {
@@ -226,7 +255,8 @@ public class AdminService {
 				map.put("result", review_del);//리뷰 삭제 결과 result 에 저장
 				map.put("msg", "리뷰가 삭제되었습니다.");
 			}
-		}else if(rev_idx.equals("0")&& revReply_idx != null) {//댓글 삭제
+		}
+		if(rev_idx.equals("0")&& revReply_idx != null) {//댓글 삭제
 			int review_del_dm = inter.review_del_dm(complain_id, loginId, dm_content);
 			if(review_del_dm > 0) {
 				inter.revReply_del_dm3(id, loginId);//게시물 삭제후 신고한 사람에게 쪽지

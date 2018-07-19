@@ -125,6 +125,24 @@
 	var str = "";
 	var phone=[];
 	var fallowbtn=1;
+	var aTag = "";
+	var idx = "";
+	//리뷰 로그인체크 후 수정 삭제 신고 a 태그 띄워줌
+	function atagCreate(list){
+		aTag = "";
+		idx = "";
+		list.forEach(function(item){
+			aTag = "";
+			idx=item.review_idx;
+			if(userid != ""){
+			 if(userid == item.id){	
+					aTag += "<span class='span' id='review_update' href='#' onclick='review_update(this,"+idx+")'>수정</span>&nbsp;";
+					aTag += "<span class='span' id='review_delete' href='#' onclick='review_delete(this,"+idx+")'>삭제</span>&nbsp;";
+				}
+			}			
+			 $(".listTop_R"+idx).append(aTag);
+		});		
+	}
 	$(document).ready(function(){
 		if("${cate}"=="팔로우"){
 			fallowlist();
@@ -428,6 +446,7 @@
 			success:function(d){
 				console.log(d);
 				printList(d.list);
+				atagCreate(d.list);
 			},
 			error:function(e){
 				console.log(e);
@@ -618,7 +637,6 @@
 			success:function(d){
 				printHash(d.reviewHash,elem);		
 				printPhoto(d.reviewPhoto,elem);
-				console.log(d.reviewPhoto);
 			},
 			error:function(e){console.log(e);}
 		});
@@ -647,7 +665,6 @@
 	}
 	function likeClick(idx){
 		flag=idx;
-		console.log(idx+"/"+userid);
 		$.ajax({
 			url:"./reviewLike",
 			type:"post",
@@ -936,7 +953,7 @@
 				error:function(e){
 					console.log(e);
 				}
-			});			
+			});
 		}else if(page=="reviewlist"){
 			$.ajax({
 				url:"./timelinereviewlist",
@@ -1035,7 +1052,7 @@
 					if(d.update.profile!=0){
 						$("#updateprofile").empty();
 						$("#updateprofile").append("<img id='updateprofilephoto' src='resources/upload/"+d.update.profile+"' height=150px width=150px/>");
-						$("#updateprofile").append("<input id='profilename' type='hidden' value='"+d.update.profile+"'/>")
+						$("#updateprofile").append("<input id='profilename' type='text' value='resources/upload/"+d.update.profile+"'/>")
 					}
 					console.log(d);
 					$("#userId").val(userid);
@@ -1258,19 +1275,21 @@
 		function complain_list(list) {
 			var content = "";		
 			list.forEach(function(item, idx){
-				content +="<tr>";
-				content +="<td class='comp_detail1'>"+item.id+"</td>";
-				content +="<td class='comp_detail1'>"+item.complain_type+"</td>";
-				content +="<td class='comp_detail1'>"+item.complain_id+"</td>";
-				content +="<td class='comp_detail1'>"+item.complain_cate+"</td>";
-				var date = new Date(item.complain_date);			
-				content +="<td class='comp_detail1'>"+date.toLocaleDateString("ko-KR")+"</td>";
-				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
-				content += "</tr>";
-				content += "<tr>";
-				content +="<td style='display: none;'>신고 내용 : </td>";
-				content +="<td style='display: none;' colspan='5'>"+item.complain_content+"</td>";
-				content += "</tr>";
+				if(item.complain_black != 1){
+					content +="<tr>";
+					content +="<td class='comp_detail1'>"+item.id+"</td>";
+					content +="<td class='comp_detail1'>"+item.complain_type+"</td>";
+					content +="<td class='comp_detail1'>"+item.complain_id+"</td>";
+					content +="<td class='comp_detail1'>"+item.complain_cate+"</td>";
+					var date = new Date(item.complain_date);			
+					content +="<td class='comp_detail1'>"+date.toLocaleDateString("ko-KR")+"</td>";
+					content +="<td><button id='complain_move' onclick='complain_move("+item.complain_idx+", "+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
+					content += "</tr>";
+					content += "<tr>";
+					content +="<td style='display: none;'>신고 내용 : </td>";
+					content +="<td style='display: none;' colspan='5'>"+item.complain_content+"</td>";
+					content += "</tr>";
+				}
 			});		
 			$("#complail_tbody").empty();
 			$("#complail_tbody").append(content);//내용 붙이기
@@ -1287,7 +1306,7 @@
 				}
 			});
 		}
-		
+		//신고내역 보기 버튼 클릭이벤트
 		function complain_move(rev_idx, revReply_idx, id, complain_id) {
 			console.log("클릭");   
 			console.log(rev_idx, revReply_idx, id, complain_id);  
@@ -1298,7 +1317,7 @@
 		//가게 등록 리스트
 		function store_regist_list(list) {
 			var content = "";		
-			list.forEach(function(item, idx){
+			list.forEach(function(item){
 				if(item.store_regist == 0){
 					var id = new String(item.id);
 					content +="<tr>";
@@ -1307,7 +1326,7 @@
 					content +="<td>"+item.store_addr+"</td>";
 					var date = new Date(item.store_revDate);			
 					content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
-					content +="<td><button id='store_regist_move'>보 기</button></td>";  
+					content +="<td><button id='store_regist_move' onclick='regist_move("+item.store_idx+")'>보 기</button></td>";  
 		            content +="<td><button id='store_regist_yes' onclick='registYes("+item.store_idx+", \""+item.id+"\")'>승인</button> / "+
 		            	"<button id='store_regist_no' onclick='registNo("+item.store_idx+", \""+item.id+"\")'>취소</button></td>";
 					content += "</tr>";		
@@ -1318,7 +1337,12 @@
 
 		}
 		
-		//가게 등록 승인
+		//가게 등록 보기  클릭이벤트
+		function regist_move(store_idx) {
+			location.href="./storeDetail?store_idx="+store_idx;
+		}
+		
+		//가게 등록 승인  클릭이벤트
 		function registYes(store_idx, id) {
 			console.log(store_idx, id);
 			$.ajax({
@@ -1332,7 +1356,7 @@
 				success:function(data){
 					console.log(data);			
 					alert(data.msg);
-					location.href="./storeRegistList";
+					//location.href="./storeRegistList";
 				},
 				error:function(error){
 					console.log(error);
@@ -1340,30 +1364,132 @@
 			});
 		}
 		
+		//가게 등록 거절  클릭이벤트
 		function registNo(store_idx, id) {
 			console.log(store_idx, id);
 			var myWin= window.open("./registNoWin?store_idx="+store_idx+
 					"&id="+id,"가게 등록 거절","width=500,height=500");	
 		}
-		
+		//회원정보 사진 클릭
+		var profileck=0;
+		function selPicture(){
+			if(profileck==0){
+				var myWin= window.open("./profileupload","파일업로드","width=400,height=100");
+				selPicturedelete();
+				$("#updateprofile").empty();
+				profileck=1;
+			}else{
+				var myWin= window.open("./profileupload","파일업로드","width=400,height=100");
+				selPicturedelete();
+			}
+		}
+		//회원정보사진 삭제
 		function selPicturedelete(){
-			var photoname =$("#profilename").val();
+			var profilena=$("#profilename").val();
+			console.log(profilena);
+			if(profilena!=null){
+				var photoname=profilena.split("/")[2];
+				 $.ajax({
+					url:"./profileDel",
+					type:"get",
+					data:{"fileName":photoname},
+					success:function(data){
+						console.log(data);
+						 if(data.success==1){
+							$("#updateprofile").empty();
+						} 
+					},
+					error:function(e){
+					console.log(e);
+					}
+				});
+			}			
+		}
+		//회원정보 수정 저장
+		function updatesave(){
+			if($("#CurrentUserPw").val()==""){//비밀번호
+	        	alert("비밀번호를 입력해주세요!!");
+	        	$("#CurrentUserPw").focus();
+	        }else if($("#userName").val()==""){//이름
+	        	alert("이름을 입력해주세요!!");
+	        	$("#userName").focus();
+	        }else if($("#userEmail").val()==""){//이메일
+	        	alert("이메일을 입력해주세요!!");
+	        	$("#userEmail").focus();
+	        }else if($("#hp1").val()==""){//핸드폰번호
+	        	alert("핸드폰번호를 입력해주세요!!");
+	        	$("#hp1").focus();
+	        }else if($("#hp2").val()==""){//핸드폰번호
+	        	alert("핸드폰번호를 입력해주세요!!");
+	        	$("#hp2").focus(); 
+	        }else if($("#hp3").val()==""){//핸드폰번호
+	        	alert("핸드폰번호를 입력해주세요!!");
+	        	$("#hp3").focus();	        
+	        }else{
+	        	if($("#userPw").val()!=""||$("#userPw").val()!=""){
+	        		if($("#userPw").val().length<8 || $("#userPw").val().length>16){	//비밀번호 유효성
+			           	alert("비밀번호는 8~16자를 입력해주세요.");
+			        }else{
+			        	userajax();
+			        }
+	        	}else{
+	        		userajax()
+	        	}	        	
+	        }			 
+		}
+		//회원정보 저장 실행 ajax
+		function userajax(){
+			var profilena=$("#profilename").val();
+			var photoname="";
+			if($("#profilename").val()==null){
+				photoname =0;
+			}else{
+				photoname=profilena.split("/")[2];
+			}			
 			console.log(photoname);
-			 /* $.ajax({
-				url:"./profilephotodelete",
+			console.log($("#userPw").val());
+        	$.ajax({
+				url:"./userupdate",
 				type:"post",
 				data:{
-					profilname=photoname
+					fileName : photoname,
+					id:$("#userId").val(),
+					nowpw:$("#CurrentUserPw").val(),
+					newpw:$("#userPw").val(),
+					username:$("#userName").val(),
+					useremail:$("#userEmail").val(),
+					hp1:$("#hp1").val(),
+					hp2:$("#hp2").val(),
+					hp3:$("#hp3").val()
 				},
-				dataType:"json",
 				success:function(d){
-					$("#updateprofilephoto").remove();						
+					console.log(d.success);
+					if(d.success>0){
+						location.href="./timeline?id="+$("#userId").val();
+					}
+					alert(d.msg);
 				},
 				error:function(e){
-					console.log(e);
+				console.log(e);
 				}
-			}); */
+			});
 		}
+
+		//회원정보 수정 새로운 비밀번호 체크
+		function chgPw(){
+	    	console.log("비교실행");
+	        //두 인풋의 일치여부 확인	 
+	   	var userPw =$("#userPw").val();
+		var userPwChk =$("#userPwChk").val();
+	        
+	        if(userPw==userPwChk){
+	            $("#confirmPw").html("비밀번호가 일치합니다");
+	            $("#confirmPw").css("color","green");
+	        }else{
+	        	$("#confirmPw").html("비밀번호가 일치하지않습니다");
+	            $("#confirmPw").css("color","red");
+	        }
+	    }
 		function print_statList(list) {
 			var content = "";
 			list.forEach(function(item){

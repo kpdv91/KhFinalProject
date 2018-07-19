@@ -3,6 +3,7 @@ package com.kh.cat.admin.dao;
 import java.util.ArrayList;
 
 import com.kh.cat.dto.ComplainDTO;
+import com.kh.cat.dto.DMDTO;
 import com.kh.cat.dto.HashDTO;
 import com.kh.cat.dto.RevPhotoDTO;
 import com.kh.cat.dto.RevReplyDTO;
@@ -25,9 +26,9 @@ public interface AdminInter {
 
 	int registYes(String store_idx);//가게 등록 승인
 
-	void regY_dm_Write(String id, String loginId);//등록 승인 시 쪽지보내기
+	void regY_dm_Write(DMDTO dto);//등록 승인 시 쪽지보내기
 
-	int regNo_dmWrite(String id, String loginId, String dm_content);//등록 거절 시 쪽지 보내기
+	int regNo_dmWrite(DMDTO dto);//등록 거절 시 쪽지 보내기
 
 	void storeDel(String store_idx);//등록 거절 시 삭제
 
@@ -46,6 +47,13 @@ public interface AdminInter {
 	int complainDel2(String revReply, String id);
 
 	int revReply_del(String revReply_idx);//댓글 삭제
+
+	void alarm_registYN(DMDTO dto);//가게 등록 승인,거절 시 쪽지 알람
+
+	
+
+
+	
 
 
 	

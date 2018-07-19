@@ -80,6 +80,8 @@ public interface CommonInter {
 
 	ArrayList<HashDTO> likestorehash(Integer integer);
 
+	ArrayList<StoreDTO> statList(String id);//내가 등록한 가게 리스트
+	
 	ArrayList<String> followlist(String id);
 
 	ArrayList<String> following(String id);

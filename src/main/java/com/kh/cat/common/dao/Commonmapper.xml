@@ -146,6 +146,11 @@
 	<select id="likestorehash" resultType="hash">
 		SELECT * FROM hash WHERE store_idx=#{param1}
 	</select>
+
+	<select id="statList" resultType="store">
+		SELECT * FROM store WHERE id=#{param1}
+	</select>
+
 	<select id="followlist" resultType="String">
 		SELECT id FROM follow WHERE follow_id=#{param1}
 	</select>
@@ -170,6 +175,7 @@
 	<insert id="alarmdminsert">
 		INSERT INTO alarm(alarm_idx,alarm_id,alarm_cate,dm_idx,alarm_read) VALUES(seq_alarm.NEXTVAL,#{param2},'메세지',#{param1},0)
 	</insert>
+
 </mapper>
 
 

@@ -1,13 +1,17 @@
 package com.kh.cat.common.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
@@ -372,6 +376,31 @@ public class CommonService {
 		return map;
 	}
 
+	//등록한 가게 리스트
+	public HashMap<String, Object> statList(String id) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("storeList", inter.statList(id));
+		
+		return map;
+	}
+
+	public ModelAndView showStat(int store_idx) {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("store/showStat");
+		return mav;
+	}
+	
+	@Scheduled(cron="0 0/1 11 * * *")//0시 1분에 실행
+	public void cron() {
+		inter = sqlSession.getMapper(CommonInter.class);
+		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yy/MM/dd");
+		Date today = new Date();
+		String mTime = mSimpleDateFormat.format ( today );
+		System.out.println ( mTime );
+	}
+
 	public HashMap<String, Object> timelinefollowlist(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -411,6 +440,7 @@ public class CommonService {
 		}
 		map.put("success", alarmread);
 		return map;
+
 	}
 
 }

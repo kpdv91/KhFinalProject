@@ -29,12 +29,20 @@ public class CommonController {
 		return "main";
 	}
 	
-	@RequestMapping(value = "/search")
+	/*@RequestMapping(value = "/search")
 	public ModelAndView search(@RequestParam HashMap<String,String> params) {
 		logger.info("검색 페이지 이동");
 		logger.info("지역 : "+params.get("search_map"));
 		logger.info("검색어 : "+params.get("search_content"));
 		return commonservice.storeSearch(params);
+	}*/
+	
+	@RequestMapping(value = "/search")
+	public String search(@RequestParam HashMap<String,String> params) {
+		logger.info("검색 페이지 이동");
+		logger.info("지역 : "+params.get("search_map"));
+		logger.info("검색어 : "+params.get("search_content"));
+		return "include/common/search";
 	}
 	
 	@RequestMapping(value = "/searchSort")

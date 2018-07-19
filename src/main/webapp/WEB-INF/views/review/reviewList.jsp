@@ -8,49 +8,9 @@
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<script src="resources/js/jquery-1.11.3.min.js"></script>
 		<script src="resources/js/star.js"></script>
-		
-		
-		
-		<!-- <meta name="viewport" content="width=device-width">
-        <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
-        
-        
-        
-		<!-- <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
-		<!-- <link rel="stylesheet" type="text/css" href="star.css"> -->
 		<title>Insert title here</title>
 		<style>
-		
-		
-		
-		.paging-nav {
-		  text-align: right;
-		  padding-top: 2px;
-		  float: left;
-		  margin-left: 700px;
-		}
-		
-		.paging-nav a {
-		  margin: auto 1px;
-		  text-decoration: none;
-		  display: inline-block;
-		  padding: 1px 7px;
-		  background: #91b9e6;
-		  color: white;
-		  border-radius: 3px;
-		}
-		
-		.paging-nav .selected-page {
-		  background: #187ed5;
-		  font-weight: bold;
-		}
-		
-		
-		
-		
-		
-		
+
 		#reviewListDiv{margin-left: 490px;}
 		
 		#review{
@@ -305,20 +265,7 @@ input[type=button]{
 	<input id="storeIdx" type="hidden" value="<c:out value="${param.idx} "/>">
 	<input id="reviewSearch" type="hidden" value="<c:out value="${param.reviewSearch}"/>">
 	</body>
-	
-	
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> 
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-	 <script src="resources/js/paging.js"></script> 
-	<script>
-            $(document).ready(function() {
-               // console.log($('#reviewListDiv').paging());
-                
-            });
-    </script>
-    
-    
-    
+
 	<script>
 	
 	var loginId = "${sessionScope.loginId}";
@@ -358,7 +305,7 @@ input[type=button]{
 				printList(d.reviewList);
 				atagCreate(d.reviewList);
 				//hashtag(d.reviewList);
-				//$("#reviewListDiv").paging({limit:5});
+				
 			},
 			error:function(e){console.log(e);}
 		});

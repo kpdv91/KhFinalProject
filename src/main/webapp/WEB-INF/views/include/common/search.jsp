@@ -56,18 +56,18 @@
 	<body>
 		
 		<script>
-			var mapLocation = new Array();
-			var mapContent = new Array();
+			/* var mapLocation = new Array();
+			var mapContent = new Array(); */
 			var mapLevel = 9;
-			<c:forEach items="${list}" var="sto">
+			/* <c:forEach items="${list}" var="sto">
 				mapContent.push("${sto.store_name}");
 				mapLocation.push("${sto.store_addr}");
-			</c:forEach>
+			</c:forEach> */
 		</script>
 	
 		<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
 		<c:import url="/WEB-INF/views/include/common/map.jsp"/><br/>
-		<script>displayMap(mapLocation, mapContent)</script>
+		<!-- <script>displayMap(mapLocation, mapContent)</script> -->
 		
 		<input type="button" onclick="markerRefresh()" value="마커생성"/>
 		<input type="button" onclick="remo()" value="마커삭제"/>
@@ -81,7 +81,7 @@
 		<br/><br/>
 		
 		<div id="searchPage">
-		<c:forEach items="${list}" var="sto" varStatus="status">
+		<%-- <c:forEach items="${list}" var="sto" varStatus="status">
 			<table class="storeTable" style="cursor:pointer;" onclick="location.href='storeDetail?store_idx=${sto.store_idx}'">
 
 				<tr>
@@ -105,7 +105,7 @@
 					</td>
 				</tr>
 			</table>
-		</c:forEach>
+		</c:forEach> --%>
 		</div>
 		<br/><br/><br/>
 		
@@ -115,15 +115,24 @@
 		</c:import>
 	</body>
 	<script>
+	var search_content = "<%=request.getParameter("search_content") %>";
+	var search_map = "<%=request.getParameter("search_map") %>";
 	
-		function markerRefresh(){
+	tableSort("리뷰 최신 순",search_content);
+	
+	
+		function markerRefresh(list){
 			var mapLocation = new Array();
 			var mapContent = new Array();
 			var mapLevel = 9;
-			<c:forEach items="${list}" var="sto">
+			/* <c:forEach items="${list}" var="sto">
 				mapContent.push("${sto.store_phone}");
 				mapLocation.push("${sto.store_addr}");
-			</c:forEach>
+			</c:forEach> */
+			list.forEach(function(item){
+				mapContent.push(item.store_name);
+				mapLocation.push(item.store_addr);
+			});
 			displayMap(mapLocation, mapContent);
 		}
 		
@@ -131,9 +140,6 @@
 			removeMarker();
 		}
 	
-		var search_content = "<%=request.getParameter("search_content") %>";
-		var search_map = "<%=request.getParameter("search_map") %>";
-		
 		function sort(val){
 			switch (val) {
 			case "리뷰 최신 순":
@@ -166,7 +172,7 @@
 					$("#searchPage").empty();
 					storePrintList(data.list,data.list_hash);
 					removeMarker();
-					markerRefresh();
+					markerRefresh(data.list);
 				},
 				error:function(e){
 					console.log(e)
@@ -191,7 +197,7 @@
 				});
 				
 				content += "</td></tr></table>";
-			})
+			});
 			$("#searchPage").append(content);
 		}
 	</script>

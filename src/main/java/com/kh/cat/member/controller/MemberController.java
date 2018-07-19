@@ -150,4 +150,29 @@ public class MemberController {
 		logger.info("회원 정보 요청");
 		return memberService.timelineuserupdate(params);
 	}
+	
+	//파일 업로드 폼
+	@RequestMapping(value = "/profileupload")
+	public String profileupload() {
+		logger.info("파일 업로드 페이지 이동");
+		return "member/profileupload";
+	}
+	@RequestMapping(value = "/newfileUpload")
+	public ModelAndView newfileUpload(MultipartFile file, HttpSession session) {
+		logger.info("fileUpload 요청");
+		String root = session.getServletContext().getRealPath("/");
+		return memberService.newfileUpload(file,root);
+	}
+	@RequestMapping(value = "/profileDel")
+	public @ResponseBody HashMap<String, Integer> fileDel(@RequestParam("fileName") String fileName,HttpSession session) {
+		logger.info("fileDel 요청");	
+		String root = session.getServletContext().getRealPath("/");		
+		return memberService.fileDel(root,fileName);
+	}
+	
+	@RequestMapping(value = "/userupdate")
+	public @ResponseBody HashMap<String, Object> userupdate(@RequestParam(value = "newpw", required = false, defaultValue = "0") String newpw,@RequestParam HashMap<String, String> params) {
+		logger.info("userupdate 요청");
+		return memberService.userupdate(params,newpw);
+	}
 }

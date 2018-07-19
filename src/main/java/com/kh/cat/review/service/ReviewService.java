@@ -268,11 +268,11 @@ public class ReviewService {
 		if(map.get("complain_cate").equals("리뷰")) {
 			dto.setReview_idx(Integer.parseInt(map.get("idx")));
 		}else {
-			dto.setRev_reply_idx(Integer.parseInt(map.get("idx")));
+			dto.setRevReply_idx(Integer.parseInt(map.get("idx")));
 		}
 		dto.setComplain_type(map.get("complain_type"));
 		dto.setComplain_content(map.get("complain_content"));
-		System.out.println(dto.getId()+"/"+dto.getComplain_id()+"/"+dto.getComplain_cate()+"/"+dto.getReview_idx()+"/"+dto.getRev_reply_idx()+"/"+dto.getComplain_type()+"/"+dto.getComplain_content());
+		System.out.println(dto.getId()+"/"+dto.getComplain_id()+"/"+dto.getComplain_cate()+"/"+dto.getReview_idx()+"/"+dto.getRevReply_idx()+"/"+dto.getComplain_type()+"/"+dto.getComplain_content());
 		inter = sqlSession.getMapper(ReviewInter.class);
 		HashMap<String, Integer> hash = new HashMap<String, Integer>();
 		hash.put("success", inter.complain(dto));

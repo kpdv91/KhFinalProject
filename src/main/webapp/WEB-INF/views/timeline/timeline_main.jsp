@@ -1229,11 +1229,11 @@
 				content +="<td class='comp_detail1'>"+item.complain_cate+"</td>";
 				var date = new Date(item.complain_date);			
 				content +="<td class='comp_detail1'>"+date.toLocaleDateString("ko-KR")+"</td>";
-				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\")'>보 기</button></td>";
+				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
 				content += "</tr>";
 				content += "<tr>";
-				content +="<td class='comp_detail2' style='display: none;'>신고 내용 : </td>";
-				content +="<td class='comp_detail2' style='display: none;' colspan='5'>"+item.complain_content+"</td>";
+				content +="<td style='display: none;'>신고 내용 : </td>";
+				content +="<td style='display: none;' colspan='5'>"+item.complain_content+"</td>";
 				content += "</tr>";
 			});		
 			$("#complail_tbody").empty();
@@ -1243,19 +1243,19 @@
 			$(".comp_detail1").click(function () {
 				console.log("클릭");
 				if(flag == false){
-					$(".comp_detail2").css("display", "");
+					$(this).parent().next().children('td').css("display", "");
 					flag = true;
 				}else{
-					$(".comp_detail2").css("display", "none");
+					$(this).parent().next().children('td').css("display", "none");
 					flag = false;
 				}
 			});
 		}
 		
-		function complain_move(rev_idx, revReply_idx, id) {
+		function complain_move(rev_idx, revReply_idx, id, complain_id) {
 			console.log("클릭");   
-			console.log(rev_idx, revReply_idx, id);  
-			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id, "신고 리뷰 페이지","width=500,height=500");		
+			console.log(rev_idx, revReply_idx, id, complain_id);  
+			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");		
 		}
 		
 		

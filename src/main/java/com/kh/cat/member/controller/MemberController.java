@@ -55,7 +55,7 @@ public class MemberController {
 		return "member/pwFind";
 	}
 	
-	//pw 찾기 새창 열기
+	//pw 찾기
 	@RequestMapping("/pwFind")
 	public @ResponseBody HashMap<String, Object> pwFind(@RequestParam HashMap<String, String> params){
 		logger.info("pwFind 요청");

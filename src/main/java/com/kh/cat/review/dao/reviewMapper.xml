@@ -133,7 +133,7 @@
 	 	INSERT INTO complain
 	 	<choose>
 	 		<when test="review_idx == ''">
-				VALUES(seq_complain.NEXTVAL,#{id},#{complain_id},#{complain_type},#{complain_content},#{complain_cate},SYSDATE,0,null,#{rev_reply_idx})
+				VALUES(seq_complain.NEXTVAL,#{id},#{complain_id},#{complain_type},#{complain_content},#{complain_cate},SYSDATE,0,null,#{revReply_idx})
 			</when>
 			<otherwise>
 				VALUES(seq_complain.NEXTVAL,#{id},#{complain_id},#{complain_type},#{complain_content},#{complain_cate},SYSDATE,0,#{review_idx},null)

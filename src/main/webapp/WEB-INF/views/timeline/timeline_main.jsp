@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <html>
 	<head>
 	<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
@@ -126,6 +125,24 @@
 	var str = "";
 	var phone=[];
 	var fallowbtn=1;
+	var aTag = "";
+	var idx = "";
+	//리뷰 로그인체크 후 수정 삭제 신고 a 태그 띄워줌
+	function atagCreate(list){
+		aTag = "";
+		idx = "";
+		list.forEach(function(item){
+			aTag = "";
+			idx=item.review_idx;
+			if(userid != ""){
+			 if(userid == item.id){	
+					aTag += "<span class='span' id='review_update' href='#' onclick='review_update(this,"+idx+")'>수정</span>&nbsp;";
+					aTag += "<span class='span' id='review_delete' href='#' onclick='review_delete(this,"+idx+")'>삭제</span>&nbsp;";
+				}
+			}			
+			 $(".listTop_R"+idx).append(aTag);
+		});		
+	}
 	$(document).ready(function(){
 		if("${cate}"=="팔로우"){
 			fallowlist();
@@ -429,6 +446,7 @@
 			success:function(d){
 				console.log(d);
 				printList(d.list);
+				atagCreate(d.list);
 			},
 			error:function(e){
 				console.log(e);
@@ -619,7 +637,6 @@
 			success:function(d){
 				printHash(d.reviewHash,elem);		
 				printPhoto(d.reviewPhoto,elem);
-				console.log(d.reviewPhoto);
 			},
 			error:function(e){console.log(e);}
 		});
@@ -648,7 +665,6 @@
 	}
 	function likeClick(idx){
 		flag=idx;
-		console.log(idx+"/"+userid);
 		$.ajax({
 			url:"./reviewLike",
 			type:"post",
@@ -867,6 +883,28 @@
 				    	$("#likereview").css("background-color","lightgray");
 				    	$("#likereview").css("color","black");
 				    	ajaxCall(page);
+				}else if(e.target.id == "total"){
+					page = "resources/timelinehtml/statList.html";
+					$("#total").css("background-color","darkblue");
+					$("#total").css("color","white");
+					$("#coupon").css("background-color","lightgray");
+					$("#coupon").css("color","black");
+			    	$("#message").css("background-color","lightgray");
+			    	$("#message").css("color","black");
+			    	$("#point").css("background-color","lightgray");
+			    	$("#point").css("color","black");
+			    	$("#update").css("background-color","lightgray");
+			    	$("#update").css("color","black");
+			    	$("#myreview").css("background-color","lightgray");
+			    	$("#myreview").css("color","black");
+			    	$("#likereview").css("background-color","lightgray");
+			    	$("#likereview").css("color","black");
+			    	$("#likestore").css("background-color","lightgray");
+			    	$("#likestore").css("color","black");
+			    	$("#timeline_reply").css("background-color","lightgray");
+			    	$("#timeline_reply").css("color","black");
+			    	$("#content").load(page,function(res, stat) {});
+			    	ajaxCall(page)
 				}
 	});		
 	function ajaxCall(page){
@@ -915,7 +953,7 @@
 				error:function(e){
 					console.log(e);
 				}
-			});			
+			});
 		}else if(page=="reviewlist"){
 			$.ajax({
 				url:"./timelinereviewlist",
@@ -1014,7 +1052,7 @@
 					if(d.update.profile!=0){
 						$("#updateprofile").empty();
 						$("#updateprofile").append("<img id='updateprofilephoto' src='resources/upload/"+d.update.profile+"' height=150px width=150px/>");
-						$("#updateprofile").append("<input id='profilename' type='hidden' value='"+d.update.profile+"'/>")
+						$("#updateprofile").append("<input id='profilename' type='text' value='resources/upload/"+d.update.profile+"'/>")
 					}
 					console.log(d);
 					$("#userId").val(userid);
@@ -1027,6 +1065,21 @@
 				},
 				error:function(e){
 					console.log(e);
+				}
+			});
+		}else if(page == "resources/timelinehtml/statList.html"){
+			$.ajax({
+				url:"./statList",
+				type:"get",
+				data:{
+					id : userid
+				},
+				dataType:"json",
+				success:function(data){
+					print_statList(data.storeList);
+				},
+				error:function(error){
+					console.log(error);
 				}
 			});
 		}
@@ -1264,7 +1317,7 @@
 		//가게 등록 리스트
 		function store_regist_list(list) {
 			var content = "";		
-			list.forEach(function(item, idx){
+			list.forEach(function(item){
 				if(item.store_regist == 0){
 					var id = new String(item.id);
 					content +="<tr>";
@@ -1317,24 +1370,137 @@
 			var myWin= window.open("./registNoWin?store_idx="+store_idx+
 					"&id="+id,"가게 등록 거절","width=500,height=500");	
 		}
-		
+		//회원정보 사진 클릭
+		var profileck=0;
+		function selPicture(){
+			if(profileck==0){
+				var myWin= window.open("./profileupload","파일업로드","width=400,height=100");
+				selPicturedelete();
+				$("#updateprofile").empty();
+				profileck=1;
+			}else{
+				var myWin= window.open("./profileupload","파일업로드","width=400,height=100");
+				selPicturedelete();
+			}
+		}
+		//회원정보사진 삭제
 		function selPicturedelete(){
-			var photoname =$("#profilename").val();
+			var profilena=$("#profilename").val();
+			console.log(profilena);
+			if(profilena!=null){
+				var photoname=profilena.split("/")[2];
+				 $.ajax({
+					url:"./profileDel",
+					type:"get",
+					data:{"fileName":photoname},
+					success:function(data){
+						console.log(data);
+						 if(data.success==1){
+							$("#updateprofile").empty();
+						} 
+					},
+					error:function(e){
+					console.log(e);
+					}
+				});
+			}			
+		}
+		//회원정보 수정 저장
+		function updatesave(){
+			if($("#CurrentUserPw").val()==""){//비밀번호
+	        	alert("비밀번호를 입력해주세요!!");
+	        	$("#CurrentUserPw").focus();
+	        }else if($("#userName").val()==""){//이름
+	        	alert("이름을 입력해주세요!!");
+	        	$("#userName").focus();
+	        }else if($("#userEmail").val()==""){//이메일
+	        	alert("이메일을 입력해주세요!!");
+	        	$("#userEmail").focus();
+	        }else if($("#hp1").val()==""){//핸드폰번호
+	        	alert("핸드폰번호를 입력해주세요!!");
+	        	$("#hp1").focus();
+	        }else if($("#hp2").val()==""){//핸드폰번호
+	        	alert("핸드폰번호를 입력해주세요!!");
+	        	$("#hp2").focus(); 
+	        }else if($("#hp3").val()==""){//핸드폰번호
+	        	alert("핸드폰번호를 입력해주세요!!");
+	        	$("#hp3").focus();	        
+	        }else{
+	        	if($("#userPw").val()!=""||$("#userPw").val()!=""){
+	        		if($("#userPw").val().length<8 || $("#userPw").val().length>16){	//비밀번호 유효성
+			           	alert("비밀번호는 8~16자를 입력해주세요.");
+			        }else{
+			        	userajax();
+			        }
+	        	}else{
+	        		userajax()
+	        	}	        	
+	        }			 
+		}
+		//회원정보 저장 실행 ajax
+		function userajax(){
+			var profilena=$("#profilename").val();
+			var photoname="";
+			if($("#profilename").val()==null){
+				photoname =0;
+			}else{
+				photoname=profilena.split("/")[2];
+			}			
 			console.log(photoname);
-			 /* $.ajax({
-				url:"./profilephotodelete",
+			console.log($("#userPw").val());
+        	$.ajax({
+				url:"./userupdate",
 				type:"post",
 				data:{
-					profilname=photoname
+					fileName : photoname,
+					id:$("#userId").val(),
+					nowpw:$("#CurrentUserPw").val(),
+					newpw:$("#userPw").val(),
+					username:$("#userName").val(),
+					useremail:$("#userEmail").val(),
+					hp1:$("#hp1").val(),
+					hp2:$("#hp2").val(),
+					hp3:$("#hp3").val()
 				},
-				dataType:"json",
 				success:function(d){
-					$("#updateprofilephoto").remove();						
+					console.log(d.success);
+					if(d.success>0){
+						location.href="./timeline?id="+$("#userId").val();
+					}
+					alert(d.msg);
 				},
 				error:function(e){
-					console.log(e);
+				console.log(e);
 				}
-			}); */
+			});
+		}
+
+		//회원정보 수정 새로운 비밀번호 체크
+		function chgPw(){
+	    	console.log("비교실행");
+	        //두 인풋의 일치여부 확인	 
+	   	var userPw =$("#userPw").val();
+		var userPwChk =$("#userPwChk").val();
+	        
+	        if(userPw==userPwChk){
+	            $("#confirmPw").html("비밀번호가 일치합니다");
+	            $("#confirmPw").css("color","green");
+	        }else{
+	        	$("#confirmPw").html("비밀번호가 일치하지않습니다");
+	            $("#confirmPw").css("color","red");
+	        }
+	    }
+		function print_statList(list) {
+			var content = "";
+			list.forEach(function(item){
+				content += "<tr><td>"+item.store_name+"</td>";
+				content += "<td><input type='button' value='보기' onclick='moveStat("+item.store_idx+")'></td></tr>";
+				
+			})
+			$("#storeList").append(content);
+		}
+		function moveStat(idx) {
+			location.href="./showStat?store_idx="+idx;			
 		}
 	</script>
 </html>

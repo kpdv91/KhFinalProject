@@ -2,7 +2,9 @@ package com.kh.cat.store.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -89,8 +91,17 @@ public class StoreController {
 	
 	//맛집 상세보기
 	@RequestMapping(value = "/storeDetail", method = RequestMethod.GET)
-	public ModelAndView storeDetail(@RequestParam("store_idx") int store_idx) {
+	public ModelAndView storeDetail(@RequestParam("store_idx") int store_idx, HttpServletRequest request, HttpServletResponse response) {
 		logger.info("가게 상세 페이지 요청.");
+		String sIdx = Integer.toString(store_idx);
+		int sf = storeService.uphitSF(sIdx, request);//조회 유무 판단
+		if(sf==0) {
+			Cookie ck = new Cookie("StoreDetail"+store_idx, sIdx);
+			ck.setMaxAge(24*60*60);
+			ck.setPath("/");
+			response.addCookie(ck);  
+			storeService.storeUphits(store_idx);//조회수 증가
+		}
 		return storeService.storeDetail(store_idx);
 	}
 	
@@ -106,9 +117,9 @@ public class StoreController {
 	//찜 하기
 		@RequestMapping(value = "/storeLike")
 		public @ResponseBody HashMap<String, Object> 
-		storeLike(@RequestParam HashMap<String, String> params, HttpServletRequest session) {
+		storeLike(@RequestParam("store_idx") int store_idx, HttpServletRequest session) {
 				logger.info("맛집 찜 요청.");
 				String loginId = (String) session.getSession().getAttribute("loginId");
-				return storeService.storeLike(loginId, params);
+				return storeService.storeLike(loginId, store_idx);
 		}
 }

@@ -21,8 +21,7 @@
            	 현재 프로필
          </div>
          <div id="pic">
-          	<button id="selPicture">사진선택</button>
-          	<button id="selPicturedelete" onclick="selPicturedelete()">사진삭제</button>
+          	<button id="selPicture" onclick="selPicture()">사진선택</button>
          </div>
       </div>
       <table>
@@ -36,11 +35,14 @@
          </tr>
          <tr>
             <th>비밀번호 : </th>
-            <td><input type="password" id="userPw" placeholder="비밀번호"></td>
+            <td><input type="password" id="userPw" onkeyup="chgPw()" placeholder="비밀번호"></td>
          </tr>
          <tr>
             <th>비밀번호확인 : </th>
-            <td><input type="password" id="userPwChk" placeholder="비밀번호확인"></td>            
+            <td><input type="password" id="userPwChk" onkeyup="chgPw()" placeholder="비밀번호확인"></td>          
+         </tr>
+         <tr>          
+            <td colspan="2"><span  id="confirmPw"></span></td>           
          </tr>
          <th>이름 : </th>
             <td><input type="text" id="userName" placeholder="이름"></td>
@@ -58,10 +60,9 @@
         </tr>   
    </table>
         <div id="bottom">
-            <button id="confirm">확인</button>
+            <button id="confirm" onclick="updatesave()">확인</button>
             <button id="leave">탈퇴하기</button>
       </div>
-
 </body>
 
 </html>

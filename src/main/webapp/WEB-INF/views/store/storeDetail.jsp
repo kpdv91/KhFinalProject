@@ -271,7 +271,6 @@
 				url:"./storeLike",
 				type:"get",
 				data:{
-					"likeChk":likeChk,
 					"store_idx":${storeDetail.store_idx}
 				},
 				success:function(data){

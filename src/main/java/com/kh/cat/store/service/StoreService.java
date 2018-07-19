@@ -10,6 +10,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -228,15 +231,14 @@ public class StoreService {
 		return map;
 	}
 
+	//찜하기
 	@Transactional
-	public HashMap<String, Object> storeLike(String loginId, HashMap<String, String> params) {
+	public HashMap<String, Object> storeLike(String loginId,  int store_idx) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		inter = sqlSession.getMapper(StoreInter.class);
 		String msg;
-		String store_idx = params.get("store_idx");
-		String likeChk = params.get("likeChk");
-		StoreDTO dto = new StoreDTO();
-		if(likeChk.equals("0")) {//찜을 아직 안했을 경우
+		String likeChk =inter.storeLikeChk(loginId, store_idx);
+		if(likeChk==null) {//찜을 아직 안했을 경우
 			inter.storeLike(loginId, store_idx);
 			msg="찜 했습니다.";
 			inter.storeLikeCntUp(store_idx);
@@ -251,9 +253,22 @@ public class StoreService {
 		return map;
 	}
 	
+	//조회수 증가 판단
+	public int uphitSF(String sIdx, HttpServletRequest request) {
+		int sf=0;
+		Cookie[] cookies = request.getCookies();
+		for(Cookie ck: cookies) {
+			if(ck.getValue().equals(sIdx)) {
+				sf++;
+			}
+		}
+		return sf;
+	}
+
 	//조회수 증가
-	public void upHits(int store_idx) {
-		
+	public void storeUphits(int store_idx) {
+		inter = sqlSession.getMapper(StoreInter.class);
+		inter.storeUphits(store_idx);
 	}
 
 }

@@ -23,12 +23,13 @@
 	 </insert>
 	 <select id="starAvg" resultType="Double">
 	 	SELECT ROUND(AVG(review_star), 2) FROM review WHERE store_idx = #{param1}
-	 </select>
-	 
+	 </select>	 
 	 <update id="storeReviewUpdate">
 	 	UPDATE store SET store_revCnt = store_revCnt+1, store_revDate = SYSDATE, store_star=#{param2} WHERE store_idx=#{param1}
 	 </update>
-	 
+	 <update id="totalUpdate">
+	 	UPDATE total SET total_date=SYSDATE, total_revCnt = total_revCnt+1, total_starAvg=#{param2} WHERE store_idx=#{param1}
+	 </update>	 
 	 
 	 <insert id="hashtag">
 	 	INSERT INTO hash(hash_tag,hash_cate,review_idx)

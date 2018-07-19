@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -102,6 +103,7 @@ public class ReviewService {
 	}
 	
 	//리뷰 작성
+	@Transactional
 	public String write(String review_storeidx, ArrayList<String> hash_tag, ArrayList<String> review_photo, HashMap<String, String> map, String loginId) {
 		logger.info("리뷰 작성 서비스 도착");
 		ModelAndView mav = new ModelAndView();
@@ -143,6 +145,7 @@ public class ReviewService {
 				double star =  inter.starAvg(review_storeidx);
 				logger.info("평균 별점"+star);
 				inter.storeReviewUpdate(review_storeidx,star);
+				inter.totalUpdate(review_storeidx,star);
 			}
 		}
 		
@@ -162,7 +165,7 @@ public class ReviewService {
 	}
 	
 	//리뷰 리스트
-
+	@Transactional
 	public HashMap<String, Object> reviewList(int store_idx, String range, String review_search) {
 		logger.info("리뷰 리스트 서비스");
 		inter = sqlSession.getMapper(ReviewInter.class);
@@ -194,6 +197,7 @@ public class ReviewService {
 	}
 
 	//리뷰 해시태그, 사진
+	@Transactional
 	public HashMap<String, Object> reviewHashPhoto(String review_idx, String root) {
 		logger.info("리뷰 해시태그");
 		inter = sqlSession.getMapper(ReviewInter.class);
@@ -310,6 +314,7 @@ public class ReviewService {
 	}
 
 	//리뷰 수정
+	@Transactional
 	public String review_update(ArrayList<String> hash_tag, ArrayList<String> review_photo, HashMap<String, String> map,
 			String loginId) {
 		logger.info("리뷰 수정 서비스 도착");
@@ -353,6 +358,7 @@ public class ReviewService {
 	}
 
 	//리뷰 좋아요
+	@Transactional
 	public String reviewLike(String review_idx, String loginid, String name) {
 		inter=sqlSession.getMapper(ReviewInter.class);
 		String result=inter.likeSel(review_idx,loginid);
@@ -396,6 +402,7 @@ public class ReviewService {
 	}
 
 	//댓글 작성
+	@Transactional
 	public Integer replyWrite(String review_idx, String loginId, String reply_content,String profile, String name) {
 		inter=sqlSession.getMapper(ReviewInter.class);
 		RevReplyDTO dto = new RevReplyDTO();
@@ -411,6 +418,7 @@ public class ReviewService {
 	}
 
 	//댓글 삭제
+	@Transactional
 	public Integer Revreply_delete(String reply_idx, String review_idx) {
 		logger.info("댓글 삭제");
 		inter=sqlSession.getMapper(ReviewInter.class);

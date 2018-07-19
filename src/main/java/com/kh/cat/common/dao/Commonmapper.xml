@@ -150,7 +150,23 @@
 	<select id="statList" resultType="store">
 		SELECT * FROM store WHERE id=#{param1}
 	</select>
-
+	
+	<select id="storeList" resultType="store">
+		SELECT store_idx FROM store
+	</select>
+	
+	<insert id="insertStat">
+		INSERT INTO total(store_idx, total_date, total_revCnt, total_bhitCnt, total_starAvg) VALUES(#{param1},SYSDATE,0,0,0)
+	</insert>
+	
+	<select id="showStat" resultType="total">
+		SELECT * FROM total 
+		<![CDATA[
+		WHERE total_date >= to_date(SYSDATE-15, 'YY/MM/DD') AND total_date < to_date(SYSDATE, 'YY/MM/DD')
+		]]>
+		 AND store_idx=#{param1}
+	</select>
+	
 	<select id="followlist" resultType="String">
 		SELECT id FROM follow WHERE follow_id=#{param1}
 	</select>

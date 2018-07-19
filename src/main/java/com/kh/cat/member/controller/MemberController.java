@@ -75,9 +75,9 @@ public class MemberController {
 	
 	//로그인
 	@RequestMapping(value = "/login")
-	public ModelAndView loginConfirmPage (@RequestParam HashMap<String, String> params, HttpSession session,@RequestParam("pw") String pass) {
+	public ModelAndView loginConfirmPage (@RequestParam HashMap<String, String> params, HttpSession session) {
 		logger.info("login 요청");
-		return memberService.login(params, session,pass);
+		return memberService.login(params, session);
 	}
 	
 	//로그아웃
@@ -150,4 +150,21 @@ public class MemberController {
 		logger.info("회원 정보 요청");
 		return memberService.timelineuserupdate(params);
 	}
+	
+	//회원 탈퇴폼
+	@RequestMapping(value = "/leaveForm", method = RequestMethod.GET)
+	public String leaveForm() {
+		logger.info("leaveForm 페이지 요청");
+		return "member/leaveForm";
+	}	
+	
+	//회원 탈퇴
+	@RequestMapping(value = "/leave")
+	public ModelAndView leave (@RequestParam("userId") String id, @RequestParam("userPw") String pw,HttpSession session) {
+		logger.info("회원 탈퇴 요청");
+		return memberService.leave(id,pw,session);
+	}
+	
+	
+	
 }

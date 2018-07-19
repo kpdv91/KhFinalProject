@@ -28,5 +28,7 @@ public interface MemberInter {
 
 	int pwChange(String id, String hash);
 
+	int leave(String id);//회원 탈퇴
+
 	
 }

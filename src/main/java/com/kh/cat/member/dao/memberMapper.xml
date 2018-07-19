@@ -74,8 +74,14 @@
     <update id="pwChange">
 		UPDATE member SET pw = #{param2} WHERE id = #{param1}
 	</update>
-
+	
+	<!--회원 탈퇴 -->
+	<delete id="leave">
+		delete from member where id=#{param1}
+    </delete>
     
+    
+    	
 </mapper>
 
 

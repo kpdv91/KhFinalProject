@@ -15,7 +15,7 @@
         background-color: #163D7B;
         margin: -150px 0 0 -75px;
         top: 50%;
-        left: 40%;      
+        left: 30%;      
     }
     table,th,td{
 		border-collapse: collapse;
@@ -33,21 +33,22 @@
 	</style>
 </head>
 <body>
+<form action="leave" id="leave" method="post">
 <div>
     <table>
          <tr>
             <td>아이디 &nbsp : </td>
-            <td><input type="text" id="userId" placeholder="아이디"></td>
+            <td><input type="text" id="userId" name="userId" placeholder="아이디"></td>
          </tr>   
    	     <tr>
             <td>비밀번호 : </td>
-            <td><input type="password" id="userPw" placeholder="비밀번호"></td>
+            <td><input type="password" id="userPw" name="userPw" placeholder="비밀번호"></td>
          </tr>
          <tr>
             <td id="agree" colspan="2">탈퇴를 원하시면 '동의합니다' 를 작성해주세요.</td>     
          </tr>
          <tr>
-            <td colspan="2"><input type="text" id="wrtieAgree"></td>
+            <td colspan="2"><input type="text" id="writeAgree" name="writeAgree"></td>
          </tr>   
          <tr>
            <td colspan="3">
@@ -57,14 +58,39 @@
             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
             &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
             &nbsp&nbsp&nbsp&nbsp&nbsp
-           <input type="button" value="탈퇴">
+           <input id="leaveId" type="button" value="탈퇴">
            </td>
          </tr>
    </table>
 </div>
+</form>
 </body>
 <script>
- 
+
+	var message= "${message}";
+	
+	if(message!=""){
+		alert(message);
+	}
+
+
+	$("#leaveId").click(function(){	
+	   	
+		if($("input[name='userId']").val()==""){//아이디
+	        alert("아이디를 입력해주세요!!");
+	        $("input[name='userId']").focus();
+	    }else if($("input[name='userPw']").val()==""){//비밀번호
+	    	alert("비밀번호를 입력해주세요!!");
+	    	$("input[name='userPw']").focus();
+	    }else if($("input[name='writeAgree']").val()!="동의합니다"){
+	    	alert("동의합니다를 입력해주세요!!");
+	    	$("input[name='writeAgree']").focus();
+	    }else{
+	    	$("#leave").submit();//submit
+
+		}
+	});
+	    
 
  
 </script>

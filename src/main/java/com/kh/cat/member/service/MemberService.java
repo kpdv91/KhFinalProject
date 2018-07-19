@@ -360,8 +360,63 @@ public class MemberService {
 		return map;
 	}
 
+
+	public ModelAndView newfileUpload(MultipartFile file, String root) {
+		HashMap<String, String> fileList = new HashMap<String, String>();
+		ModelAndView mav = new ModelAndView();
+		String fullPath = root+"resources/upload/";
+		logger.info(fullPath);
+		//1.폴더가 없을 경우 폴더 생성
+		File dir = new File(fullPath);
+		if(!dir.exists()) {
+			logger.info("폴더 없음 생성 시작");
+			dir.mkdir();
+		}
+		//2.파일명을  추출
+		String fileName=file.getOriginalFilename();
+		//3.새로운 파일명 생성
+		String newFileName = System.currentTimeMillis()+fileName.substring(fileName.lastIndexOf("."));
+		//4.파일 추출
+		try {
+			byte[] bytes=file.getBytes();//MultipartFile 에서 부터 바이트 추출
+			Path filePath=Paths.get(fullPath+newFileName);//파일 생성 경로
+			Files.write(filePath, bytes);//파일 생성
+			fileList.put(newFileName, fileName);
+			logger.info("저장할 파일 갯수 : {}",fileList.size());
+			mav.addObject("path","resources/upload/"+newFileName);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		mav.setViewName("member/profileupload");
+		return mav;
+	}
+
+
+	public HashMap<String, Integer> fileDel(String root, String fileName) {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		int success = 0;
+		try {
+			String fullPath = root+"resources/upload/"+fileName;
+			File file = new File(fullPath);
+			if(file.exists()) {
+				file.delete();
+				success=1;
+			}else {
+				logger.info("이미 삭제된 사진");
+			}
+		}catch(Exception e){
+			System.out.println(e.toString());
+			success = 0;
+		}finally {
+			map.put("success", success);
+		}		
+		return map;
+	}
+		
+		
 	//회원 탈퇴
-   	public ModelAndView leave(String id, String pw,HttpSession session) {
+		public ModelAndView leave(String id, String pw,HttpSession session) {
 		logger.info("회원탈퇴 요청");
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -371,15 +426,12 @@ public class MemberService {
 		
 		/*String id = params.get("userId");
 		String pw = params.get("userPw");*/
+		//String result = inter.login(id, pw);
+		//logger.info("result는 ? : "+result);
 		hash = inter.getPw(id);
 		logger.info(hash);		
 		logger.info("아이디 : "+id+" / 평문화 비밀번호 : "+pw);
 		logger.info("아이디 : "+id+" / 암호화 비밀번호 : "+hash);
-		//String result = inter.login(id, pw);
-		//logger.info("result는 ? : "+result);
-		
-		
-		
 		
 		String page = "member/leaveForm";		
 		String message = "아이디 혹은 비밀번호가 일치하지 않습니다.";
@@ -407,6 +459,44 @@ public class MemberService {
 		mav.setViewName(page);//반환 페이지
 		
 		return mav;
+	}
+	public HashMap<String, Object> userupdate(HashMap<String, String> params, String newpw) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		inter = sqlSession.getMapper(MemberInter.class);
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		MemberDTO dto = new MemberDTO();
+		String photo = params.get("fileName");
+		String id = params.get("id");
+		String pw = params.get("nowpw");
+		String username = params.get("username");
+		String useremail = params.get("useremail");
+		String userphone = params.get("hp1")+"-"+params.get("hp2")+"-"+params.get("hp3");
+		
+		boolean success = encoder.matches(pw, hash);
+		logger.info("일치 여부 : "+success);
+		int insert = 0;
+		dto.setId(id);		
+		dto.setName(username);
+		dto.setEmail(useremail);
+		dto.setPhone(userphone);
+		dto.setProfile(photo);
+		String msg = "회원정보수정이 실패 하였습니다";
+		if(success==true) {
+			if(newpw.equals("0")) {
+				logger.info(""+newpw);
+				insert = inter.userupdate(dto);
+			}else if(!newpw.equals("0")){
+				logger.info("성원"+newpw);
+				hash = encoder.encode(newpw);
+				dto.setPw(hash);
+				insert = inter.userpwupdate(dto);
+			}
+			msg = "회원정보수정이 성공 하였습니다";
+		}
+		map.put("success", insert);
+		map.put("msg",msg);
+		return map;
 	}
     
 }

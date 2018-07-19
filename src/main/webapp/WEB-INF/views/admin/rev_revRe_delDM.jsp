@@ -23,7 +23,8 @@
 		$("#win_exit").click(function () {
 			
 		});
-	
+		
+		//쪽지 보내기
 		$("#dm_write").click(function () {
 			$.ajax({
 				url:"./dm_write_rev_revRe_del",
@@ -41,7 +42,6 @@
 					console.log(data.msg);
 					if(data.result > 0){
 						alert(data.msg);
-						self.close();
 					}
 				},
 				error:function(error){

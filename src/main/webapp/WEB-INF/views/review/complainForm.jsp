@@ -67,6 +67,14 @@
 
 	</body>
 	<script>
+	
+	$(document).ready(function(){
+		if("${sessionScope.loginId}" == ""){
+			alert("로그인이 필요한 서비스 입니다.");
+			self.close();			
+		}
+	});
+	
 	 $("#comp").click(function(){
 		$.ajax({
 			url:"./complain",

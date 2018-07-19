@@ -89,6 +89,8 @@ public interface ReviewInter {
 
 	double starAvg(String review_storeidx);
 
+	void totalUpdate(String review_storeidx, double star);
+
 	
 
 

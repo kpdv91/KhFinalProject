@@ -76,11 +76,20 @@
 	</select>
 
 	<select id="storeSearch_And" resultType="store" parameterType="hashmap">
-		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{content}||'%'
-		<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
-		<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
-		<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
-		<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
+		<choose>
+	 		<when test="mainStore==3">
+	 			SELECT * FROM store  
+	 			<![CDATA[WHERE ROWNUM <= 3]]>
+ 				ORDER BY store_revdate DESC
+	 		</when>
+			<otherwise>
+				SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{content}||'%'
+				<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
+				<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
+				<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
+				<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
+	 		</otherwise>
+	 	</choose>
 	</select>
 	<select id="storeSearch_Or" resultType="store" parameterType="hashmap">
 		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND
@@ -137,6 +146,27 @@
 	<select id="likestorehash" resultType="hash">
 		SELECT * FROM hash WHERE store_idx=#{param1}
 	</select>
+
+	<select id="statList" resultType="store">
+		SELECT * FROM store WHERE id=#{param1}
+	</select>
+	
+	<select id="storeList" resultType="store">
+		SELECT store_idx FROM store
+	</select>
+	
+	<insert id="insertStat">
+		INSERT INTO total(store_idx, total_date, total_revCnt, total_bhitCnt, total_starAvg) VALUES(#{param1},SYSDATE,0,0,0)
+	</insert>
+	
+	<select id="showStat" resultType="total">
+		SELECT * FROM total 
+		<![CDATA[
+		WHERE total_date >= to_date(SYSDATE-15, 'YY/MM/DD') AND total_date < to_date(SYSDATE, 'YY/MM/DD')
+		]]>
+		 AND store_idx=#{param1}
+	</select>
+	
 	<select id="followlist" resultType="String">
 		SELECT id FROM follow WHERE follow_id=#{param1}
 	</select>
@@ -161,6 +191,7 @@
 	<insert id="alarmdminsert">
 		INSERT INTO alarm(alarm_idx,alarm_id,alarm_cate,dm_idx,alarm_read) VALUES(seq_alarm.NEXTVAL,#{param2},'메세지',#{param1},0)
 	</insert>
+
 </mapper>
 
 

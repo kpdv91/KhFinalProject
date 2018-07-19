@@ -1,5 +1,6 @@
 package com.kh.cat.common.dao;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,6 +15,7 @@ import com.kh.cat.dto.PointListDTO;
 import com.kh.cat.dto.RevReplyDTO;
 import com.kh.cat.dto.ReviewDTO;
 import com.kh.cat.dto.StoreDTO;
+import com.kh.cat.dto.TotalDTO;
 
 public interface CommonInter {
 
@@ -80,6 +82,8 @@ public interface CommonInter {
 
 	ArrayList<HashDTO> likestorehash(Integer integer);
 
+	ArrayList<StoreDTO> statList(String id);//내가 등록한 가게 리스트
+	
 	ArrayList<String> followlist(String id);
 
 	ArrayList<String> following(String id);
@@ -99,5 +103,11 @@ public interface CommonInter {
 	int sendmsg(DMDTO dto);
 
 	void alarmdminsert(int dm_idx, String id);
+
+	ArrayList<StoreDTO> storeList();//store idx 셀렉
+
+	void insertStat(int idx);//통계 0으로 자정에 추가
+
+	ArrayList<TotalDTO> showStat(int store_idx);//통계 가져오기
 
 }

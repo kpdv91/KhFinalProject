@@ -30,5 +30,8 @@ public interface MemberInter {
 
 	int leave(String id);//회원 탈퇴
 
-	
+	int userupdate(MemberDTO dto);
+
+	int userpwupdate(MemberDTO dto);	
+
 }

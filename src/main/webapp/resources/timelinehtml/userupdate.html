@@ -6,11 +6,11 @@
 <style>
 		#userId{left:243px;top:77px}
         #div1 {height : 200px;width : 200px;float : left;}
-         #selPicture{position: absolute;}
-         #selPicturedelete{position: absolute;left:80px;}
+         #selPicture{position: absolute; left:50px;}
          #updateprofile {height : 128px;width : 128px;border : 1px solid black;text-align: center;}
          button {margin-top: 5px;background-color:#088A85;color: aliceblue;}
          #bottom{text-align: center;}
+         #updatecontent{color:red;}
       </style>
 
 </head>
@@ -21,7 +21,8 @@
            	 현재 프로필
          </div>
          <div id="pic">
-          	<button id="selPicture" onclick="selPicture()">사진선택</button>
+          	<button id="selPicture" onclick="selPicture()">사진선택</button><br/><br/>
+          	<span id='updatecontent'>사진선택 클릭시 기존 사진은 삭제가 되어집니다.</span>
          </div>
       </div>
       <table>

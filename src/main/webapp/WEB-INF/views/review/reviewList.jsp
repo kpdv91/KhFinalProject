@@ -113,6 +113,9 @@
         	height: 250px;
         	background-color: white;
         	display: none;
+        	border-radius: 10px;
+        	overflow: hidden; 
+        	margin-left: 5px;
         }
         
         
@@ -253,10 +256,12 @@ input[type=button]{
 				padding-top: 5px;
 			}
 			#container{
-				margin-left: 70px;
+				margin-right: 530px;
+				text-align: center;
 			}
 			.replyContainer{
-				margin-left: 170px;
+				margin-right: 30px;
+				text-align: center;
 			}
 			.replyWriteTr td{
 				padding-top: 7px;

@@ -430,10 +430,24 @@ public class ReviewService {
 	}
 
 	//댓글 리스트
-	public HashMap<String, Object> replySelect(String review_idx) {
+	public HashMap<String, Object> replySelect(String review_idx, String page) {
 		inter=sqlSession.getMapper(ReviewInter.class);
+		int allCnt = inter.replyAllCnt(review_idx);
+		
+		//생성 가능 페이지 수(나머지가 있으면 페이지 하나 더 생성)
+		int rangePage = allCnt%5 >0 ? 
+					Math.round(allCnt/5)+1 : allCnt/5;
+		int page2=Integer.parseInt(page);
+		if(page2>rangePage) {
+			page2 = rangePage;
+		}
+		int end = page2 * 5;	 //5 : 100
+		int start = end - 5+1;//5 : 81
+		
 		HashMap<String, Object> map = new HashMap<>();
-		map.put("replySelect", inter.replySelect(review_idx));
+		map.put("replySelect", inter.replySelect(review_idx,start,end));
+		map.put("range", rangePage);
+		map.put("currPage", page);
 		return map;
 	}
 

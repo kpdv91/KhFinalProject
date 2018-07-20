@@ -160,10 +160,11 @@ public class ReviewController {
 		return service.reviewLikeSelect(loginId);
 	}
 	
-	@RequestMapping(value = "/replySelect")
-	public @ResponseBody HashMap<String, Object> replySelect(@RequestParam("review_idx") String review_idx) {
+	@RequestMapping(value = "/replySelect/5/{page}")
+	public @ResponseBody HashMap<String, Object> replySelect(@RequestParam("review_idx") String review_idx,@PathVariable String page) {
 		logger.info("리뷰댓글 리스트 요청");
-		return service.replySelect(review_idx);
+		logger.info(page);
+		return service.replySelect(review_idx,page);
 	}
 	
 	@RequestMapping(value = "/replyWrite")

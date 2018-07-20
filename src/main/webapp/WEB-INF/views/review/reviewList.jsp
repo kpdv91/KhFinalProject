@@ -73,9 +73,9 @@
             margin-left: 5px;
         }
         .reviewReply{
-            border-bottom: 1px solid black;
-            border-left: 1px solid black;
-            border-right: 1px solid black;
+            border-bottom: 2px solid #142e5b;
+            border-left: 2px solid #142e5b;
+            border-right: 2px solid #142e5b;
             width: 500px;
             display: none;
         }
@@ -109,7 +109,7 @@
         }
         .span:hover{	color: red;}
         .bigPhoto{
-        	width: 505px;
+        	width: 250px;
         	height: 250px;
         	background-color: white;
         	display: none;
@@ -220,13 +220,20 @@ input[type=button]{
 				width: 30px;
 				height: 30px;
 			}
-			#reply_table{font-size: 13px;}
+			#reply_table{
+				font-size: 13px;
+				border: none;
+				width: 100%;
+			}
 			.reply_textarea{				
 				 resize: none;
 				 width: 330px;
 				 border-radius: 5px;
 			}
-			#replyWrite{width: 50px;}
+			#replyWrite{width: 50px; font-size: 13px; margin-left: 5px;}
+			#replyWrite:hover{
+				color: red;
+			}
 			.reply_ck{
 				width: 50px;
 				font-size: 12px;
@@ -236,10 +243,8 @@ input[type=button]{
 			.reply_ck:hover{color: red;}
 			#reply_id{height: 50px;}
 			.replyDiv{
-				border-bottom: 1px solid #142e5b;
-				border-left: 1px solid #142e5b;
-				border-right: 1px solid #142e5b;
 				width: 500px;
+				
 			}
 			.reviewLikeImg{cursor: pointer;	}
 			.PhotoImg{cursor: pointer;}
@@ -249,6 +254,16 @@ input[type=button]{
 			}
 			#container{
 				margin-left: 70px;
+			}
+			.replyContainer{
+				margin-left: 170px;
+			}
+			.replyWriteTr td{
+				padding-top: 7px;
+				padding-bottom: 10px;
+				border-left: 0px;
+				border-right: 0px;
+				border-bottom: 1px dashed #142e5b;
 			}
 		</style>
 		
@@ -347,10 +362,14 @@ input[type=button]{
 			content += "<td id='starTd"+item.review_idx+"' class='starTd'></td></tr>";
 			content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
 			content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
-			content += "<tr><td colspan='2' class='review_photo_td' id='reviewList_photo"+item.review_idx+"'></td></tr><tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
-			content += "<span id='replySpan' onclick='replySelect("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</span></div>";
-			content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
-			content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";
+			content += "<tr><td colspan='2' class='review_photo_td' id='reviewList_photo"+item.review_idx+"'></td></tr>";
+			content += "<tr><td colspan='2'><div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div></td></tr>";
+			content += "<tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
+			content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div>";
+			content += "<span id='replySpan' onclick='replySelect("+item.review_idx+","+showPage+")'>댓글"+item.review_replyCnt+"개</span></div>";
+			
+			content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div></div>";	
+			
 			content += "</td></tr></table>"
 			
 			idx=item.review_idx;
@@ -361,7 +380,7 @@ input[type=button]{
 			likeSelect(idx);//리뷰 좋아요
 			}
 			
-			replySelect(idx);//댓글
+			replySelect(idx,showPage);//댓글
 		});
 		$("#reviewListDiv").append(content);		
 		$("#reviewListDiv").append("<div id='container'></div>");
@@ -369,21 +388,38 @@ input[type=button]{
 	} 
 
 	//댓글 리스트
-	function replySelect(idx){
+	function replySelect(idx,page){
 		$("#reviewReply"+idx).toggle(100,function(){
-			$.ajax({
-				url:"./replySelect",
-				type:"post",
-				dataType:"json",
-				data:{"review_idx":idx},
-				success:function(d){
-					//console.log(d.replySelect);
-					//댓글 리스트 출력
-					replylist(d.replySelect,idx);
-					
-				},
-				error:function(e){console.log(e);}
-			});
+			console.log(page);
+			replyAjax(idx,page);
+		});
+	}
+	
+	function replyAjax(idx,page){
+		$.ajax({
+			url:"./replySelect/5/"+page,
+			type:"post",
+			dataType:"json",
+			data:{"review_idx":idx},
+			success:function(d){
+				//console.log(d.replySelect);
+				//댓글 리스트 출력
+				replylist(d.replySelect,idx);
+				showPage = d.currPage;
+				$("#reply_textarea"+idx).focus();
+				
+				$("#replyContainer"+idx).zer0boxPaging({
+	                viewRange : 10,
+	                currPage : d.currPage,
+	                maxPage : d.range,
+	                clickAction : function(e){
+	                    console.log($(this).attr('page'));
+	                    replyAjax(idx,$(this).attr('page'));
+	                }
+	            });
+				
+			},
+			error:function(e){console.log(e);}
 		});
 	}
 	
@@ -395,9 +431,9 @@ input[type=button]{
 			var reply = "";
 			reply += "<div class='replyDiv' id='reply'><table  id='reply_table'>";
 			if(loginId != ""){			
-			reply += "<tr><td><img width='30px' height='30px' src='resources/upload/"+profileSession+"'/></td>";
-			reply += "<td id='reply_loginId'>"+loginId+"</td><td><textarea id='reply_textarea"+idx+"' class='reply_textarea'></textarea></td>";
-			reply += "<td><input id='replyWrite' type='button' value='작성' onclick='replyWrite(this,"+idx+")'/></td></tr>"
+			reply += "<tr class='replyWriteTr'><td><img width='30px' height='30px' src='resources/upload/"+profileSession+"'/></td>";
+			reply += "<td id='reply_loginId'>"+loginId+"</td><td><textarea id='reply_textarea"+idx+"' class='reply_textarea' placeholder='댓글을 작성 해주세요.'></textarea></td>";
+			reply += "<td><span id='replyWrite'  onclick='replyWrite(this,"+idx+")'>작성하기</span</td></tr>"
 			}
 			list.forEach(function(item){
 				var date = new Date(item.revreply_date);
@@ -423,7 +459,7 @@ input[type=button]{
 			reply+="</table></div>";
 			$("#reviewReply"+idx).empty();
 			$("#reviewReply"+idx).append(reply);
-			$("#reviewReply"+idx).append("<div id='replyContainer'></div>");		
+			$("#reviewReply"+idx).append("<div class='replyContainer' id='replyContainer"+idx+"'></div>");		
 		}
 	 
 		//댓글 수정폼
@@ -482,7 +518,7 @@ input[type=button]{
 	 //댓글 작성
 	 function replyWrite(elem,idx){
 		 var name=$(elem).parents().parents().parents()[4].childNodes[0].childNodes[2].childNodes[0].data;
-		 console.log($(elem).parents().parents().parents()[4].childNodes[0].childNodes[2].childNodes[0].data);
+		 console.log(showPage);
 		  $.ajax({
 				url:"./replyWrite",
 				type:"post",
@@ -490,7 +526,7 @@ input[type=button]{
 				data:{"review_idx":idx,"loginId":loginId,"reply_content":$("#reply_textarea"+idx).val(),"profile":"resources/upload/"+profileSession,"name":name},
 				success:function(d){
 					console.log(d);
-					replySelect(idx);
+					replyAjax(idx,showPage);
 				},
 				error:function(e){console.log(e);}
 			}); 

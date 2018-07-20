@@ -18,8 +18,8 @@
 	 	useGeneratedKeys="true"
 	 	keyProperty="review_idx"
 	 	keyColumn="review_idx">
-	 	INSERT INTO review(review_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile,review_replyCnt)
-	 		VALUES(seq_review.NEXTVAL,#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{review_profile},0)
+	 	INSERT INTO review(review_idx,store_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile,review_replyCnt)
+	 		VALUES(seq_review.NEXTVAL,#{store_idx},#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{review_profile},0)
 	 </insert>
 	 <select id="starAvg" resultType="Double">
 	 	SELECT ROUND(AVG(review_star), 2) FROM review WHERE store_idx = #{param1}
@@ -51,17 +51,17 @@
 	 	<choose>
 	 		<when test="store_idx==0">
 	 			SELECT * FROM(SELECT review_idx,store_idx,id,review_storeName,review_star,review_content,review_likeCnt,review_date,review_profile
-	,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review)
+	,review_replyCnt,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review)
 WHERE rnum BETWEEN #{start} AND #{end}
 	 		</when>
 	 		<when test="store_idx>0">
 	 		SELECT * FROM(SELECT review_idx,store_idx,id,review_storeName,review_star,review_content,review_likeCnt,review_date,review_profile
-	,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review WHERE store_idx= #{store_idx})
+	,review_replyCnt,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review WHERE store_idx= #{store_idx})
 WHERE rnum BETWEEN #{start} AND #{end}
 			</when>
 			<otherwise>
 			SELECT * FROM(SELECT review_idx,store_idx,id,review_storeName,review_star,review_content,review_likeCnt,review_date,review_profile
-	,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review WHERE review_storeName LIKE '%'||#{review_search}||'%')
+	,review_replyCnt,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review WHERE review_storeName LIKE '%'||#{review_search}||'%')
 WHERE rnum BETWEEN #{start} AND #{end}
 	 		</otherwise>
 	 	</choose>
@@ -102,7 +102,7 @@ WHERE rnum BETWEEN #{start} AND #{end}
 	<select id="reviewList_or" resultType="review" parameterType="hashmap">
 		SELECT * FROM
 		(SELECT review_idx,store_idx,id,review_storeName,review_star,review_content,review_likeCnt,review_date,review_profile,
-		ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review WHERE 
+		,review_replyCntROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review WHERE 
 		<foreach collection="review_search" item="review_search" index="index" separator="OR">
 			review_storeName LIKE '%'||#{review_search}||'%'
 		</foreach>
@@ -118,7 +118,7 @@ WHERE rnum BETWEEN #{start} AND #{end}
 	<select id="reviewList_hash" resultType="review" parameterType="hashmap">
 	 	SELECT * FROM 
 	 	(SELECT review.review_idx,review.store_idx,review.id,review.review_storeName,review.review_star,review.review_content,
-	 	review.review_likeCnt,review.review_date,review.review_profile,
+	 	review.review_likeCnt,review.review_date,review.review_profile,,review_replyCnt,
 		ROW_NUMBER() OVER(ORDER BY review.review_idx DESC) AS rnum FROM review, (SELECT * FROM hash WHERE 
 		<foreach collection="review_search" item="review_search" index="index" separator="OR">
 			hash_tag LIKE '%'||#{review_search}||'%'
@@ -259,8 +259,14 @@ WHERE rnum BETWEEN #{start} AND #{end}
 	
 	<!-- 댓글 리스트 -->
 	<select id="replySelect" resultType="revReply">
-		SELECT * FROM revReply WHERE review_idx=#{param1} ORDER BY revReply_date 
+		SELECT * FROM(SELECT revReply_idx,review_idx,id,revReply_content,revReply_date,revReply_profile
+			,ROW_NUMBER() OVER(ORDER BY revReply_date DESC) AS rnum FROM revReply WHERE review_idx=#{param1})
+		WHERE rnum BETWEEN #{param2} AND #{param3} ORDER BY revReply_date DESC
 	</select>
+	<select id="replyAllCnt" resultType="Integer">
+		SELECT COUNT(*) FROM revReply WHERE review_idx=#{param1}
+	</select>
+	
 	
 	<!-- 댓글 작성 -->
 	<insert id="replyWrite"

@@ -93,12 +93,13 @@ public class MemberService {
 		logger.info(hash);		
 		logger.info("아이디 : "+id+" / 평문화 비밀번호 : "+pw);//확인
 		logger.info("아이디 : "+id+" / 암호화 비밀번호 : "+hash);//확인
-		String page = "member/loginForm";		
+		String page = "member/loginForm";
+		ModelAndView mav = new ModelAndView();
 		//String msg = "로그인 실패";
-		if(hash!=null) {//hash 값이 있다->id가 유효하다.
+		if(hash!=null) {//hash 값이 있다->id가 유효하다.------->회원가입된 id가 있다
 			boolean success = encoder.matches(pw, hash);//암호화 시켜서 hash값과 비교
 			logger.info("일치 여부 : "+success);//비밀번호가 맞았다 -> 로그인
-			if(success) {//로그인 성공시
+			if(success) {//로그인 성공시     ------------------->id,pw가 맞다
 				String profile = inter.getprofile(id);//프로필 가져오기 -logger확인없음
 				//msg = "로그인 성공";
 				page = "main";
@@ -106,13 +107,18 @@ public class MemberService {
 				session.setAttribute("loginProfile", profile);	
 				logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
 				logger.info("세션값 체크 : {}", session.getAttribute("loginProfile"));
-				logger.info("이동할 페이지 : {}", page);
+				logger.info("이동할 페이지 : {}", page);			
+			}else {//--------------->id가 있지만 pw가 안맞다
+				String msg = "로그인 실패";
+				mav.addObject("msg", msg);//모델에 들어갈 내용
+				logger.info("발생할 메시지 2: {}", msg);		
 			}
+		}else {//------------------>회원가입된 id가 아니다
+			String msg = "로그인 실패";
+			mav.addObject("msg", msg);//모델에 들어갈 내용
+			logger.info("발생할 메시지 2: {}", msg);
 		}
-		logger.info("이동할 페이지 2 : {}", page);
-		//logger.info("발생할 메시지 2: {}", msg);
-		ModelAndView mav = new ModelAndView();
-		//mav.addObject("msg", msg);//모델에 들어갈 내용
+		logger.info("이동할 페이지 2 : {}", page);	
 		mav.setViewName(page);//반환 페이지
 		return mav;
 	}

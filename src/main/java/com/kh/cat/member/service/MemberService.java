@@ -443,7 +443,7 @@ public class MemberService {
 				if(leave>0) {
 					logger.info("로거 테스트 : {}",leave);
 					message = "회원 탈퇴가 성공 되었습니다.";
-					page = "leaveAlert";
+					page = "member/leaveAlert";
 					session.invalidate();
 					System.out.println("세션 로그아웃 처리 완료");
 					//logger.info("세션값 체크 : {}", session.getAttribute("loginId"));

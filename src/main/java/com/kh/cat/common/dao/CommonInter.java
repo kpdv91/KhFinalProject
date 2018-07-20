@@ -110,4 +110,12 @@ public interface CommonInter {
 
 	ArrayList<TotalDTO> showStat(int store_idx);//통계 가져오기
 
+	int allCount();
+
+	int searchAndStoreCount(HashMap<String, Object> search_content_Map);
+
+	int searchOrStoreCount(HashMap<String, Object> search_content_Map);
+
+	int searchHashStoreCount(HashMap<String, Object> search_content_Map);
+
 }

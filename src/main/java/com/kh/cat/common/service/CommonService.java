@@ -223,19 +223,51 @@ public class CommonService {
 	 * mav.setViewName("include/common/search"); return mav; }
 	 */
 
-	public HashMap<String, Object> storeSearchSort(HashMap<String, String> params) {
+	public HashMap<String, Object> storeSearchSort(HashMap<String, String> params, String page) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		logger.info("넘어온 정렬 : " + params.get("data"));
 		logger.info("넘어온 검색어 : " + params.get("search_content"));
 		String search_content = params.get("search_content");
 		String search_content_And = search_content.replaceAll(" ", "%");
 		String[] search_content_Split = search_content.split(" ");
-
+		
 		HashMap<String, Object> search_content_Map = new HashMap<String, Object>();
 		search_content_Map.put("map", params.get("search_map"));
 		search_content_Map.put("content", search_content_And);
 		search_content_Map.put("sort", params.get("data"));
 		search_content_Map.put("mainStore", params.get("mainStore"));
+		
+		//총 게시물 수 => 생성 가능 페이지 수
+		int allCnt = 0;
+		if(params.get("search_content").equals("")) {
+			allCnt=inter.allCount();
+		}else {
+			search_content_Map.put("store_searchCnt", search_content_And);
+			allCnt = inter.searchAndStoreCount(search_content_Map);
+			System.out.println("AND 검색 : "+allCnt);
+			if(allCnt == 0) {
+				search_content_Map.put("store_searchCnt", search_content_Split);
+				allCnt = inter.searchOrStoreCount(search_content_Map);
+				System.out.println("OR 검색 : "+allCnt);
+				if(allCnt == 0) {
+					allCnt = inter.searchHashStoreCount(search_content_Map);
+					System.out.println("HASH 검색 : "+allCnt);
+				}
+			}
+		}
+		//생성 가능 페이지 수(나머지가 있으면 페이지 하나 더 생성)
+		int rangePage = allCnt%6 >0 ? 
+					Math.round(allCnt/6)+1 : allCnt/6;
+		int page2=Integer.parseInt(page);
+		if(page2>rangePage) {
+			page2 = rangePage;
+		}
+		int end = page2 * 6;	 //5 : 100
+		int start = end - 6+1;//5 : 81
+		
+		//페이징 시작,끝
+		search_content_Map.put("start", start);
+		search_content_Map.put("end", end);
 
 		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_Map);
 		if (result.isEmpty()) {
@@ -252,6 +284,8 @@ public class CommonService {
 		}
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("range", rangePage);
+		map.put("currPage", page);
 		map.put("list", result);
 		map.put("list_hash", result_hash);
 		return map;

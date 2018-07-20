@@ -49,7 +49,8 @@
             <td><input type="text" id="userName" placeholder="이름"></td>
          <tr>
             <th>이메일 : </th>
-            <td><input type="email" id="userEmail" placeholder="이메일"></td>
+            <td><input type="email" id="userEmail" placeholder="이메일" onchange="chgMail()"></td>
+            <td><input id="overlayMail" type="button" value="중복체크"/></td>
          </tr>
          <tr>
          <th>핸드폰번호</th>

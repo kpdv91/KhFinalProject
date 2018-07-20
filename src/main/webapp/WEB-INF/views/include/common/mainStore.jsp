@@ -10,7 +10,6 @@
 			#searchPage{
 				width:1100px;
 				height: 500px;
-				margin-bottom: 50px;
 			}
 			.storeTable, .storeTable tr, .storeTable td{
 				border: 1px solid black;
@@ -71,10 +70,14 @@
 		function storePrintList(list,list_hash){		 
 			var content = "";
 			list.forEach(function(item,index){
-				content += "<table class='storeTable' style='cursor:pointer;' onclick=location.href='storeDetail?store_idx="+item.store_idx+"'>";
-				content += "<tr><td colspan='3'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' /></td></tr>";
+				if(index%3==0){
+					content += "<div id='tableLine' style='width:1000px; height:5px;'></div>";
+				}
+				content += "<table class='storeTable' style='cursor:pointer;'>";
+				content += "<tr><td colspan='3'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' onclick=location.href='storeDetail?store_idx="+item.store_idx+"' /></td></tr>";
 				content += "<tr><td>상호명</td>";
-				content += "<th><a href='#'>"+item.store_name+"</a></th><td rowspan='2'>하트</td></tr>";
+				content += "<th><span onclick=location.href='storeDetail?store_idx="+item.store_idx+"'>"+item.store_name+"</span></th>";
+				content += "<td rowspan='2'><img class='storeLikeImg' id='storeLike"+item.store_idx+"' width='30px' height='30px' src='resources/img/storeLike/heart.png' onclick='storeLike("+item.store_idx+")'/></td></tr>";
 				content += "<tr><td>주소</td>";
 				content += "<th>"+item.store_addr+"</th></tr>";
 				content += "<tr><td id='"+item.store_idx+"' colspan='3'>";
@@ -84,8 +87,57 @@
 				});
 				
 				content += "</td></tr></table>";
+				storeLikeChk(item.store_idx);
 			});
 			$("#searchPage").append(content);
+		}
+		
+		//찜하기
+		function storeLike(idx) {
+			if(id==null){
+				alert("로그인이 필요한 서비스입니다.");
+			}else{
+				$.ajax({
+					url:"./storeLike",
+					type:"get",
+					data:{
+						"store_idx":idx
+					},
+					success:function(data){
+						alert(data.msg);
+						if(data.msg == "찜 했습니다."){
+							$("#storeLike"+idx).attr("src","resources/img/storeLike/heart2.png");
+						}else if(data.msg == "찜 취소했습니다."){
+							$("#storeLike"+idx).attr("src","resources/img/storeLike/heart.png");
+						} 
+					},
+					error:function(e){
+						console.log(e);
+					}
+				});
+			}
+		}
+		
+		//찜 확인
+		function storeLikeChk(idx) {
+			$.ajax({
+				url:"./storeLikeChk",
+				type:"get",
+				data:{
+					"store_idx":idx
+				},
+				success:function(data){
+					id=data.loginId;
+					if(data.likeChk==1){
+						$("#storeLike"+idx).attr("src","resources/img/storeLike/heart2.png");
+					}else{
+						$("#storeLike"+idx).attr("src","resources/img/storeLike/heart.png");
+					}
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
 		}
 	</script>
 </html>

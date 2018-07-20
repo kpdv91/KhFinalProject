@@ -10,7 +10,10 @@
 	</head>
 	<body>
 		<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
-		<div style="margin-bottom:150px; height: auto; overflow: auto;"><c:import url="/WEB-INF/views/include/common/searchContent.jsp"/></div>
+		
+		<div style="margin-left:300px; margin-bottom:150px; height: auto; overflow: auto;">
+			<c:import url="/WEB-INF/views/include/common/searchContent.jsp"/>
+		</div>
 
 		<div>
 		<c:import url="/WEB-INF/views/review/reviewList.jsp">

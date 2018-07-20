@@ -5,6 +5,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+		<script src="resources/js/zer0boxPaging.js" type="text/javascript"></script>
 		<title>검색</title>
 		<style>
 			#searchPage{
@@ -38,7 +39,8 @@
 			}
 			#sortSel{
 				height: 30px;
-				float: right;
+				float: left;
+				margin-left: 900px;
 				border-radius: 5px;
 			}
 			#hashtag{
@@ -185,7 +187,7 @@
 				content += "<tr><td colspan='3'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' onclick=location.href='storeDetail?store_idx="+item.store_idx+"' /></td></tr>";
 				content += "<tr><td>상호명</td>";
 				content += "<th><span onclick=location.href='storeDetail?store_idx="+item.store_idx+"'>"+item.store_name+"</span></th>";
-				content += "<td rowspan='2'><input type='button' value='찜' onclick='storeLike("+item.store_idx+")'/></td></tr>";
+				content += "<td rowspan='2'><img class='storeLikeImg' id='storeLike"+item.store_idx+"' width='30px' height='30px' src='resources/img/storeLike/heart.png' onclick='storeLike("+item.store_idx+")'/></td></tr>";
 				content += "<tr><td>주소</td>";
 				content += "<th>"+item.store_addr+"</th></tr>";
 				content += "<tr><td id='"+item.store_idx+"' colspan='3'>";
@@ -195,29 +197,57 @@
 				});
 				
 				content += "</td></tr></table>";
+				storeLikeChk(item.store_idx);
 			});
 			$("#searchPage").append(content);
 		}
 		
 		//찜하기
 		function storeLike(idx) {
-			if(id==""){
+			if(id==null){
 				alert("로그인이 필요한 서비스입니다.");
 			}else{
 				$.ajax({
 					url:"./storeLike",
 					type:"get",
-					data:{"likeChk":likeChk,"store_idx":idx},
+					data:{
+						"store_idx":idx
+					},
 					success:function(data){
 						alert(data.msg);
-						storeLikeChk();
-						$("#likeCnt").html("찜수 "+data.likeCnt);
+						if(data.msg == "찜 했습니다."){
+							$("#storeLike"+idx).attr("src","resources/img/storeLike/heart2.png");
+						}else if(data.msg == "찜 취소했습니다."){
+							$("#storeLike"+idx).attr("src","resources/img/storeLike/heart.png");
+						} 
 					},
 					error:function(e){
 						console.log(e);
 					}
 				});
 			}
+		}
+		
+		//찜 확인
+		function storeLikeChk(idx) {
+			$.ajax({
+				url:"./storeLikeChk",
+				type:"get",
+				data:{
+					"store_idx":idx
+				},
+				success:function(data){
+					id=data.loginId;
+					if(data.likeChk==1){
+						$("#storeLike"+idx).attr("src","resources/img/storeLike/heart2.png");
+					}else{
+						$("#storeLike"+idx).attr("src","resources/img/storeLike/heart.png");
+					}
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
 		}
 	</script>
 </html>

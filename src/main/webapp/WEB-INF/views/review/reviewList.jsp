@@ -8,10 +8,11 @@
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<script src="resources/js/jquery-1.11.3.min.js"></script>
 		<script src="resources/js/star.js"></script>
+		<script src="resources/js/zer0boxPaging.js" type="text/javascript"></script>
+		
 		<title>Insert title here</title>
 		<style>
-
-		#reviewListDiv{margin-left: 490px;}
+		#reviewListDiv{margin-left: 550px;}
 		
 		#review{
             border: 2px solid #142e5b;
@@ -192,7 +193,7 @@ input[type=button]{
             outline: 0px;
             border: 0px;
        }
-       #review_Write{	margin-left: 490px;}
+       #review_Write{	margin-left: 550px;}
        
        #review_range{
 				width: 80px;
@@ -246,6 +247,9 @@ input[type=button]{
 			.review_photo_td{
 				padding-top: 5px;
 			}
+			#container{
+				margin-left: 70px;
+			}
 		</style>
 		
 	</head>
@@ -267,16 +271,17 @@ input[type=button]{
 	</body>
 
 	<script>
-	
+
+	showPage = 1;//보여줄 페이지
 	var loginId = "${sessionScope.loginId}";
-	listCall("최신순");
+	listCall("최신순",showPage);
 	function range(value){
 		switch (value) {
 		case "최신순":
-			listCall(value);
+			listCall(value,showPage);
 			break;
 		case "좋아요순":
-			listCall(value);
+			listCall(value,showPage);
 			break;
 
 		default:
@@ -288,11 +293,15 @@ input[type=button]{
 		location.href="./reviewWritePage";
 	}
 	
-	//리뷰 리스트 ajax
 	
-	function listCall(elem){
+	
+	
+	
+	//리뷰 리스트 ajax	
+	function listCall(elem,page){
+		console.log(elem+"/"+page);
 		$.ajax({
-			url:"./reviewList",
+			url:"./reviewList/5/"+page,
 			type:"post",
 			dataType:"json",
 			data:{"store_idx":$("#storeIdx").val(),
@@ -301,11 +310,21 @@ input[type=button]{
 				},
 			success:function(d){
 				$("#reviewListDiv").empty();
-				//console.log(d.reviewList);
 				printList(d.reviewList);
 				atagCreate(d.reviewList);
-				//hashtag(d.reviewList);
+				showPage = d.currPage;
 				
+				$("#container").zer0boxPaging({
+	                viewRange : 5,
+	                currPage : d.currPage,
+	                maxPage : d.range,
+	                clickAction : function(e){
+	                    //console.log(e);
+	                    console.log($(this).attr('page'));
+	                    listCall(elem,$(this).attr('page'));
+	                }
+	            });
+
 			},
 			error:function(e){console.log(e);}
 		});
@@ -316,6 +335,7 @@ input[type=button]{
 	function printList(list){		 
 		content = "";
 		list.forEach(function(item){
+			content += "<table><tr><td>"
 			content += "<div id='abc'>"
 			content += "<div id='review'><img id='reviewListPro' width='45px' height='45px' src='"+item.review_profile+"'/><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 			content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'><img class='reviewLikeImg' id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' /><br/>";
@@ -331,6 +351,7 @@ input[type=button]{
 			content += "<span id='replySpan' onclick='replySelect("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</span></div>";
 			content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
 			content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";
+			content += "</td></tr></table>"
 			
 			idx=item.review_idx;
 			hashtag(idx);//리뷰 해시태그
@@ -342,8 +363,8 @@ input[type=button]{
 			
 			replySelect(idx);//댓글
 		});
-		
 		$("#reviewListDiv").append(content);		
+		$("#reviewListDiv").append("<div id='container'></div>");
 		
 	} 
 
@@ -402,6 +423,7 @@ input[type=button]{
 			reply+="</table></div>";
 			$("#reviewReply"+idx).empty();
 			$("#reviewReply"+idx).append(reply);
+			$("#reviewReply"+idx).append("<div id='replyContainer'></div>");		
 		}
 	 
 		//댓글 수정폼

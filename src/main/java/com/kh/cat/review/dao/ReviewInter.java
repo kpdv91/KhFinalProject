@@ -91,6 +91,16 @@ public interface ReviewInter {
 
 	void totalUpdate(String review_storeidx, double star);
 
+	int allCount();
+
+	int storeReviewCount(int store_idx);
+
+	int searchAndReviewCount(String search_content_And);
+
+	int searchOrReviewCount(HashMap<String, Object> ra);
+
+	int searchHashReviewCount(HashMap<String, Object> ra);
+
 	
 
 

@@ -5,8 +5,11 @@
 	<head>
 	<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+		<!-- <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script> -->
 		<script src="resources/js/star.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+	   <script src="./resources/js/paging.js" type="text/javascript"></script>
 		<title>Insert title here</title>
 		<style>
 			#profileim{position: absolute;width: 100px;height: 100px;left: 400px;top: 65px;}
@@ -119,6 +122,10 @@
 			.star-input>.input>label[for="p4.5"]{width:135px;z-index:2;}
 			.star-input>.input>label[for="p5.0"]{width:150px;z-index:1;}
 			.star-input>output{display:inline-block;width:60px; font-size:18px;text-align:right;vertical-align:middle;}
+			.paging-nav {text-align: right;padding-top: 4px;}
+			.paging-nav a {margin: auto 1px;text-decoration: none;display: inline-block;padding: 1px 7px;background: #91b9e6;color: white;border-radius: 3px;}
+			.paging-nav .selected-page {background: #187ed5;font-weight: bold;}
+			
 		</style>
 	</head>
 	<body>
@@ -171,6 +178,9 @@
 	var fallowbtn=1;
 	var aTag = "";
 	var idx = "";
+	
+	//테이블 페이징
+		
 	//리뷰 로그인체크 후 수정 삭제 신고 a 태그 띄워줌
 	function atagCreate(list){
 		aTag = "";
@@ -1103,26 +1113,18 @@
 				dataType:"json",
 				success:function(d){
 					couponlist(d.list);
+					$('#couponpaging').paging({						
+						limit: 5,						
+						rowDisplayStyle: 'block',						
+						activePage: 0,						
+						rows: [d.list]
+					});
 				},
 				error:function(e){
 					console.log(e);
 				}
 			});
 		}else if(page=="reviewlist"){
-			/* $.ajax({
-				url:"./timelinereviewlist",
-				type:"post",
-				data:{
-					id : "${id}"
-				},
-				dataType:"json",
-				success:function(d){
-					printList(d.list);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			}); */
 			timelinereview();
 		}else if(page=="likereview"){
 			 $.ajax({

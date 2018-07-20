@@ -72,15 +72,21 @@
 	</insert>
 	
 	 <!-- 등록 승인 시 쪽지 -->
-	<insert id="regY_dm_Write" parameterType="String">
+	<insert id="regY_dm_Write" parameterType="dm" useGeneratedKeys="true" keyProperty="dm_idx" keyColumn="dm_idx">
 		INSERT INTO dm(dm_idx, id, dm_id, dm_content, dm_date)
-			VALUES(seq_dm.NEXTVAL, #{param2}, #{param1}, '가게등록이 승인되었습니다.', SYSDATE)
+			VALUES(seq_dm.NEXTVAL, #{id}, #{dm_id}, '가게등록이 승인되었습니다.', SYSDATE)
+	</insert>
+	
+	<!-- 가게 등록 거절시 알람 추가 -->
+	<insert id="alarm_registYN" parameterType="dm">
+		INSERT INTO alarm(alarm_idx, alarm_id, alarm_cate, dm_idx, alarm_read)
+			VALUES(seq_alarm.NEXTVAL, #{dm_id}, '메세지', #{dm_idx}, 0)
 	</insert>
 	
 	<!-- 등록 거절 시 쪽지 -->
-	<insert id="regNo_dmWrite" parameterType="String">
+	<insert id="regNo_dmWrite" parameterType="dm" useGeneratedKeys="true" keyProperty="dm_idx" keyColumn="dm_idx">
 		INSERT INTO dm(dm_idx, id, dm_id, dm_content, dm_date)
-			VALUES(seq_dm.NEXTVAL, #{param2}, #{param1}, #{param3}, SYSDATE)
+			VALUES(seq_dm.NEXTVAL, #{id}, #{dm_id}, #{dm_content}, SYSDATE)
 	</insert>
 	
 	<!-- 등록 거절 시 삭제 -->

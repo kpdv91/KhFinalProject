@@ -28,6 +28,11 @@
 		<c:import url="/WEB-INF/views/include/main/footer.jsp"/>
 	</body>
 	<script>
-
+		var message= "${message}";
+			
+			if(message!=""){
+				alert(message);
+				
+			}
 	</script>
 </html>

@@ -162,7 +162,7 @@ console.log(loginid);
 		
 	}
 	function profileunder(data){
-		console.log(data.id);
+		console.log(data);
 		var content="<div id='profileck'>";
 		if(data.profile==0){
 			content +="<img id='proimg' src='resources/img/member/noprofile.jpg'>";
@@ -256,7 +256,25 @@ console.log(loginid);
 				}
 			});
 		}else{
-			location.href="./timeline?id="+alarmuserid;
+			$.ajax({
+				url:"./alarmread",
+				type:"post",
+				data:{
+					idx : idx
+				},
+				dataType:"json",
+				success:function(d){
+					console.log(d);
+					if(d.success==true){
+						location.href="./timeline?id="+alarmuserid;
+					}else{
+						alert("페이지 이동에 실패 하였습니다.");
+					}				
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
 		}		
 	}
 </script>

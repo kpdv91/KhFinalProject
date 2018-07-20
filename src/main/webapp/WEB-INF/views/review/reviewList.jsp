@@ -8,7 +8,6 @@
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<script src="resources/js/jquery-1.11.3.min.js"></script>
 		<script src="resources/js/star.js"></script>
-		<!-- <link rel="stylesheet" type="text/css" href="star.css"> -->
 		<title>Insert title here</title>
 		<style>
 		#reviewListDiv{margin-left: 550px;}
@@ -170,6 +169,7 @@ star-input>.input.focus{
 .star-input>.input>label[for="p2.5"]{width:75px;z-index:6;}
 .star-input>.input>label[for="p3.0"]{width:90px;z-index:5;}
 .star-input>.input>label[for="p3.5"]{width:105px;z-index:4;}
+
 .star-input>.input>label[for="p4.0"]{width:120px;z-index:3;}
 .star-input>.input>label[for="p4.5"]{width:135px;z-index:2;}
 .star-input>.input>label[for="p5.0"]{width:150px;z-index:1;}
@@ -200,7 +200,7 @@ input[type=button]{
 				font-size: 15px;
 				text-align-last: center;
 				margin-left: 350px;
-				border: 2px solid #142e5b;
+				border: 1px solid black;
 			}
 			#reviewListPro{
 				float: left;
@@ -242,6 +242,9 @@ input[type=button]{
 			.reviewLikeImg{cursor: pointer;	}
 			.PhotoImg{cursor: pointer;}
 			#complain{cursor: pointer;}
+			.review_photo_td{
+				padding-top: 5px;
+			}
 		</style>
 		
 	</head>
@@ -260,9 +263,10 @@ input[type=button]{
 	
 	<input id="storeIdx" type="hidden" value="<c:out value="${param.idx} "/>">
 	<input id="reviewSearch" type="hidden" value="<c:out value="${param.reviewSearch}"/>">
-	
 	</body>
+
 	<script>
+	
 	var loginId = "${sessionScope.loginId}";
 	listCall("최신순");
 	function range(value){
@@ -300,6 +304,7 @@ input[type=button]{
 				printList(d.reviewList);
 				atagCreate(d.reviewList);
 				//hashtag(d.reviewList);
+				
 			},
 			error:function(e){console.log(e);}
 		});
@@ -311,7 +316,7 @@ input[type=button]{
 		content = "";
 		list.forEach(function(item){
 			content += "<div id='abc'>"
-			content += "<div id='review'><img id='reviewListPro' width='50px' height='50px' src='"+item.review_profile+"'/><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
+			content += "<div id='review'><img id='reviewListPro' width='45px' height='45px' src='"+item.review_profile+"'/><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 			content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'><img class='reviewLikeImg' id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' /><br/>";
 			if(item.id != loginId || loginId == ""){
 			content += "<span id='complain' class='span' href='#' onclick='complain(this)'>신고</span>";
@@ -321,7 +326,7 @@ input[type=button]{
 			content += "<td id='starTd"+item.review_idx+"' class='starTd'></td></tr>";
 			content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
 			content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
-			content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'></td></tr><tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
+			content += "<tr><td colspan='2' class='review_photo_td' id='reviewList_photo"+item.review_idx+"'></td></tr><tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
 			content += "<span id='replySpan' onclick='replySelect("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</span></div>";
 			content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
 			content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";
@@ -375,7 +380,7 @@ input[type=button]{
 			list.forEach(function(item){
 				var date = new Date(item.revreply_date);
 				reply +="<tr class='reply_table' id='reply_table"+item.revreply_idx+"'>";
-				reply +="<td rowspan='2'><input type='hidden' value='"+item.revreply_idx+"'/><img id='reply_img' src='resources/upload/"+item.revreply_profile+"'/></td>";
+				reply +="<td rowspan='2'><input type='hidden' value='"+item.revreply_idx+"'/><img id='reply_img' src='"+item.revreply_profile+"'/></td>";
 				reply +="<td rowspan='2' id='reply_id'>"+item.id+"</td>";
 				reply +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
 				reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td></tr><tr>";
@@ -511,17 +516,7 @@ input[type=button]{
 		}
 	}
 	
-	
-	/* 
-	onmouseout='LikeImg("+item.review_idx+")' onmouseover='LikeImg2("+item.review_idx+")'
-	//마우스 아웃
-	function LikeImg(idx){
-		 	$("#reviewLike"+idx).attr("src","resources/img/reviewLike/reviewLike.png"); 
-	}
-	//마우스 오버
-	function LikeImg2(idx){
-			$("#reviewLike"+idx).attr("src","resources/img/reviewLike/reviewLike2.png");
-	}  */ 
+
 	
 	var aTag = "";
 	var idx = "";
@@ -672,13 +667,9 @@ input[type=button]{
 			$("#bigPhoto"+idx).append(pho);	
 		});
 	}
+
 		
-	/* function reply(idx){
-		$("#reviewReply"+idx).toggle(100,function(){
-			
-		});
-	} */
-		
+	
 	
 	</script>
 </html>

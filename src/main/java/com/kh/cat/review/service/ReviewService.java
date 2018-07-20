@@ -145,6 +145,7 @@ public class ReviewService {
 				double star =  inter.starAvg(review_storeidx);
 				logger.info("평균 별점"+star);
 				inter.storeReviewUpdate(review_storeidx,star);
+				inter.totalUpdate(review_storeidx,star);
 			}
 		}
 		

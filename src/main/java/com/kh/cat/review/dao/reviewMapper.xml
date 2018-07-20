@@ -51,18 +51,18 @@
 	 	<choose>
 	 		<when test="store_idx==0">
 	 			SELECT * FROM(SELECT review_idx,store_idx,id,review_storeName,review_star,review_content,review_likeCnt,review_date,review_profile
-	,review_replyCnt,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review)
-WHERE rnum BETWEEN #{start} AND #{end}
+				,review_replyCnt,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review)
+				WHERE rnum BETWEEN #{start} AND #{end}
 	 		</when>
 	 		<when test="store_idx>0">
-	 		SELECT * FROM(SELECT review_idx,store_idx,id,review_storeName,review_star,review_content,review_likeCnt,review_date,review_profile
-	,review_replyCnt,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review WHERE store_idx= #{store_idx})
-WHERE rnum BETWEEN #{start} AND #{end}
+		 		SELECT * FROM(SELECT review_idx,store_idx,id,review_storeName,review_star,review_content,review_likeCnt,review_date,review_profile
+				,review_replyCnt,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review WHERE store_idx= #{store_idx})
+				WHERE rnum BETWEEN #{start} AND #{end}
 			</when>
 			<otherwise>
-			SELECT * FROM(SELECT review_idx,store_idx,id,review_storeName,review_star,review_content,review_likeCnt,review_date,review_profile
-	,review_replyCnt,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review WHERE review_storeName LIKE '%'||#{review_search}||'%')
-WHERE rnum BETWEEN #{start} AND #{end}
+				SELECT * FROM(SELECT review_idx,store_idx,id,review_storeName,review_star,review_content,review_likeCnt,review_date,review_profile
+				,review_replyCnt,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review WHERE review_storeName LIKE '%'||#{review_search}||'%')
+				WHERE rnum BETWEEN #{start} AND #{end}
 	 		</otherwise>
 	 	</choose>
 	 	<if test="range.equals('최신순')">

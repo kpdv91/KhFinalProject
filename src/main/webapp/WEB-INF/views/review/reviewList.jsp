@@ -12,8 +12,7 @@
 		
 		<title>Insert title here</title>
 		<style>
-
-		#reviewListDiv{margin-left: 490px;}
+		#reviewListDiv{margin-left: 550px;}
 		
 		#review{
             border: 2px solid #142e5b;
@@ -194,7 +193,7 @@ input[type=button]{
             outline: 0px;
             border: 0px;
        }
-       #review_Write{	margin-left: 490px;}
+       #review_Write{	margin-left: 550px;}
        
        #review_range{
 				width: 80px;

@@ -8,10 +8,9 @@
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<script src="resources/js/jquery-1.11.3.min.js"></script>
 		<script src="resources/js/star.js"></script>
-		<!-- <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
-		<!-- <link rel="stylesheet" type="text/css" href="star.css"> -->
 		<title>Insert title here</title>
 		<style>
+
 		#reviewListDiv{margin-left: 490px;}
 		
 		#review{
@@ -265,12 +264,10 @@ input[type=button]{
 	
 	<input id="storeIdx" type="hidden" value="<c:out value="${param.idx} "/>">
 	<input id="reviewSearch" type="hidden" value="<c:out value="${param.reviewSearch}"/>">
-	
-
-
 	</body>
-	
+
 	<script>
+	
 	var loginId = "${sessionScope.loginId}";
 	listCall("최신순");
 	function range(value){
@@ -308,6 +305,7 @@ input[type=button]{
 				printList(d.reviewList);
 				atagCreate(d.reviewList);
 				//hashtag(d.reviewList);
+				
 			},
 			error:function(e){console.log(e);}
 		});
@@ -383,7 +381,7 @@ input[type=button]{
 			list.forEach(function(item){
 				var date = new Date(item.revreply_date);
 				reply +="<tr class='reply_table' id='reply_table"+item.revreply_idx+"'>";
-				reply +="<td rowspan='2'><input type='hidden' value='"+item.revreply_idx+"'/><img id='reply_img' src='resources/upload/"+item.revreply_profile+"'/></td>";
+				reply +="<td rowspan='2'><input type='hidden' value='"+item.revreply_idx+"'/><img id='reply_img' src='"+item.revreply_profile+"'/></td>";
 				reply +="<td rowspan='2' id='reply_id'>"+item.id+"</td>";
 				reply +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
 				reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td></tr><tr>";

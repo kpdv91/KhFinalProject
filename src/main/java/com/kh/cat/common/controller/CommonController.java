@@ -209,7 +209,6 @@ public class CommonController {
 	@RequestMapping(value = "/showStat", method = RequestMethod.GET)
 	public ModelAndView storeDetail(@RequestParam("store_idx") int store_idx) {
 		logger.info("가게 통계 페이지 요청.");
-		String sIdx = Integer.toString(store_idx);
 
 		return commonservice.showStat(store_idx);
 	}

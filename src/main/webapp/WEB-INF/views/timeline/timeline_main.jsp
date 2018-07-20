@@ -1440,19 +1440,21 @@
 		function complain_list(list) {
 			var content = "";		
 			list.forEach(function(item, idx){
-				content +="<tr>";
-				content +="<td class='comp_detail1'>"+item.id+"</td>";
-				content +="<td class='comp_detail1'>"+item.complain_type+"</td>";
-				content +="<td class='comp_detail1'>"+item.complain_id+"</td>";
-				content +="<td class='comp_detail1'>"+item.complain_cate+"</td>";
-				var date = new Date(item.complain_date);			
-				content +="<td class='comp_detail1'>"+date.toLocaleDateString("ko-KR")+"</td>";
-				content +="<td><button id='complain_move' onclick='complain_move("+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
-				content += "</tr>";
-				content += "<tr>";
-				content +="<td style='display: none;'>신고 내용 : </td>";
-				content +="<td style='display: none;' colspan='5'>"+item.complain_content+"</td>";
-				content += "</tr>";
+				if(item.complain_black != 1){
+					content +="<tr>";
+					content +="<td class='comp_detail1'>"+item.id+"</td>";
+					content +="<td class='comp_detail1'>"+item.complain_type+"</td>";
+					content +="<td class='comp_detail1'>"+item.complain_id+"</td>";
+					content +="<td class='comp_detail1'>"+item.complain_cate+"</td>";
+					var date = new Date(item.complain_date);			
+					content +="<td class='comp_detail1'>"+date.toLocaleDateString("ko-KR")+"</td>";
+					content +="<td><button id='complain_move' onclick='complain_move("+item.complain_idx+", "+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
+					content += "</tr>";
+					content += "<tr>";
+					content +="<td style='display: none;'>신고 내용 : </td>";
+					content +="<td style='display: none;' colspan='5'>"+item.complain_content+"</td>";
+					content += "</tr>";
+				}
 			});		
 			$("#complail_tbody").empty();
 			$("#complail_tbody").append(content);//내용 붙이기
@@ -1469,7 +1471,7 @@
 				}
 			});
 		}
-		
+		//신고내역 보기 버튼 클릭이벤트
 		function complain_move(rev_idx, revReply_idx, id, complain_id) {
 			console.log("클릭");   
 			console.log(rev_idx, revReply_idx, id, complain_id);  
@@ -1489,7 +1491,7 @@
 					content +="<td>"+item.store_addr+"</td>";
 					var date = new Date(item.store_revDate);			
 					content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>";
-					content +="<td><button id='store_regist_move'>보 기</button></td>";  
+					content +="<td><button id='store_regist_move' onclick='regist_move("+item.store_idx+")'>보 기</button></td>";  
 		            content +="<td><button id='store_regist_yes' onclick='registYes("+item.store_idx+", \""+item.id+"\")'>승인</button> / "+
 		            	"<button id='store_regist_no' onclick='registNo("+item.store_idx+", \""+item.id+"\")'>취소</button></td>";
 					content += "</tr>";		
@@ -1500,7 +1502,12 @@
 
 		}
 		
-		//가게 등록 승인
+		//가게 등록 보기  클릭이벤트
+		function regist_move(store_idx) {
+			location.href="./storeDetail?store_idx="+store_idx;
+		}
+		
+		//가게 등록 승인  클릭이벤트
 		function registYes(store_idx, id) {
 			console.log(store_idx, id);
 			$.ajax({
@@ -1514,7 +1521,7 @@
 				success:function(data){
 					console.log(data);			
 					alert(data.msg);
-					location.href="./storeRegistList";
+					//location.href="./storeRegistList";
 				},
 				error:function(error){
 					console.log(error);
@@ -1522,6 +1529,7 @@
 			});
 		}
 		
+		//가게 등록 거절  클릭이벤트
 		function registNo(store_idx, id) {
 			console.log(store_idx, id);
 			var myWin= window.open("./registNoWin?store_idx="+store_idx+

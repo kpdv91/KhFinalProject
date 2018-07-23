@@ -82,6 +82,29 @@
 		SELECT profile FROM member WHERE id=#{param1}
 	</select>
 
+	<!-- 페이징 count -->
+	<select id="allCount" resultType="Integer">
+		SELECT COUNT(*) FROM store
+	</select>
+	<select id="searchAndStoreCount" resultType="Integer">
+		SELECT COUNT(*) FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{store_searchCnt}||'%'
+	</select>
+	<select id="searchOrStoreCount" resultType="Integer" parameterType="hashmap">
+		SELECT COUNT(*) FROM store WHERE
+		<foreach collection="store_searchCnt" item="store_searchCnt" index="index" open="(" close=")" separator="OR">
+			store_name LIKE '%'||#{store_searchCnt}||'%'
+		</foreach>
+	</select>
+	<select id="searchHashStoreCount" resultType="Integer" parameterType="hashmap">
+		SELECT COUNT(DISTINCT sto.store_idx)
+		FROM (SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%') sto,
+		(SELECT * FROM hash WHERE 
+		<foreach collection="store_searchCnt" item="store_searchCnt" index="index" separator="OR">
+			hash_tag LIKE '%'||#{store_searchCnt}||'%'
+		</foreach>
+		) hashtag WHERE sto.store_idx=hashtag.store_idx
+	</select>
+
 	<select id="storeSearch_And" resultType="store" parameterType="hashmap">
 		<choose>
 	 		<when test="mainStore==3">
@@ -90,7 +113,10 @@
  				ORDER BY store_revdate DESC
 	 		</when>
 			<otherwise>
-				SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{content}||'%'
+				SELECT * FROM
+				(SELECT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt ,ROW_NUMBER() OVER(ORDER BY store_revdate DESC) AS rnum 
+					FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{content}||'%')
+				WHERE rnum BETWEEN #{start} AND #{end}
 				<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
 				<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
 				<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
@@ -99,27 +125,32 @@
 	 	</choose>
 	</select>
 	<select id="storeSearch_Or" resultType="store" parameterType="hashmap">
-		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND
+		SELECT * FROM 
+		(SELECT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt,ROW_NUMBER() OVER(ORDER BY store_revdate DESC) AS rnum 
+				FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND
 		<foreach collection="content" item="content" index="index" open="(" close=")" separator="OR">
 			store_name LIKE '%'||#{content}||'%'
 		</foreach>
+		) WHERE rnum BETWEEN #{start} AND #{end}
 		<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
 		<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
 		<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
 		<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
 	</select>
 	<select id="storeSearch_Hash" resultType="store" parameterType="hashmap">
-		SELECT DISTINCT sto.store_idx,sto.store_name,sto.store_addr,sto.store_revdate,sto.store_star,sto.store_bhit,sto.store_revCnt
-		FROM (SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%') sto,
-		(SELECT * FROM hash WHERE 
+		SELECT DISTINCT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt FROM
+		(SELECT sto.store_idx,sto.store_name,sto.store_addr,sto.store_revdate,sto.store_star,sto.store_bhit,sto.store_revCnt
+			,ROW_NUMBER() OVER(ORDER BY sto.store_revdate DESC) AS rnum
+			FROM (SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%') sto, 
+			(SELECT * FROM hash WHERE 
 		<foreach collection="content" item="content" index="index" separator="OR">
 			hash_tag LIKE '%'||#{content}||'%'
 		</foreach>
-		) hashtag WHERE sto.store_idx=hashtag.store_idx
-		<if test="sort.equals('리뷰 최신 순')">ORDER BY sto.store_revdate DESC</if>
-		<if test="sort.equals('별점 순')">ORDER BY sto.store_star DESC</if>
-		<if test="sort.equals('조회수 순')">ORDER BY sto.store_bhit DESC</if>
-		<if test="sort.equals('리뷰수 순')">ORDER BY sto.store_revCnt DESC</if>
+		) hashtag WHERE sto.store_idx=hashtag.store_idx) WHERE rnum BETWEEN #{start} AND #{end}
+		<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
+		<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
+		<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
+		<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
 	</select>
 	<select id="storeHash" resultType="hash">
 		SELECT * FROM hash WHERE store_idx=#{param1}

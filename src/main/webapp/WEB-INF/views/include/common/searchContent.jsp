@@ -10,6 +10,8 @@
 		<style>
 			#searchPage{
 				width:1010px;
+				height: auto;
+				overflow: auto;
 			}
 			#map{
 				width:1000px;
@@ -54,6 +56,9 @@
 	        }
 	        #tableLine{
 	        	overflow: auto;
+	        }
+	        #store_container{
+	        	margin-left: 300px;
 	        }
 		</style>
 	</head>
@@ -111,10 +116,11 @@
 		<br/><br/><br/>
 	</body>
 	<script>
+	showPage = 1;//보여줄 페이지
 	var id = "${sessionScope.loginId}";
 	var search_content = "<%=request.getParameter("search_content") %>";
 	var search_map = "<%=request.getParameter("search_map") %>";
-	tableSort("리뷰 최신 순",search_content);
+	tableSort("리뷰 최신 순",search_content,showPage);
 	
 	
 		function markerRefresh(list){
@@ -140,33 +146,48 @@
 			switch (val) {
 			case "리뷰 최신 순":
 				console.log("1");
-				tableSort(val,search_content);
+				tableSort(val,search_content,showPage);
 				break;
 			case "별점 순":
 				console.log("2");
-				tableSort(val,search_content);
+				tableSort(val,search_content,showPage);
 				break;
 			case "조회수 순":
 				console.log("3");
-				tableSort(val,search_content);
+				tableSort(val,search_content,showPage);
 				break;
 			case "리뷰수 순":
 				console.log("4");
-				tableSort(val,search_content);
+				tableSort(val,search_content,showPage);
 				break;
 			}
 		}
 
 		//정렬
-		function tableSort(val,search_content){
+		function tableSort(val,search_content,page){
+			console.log(val+"/"+page);
 			$.ajax({
-				url:"./searchSort",
+				url:"./searchSort/6/"+page,
 				data:{data:val,search_content:search_content,search_map:search_map},
 				success:function(data){
+					console.log(data);
 					console.log(data.list);
 					console.log(data.list_hash);
 					$("#searchPage").empty();
 					storePrintList(data.list,data.list_hash);
+					
+					showPage = data.currPage;
+					$("#store_container").zer0boxPaging({
+		                viewRange : 6,
+		                currPage : data.currPage,
+		                maxPage : data.range,
+		                clickAction : function(e){
+		                    //console.log(e);
+		                    console.log($(this).attr('page'));
+		                    tableSort(val,search_content,$(this).attr('page'));
+		                }
+		            });
+					
 					removeMarker();
 					markerRefresh(data.list);
 				},
@@ -200,6 +221,8 @@
 				storeLikeChk(item.store_idx);
 			});
 			$("#searchPage").append(content);
+			$("#searchPage").append("<div id='tableLine' style='width:1000px; height:5px;'></div>");
+			$("#searchPage").append("<div id='store_container'></div>");
 		}
 		
 		//찜하기

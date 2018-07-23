@@ -12,7 +12,7 @@
             }
             
             div{
-                /* border: solid 2px navy;   */
+                 border: solid 2px navy;   
                 width: 380px;
                 padding: 4%;
                 margin-top: 7%;
@@ -38,16 +38,24 @@
 				border : 1px solid black;
 				text-align: center;       
 			}
-            button {
+            /* button {
                 margin-top: 5px;
                 background-color:#088A85;
                 color: aliceblue;
-            }
+            } */
             #confirmPw{
                 text-align: center;
                 font-size: 12px;
                 color: red;
             }
+            input[type=button] { 
+       			background-color: #33aaaaff;
+        		color: white;
+            	border: 0px;
+            	/* outline: 0px; */
+    		} 
+            
+            
 		</style>
 	</head>
 	<body>

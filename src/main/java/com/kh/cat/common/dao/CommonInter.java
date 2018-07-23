@@ -116,4 +116,12 @@ public interface CommonInter {
 
 	int sendlistallCount(String id);
 
+	int allCount();
+
+	int searchAndStoreCount(HashMap<String, Object> search_content_Map);
+
+	int searchOrStoreCount(HashMap<String, Object> search_content_Map);
+
+	int searchHashStoreCount(HashMap<String, Object> search_content_Map);
+
 }

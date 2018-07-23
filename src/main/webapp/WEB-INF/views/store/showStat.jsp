@@ -9,7 +9,8 @@
        	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 		<title>가게 통계 페이지</title>
-		<style></style>
+		<style>
+		</style>
 	</head>
 	<body>
 		<div id="Line_Controls_Chart">
@@ -18,20 +19,26 @@
 		<!-- 컨트롤바를 생성할 영역 -->
 			<div id="controlsArea" style="padding:0px 20px 0px 0px;"></div>
 		</div>
-
 	</body>
+	
 	<script>
+	var dataCnt =  ${statList.size()};
+	
+	if(dataCnt<2){
+		alert("데이터가 충분하지 않습니다.");
+		self.close();
+	}
 	var chartDrowFun = {
 			 
 		    chartDrow : function(){
 		        var chartData = '';
-		 
+		       
 		        //날짜형식 변경하고 싶으시면 이 부분 수정하세요.
-		        var chartDateformat     = 'yy년MM월dd일';
+		        var chartDateformat     = 'yy/MM/dd';
 		        //라인차트의 라인 수
-		        var chartLineCount    = 15;
+		        var chartLineCount    = dataCnt;
 		        //컨트롤러 바 차트의 라인 수
-		        var controlLineCount    = 15;
+		        var controlLineCount    = dataCnt;
 		 
 		 
 		        function drawDashboard() {
@@ -45,17 +52,18 @@
 		 
 		          //그래프에 표시할 데이터
 		          var dataRow = [];
-		 
-		          for(var i = 0; i <= 29; i++){ //랜덤 데이터 생성
-		            var total   = Math.floor(Math.random() * 300) + 1;
-		            var man     = Math.floor(Math.random() * total) + 1;
-		            var woman   = total - man;
-		 
-		            dataRow = [new Date('2017', '09', i , '10'), man, woman , total];
+		        
+		        <c:forEach var="item" items="${statList}">
+			        var date =	"${item.total_date}";
+			        var hitCnt = ${item.total_bhitCnt};
+			    	var revCnt = ${item.total_revCnt};
+			    	var starAvg =	${item.total_starAvg};
+			    	console.log(date, hitCnt, revCnt , starAvg);
+			    	var dateN = date. split('-');
+			    	dataRow = [new Date(dateN[0],dateN[1]-1,dateN[2]), hitCnt, revCnt , starAvg];
 		            data.addRow(dataRow);
-		          }
-		 
-		 
+			    </c:forEach> 
+			    
 		            var chart = new google.visualization.ChartWrapper({
 		              chartType   : 'LineChart',
 		              containerId : 'lineChartArea', //라인 차트 생성할 영역
@@ -68,12 +76,12 @@
 		                              pointSize        : 5,
 		                              tooltip          : {textStyle : {fontSize:12}, showColorCode : true,trigger: 'both'},
 		                              hAxis              : {format: chartDateformat, gridlines:{count:chartLineCount,units: {
-		                                                                  years : {format: ['yyyy년']},
-		                                                                  months: {format: ['MM월']},
-		                                                                  days  : {format: ['dd일']},
-		                                                                  hours : {format: ['HH시']}}
+		                                                                  years : {format: ['yy']},
+		                                                                  months: {format: ['MM']},
+		                                                                  days  : {format: ['dd']}
+		                                                                  }
 		                                                                },textStyle: {fontSize:12}},
-		                vAxis              : {minValue: 100,viewWindow:{min:0},gridlines:{count:-1},textStyle:{fontSize:12}},
+		                vAxis              : {minValue: 5,viewWindow:{min:0},gridlines:{count:-1},textStyle:{fontSize:12}},
 		                animation        : {startup: true,duration: 1000,easing: 'in' },
 		                annotations    : {pattern: chartDateformat,
 		                                textStyle: {
@@ -99,10 +107,10 @@
 		                        chartArea: {'width': '60%','height' : 80},
 		                          hAxis: {'baselineColor': 'none', format: chartDateformat, textStyle: {fontSize:12},
 		                            gridlines:{count:controlLineCount,units: {
-		                                  years : {format: ['yyyy년']},
-		                                  months: {format: ['MM월']},
-		                                  days  : {format: ['dd일']},
-		                                  hours : {format: ['HH시']}}
+		                                  years : {format: ['yy']},
+		                                  months: {format: ['MM']},
+		                                  days  : {format: ['dd']}
+		                                  }
 		                            }}
 		                        }
 		                  },
@@ -128,7 +136,6 @@
 		  google.charts.load('current', {'packages':['line','controls']});
 		  chartDrowFun.chartDrow(); //chartDrow() 실행
 		});
-		  </script>
 
 	</script>
 </html>

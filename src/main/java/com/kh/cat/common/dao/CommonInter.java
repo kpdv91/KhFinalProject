@@ -110,4 +110,8 @@ public interface CommonInter {
 
 	ArrayList<TotalDTO> showStat(int store_idx);//통계 가져오기
 
+	void uphitStat(int store_idx);//통계에 조회수 증가;
+	
+	
+
 }

@@ -4,9 +4,11 @@
 <html>
 	<head>
 	<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!-- 
+		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script> -->
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<script src="resources/js/star.js"></script>
+		<script src="resources/js/zer0boxPaging.js" type="text/javascript"></script>
 		<title>Insert title here</title>
 		<style>
 			#profileim{position: absolute;width: 100px;height: 100px;left: 400px;top: 65px;}
@@ -119,6 +121,7 @@
 			.star-input>.input>label[for="p4.5"]{width:135px;z-index:2;}
 			.star-input>.input>label[for="p5.0"]{width:150px;z-index:1;}
 			.star-input>output{display:inline-block;width:60px; font-size:18px;text-align:right;vertical-align:middle;}
+			
 		</style>
 	</head>
 	<body>
@@ -171,6 +174,9 @@
 	var fallowbtn=1;
 	var aTag = "";
 	var idx = "";
+	showPage = 1;
+	//테이블 페이징
+		
 	//리뷰 로그인체크 후 수정 삭제 신고 a 태그 띄워줌
 	function atagCreate(list){
 		aTag = "";
@@ -1063,21 +1069,7 @@
 	//타임라인 버튼들 클릭하여 나오는 리스트들의 아작스
 	function ajaxCall(page){
 		if(page=="resources/timelinehtml/messagebox.html"){
-			$.ajax({
-				url:"./receivelist",
-				type:"get",
-				data:{
-					id : userid
-				},
-				dataType:"json",
-				success:function(d){
-					console.log(d);
-					receivelist(d.list);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+			receivelistajax(showPage);
 		}else if(page=="resources/timelinehtml/pointbox.html"){
 			$.ajax({
 				url:"./pointlist",
@@ -1094,35 +1086,8 @@
 				}
 			});
 		}else if(page=="resources/timelinehtml/couponbox.html"){
-			$.ajax({
-				url:"./couponlist",
-				type:"get",
-				data:{
-					id : userid
-				},
-				dataType:"json",
-				success:function(d){
-					couponlist(d.list);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+			couponajax(showPage);
 		}else if(page=="reviewlist"){
-			/* $.ajax({
-				url:"./timelinereviewlist",
-				type:"post",
-				data:{
-					id : "${id}"
-				},
-				dataType:"json",
-				success:function(d){
-					printList(d.list);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			}); */
 			timelinereview();
 		}else if(page=="likereview"){
 			 $.ajax({
@@ -1239,6 +1204,57 @@
 			});
 		}
 	}
+	function couponajax(page){		
+		$.ajax({
+			url:"./couponlist",
+			type:"get",
+			data:{
+				id : userid,
+				page : page
+			},
+			dataType:"json",
+			success:function(d){
+				couponlist(d.list);
+				$("#container").zer0boxPaging({
+	                viewRange : 5,
+	                currPage : d.currPage,
+	                maxPage : d.range,
+	                clickAction : function(e){
+	                	couponajax($(this).attr('page'));
+	                }
+	            });
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	//받은 메세지 아작스
+	function receivelistajax(page){
+		$.ajax({
+			url:"./receivelist",
+			type:"get",
+			data:{
+				id : userid,
+				page : page
+			},
+			dataType:"json",
+			success:function(d){
+				receivelist(d.list);
+				$("#container").zer0boxPaging({
+	                viewRange : 5,
+	                currPage : d.currPage,
+	                maxPage : d.range,
+	                clickAction : function(e){
+	                	receivelistajax($(this).attr('page'));
+	                }
+	            });
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
 	//좋아하는 가게 리스트
 	function likestorelist(list,hash){
 		var content ="";
@@ -1278,9 +1294,10 @@
 			}
 			content +="<td>"+coupon_use+"</td>"
 			content += "</tr>"			
-		});		
+		});
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
+		$("#list").append("<div id='container'></div>");
 	}
 	//포인트 리스트
 	function pointlist(d){
@@ -1303,7 +1320,10 @@
 		$("#list").append(content);//내용 붙이기
 	}
 	//보낸 리스트 아작스
-	function send(){
+	function send(page){
+		if(page==null){
+			page=1;
+		}
 		$("#send").css("background-color","darkblue");
 		$("#send").css("color","white");
 		$("#receive").css("background-color","lightgray");
@@ -1313,11 +1333,20 @@
 			url:"./sendlist",
 			type:"get",
 			data:{
-				id : userid
+				id : userid,
+				page : page
 			},
 			dataType:"json",
 			success:function(d){
 				sendlist(d.list);
+				$("#container").zer0boxPaging({
+	                viewRange : 5,
+	                currPage : d.currPage,
+	                maxPage : d.range,
+	                clickAction : function(e){
+	                	send($(this).attr('page'));
+	                }
+	            });
 			},
 			error:function(e){
 				console.log(e);
@@ -1325,7 +1354,10 @@
 		});
 	};
 	//받은 리스트 아작스
-	function receive(){
+	function receive(page){
+		if(page==null){
+			page=1;
+		}
 		$("#receive").css("background-color","darkblue");
 		$("#receive").css("color","white");
 		$("#send").css("background-color","lightgray");
@@ -1335,11 +1367,20 @@
 			url:"./receivelist",
 			type:"get",
 			data:{
-				id : userid
+				id : userid,
+				page:page
 			},
 			dataType:"json",
 			success:function(d){
 				receivelist(d.list);
+				$("#container").zer0boxPaging({
+	                viewRange : 5,
+	                currPage : d.currPage,
+	                maxPage : d.range,
+	                clickAction : function(e){
+	                	receive($(this).attr('page'));
+	                }
+	            });
 			},
 			error:function(e){
 				console.log(e);
@@ -1472,10 +1513,10 @@
 			});
 		}
 		//신고내역 보기 버튼 클릭이벤트
-		function complain_move(rev_idx, revReply_idx, id, complain_id) {
+		function complain_move(complain_idx, rev_idx, revReply_idx, id, complain_id) {
 			console.log("클릭");   
 			console.log(rev_idx, revReply_idx, id, complain_id);  
-			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");		
+			var myWin= window.open("./comp_review_moveWin?complain_idx="+complain_idx+"&rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");		
 		}
 		
 		
@@ -1665,7 +1706,46 @@
 			$("#storeList").append(content);
 		}
 		function moveStat(idx) {
-			location.href="./showStat?store_idx="+idx;			
+			var myWin = window.open("./showStat?store_idx="+idx,"통계","width=1000, height=800")
+		}
+		function chgMail(){
+			$("#overlayMail").css("display","inline");
+		}
+		//Email 중복 확인
+	    function emailcheck(){
+	        data ={};
+	        data.email = $("#userEmail").val();
+	        ajaxCallMail("./rest/overlayMail",data);	        
+	    };
+	    
+		function ajaxCallMail(reqUrl, reqData){
+			$.ajax({
+	            url:reqUrl,
+	            type:'get',
+	            dataType:'json',
+	            data: reqData,
+	            success:function(d){
+	                console.log(d);
+	                if(reqUrl=="./rest/overlayMail"){
+	                    if(d.use == "Y"){
+	                        alert("사용 가능한 이메일 입니다.");
+	                    }else{
+	                        alert("누군가가 사용 하고 있는 이메일 입니다.");
+	                        $("#userEmail").val("");
+	                    }
+	                }else{
+	                    if(d.success == 1){
+	                        alert("가입에 성공 하였습니다.");
+	                        location.href="./";
+	                    }else{
+	                        alert("가입에 실패 하였습니다. 다시 입력 해 주세요!");
+	                    }
+	                }
+	            },
+	            error:function(e){
+	                console.log(e);
+	            }                
+	        });
 		}
 	</script>
 </html>

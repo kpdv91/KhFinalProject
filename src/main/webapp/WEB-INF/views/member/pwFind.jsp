@@ -23,9 +23,12 @@
 		        color: aliceblue;
 			}
 		    input[type=button] { 
-		        border:solid 1px blue;
+		        /* border:solid 1px blue;
 		        background-color: #088A85;
-		        color: aliceblue;
+		        color: aliceblue; */
+		        background-color: #33aaaaff;
+     			color: white;
+       			border: 0px;
 		    }    
 		</style>
 	</head>

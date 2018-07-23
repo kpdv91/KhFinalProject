@@ -5,10 +5,13 @@ import java.sql.Date;
 public class CouponBoxDTO {
 	private int couponBox_code;
 	private String id;
-	private long couponBox_price;
-	private String couponBox_name;
-	private Date couponBox_date;
 	private int couponBox_use;
+	private Date couponBox_date;
+	private String couponBox_name;
+	private long couponBox_price;
+	
+	
+	
 	
 	public long getCouponBox_price() {
 		return couponBox_price;

@@ -12,10 +12,14 @@
 		keyColumn = "idx" (키가 저장될 DB 컬럼)
 	-->
 	<select id="receivelist" resultType="dm">
-		SELECT * FROM dm WHERE dm_id=#{param1}
+	SELECT * FROM (SELECT dm_idx,id,dm_id,dm_content,dm_date,ROW_NUMBER()
+	 OVER (ORDER BY dm_idx DESC) AS rnum FROM dm WHERE dm_id=#{param1}) 
+	 WHERE rnum BETWEEN #{param2} AND #{param3}
 	</select>
 	<select id="sendlist" resultType="dm">
-		SELECT * FROM dm WHERE id=#{param1}
+		SELECT * FROM (SELECT dm_idx,id,dm_id,dm_content,dm_date,ROW_NUMBER()
+	 OVER (ORDER BY dm_idx DESC) AS rnum FROM dm WHERE id=#{param1}) 
+	 WHERE rnum BETWEEN #{param2} AND #{param3}
 	</select>
 	<select id="receivedetail" resultType="dm">
 		SELECT * FROM dm WHERE dm_idx=#{param1}
@@ -30,7 +34,10 @@
 		SELECT * FROM pointList WHERE id=#{param1}
 	</select>
 	<select id="couponlist" resultType="couponBox">
-		SELECT * FROM couponbox WHERE id=#{param1}
+		SELECT couponBox_code,id,couponBox_use,couponBox_date,couponBox_name,couponBox_price FROM
+		(SELECT couponBox_code,id,couponBox_use,couponBox_date,couponBox_name,couponBox_price,
+		ROW_NUMBER() OVER (ORDER BY couponBox_date DESC) AS rnum FROM couponbox WHERE id=#{param1})
+		WHERE rnum BETWEEN #{param2} AND #{param3}
 	</select>
 	<select id="messagesendidcheck" resultType="String">
 		SELECT id FROM member WHERE id=#{param1}
@@ -193,10 +200,14 @@
 	<select id="showStat" resultType="total">
 		SELECT * FROM total 
 		<![CDATA[
-		WHERE total_date >= to_date(SYSDATE-15, 'YY/MM/DD') AND total_date < to_date(SYSDATE, 'YY/MM/DD')
+		WHERE total_date > to_date(SYSDATE-15, 'YY/MM/DD') AND total_date < to_date(SYSDATE+1, 'YY/MM/DD')
 		]]>
-		 AND store_idx=#{param1}
+		 AND store_idx=#{param1} ORDER BY total_date ASC
 	</select>
+	
+	<update id="uphitStat">
+		UPDATE total SET total_bhitCnt= total_bhitCnt+1 WHERE total_date= SYSDATE AND store_idx = #{param1}
+	</update>
 	
 	<select id="followlist" resultType="String">
 		SELECT id FROM follow WHERE follow_id=#{param1}
@@ -222,7 +233,15 @@
 	<insert id="alarmdminsert">
 		INSERT INTO alarm(alarm_idx,alarm_id,alarm_cate,dm_idx,alarm_read) VALUES(seq_alarm.NEXTVAL,#{param2},'메세지',#{param1},0)
 	</insert>
-
+	<select id="couponallCount" resultType="Integer">
+	 	SELECT COUNT(*) FROM couponbox WHERE id=#{param1}
+	 </select>
+	 <select id="receivelistallCount" resultType="Integer">
+	 	SELECT COUNT(*) FROM dm WHERE dm_id=#{param1}
+	 </select>
+	 <select id="sendlistallCount" resultType="Integer">
+	 	SELECT COUNT(*) FROM dm WHERE id=#{param1}
+	 </select>
 </mapper>
 
 

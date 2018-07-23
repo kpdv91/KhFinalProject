@@ -2,6 +2,7 @@ package com.kh.cat.common.service;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -39,18 +40,46 @@ public class CommonService {
 	public HashMap<String, Object> receivelist(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		int page = Integer.parseInt(params.get("page"));
 		String id = params.get("id");
+		//총 게시물 수 => 생성 가능 페이지 수
+		int allCnt = inter.receivelistallCount(id);
+		//생성 가능 페이지 수 : 나머지가 있으면 페이지 하나 더 생성
+		int range = allCnt%5 >0 ? Math.round(allCnt/5)+1 : allCnt/5;
+		if(page>range) {
+			page=range;			
+		}
+		logger.info("총 개시물 수 : {}",allCnt);
+		logger.info("생성 가능 페이지 수 : {}",range);
+		int end = page*5;
+		int start = end-4;
 		logger.info(id);
-		map.put("list", inter.receivelist(id));
+		map.put("list", inter.receivelist(id,start,end));
+		map.put("range", range);
+		map.put("currPage",page);
 		return map;
 	}
 
 	public HashMap<String, Object> sendlist(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		int page = Integer.parseInt(params.get("page"));
 		String id = params.get("id");
+		//총 게시물 수 => 생성 가능 페이지 수
+		int allCnt = inter.sendlistallCount(id);
+		//생성 가능 페이지 수 : 나머지가 있으면 페이지 하나 더 생성
+		int range = allCnt%5 >0 ? Math.round(allCnt/5)+1 : allCnt/5;
+		if(page>range) {
+			page=range;			
+		}
+		logger.info("총 개시물 수 : {}",allCnt);
+		logger.info("생성 가능 페이지 수 : {}",range);
+		int end = page*5;
+		int start = end-4;
 		logger.info(id);
-		map.put("list", inter.sendlist(id));
+		map.put("list", inter.sendlist(id,start,end));
+		map.put("range", range);
+		map.put("currPage",page);
 		return map;
 	}
 
@@ -88,9 +117,24 @@ public class CommonService {
 	public HashMap<String, Object> couponlist(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		int page = Integer.parseInt(params.get("page"));
 		String id = params.get("id");
+		//총 게시물 수 => 생성 가능 페이지 수
+		int allCnt = inter.couponallCount(id);
+		//생성 가능 페이지 수 : 나머지가 있으면 페이지 하나 더 생성
+		int range = allCnt%5 >0 ? Math.round(allCnt/5)+1 : allCnt/5;
+		if(page>range) {
+			page=range;			
+		}
+		logger.info("총 개시물 수 : {}",allCnt);
+		logger.info("생성 가능 페이지 수 : {}",range);
+		int end = page*5;
+		int start = end-4;
 		logger.info(id);
-		map.put("list", inter.couponlist(id));
+		//ArrayList<Object> list=inter.couponlist(id,start,end)
+		map.put("list", inter.couponlist(id,start,end));
+		map.put("range", range);
+		map.put("currPage",page);
 		return map;
 	}
 
@@ -417,6 +461,7 @@ public class CommonService {
 		inter = sqlSession.getMapper(CommonInter.class);
 		ModelAndView mav = new ModelAndView();
 		ArrayList<TotalDTO> statList = inter.showStat(store_idx);
+		
 		mav.addObject("statList",statList);
 		mav.setViewName("store/showStat");
 		return mav;

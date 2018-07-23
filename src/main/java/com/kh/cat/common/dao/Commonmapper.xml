@@ -12,10 +12,14 @@
 		keyColumn = "idx" (키가 저장될 DB 컬럼)
 	-->
 	<select id="receivelist" resultType="dm">
-		SELECT * FROM dm WHERE dm_id=#{param1}
+	SELECT * FROM (SELECT dm_idx,id,dm_id,dm_content,dm_date,ROW_NUMBER()
+	 OVER (ORDER BY dm_idx DESC) AS rnum FROM dm WHERE dm_id=#{param1}) 
+	 WHERE rnum BETWEEN #{param2} AND #{param3}
 	</select>
 	<select id="sendlist" resultType="dm">
-		SELECT * FROM dm WHERE id=#{param1}
+		SELECT * FROM (SELECT dm_idx,id,dm_id,dm_content,dm_date,ROW_NUMBER()
+	 OVER (ORDER BY dm_idx DESC) AS rnum FROM dm WHERE id=#{param1}) 
+	 WHERE rnum BETWEEN #{param2} AND #{param3}
 	</select>
 	<select id="receivedetail" resultType="dm">
 		SELECT * FROM dm WHERE dm_idx=#{param1}
@@ -30,7 +34,10 @@
 		SELECT * FROM pointList WHERE id=#{param1}
 	</select>
 	<select id="couponlist" resultType="couponBox">
-		SELECT * FROM couponbox WHERE id=#{param1}
+		SELECT couponBox_code,id,couponBox_use,couponBox_date,couponBox_name,couponBox_price FROM
+		(SELECT couponBox_code,id,couponBox_use,couponBox_date,couponBox_name,couponBox_price,
+		ROW_NUMBER() OVER (ORDER BY couponBox_date DESC) AS rnum FROM couponbox WHERE id=#{param1})
+		WHERE rnum BETWEEN #{param2} AND #{param3}
 	</select>
 	<select id="messagesendidcheck" resultType="String">
 		SELECT id FROM member WHERE id=#{param1}
@@ -75,6 +82,29 @@
 		SELECT profile FROM member WHERE id=#{param1}
 	</select>
 
+	<!-- 페이징 count -->
+	<select id="allCount" resultType="Integer">
+		SELECT COUNT(*) FROM store
+	</select>
+	<select id="searchAndStoreCount" resultType="Integer">
+		SELECT COUNT(*) FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{store_searchCnt}||'%'
+	</select>
+	<select id="searchOrStoreCount" resultType="Integer" parameterType="hashmap">
+		SELECT COUNT(*) FROM store WHERE
+		<foreach collection="store_searchCnt" item="store_searchCnt" index="index" open="(" close=")" separator="OR">
+			store_name LIKE '%'||#{store_searchCnt}||'%'
+		</foreach>
+	</select>
+	<select id="searchHashStoreCount" resultType="Integer" parameterType="hashmap">
+		SELECT COUNT(DISTINCT sto.store_idx)
+		FROM (SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%') sto,
+		(SELECT * FROM hash WHERE 
+		<foreach collection="store_searchCnt" item="store_searchCnt" index="index" separator="OR">
+			hash_tag LIKE '%'||#{store_searchCnt}||'%'
+		</foreach>
+		) hashtag WHERE sto.store_idx=hashtag.store_idx
+	</select>
+
 	<select id="storeSearch_And" resultType="store" parameterType="hashmap">
 		<choose>
 	 		<when test="mainStore==3">
@@ -83,7 +113,10 @@
  				ORDER BY store_revdate DESC
 	 		</when>
 			<otherwise>
-				SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{content}||'%'
+				SELECT * FROM
+				(SELECT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt ,ROW_NUMBER() OVER(ORDER BY store_revdate DESC) AS rnum 
+					FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{content}||'%')
+				WHERE rnum BETWEEN #{start} AND #{end}
 				<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
 				<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
 				<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
@@ -92,27 +125,32 @@
 	 	</choose>
 	</select>
 	<select id="storeSearch_Or" resultType="store" parameterType="hashmap">
-		SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND
+		SELECT * FROM 
+		(SELECT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt,ROW_NUMBER() OVER(ORDER BY store_revdate DESC) AS rnum 
+				FROM store WHERE store_addr LIKE '%'||#{map}||'%' AND
 		<foreach collection="content" item="content" index="index" open="(" close=")" separator="OR">
 			store_name LIKE '%'||#{content}||'%'
 		</foreach>
+		) WHERE rnum BETWEEN #{start} AND #{end}
 		<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
 		<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
 		<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
 		<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
 	</select>
 	<select id="storeSearch_Hash" resultType="store" parameterType="hashmap">
-		SELECT DISTINCT sto.store_idx,sto.store_name,sto.store_addr,sto.store_revdate,sto.store_star,sto.store_bhit,sto.store_revCnt
-		FROM (SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%') sto,
-		(SELECT * FROM hash WHERE 
+		SELECT DISTINCT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt FROM
+		(SELECT sto.store_idx,sto.store_name,sto.store_addr,sto.store_revdate,sto.store_star,sto.store_bhit,sto.store_revCnt
+			,ROW_NUMBER() OVER(ORDER BY sto.store_revdate DESC) AS rnum
+			FROM (SELECT * FROM store WHERE store_addr LIKE '%'||#{map}||'%') sto, 
+			(SELECT * FROM hash WHERE 
 		<foreach collection="content" item="content" index="index" separator="OR">
 			hash_tag LIKE '%'||#{content}||'%'
 		</foreach>
-		) hashtag WHERE sto.store_idx=hashtag.store_idx
-		<if test="sort.equals('리뷰 최신 순')">ORDER BY sto.store_revdate DESC</if>
-		<if test="sort.equals('별점 순')">ORDER BY sto.store_star DESC</if>
-		<if test="sort.equals('조회수 순')">ORDER BY sto.store_bhit DESC</if>
-		<if test="sort.equals('리뷰수 순')">ORDER BY sto.store_revCnt DESC</if>
+		) hashtag WHERE sto.store_idx=hashtag.store_idx) WHERE rnum BETWEEN #{start} AND #{end}
+		<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
+		<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
+		<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
+		<if test="sort.equals('리뷰수 순')">ORDER BY store_revCnt DESC</if>
 	</select>
 	<select id="storeHash" resultType="hash">
 		SELECT * FROM hash WHERE store_idx=#{param1}
@@ -162,10 +200,14 @@
 	<select id="showStat" resultType="total">
 		SELECT * FROM total 
 		<![CDATA[
-		WHERE total_date >= to_date(SYSDATE-15, 'YY/MM/DD') AND total_date < to_date(SYSDATE, 'YY/MM/DD')
+		WHERE total_date > to_date(SYSDATE-15, 'YY/MM/DD') AND total_date < to_date(SYSDATE+1, 'YY/MM/DD')
 		]]>
-		 AND store_idx=#{param1}
+		 AND store_idx=#{param1} ORDER BY total_date ASC
 	</select>
+	
+	<update id="uphitStat">
+		UPDATE total SET total_bhitCnt= total_bhitCnt+1 WHERE total_date= SYSDATE AND store_idx = #{param1}
+	</update>
 	
 	<select id="followlist" resultType="String">
 		SELECT id FROM follow WHERE follow_id=#{param1}
@@ -191,7 +233,15 @@
 	<insert id="alarmdminsert">
 		INSERT INTO alarm(alarm_idx,alarm_id,alarm_cate,dm_idx,alarm_read) VALUES(seq_alarm.NEXTVAL,#{param2},'메세지',#{param1},0)
 	</insert>
-
+	<select id="couponallCount" resultType="Integer">
+	 	SELECT COUNT(*) FROM couponbox WHERE id=#{param1}
+	 </select>
+	 <select id="receivelistallCount" resultType="Integer">
+	 	SELECT COUNT(*) FROM dm WHERE dm_id=#{param1}
+	 </select>
+	 <select id="sendlistallCount" resultType="Integer">
+	 	SELECT COUNT(*) FROM dm WHERE id=#{param1}
+	 </select>
 </mapper>
 
 

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -47,22 +48,21 @@ public class CommonController {
 		return "include/common/search";
 	}
 	
-	@RequestMapping(value = "/searchSort")
-	public @ResponseBody HashMap<String,Object> searchSort(@RequestParam HashMap<String,String> params) {
+	@RequestMapping(value = "/searchSort/6/{page}")
+	public @ResponseBody HashMap<String,Object> searchSort(@RequestParam HashMap<String,String> params, @PathVariable String page) {
 		logger.info("검색 정렬 페이지 이동");
 		logger.info("지역 : "+params.get("search_map"));
 		logger.info("정렬 : "+params.get("data"));
 		logger.info("검색어 : "+params.get("search_content"));
 		logger.info("메인인지 검색인지 : "+params.get("mainStore"));
-		return commonservice.storeSearchSort(params);
+		logger.info("페이지 : "+page);
+		return commonservice.storeSearchSort(params,page);
 	}
 	
 	@RequestMapping(value = "/receivelist")
 	public @ResponseBody HashMap<String, Object> receivelist(@RequestParam Map<String,String> params) {
 		logger.info("받은 메세지 확인");
-		//String id = params.get("id");
 		String msg= params.get("msg");
-		//logger.info("id : {}",id);
 		logger.info("msg : {}",msg);		
 		return commonservice.receivelist(params);
 	}
@@ -100,7 +100,7 @@ public class CommonController {
 	}
 	@RequestMapping(value = "/couponlist")
 	public @ResponseBody HashMap<String, Object> cuponlist(@RequestParam Map<String,String> params) {
-		logger.info("포인트 리스트 요청");		
+		logger.info("쿠폰 리스트 요청");		
 		return commonservice.couponlist(params);
 	}
 	@RequestMapping(value = "/messagesendidcheck")

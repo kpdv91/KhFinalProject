@@ -176,6 +176,7 @@
 			var revReply_idx = ${revReply_idx};
 			var id = "${id}";//신고한 사람의 아이디
 			var complain_id = "${complain_id}";
+			var complain_idx = ${complain_idx};
 			$.ajax({
 				url : "./blackListAdd",
 				type : "get",
@@ -184,7 +185,8 @@
 					rev_idx : rev_idx,
 					revReply_idx : revReply_idx,
 					id : id,
-					complain_id : complain_id
+					complain_id : complain_id,
+					complain_idx: complain_idx
 				},
 				success : function(data){
 					console.log(data);

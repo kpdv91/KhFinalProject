@@ -69,6 +69,7 @@ public class PointService {
 			map.put("couponPurchaseMsg", result);//쿠폰구매여부
 			int success = inter.myCoupon(dto);//쿠폰함 추가 쿼리
 			logger.info("쿠폰함 추가 성공 여부 : {}", success);
+			int pointListAdd = inter.pointListAdd(loginId, couponPrice);
 			map.put("couponBoxMsg", success);//쿠폰함 추가 여부
 			map.put("msg", "쿠폰 구매 완료");
 		}

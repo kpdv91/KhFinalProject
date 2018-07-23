@@ -72,11 +72,11 @@ public class ReviewController {
 		}
 	}
 	
-	@RequestMapping(value = "/revStoreSearch")
-	public @ResponseBody HashMap<String, Object> revStoreSearch(@RequestParam("review_storeName") String params) {
+	@RequestMapping(value = "/revStoreSearch/4/{page}")
+	public @ResponseBody HashMap<String, Object> revStoreSearch(@RequestParam("review_storeName") String params,@PathVariable String page) {
 		logger.info("가게 리스트 요청");
 		logger.info(params);
-		return service.revStoreSearch(params);
+		return service.revStoreSearch(params,page);
 	}
 	
 	/*@RequestMapping(value= "/reviewWrite")

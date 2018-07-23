@@ -19,7 +19,9 @@ public interface ReviewInter {
 
 	int reviewPhotoWrite(int review_idx, String rePhoto);
 
-	ArrayList<StoreDTO> storeList(String params);
+	ArrayList<StoreDTO> storeList(String params, int start, int end);
+	
+	int storeListCnt(String params);
 
 	ArrayList<ReviewDTO> reviewList(HashMap<String, Object> ra);
 	
@@ -102,6 +104,9 @@ public interface ReviewInter {
 	int searchHashReviewCount(HashMap<String, Object> ra);
 
 	int replyAllCnt(String review_idx);
+
+
+
 
 	
 

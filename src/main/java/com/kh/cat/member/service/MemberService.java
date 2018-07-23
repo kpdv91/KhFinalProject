@@ -355,7 +355,7 @@ public class MemberService {
 		    	  map.put("msg", "입력한 이메일로 임시비밀번호 전송");
 		    	  map.put("changeResult", pwChange);
 		      }else {
-		    	  map.put("msg", "해당 아이디 없음");
+		    	  map.put("msg", "일치하는 정보가 없습니다.");
 		    	  map.put("changeResult", pwChange);
 		      }
 

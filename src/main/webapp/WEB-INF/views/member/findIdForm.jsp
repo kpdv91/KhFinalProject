@@ -73,15 +73,22 @@
 <!-- </form> -->
 </body>
 <script>
+
+var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; //이메일 정규식
+
 	
 $(function() {
     $("#find").click(function() {
        if($("#nameSearch").val() == ""){
          $("#nameSearch").focus();
-         alert("이름을 적어주세요.");
+         alert("이름을 입력해주세요!!");
       } else if($("#emailSearch").val() == ""){
          $("#emailSearch").focus();
-         alert("이메일을 적어주세요.");
+         alert("이메일을 입력해주세요!!");
+      }else if(exptext.test($("input[name='emailSearch']").val())==false){//이메일 형식이 알파벳+숫자@알파벳+숫자.알파벳+숫자 형식이 아닐경우
+  		alert("이메일 형식이 올바르지 않습니다.");
+  		$("#emailSearch").focus();
+  		return false;
       } else{
           var name=  $("#nameSearch").val(); 
           var email=  $("#emailSearch").val(); 

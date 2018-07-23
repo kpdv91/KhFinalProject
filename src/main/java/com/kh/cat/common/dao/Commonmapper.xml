@@ -194,7 +194,7 @@
 	</select>
 	
 	<insert id="insertStat">
-		INSERT INTO total(store_idx, total_date, total_revCnt, total_bhitCnt, total_starAvg) VALUES(#{param1},SYSDATE,0,0,0)
+		INSERT INTO total(store_idx, total_date, total_revCnt, total_bhitCnt, total_starAvg) VALUES(#{param1},#{param2},0,0,0)
 	</insert>
 	
 	<select id="showStat" resultType="total">
@@ -206,7 +206,7 @@
 	</select>
 	
 	<update id="uphitStat">
-		UPDATE total SET total_bhitCnt= total_bhitCnt+1 WHERE total_date= SYSDATE AND store_idx = #{param1}
+		UPDATE total SET total_bhitCnt= total_bhitCnt+1 WHERE  total_date > to_date(SYSDATE-1, 'YY/MM/DD') AND store_idx = #{param1}
 	</update>
 	
 	<select id="followlist" resultType="String">

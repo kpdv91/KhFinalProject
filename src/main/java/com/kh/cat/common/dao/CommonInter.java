@@ -126,4 +126,6 @@ public interface CommonInter {
 
 	int searchHashStoreCount(HashMap<String, Object> search_content_Map);
 
+	void insertStat(int idx, String sysdate);
+
 }

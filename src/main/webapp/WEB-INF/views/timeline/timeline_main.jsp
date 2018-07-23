@@ -4,8 +4,11 @@
 <html>
 	<head>
 	<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!-- 
+		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script> -->
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<script src="resources/js/star.js"></script>
+		<script src="resources/js/zer0boxPaging.js" type="text/javascript"></script>
 		<title>Insert title here</title>
 		<style>
 			#profileim{position: absolute;width: 100px;height: 100px;left: 400px;top: 65px;}
@@ -36,12 +39,12 @@
 			hr{margin-top:200px;}
 			
 	        #storeName_td{font-weight: bold;}
-	        #reply{border: 1px solid #142e5b;height: 50px;width: 650px;height:auto;}
+	        #reply{border: 1px solid #142e5b;height: 50px;width: 500px;height:auto;}
 			#reply_img{width: 50px;height: 40px;padding: 5px;}
 			#reply_id{font-size: 20px;width: 100px;text-align: center;}
 			#reply_content{padding: 5px;width: 240px;text-align: center;}
 			#reply_date{padding: 5px;width: 100px;text-align: center;}
-			#reply_table{border-bottom:1px solid black;}
+			#reply_table{border-bottom:1px solid black;width:500px;}
 			#reply_size{white_space:pre;}
 			.reply_btn{width:50px;}
 			.reply_clk{display:none;}
@@ -67,14 +70,58 @@
 	        #hashtag{border: 2px solid black;width: 60px;height: 25px;font-size: 12px;text-align: center;line-height: 25px;float: left;margin-left: 5px;}
 	        #review_content{border: 0px;width: 99%;height: 100%;resize: none;}
 	        #photo{width: 60px;height: 50px;float: left;margin-left: 5px;}
+	        
+	        .replyDiv{border-bottom: 1px solid #142e5b;border-left: 1px solid #142e5b;border-right: 1px solid #142e5b;width: 500px;}
 	        .reviewReply{border-bottom: 1px solid black;border-left: 1px solid black;border-right: 1px solid black;width: 500px;display: none;}
-	        #starDiv{width: 100%;height: 30px;}
-	        #reviewList_hash,#reviewList_photo{width: 600px;height: auto;overflow: hidden;}
-	        #hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;}
+        	#starDiv{width: 100%;height: 30px;}
+        	#reviewList_hash,#reviewList_photo{width: 600px;height: auto;overflow: hidden;}
+	        #hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center; float: left;padding: 0px 5px;}
 	        #storeName_td{font-weight: bold;width: 300px;}
 	        #tableTop{height: 40px;}
-	        .span{text-decoration: none;color: black;font-size: 13px;}
+	        .span{text-decoration: none;color: black;font-size: 13px;cursor: pointer;}
 	        .span:hover{color: red;}
+	        .bigPhoto{width: 505px;height: 250px;background-color: white;display: none;}
+	        #review_Write{margin-left: 490px;}
+       		#review_range{width: 80px;height: 28px;border-radius: 5px;font-size: 15px;text-align-last: center;margin-left: 350px;border: 1px solid black;}
+			#reviewListPro{float: left;border-radius: 8px;overflow: hidden;}
+			#likeCntTr{height: 30px;}
+			#replySpan{display: table-cell;height: 30px;vertical-align: middle;cursor: pointer;}
+			#reply_img{width: 30px;height: 30px;}
+			#reply_table{font-size: 13px;}
+			.reply_textarea{resize: none;width: 250px;border-radius: 5px;}
+			
+			.reply_ck{width: 50px;font-size: 12px;margin-right: 5px;cursor: pointer;}
+			.reply_ck:hover{color: red;}
+			#reply_id{height: 50px;}
+			.reviewLikeImg{cursor: pointer;	}
+			.PhotoImg{cursor: pointer;}
+			.review_photo_td{padding-top: 5px;}
+			.star-input>.input,
+			.star-input>.input>label:hover,
+			.star-input>.input>input:focus+label,
+			.star-input>.input>input:checked+label{display: inline-block;vertical-align:middle;background:url('resources/img/star/grade_img.png')no-repeat;}
+			.star-input{display:inline-block; white-space:nowrap;width:225px;height:40px;line-height:30px; padding-top: 5px;}
+			.star-input>.input{display:inline-block;width:150px;height:28px;background-size:150px;white-space:nowrap;overflow:hidden;position: relative;}
+			.star-input>.input>input{position:absolute;width:1px;height:1px;opacity:0;}
+			star-input>.input.focus{outline:1px dotted #ddd;}
+			.star-input>.input>label{width:30px;height:0;padding:28px 0 0 0;overflow: hidden;float:left;cursor: pointer;position: absolute;top: 0;left: 0;}
+			.star-input>.input>label:hover,
+			.star-input>.input>input:focus+label,
+			.star-input>.input>input:checked+label{background-size: 150px;background-position: 0 bottom;}
+			.star-input>.input>label:hover~label{background-image: none;}
+			.star-input>.input>label[for="p0.5"]{width:15px;z-index:10;}
+			.star-input>.input>label[for="p1.0"]{width:30px;z-index:9;}
+			.star-input>.input>label[for="p1.5"]{width:45px;z-index:8;}
+			.star-input>.input>label[for="p2.0"]{width:60px;z-index:7;}
+			.star-input>.input>label[for="p2.5"]{width:75px;z-index:6;}
+			.star-input>.input>label[for="p3.0"]{width:90px;z-index:5;}
+			.star-input>.input>label[for="p3.5"]{width:105px;z-index:4;}
+			
+			.star-input>.input>label[for="p4.0"]{width:120px;z-index:3;}
+			.star-input>.input>label[for="p4.5"]{width:135px;z-index:2;}
+			.star-input>.input>label[for="p5.0"]{width:150px;z-index:1;}
+			.star-input>output{display:inline-block;width:60px; font-size:18px;text-align:right;vertical-align:middle;}
+			
 		</style>
 	</head>
 	<body>
@@ -127,6 +174,9 @@
 	var fallowbtn=1;
 	var aTag = "";
 	var idx = "";
+	showPage = 1;
+	//테이블 페이징
+		
 	//리뷰 로그인체크 후 수정 삭제 신고 a 태그 띄워줌
 	function atagCreate(list){
 		aTag = "";
@@ -142,6 +192,40 @@
 			}			
 			 $(".listTop_R"+idx).append(aTag);
 		});		
+	}
+	//리뷰 수정폼으로 이동
+	function review_update(elem,idx){
+		location.href="./review_updateForm?review_idx="+idx;
+	}
+	//리뷰 별점
+	function starSelect(elem){
+		$.ajax({
+			url:"./review_star",
+			type:"post",
+			dataType:"json",
+			data:{"review_idx":elem},
+			success:function(d){
+				//console.log(d.reviewStar)
+				//console.log(d.reviewStar);
+				star_create(d.reviewStar,elem);		
+			},
+			error:function(e){console.log(e);}
+		});	 
+	}
+	//리뷰 삭제
+	function review_delete(elem, idx){
+		$.ajax({
+			url:"./review_delete",
+			type:"post",
+			dataType:"json",
+			data:{"review_idx":idx},
+			success:function(d){
+				if(d.success != 0){
+					$(elem).parents().parents().parents()[1].remove();
+				}
+			},
+			error:function(e){console.log(e);}
+		});
 	}
 	$(document).ready(function(){
 		if("${cate}"=="팔로우"){
@@ -314,6 +398,7 @@
 				 }
 			}
 	}
+	//팔로우 리스트
 	function follower(){
 		$.ajax({
 			url:"./timelinefallowlist",
@@ -352,6 +437,7 @@
 			}
 		});
 	}
+	//팔로잉 리스트
 	function following(){
 		$.ajax({
 			url:"./timelinefallowlist",
@@ -390,6 +476,7 @@
 			}
 		});
 	};
+	//팔로우리스트에서 팔로우 추가 제거
 	function followck(id){
 		console.log($("#"+id).html());
 		if($("#"+id).html()=="팔로우 추가"){
@@ -435,6 +522,7 @@
 			});
 		}
 	}
+	//리뷰 리스트
 	function timelinereview(){
 		$.ajax({
 			url:"./timelinereviewlist",
@@ -453,6 +541,7 @@
 			}
 		});
 	};
+	//리뷰 리스트 출력
 	function printList(list){
 		var content = "";
 		list.forEach(function(item){
@@ -479,11 +568,13 @@
 				content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
 				content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";		
 				idx=item.review_idx;
+				starSelect(idx);//리뷰 별점
 				hashtag(idx);
 		})
 		$("#content").empty();
 		$("#content").append(content);
 	}
+	//좋아요 리뷰 리스트
 	function revreplyList(list){		 
 		var content = "";
 		list.forEach(function(i){
@@ -498,8 +589,8 @@
 					}
 					content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 					content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
-					if(userid != "${id}"){
-						content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick("+item.review_idx+")' />";
+					if(item.id != loginid || loginid == ""){
+						content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike2.png' onclick='likeClick(this,"+item.review_idx+")' />";
 					}
 					content += "<br/></div></div>";
 					content += "<table id='review_table'><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
@@ -512,122 +603,149 @@
 					content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";		
 					idx=item.review_idx;
 					hashtag(idx);
+					starSelect(idx);//리뷰 별점
 			})
 		})
 		$("#content").empty();
 		$("#content").append(content);
 	}
-	function reply(idx){
-		$("#reviewReply"+idx).toggle(500,function(){			
-			 $.ajax({
-				url:"./timelinereviewreply",
-				type:"post",
-				data:{
-					idx : idx
-				},
-				dataType:"json",
-				success:function(d){
-					replylist(d.replylist,idx);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
-		}),function(){
-			$("#reviewReply"+idx).css("display","none");
-		}
+	//리뷰 별점 리스트
+	function star_create(star,elem){
+		//console.log(star+"/"+elem);
+		starCre = "";
+		starCre +="<span id='star-input' class='star-input'><span id='input' class='input'>";		
+		starCre +="<input id='"+elem+"0.5' type='radio' name='star-input"+elem+"' value='0.5' id='p0.5'><label  id='"+elem+"0.5' for='p0.5'>0.5</label>";
+		starCre +="<input id='"+elem+"1' type='radio' name='star-input"+elem+"' value='1' id='p1.0'><label  id='"+elem+"1' for='p1.0'>1.0</label>";
+		starCre +="<input id='"+elem+"1.5' type='radio' name='star-input"+elem+"' value='1.5' id='p1.5'><label id='"+elem+"1.5' for='p1.5'>1.5</label>";
+		starCre +="<input id='"+elem+"2' type='radio' name='star-input"+elem+"' value='2' id='p2.0'><label id='"+elem+"2' for='p2.0'>2.0</label>";
+		starCre +="<input id='"+elem+"2.5' type='radio' name='star-input"+elem+"' value='2.5' id='p2.5'><label id='"+elem+"2.5' for='p2.5'>2.5</label>";
+		starCre +="<input id='"+elem+"3' type='radio' name='star-input"+elem+"' value='3' id='p3.0'><label id='"+elem+"3' for='p3.0'>3.0</label>";
+		starCre +="<input id='"+elem+"3.5' type='radio' name='star-input"+elem+"' value='3.5' id='p3.5'><label id='"+elem+"3.5' for='p3.5'>3.5</label>";
+		starCre +="<input id='"+elem+"4' type='radio' name='star-input"+elem+"' value='4' id='p4.0'><label id='"+elem+"4' for='p4.0'>4.0</label>";
+		starCre +="<input id='"+elem+"4.5' type='radio' name='star-input"+elem+"' value='4.5' id='p4.5'><label id='"+elem+"4.5' for='p4.5'>4.5</label>";
+		starCre +="<input id='"+elem+"5' type='radio' name='star-input"+elem+"' value='5' id='p5.0'><label id='"+elem+"5' for='p5.0'>5.0</label>";
+		starCre +="</span></span>";		
+  		$("#starTd"+elem).append(starCre);
+  		var id = star+"";
+  		var idArr=id.split(".").join('\\.');
+  		$("#"+elem+idArr).attr('checked', true);
+  		$("#starTd"+elem).css("pointer-events","none");
+	} 
+	function PhotoClick(elem, idx){
+		$("#bigPhoto"+idx).empty();
+		//console.log($(elem).children().attr("src"));
+		var pho="";
+		$("#bigPhoto"+idx).toggle(500,function(){			
+			pho="<img id='BigPho' src='"+$(elem).children().attr("src")+"' width='250px' height='250px'/>";
+			$("#bigPhoto"+idx).append(pho);	
+		});
 	}
+	//댓글 아작스
+	function replySelect(idx){
+		$("#reviewReply"+idx).toggle(100,function(){
+			$.ajax({
+				url:"./replySelect",
+				type:"post",
+				dataType:"json",
+				data:{"review_idx":idx},
+				success:function(d){
+					//console.log(d.replySelect);
+					//댓글 리스트 출력
+					replylist(d.replySelect,idx);
+					
+				},
+				error:function(e){console.log(e);}
+			});
+		});
+	}
+	var profileSession="${sessionScope.loginProfile }";
+	//댓글 리스트 출력
 	 function replylist(list,idx){
-		var reply = "";
-		reply += "<div id='reply'><table  id='reply_table'>";
-		list.forEach(function(item){
-			var date = new Date(item.revreply_date);
-			reply +="<tr id='reply_table"+item.revreply_idx+"'>";
-			if(item.revreply_profile==0){
-				reply +="<td><img id='reply_img' src='resources/img/member/noprofile.jpg'/></td>";
-			}else{
-				reply +="<td><img id='reply_img' src='resources/upload/"+item.revreply_profile+"'/></td>";
+		 console.log("replylist");
+			var reply = "";
+			reply += "<div class='replyDiv' id='reply'><table  id='reply_table'>";
+			if(loginid != ""){			
+			reply += "<tr><td><img width='30px' height='30px' src='resources/upload/"+profileSession+"'/></td>";
+			reply += "<td id='reply_loginId'>"+loginid+"</td><td><textarea id='reply_textarea"+idx+"' class='reply_textarea'></textarea></td>";
+			reply += "<td><input id='replyWrite' type='button' value='작성' onclick='replyWrite(this,"+idx+")'/></td></tr>"
 			}
-			reply +="<td id='reply_id'>"+item.id+"</td>";
-			reply +="<td id='reply_content'><textarea id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
-			reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td>";
-			if(item.id==userid){
-				reply+="<td class='reply_btn' ><button class='reply_ck' id='reply_update"+item.revreply_idx+"' onclick='reply_updateform("+item.revreply_idx+")'>수정</button></td>";
-				reply+="<td class='reply_btn' ><button class='reply_ck' id='reply_delete"+item.revreply_idx+"' onclick='reply_delete("+item.revreply_idx+")'>삭제</button></td>";
-				reply+="<td class='reply_btn' ><button class='reply_clk' id='reply_save"+item.revreply_idx+"' onclick='reply_update("+item.revreply_idx+")'>저장</button></td>";
-				reply+="<td class='reply_btn' ><button class='reply_clk'  id='reply_cancel"+item.revreply_idx+"' name='"+item.revreply_content+"' onclick='reply_cancel("+item.revreply_idx+",name)'>취소</button></td>";
-			}
-			reply +="</tr>";			
-		})
-		reply+="</table></div>";
-		$("#reviewReply"+idx).empty();
-		$("#reviewReply"+idx).append(reply);
-	}
-	 function reply_updateform(idx){
-		 $("#reply_update"+idx).css("display","none");
-		 $("#reply_delete"+idx).css("display","none");
-		 $("#reply_save"+idx).css("display","inline-block");
-		 $("#reply_cancel"+idx).css("display","inline-block");		 
-		 $("#reply_textarea"+idx).removeAttr("readonly");
-		 $("#reply_textarea"+idx).focus();
-	 }
-	 function reply_update(idx){
-		 var text=$("#reply_textarea"+idx).val();
-		  $.ajax({
-				url:"./reply_update",
+			list.forEach(function(item){
+				var date = new Date(item.revreply_date);
+				reply +="<tr class='reply_table' id='reply_table"+item.revreply_idx+"'>";
+				reply +="<td rowspan='2'><input type='hidden' value='"+item.revreply_idx+"'/><img id='reply_img' src='"+item.revreply_profile+"'/></td>";
+				reply +="<td rowspan='2' id='reply_id'>"+item.id+"</td>";
+				reply +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
+				reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td></tr><tr>";
+				reply+="<td  class='reply_btn' >";
+				if(item.id==loginid){										
+					reply+="<span class='reply_ck' id='reply_delete"+item.revreply_idx+"' onclick='reply_delete(this,"+item.revreply_idx+","+idx+")' >삭제</span>";
+					reply+="<span class='reply_ck' id='reply_update"+item.revreply_idx+"' onclick='reply_updateform(this,"+item.revreply_idx+","+idx+")' >수정</span>";
+					//reply+="<span class='reply_ck' id='reply_save' onclick='reply_update(this,"+item.revreply_idx+")' >저장</span>";					
+					
+					//reply+="<td class='reply_btn' ><input type='button' class='reply_clk'  id='reply_cancel"+item.revreply_idx+"' name='"+item.revreply_content+"' onclick='reply_cancel("+item.revreply_idx+",name)'>취소</td>";
+				}else{
+					reply += "<span id='complain' class='span' href='#' onclick='replyComplain(this)'>신고</span>";
+				}
+				
+				reply+="</td>";
+				reply +="</tr>";			
+			})
+			reply+="</table></div>";
+			$("#reviewReply"+idx).empty();
+			$("#reviewReply"+idx).append(reply);
+		}
+	//댓글 수정폼
+		function reply_updateform(elem,reply_idx,review_idx){
+			//console.log($(elem).parent().parent().parent());
+			$(elem).parent().append("<span class='reply_ck' id='reply_save"+reply_idx+"' onclick='reply_update(this,"+reply_idx+","+review_idx+")' >저장</span>");
+			$(elem).remove();
+			$("#reply_textarea"+reply_idx).removeAttr("readonly");
+			$("#reply_textarea"+reply_idx).focus();
+				
+		}
+	//댓글 수정
+		function reply_update(elem,reply_idx,review_idx){
+			console.log(idx);
+			$.ajax({
+				url:"./Revreply_update",
 				type:"post",
 				dataType:"json",
-				data:{
-					revreply_idx:idx,
-					content:text
-				},
+				data:{"reply_content":$("#reply_textarea"+reply_idx).val(),"reply_idx":reply_idx,"review_idx":review_idx},
 				success:function(d){
-					if(d.update>0){
-						$("#reply_textarea"+idx).val(text);
-						$("#reply_update"+idx).css("display","inline-block");
-						$("#reply_delete"+idx).css("display","inline-block");
-						$("#reply_save"+idx).css("display","none");
-						$("#reply_cancel"+idx).css("display","none");
-						$("#reply_textarea"+idx).attr("readonly",true);
-					}else{
-						alert("수정실패");
-						$("#reply_update"+idx).css("display","none");
-						 $("#reply_delete"+idx).css("display","none");
-						 $("#reply_save"+idx).css("display","inline-block");
-						 $("#reply_cancel"+idx).css("display","inline-block");		 
-						 $("#reply_textarea"+idx).removeAttr("readonly");
-						 $("#reply_textarea"+idx).focus();
+					console.log(d);	
+					if(d > 0){
+						$("#reply_textarea"+reply_idx).attr("readonly","true");
+						$(elem).parent().append("<span class='reply_ck' id='reply_update"+reply_idx+"' onclick='reply_updateform(this,"+reply_idx+","+review_idx+")' >수정</span>");
+						$(elem).remove();
+						//$("#reply_save"+reply_idx).css("display","none");
+						//$("#reply_update"+reply_idx).css("display","block");
 					}
+					
 				},
 				error:function(e){console.log(e);}
-			});
-	 }
-	 function reply_cancel(idx,name){
-		$("#reply_update"+idx).css("display","inline-block");
-		$("#reply_delete"+idx).css("display","inline-block");
-		$("#reply_save"+idx).css("display","none");
-		$("#reply_cancel"+idx).css("display","none");
-		$("#reply_textarea").attr("readonly",true);
-		$("#reply_textarea"+idx).val(name);
-	 }
-	 function reply_delete(idx){
-		 $.ajax({
-				url:"./reply_delete",
+			});   
+		}
+	 
+	//댓글 삭제
+		function reply_delete(elem,reply_idx,review_idx){
+			console.log($(elem).parent().parent()[0]);
+			   $.ajax({
+				url:"./Revreply_delete",
 				type:"post",
 				dataType:"json",
-				data:{
-					revreply_idx:idx
-				},
+				data:{"reply_idx":reply_idx,"review_idx":review_idx},
 				success:function(d){
-					if(d.del>0){
-						$("#reply_table"+idx).remove();
-					}else{
-						alert("삭제실패");
-					}
+					console.log(d);
+					 if(d != 0){
+						 $(elem).parent().parent().prev()[0].remove();
+						 $(elem).parent().parent()[0].remove();
+						 
+					} 
 				},
 				error:function(e){console.log(e);}
-			});
-	 }
+			});   
+		}
+	 //해시태그 아작스
 	function hashtag(elem){
 		$.ajax({
 			url:"./reviewHashPhoto",
@@ -641,7 +759,7 @@
 			error:function(e){console.log(e);}
 		});
 	}
-	
+	//리뷰 해시태그 리스트
 	var tag="";
 	function printHash(hash,elem){
 		tag="";
@@ -650,7 +768,7 @@
 		});
 		$("#reviewList_hash"+elem).append(tag);
 	}
-	
+	//리뷰 사진
 	var img="";
 	function printPhoto(photo,elem){
 		var phoSrc ="";
@@ -663,13 +781,36 @@
 		})
 		$("#reviewList_photo"+elem).append(img);
 	}
-	function likeClick(idx){
-		flag=idx;
+	//좋아요
+	function likeSelect(idx){
 		$.ajax({
+			url:"./reviewLikeSelect",
+			type:"post",
+			dataType:"json",
+			data:{"loginId":loginid},
+			success:function(d){
+				//console.log(d);
+				for(var i=0; i<d.length; i++){
+					$("#reviewLike"+d[i].review_idx).attr("src","resources/img/reviewLike/reviewLike2.png");
+				}
+			},
+			error:function(e){console.log(e);}
+		});
+	}
+	//좋아요 클릭
+	function likeClick(elem,idx){
+		var name=$(elem).parents()[1].childNodes[0].data;
+		console.log(name);
+		flag=idx;
+		console.log(idx+"/"+loginid);
+		if(loginid == ""){
+			alert("로그인이 필요한 서비스 입니다.");
+		}else{		
+		 $.ajax({
 			url:"./reviewLike",
 			type:"post",
 			dataType:"text",
-			data:{"review_idx":idx, "loginId":userid},
+			data:{"review_idx":idx, "loginId":loginid,"name":name},
 			success:function(d){
 				//console.log(d);
 				 if(d == "insert"){
@@ -680,7 +821,25 @@
 			},
 			error:function(e){console.log(e);}
 		});
+		}
 	}
+	//댓글 작성
+	 function replyWrite(elem,idx){
+		 var name=$(elem).parents().parents().parents()[4].childNodes[0].childNodes[1].childNodes[0].data;
+		 console.log(name);
+		   $.ajax({
+				url:"./replyWrite",
+				type:"post",
+				dataType:"json",
+				data:{"review_idx":idx,"loginId":loginid,"reply_content":$("#reply_textarea"+idx).val(),"profile":"resources/upload/"+profileSession,"name":name},
+				success:function(d){
+					console.log(d);
+					replySelect(idx);
+				},
+				error:function(e){console.log(e);}
+			});		 
+	 }
+	//타임라인 버튼클릭후 페이지로드와 css설정
 	$(".userdetail").click(function(e) {
 		if(e.target.id == "message") {
 			page = "resources/timelinehtml/messagebox.html";
@@ -907,23 +1066,10 @@
 			    	ajaxCall(page)
 				}
 	});		
+	//타임라인 버튼들 클릭하여 나오는 리스트들의 아작스
 	function ajaxCall(page){
 		if(page=="resources/timelinehtml/messagebox.html"){
-			$.ajax({
-				url:"./receivelist",
-				type:"get",
-				data:{
-					id : userid
-				},
-				dataType:"json",
-				success:function(d){
-					console.log(d);
-					receivelist(d.list);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+			receivelistajax(showPage);
 		}else if(page=="resources/timelinehtml/pointbox.html"){
 			$.ajax({
 				url:"./pointlist",
@@ -940,35 +1086,9 @@
 				}
 			});
 		}else if(page=="resources/timelinehtml/couponbox.html"){
-			$.ajax({
-				url:"./couponlist",
-				type:"get",
-				data:{
-					id : userid
-				},
-				dataType:"json",
-				success:function(d){
-					couponlist(d.list);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+			couponajax(showPage);
 		}else if(page=="reviewlist"){
-			$.ajax({
-				url:"./timelinereviewlist",
-				type:"post",
-				data:{
-					id : "${id}"
-				},
-				dataType:"json",
-				success:function(d){
-					printList(d.list);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+			timelinereview();
 		}else if(page=="likereview"){
 			 $.ajax({
 				url:"./timelinelikereview",
@@ -1084,6 +1204,58 @@
 			});
 		}
 	}
+	function couponajax(page){		
+		$.ajax({
+			url:"./couponlist",
+			type:"get",
+			data:{
+				id : userid,
+				page : page
+			},
+			dataType:"json",
+			success:function(d){
+				couponlist(d.list);
+				$("#container").zer0boxPaging({
+	                viewRange : 5,
+	                currPage : d.currPage,
+	                maxPage : d.range,
+	                clickAction : function(e){
+	                	couponajax($(this).attr('page'));
+	                }
+	            });
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	//받은 메세지 아작스
+	function receivelistajax(page){
+		$.ajax({
+			url:"./receivelist",
+			type:"get",
+			data:{
+				id : userid,
+				page : page
+			},
+			dataType:"json",
+			success:function(d){
+				receivelist(d.list);
+				$("#container").zer0boxPaging({
+	                viewRange : 5,
+	                currPage : d.currPage,
+	                maxPage : d.range,
+	                clickAction : function(e){
+	                	receivelistajax($(this).attr('page'));
+	                }
+	            });
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	//좋아하는 가게 리스트
 	function likestorelist(list,hash){
 		var content ="";
 		list.forEach(function(i, idx){
@@ -1107,6 +1279,7 @@
 		})
 		$("#content").append(content);
 	}
+	//쿠폰 리스트
 	function couponlist(list){
 		var content = "";
 		list.forEach(function(item, idx){
@@ -1121,10 +1294,12 @@
 			}
 			content +="<td>"+coupon_use+"</td>"
 			content += "</tr>"			
-		});		
+		});
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
+		$("#list").append("<div id='container'></div>");
 	}
+	//포인트 리스트
 	function pointlist(d){
 		$("#pointcnt").val(d.memberpoint);
 		var content = "";
@@ -1144,8 +1319,11 @@
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
 	}
-	
-	function send(){
+	//보낸 리스트 아작스
+	function send(page){
+		if(page==null){
+			page=1;
+		}
 		$("#send").css("background-color","darkblue");
 		$("#send").css("color","white");
 		$("#receive").css("background-color","lightgray");
@@ -1155,18 +1333,31 @@
 			url:"./sendlist",
 			type:"get",
 			data:{
-				id : userid
+				id : userid,
+				page : page
 			},
 			dataType:"json",
 			success:function(d){
 				sendlist(d.list);
+				$("#container").zer0boxPaging({
+	                viewRange : 5,
+	                currPage : d.currPage,
+	                maxPage : d.range,
+	                clickAction : function(e){
+	                	send($(this).attr('page'));
+	                }
+	            });
 			},
 			error:function(e){
 				console.log(e);
 			}
 		});
 	};
-	function receive(){
+	//받은 리스트 아작스
+	function receive(page){
+		if(page==null){
+			page=1;
+		}
 		$("#receive").css("background-color","darkblue");
 		$("#receive").css("color","white");
 		$("#send").css("background-color","lightgray");
@@ -1176,17 +1367,27 @@
 			url:"./receivelist",
 			type:"get",
 			data:{
-				id : userid
+				id : userid,
+				page:page
 			},
 			dataType:"json",
 			success:function(d){
 				receivelist(d.list);
+				$("#container").zer0boxPaging({
+	                viewRange : 5,
+	                currPage : d.currPage,
+	                maxPage : d.range,
+	                clickAction : function(e){
+	                	receive($(this).attr('page'));
+	                }
+	            });
 			},
 			error:function(e){
 				console.log(e);
 			}
 		});
 	};
+	//받은 리스트 불러오기
 	function receivelist(list){
 		var content = "";		
 		list.forEach(function(item, idx){
@@ -1200,6 +1401,7 @@
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
 	}
+	//보낸 메세지 리스트 불러오기
 	function sendlist(list){
 		var content = "";		
 		list.forEach(function(item, idx){
@@ -1213,17 +1415,21 @@
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
 	}
+	//메세지 작성하기
 	$("#dm").click(function(e){
 		var myWin= window.open("./sendMessage?id="+"${id}","메세지보내기","width=500,height=500");
 	});
+	//받은 메세지 상세보기
 	function receivedetail(e){
 		console.log(e);
 		var myWin= window.open("./receivedetail?idx="+e,"메세지상세보기","width=500,height=500");
-	};	
+	};
+	//보낸 메세지 상세보기
 	function senddetail(e){
 		console.log(e);
 		var myWin= window.open("./senddetail?idx="+e,"메세지상세보기","width=500,height=500");
 	};
+	//팔로우 신청 버튼 클릭
 	$("#fallow").click(function(e){
 		//console.log(e.target.innerHTML);
 		if(e.target.innerHTML=="팔로우 신청"){
@@ -1307,10 +1513,10 @@
 			});
 		}
 		//신고내역 보기 버튼 클릭이벤트
-		function complain_move(rev_idx, revReply_idx, id, complain_id) {
+		function complain_move(complain_idx, rev_idx, revReply_idx, id, complain_id) {
 			console.log("클릭");   
 			console.log(rev_idx, revReply_idx, id, complain_id);  
-			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");		
+			var myWin= window.open("./comp_review_moveWin?complain_idx="+complain_idx+"&rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");		
 		}
 		
 		
@@ -1501,6 +1707,45 @@
 		}
 		function moveStat(idx) {
 			var myWin = window.open("./showStat?store_idx="+idx,"통계","width=1000, height=800")
+		}
+		function chgMail(){
+			$("#overlayMail").css("display","inline");
+		}
+		//Email 중복 확인
+	    function emailcheck(){
+	        data ={};
+	        data.email = $("#userEmail").val();
+	        ajaxCallMail("./rest/overlayMail",data);	        
+	    };
+	    
+		function ajaxCallMail(reqUrl, reqData){
+			$.ajax({
+	            url:reqUrl,
+	            type:'get',
+	            dataType:'json',
+	            data: reqData,
+	            success:function(d){
+	                console.log(d);
+	                if(reqUrl=="./rest/overlayMail"){
+	                    if(d.use == "Y"){
+	                        alert("사용 가능한 이메일 입니다.");
+	                    }else{
+	                        alert("누군가가 사용 하고 있는 이메일 입니다.");
+	                        $("#userEmail").val("");
+	                    }
+	                }else{
+	                    if(d.success == 1){
+	                        alert("가입에 성공 하였습니다.");
+	                        location.href="./";
+	                    }else{
+	                        alert("가입에 실패 하였습니다. 다시 입력 해 주세요!");
+	                    }
+	                }
+	            },
+	            error:function(e){
+	                console.log(e);
+	            }                
+	        });
 		}
 	</script>
 </html>

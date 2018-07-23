@@ -6,11 +6,12 @@
 <style>
 		#userId{left:243px;top:77px}
         #div1 {height : 200px;width : 200px;float : left;}
-         #selPicture{position: absolute;}
-         #selPicturedelete{position: absolute;left:80px;}
+         #selPicture{position: absolute; left:50px;}
          #updateprofile {height : 128px;width : 128px;border : 1px solid black;text-align: center;}
-         button {margin-top: 5px;background-color:#088A85;color: aliceblue;}
+         button, input[type='button'] {margin-top: 5px;background-color: #33aaaaff;color: white;border: 0px;}
          #bottom{text-align: center;}
+         #updatecontent{color:red;}
+         #overlayMail{display:none;}
       </style>
 
 </head>
@@ -21,7 +22,8 @@
            	 현재 프로필
          </div>
          <div id="pic">
-          	<button id="selPicture" onclick="selPicture()">사진선택</button>
+          	<button id="selPicture" onclick="selPicture()">사진선택</button><br/><br/>
+          	<span id='updatecontent'>사진선택 클릭시 기존 사진은 삭제가 되어집니다.</span>
          </div>
       </div>
       <table>
@@ -48,7 +50,8 @@
             <td><input type="text" id="userName" placeholder="이름"></td>
          <tr>
             <th>이메일 : </th>
-            <td><input type="email" id="userEmail" placeholder="이메일"></td>
+            <td><input type="email" id="userEmail" placeholder="이메일" onchange="chgMail()"></td>
+            <td><input id="overlayMail" type="button" onclick="emailcheck()"value="중복체크"/></td>
          </tr>
          <tr>
          <th>핸드폰번호</th>
@@ -61,7 +64,7 @@
    </table>
         <div id="bottom">
             <button id="confirm" onclick="updatesave()">확인</button>
-            <button id="leave">탈퇴하기</button>
+            <input type="button" value="탈퇴하기" onclick="window.open('./leaveForm','회원 탈퇴','width=500,height=500,location=no,status=no,scrollbars=yes');">
       </div>
 </body>
 

@@ -65,7 +65,7 @@ public interface ReviewInter {
 
 	void likeCntDown(String review_idx);
 
-	ArrayList<RevReplyDTO> replySelect(String review_idx);
+	ArrayList<RevReplyDTO> replySelect(String review_idx, int start, int end);
 
 	int replyWrite(RevReplyDTO dto);
 
@@ -87,9 +87,21 @@ public interface ReviewInter {
 
 	void storeReviewUpdate(String review_storeidx, double star);
 
-	double starAvg(String review_storeidx);
+	Double starAvg(String review_storeidx);
 
 	void totalUpdate(String review_storeidx, double star);
+
+	int allCount();
+
+	int storeReviewCount(int store_idx);
+
+	int searchAndReviewCount(String search_content_And);
+
+	int searchOrReviewCount(HashMap<String, Object> ra);
+
+	int searchHashReviewCount(HashMap<String, Object> ra);
+
+	int replyAllCnt(String review_idx);
 
 	
 

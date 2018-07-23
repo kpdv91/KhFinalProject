@@ -58,10 +58,13 @@
    </table>
         <div id="bottom">
             <button id="confirm">확인</button>
-            <button id="leave">탈퇴하기</button>
+            <input type="button" value="탈퇴하기"/>
       </div>
 	</body>
 	<script>
+	
+	
+	
 
 	</script>
 </html>

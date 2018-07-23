@@ -113,6 +113,26 @@
 	<delete id="revReply_del">
 		DELETE FROM revReply WHERE revReply_idx = #{param1}
 	</delete>
+	
+	<!-- 블랙리스트 추가 시 black 유무 변경 -->
+	<update id="comp_black">
+		UPDATE complain SET complain_black = 1 WHERE complain_idx = #{param1}
+	</update>
+	
+	<!-- 블랙추가시 리뷰 삭제 -->
+	<delete id="black_review_del">
+		DELETE FROM review WHERE id = #{param1}
+	</delete>
+	
+	<!-- 블랙추가시 리뷰댓글 삭제 -->
+	<delete id="black_revReply_del">
+		DELETE FROM revReply WHERE id = #{param1}
+	</delete>
+	
+	<!-- 블랙추가시 게시판 삭제 -->
+	<delete id="black_board_del">
+		DELETE FROM board WHERE id = #{param1}
+	</delete>
 </mapper>
 
 

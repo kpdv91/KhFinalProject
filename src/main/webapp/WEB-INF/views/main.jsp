@@ -5,8 +5,8 @@
 <html>
 	<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
 	<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script> -->
 	<title>CAT :: 맛집 SNS</title>
 	<style>
 	
@@ -15,9 +15,11 @@
 	<body>
 		<div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
 		<br/><br/>
-		<c:import url="/WEB-INF/views/include/common/mainStore.jsp">
-			<c:param name="mainStore" value="3"/>
-		</c:import>
+		<div style="margin-left:300px;">
+			<c:import url="/WEB-INF/views/include/common/mainStore.jsp">
+				<c:param name="mainStore" value="3"/>
+			</c:import>
+		</div>
 		
 		<c:import url="/WEB-INF/views/review/reviewList.jsp">
 			<c:param name="idx" value="0"/>
@@ -26,6 +28,11 @@
 		<c:import url="/WEB-INF/views/include/main/footer.jsp"/>
 	</body>
 	<script>
-
+		var message= "${message}";
+			
+			if(message!=""){
+				alert(message);
+				
+			}
 	</script>
 </html>

@@ -31,6 +31,7 @@ public class AdminController {
 		mav.addObject("revReply_idx", params.get("revReply_idx"));
 		mav.addObject("id", params.get("id"));
 		mav.addObject("complain_id", params.get("complain_id"));
+		mav.addObject("complain_idx", params.get("complain_idx"));
 		mav.setViewName("admin/complainReviewList");
 		return mav;
 	}
@@ -92,6 +93,7 @@ public class AdminController {
 		logger.info("리뷰 idx : {}", params.get("rev_idx"));
 		logger.info("리뷰 댓글 idx : {}", params.get("revReply_idx"));
 		logger.info("신고한 아이디 : {}", params.get("id"));
+		logger.info("신고 idx : {}", params.get("complain_idx"));
 		return adminService.blackListAdd(params);
 	}
 

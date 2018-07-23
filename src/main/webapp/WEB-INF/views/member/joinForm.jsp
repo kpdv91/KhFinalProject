@@ -12,7 +12,7 @@
             }
             
             div{
-                /* border: solid 2px navy;   */
+                 border: solid 2px navy;   
                 width: 380px;
                 padding: 4%;
                 margin-top: 7%;
@@ -38,16 +38,24 @@
 				border : 1px solid black;
 				text-align: center;       
 			}
-            button {
+            /* button {
                 margin-top: 5px;
                 background-color:#088A85;
                 color: aliceblue;
-            }
+            } */
             #confirmPw{
                 text-align: center;
                 font-size: 12px;
                 color: red;
             }
+            input[type=button] { 
+       			background-color: #33aaaaff;
+        		color: white;
+            	border: 0px;
+            	/* outline: 0px; */
+    		} 
+            
+            
 		</style>
 	</head>
 	<body>
@@ -117,8 +125,7 @@
     var idVal=0;//ID 중복확인 체크해주는 값
     var pwVal=0;//PW 중복확인 체크해주는 값
     var mailVal=0;//Email 중복확인 체크해주는 값
-    
-    
+       
 	var imgLen = $("#profile img").length;
 	     
     function chgId(){//ID 중복확인 후, ID의 값이 변경되면 실행.
@@ -210,10 +217,7 @@
             }                
         });            
     }
-    
-    
-    
-
+  
 
 	function chkVal(){
 
@@ -226,18 +230,15 @@
 		 console.log("다",$("div #profile").innerHTML);
 		 console.log("다",$("div #profile").val); */
 		 /* console.log("ID 중복체크테스트", idVal);
-		 console.log("PW 중복체크테스트", pwVal);
-		 
-		 console.log("체크체크많다",pwVal); */
-
-		 
-		 
+		 console.log("PW 중복체크테스트", pwVal); 
+		 console.log("체크체크많다",pwVal); */ 
 	 }
 	
-	//var idReg = /^[A-Za-z0-9]{4,19}$/g;
-	//var idReg = /^[a-zA-Z0-9]{4,19}$/g;
-	var idReg = /^[A-za-z0-9]{5,20}/g;
-	//var idReg = /^[a-z0-9]+[a-z0-9]{4,19}$/g;
+
+	var idReg = /^[A-za-z0-9]{5,20}/g; //ID 정규식
+	
+	var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; //이메일 정규식
+
 	var pwChkVal=0;
 	
 	//회원 가입 클릭시
@@ -283,9 +284,13 @@
         }else if(pwChkVal==0){
             alert("비밀번호를 확인 하세요.");
         }else if(pwVal==0){
-        	alert("비밀번호값이 변경 되었습니다. 다시 확인 해주세요.");
+        	alert("비밀번호값이 변경 되었습니다. 다시 확인 해주세요.");    
+        }else if(exptext.test($("input[name='userEmail']").val())==false){//이메일 형식이 알파벳+숫자@알파벳+숫자.알파벳+숫자 형식이 아닐경우
+    		alert("이메일 형식이 올바르지 않습니다.");
+    		return false;
         }else if(!idReg.test( $("input[name='userId']").val() )){	//id 유효성
            	alert("아이디는 5~20자리의 영문자 또는 숫자이어야 합니다.");
+           	return false;
         }else{	
 
 			//핸드폰 번호 합치기

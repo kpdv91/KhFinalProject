@@ -5,10 +5,13 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+		<script src="resources/js/zer0boxPaging.js" type="text/javascript"></script>
 		<title>검색</title>
 		<style>
 			#searchPage{
 				width:1010px;
+				height: auto;
+				overflow: auto;
 			}
 			#map{
 				width:1000px;
@@ -38,7 +41,8 @@
 			}
 			#sortSel{
 				height: 30px;
-				float: right;
+				float: left;
+				margin-left: 900px;
 				border-radius: 5px;
 			}
 			#hashtag{
@@ -52,6 +56,9 @@
 	        }
 	        #tableLine{
 	        	overflow: auto;
+	        }
+	        #store_container{
+	        	margin-left: 300px;
 	        }
 		</style>
 	</head>
@@ -109,10 +116,11 @@
 		<br/><br/><br/>
 	</body>
 	<script>
+	showPage = 1;//보여줄 페이지
 	var id = "${sessionScope.loginId}";
 	var search_content = "<%=request.getParameter("search_content") %>";
 	var search_map = "<%=request.getParameter("search_map") %>";
-	tableSort("리뷰 최신 순",search_content);
+	tableSort("리뷰 최신 순",search_content,showPage);
 	
 	
 		function markerRefresh(list){
@@ -138,33 +146,48 @@
 			switch (val) {
 			case "리뷰 최신 순":
 				console.log("1");
-				tableSort(val,search_content);
+				tableSort(val,search_content,showPage);
 				break;
 			case "별점 순":
 				console.log("2");
-				tableSort(val,search_content);
+				tableSort(val,search_content,showPage);
 				break;
 			case "조회수 순":
 				console.log("3");
-				tableSort(val,search_content);
+				tableSort(val,search_content,showPage);
 				break;
 			case "리뷰수 순":
 				console.log("4");
-				tableSort(val,search_content);
+				tableSort(val,search_content,showPage);
 				break;
 			}
 		}
 
 		//정렬
-		function tableSort(val,search_content){
+		function tableSort(val,search_content,page){
+			console.log(val+"/"+page);
 			$.ajax({
-				url:"./searchSort",
+				url:"./searchSort/6/"+page,
 				data:{data:val,search_content:search_content,search_map:search_map},
 				success:function(data){
+					console.log(data);
 					console.log(data.list);
 					console.log(data.list_hash);
 					$("#searchPage").empty();
 					storePrintList(data.list,data.list_hash);
+					
+					showPage = data.currPage;
+					$("#store_container").zer0boxPaging({
+		                viewRange : 6,
+		                currPage : data.currPage,
+		                maxPage : data.range,
+		                clickAction : function(e){
+		                    //console.log(e);
+		                    console.log($(this).attr('page'));
+		                    tableSort(val,search_content,$(this).attr('page'));
+		                }
+		            });
+					
 					removeMarker();
 					markerRefresh(data.list);
 				},
@@ -185,7 +208,7 @@
 				content += "<tr><td colspan='3'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' onclick=location.href='storeDetail?store_idx="+item.store_idx+"' /></td></tr>";
 				content += "<tr><td>상호명</td>";
 				content += "<th><span onclick=location.href='storeDetail?store_idx="+item.store_idx+"'>"+item.store_name+"</span></th>";
-				content += "<td rowspan='2'><input type='button' value='찜' onclick='storeLike("+item.store_idx+")'/></td></tr>";
+				content += "<td rowspan='2'><img class='storeLikeImg' id='storeLike"+item.store_idx+"' width='30px' height='30px' src='resources/img/storeLike/heart.png' onclick='storeLike("+item.store_idx+")'/></td></tr>";
 				content += "<tr><td>주소</td>";
 				content += "<th>"+item.store_addr+"</th></tr>";
 				content += "<tr><td id='"+item.store_idx+"' colspan='3'>";
@@ -195,29 +218,59 @@
 				});
 				
 				content += "</td></tr></table>";
+				storeLikeChk(item.store_idx);
 			});
 			$("#searchPage").append(content);
+			$("#searchPage").append("<div id='tableLine' style='width:1000px; height:5px;'></div>");
+			$("#searchPage").append("<div id='store_container'></div>");
 		}
 		
 		//찜하기
 		function storeLike(idx) {
-			if(id==""){
+			if(id==null){
 				alert("로그인이 필요한 서비스입니다.");
 			}else{
 				$.ajax({
 					url:"./storeLike",
 					type:"get",
-					data:{"likeChk":likeChk,"store_idx":idx},
+					data:{
+						"store_idx":idx
+					},
 					success:function(data){
 						alert(data.msg);
-						storeLikeChk();
-						$("#likeCnt").html("찜수 "+data.likeCnt);
+						if(data.msg == "찜 했습니다."){
+							$("#storeLike"+idx).attr("src","resources/img/storeLike/heart2.png");
+						}else if(data.msg == "찜 취소했습니다."){
+							$("#storeLike"+idx).attr("src","resources/img/storeLike/heart.png");
+						} 
 					},
 					error:function(e){
 						console.log(e);
 					}
 				});
 			}
+		}
+		
+		//찜 확인
+		function storeLikeChk(idx) {
+			$.ajax({
+				url:"./storeLikeChk",
+				type:"get",
+				data:{
+					"store_idx":idx
+				},
+				success:function(data){
+					id=data.loginId;
+					if(data.likeChk==1){
+						$("#storeLike"+idx).attr("src","resources/img/storeLike/heart2.png");
+					}else{
+						$("#storeLike"+idx).attr("src","resources/img/storeLike/heart.png");
+					}
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
 		}
 	</script>
 </html>

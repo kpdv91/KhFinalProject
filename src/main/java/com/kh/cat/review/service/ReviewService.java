@@ -166,16 +166,50 @@ public class ReviewService {
 	
 	//리뷰 리스트
 	@Transactional
-	public HashMap<String, Object> reviewList(int store_idx, String range, String review_search) {
+	public HashMap<String, Object> reviewList(int store_idx, String range, String review_search, String page) {
 		logger.info("리뷰 리스트 서비스");
 		inter = sqlSession.getMapper(ReviewInter.class);
+		
 		String search_content_And = review_search.replaceAll(" ", "%");
 		String[] search_content_Split = review_search.split(" ");
+		HashMap<String, Object> ra = new HashMap<String, Object>();		
 		
-		HashMap<String, Object> ra = new HashMap<String, Object>();
+		//총 게시물 수 => 생성 가능 페이지 수
+		int allCnt = 0;
+		if(store_idx == 0) {
+			allCnt=inter.allCount();
+		}else if(store_idx > 0) {
+			allCnt = inter.storeReviewCount(store_idx);
+		}else {
+			allCnt = inter.searchAndReviewCount(search_content_And);
+			System.out.println("AND 검색 : "+allCnt);
+			if(allCnt == 0) {
+				ra.put("review_searchCnt", search_content_Split);
+				allCnt = inter.searchOrReviewCount(ra);
+				System.out.println("OR 검색 : "+allCnt);
+				if(allCnt == 0) {
+					allCnt = inter.searchHashReviewCount(ra);
+					System.out.println("HASH 검색 : "+allCnt);
+				}
+			}
+		}
+		//생성 가능 페이지 수(나머지가 있으면 페이지 하나 더 생성)
+		int rangePage = allCnt%5 >0 ? 
+					Math.round(allCnt/5)+1 : allCnt/5;
+		int page2=Integer.parseInt(page);
+		if(page2>rangePage) {
+			page2 = rangePage;
+		}
+		int end = page2 * 5;	 //5 : 100
+		int start = end - 5+1;//5 : 81
+		
 		ra.put("range", range);
 		ra.put("store_idx", String.valueOf(store_idx));
 		ra.put("review_search", search_content_And);
+		//페이징
+		ra.put("start", start);
+		ra.put("end", end);
+		
 		logger.info("*****************");
 		logger.info(""+ra.get("store_idx"));
 		logger.info(""+ra.get("review_search"));
@@ -192,6 +226,8 @@ public class ReviewService {
 			}
 		}
 		map.put("reviewList", list);
+		map.put("range", rangePage);
+		map.put("currPage", page);
 
 		return map;
 	}
@@ -394,10 +430,24 @@ public class ReviewService {
 	}
 
 	//댓글 리스트
-	public HashMap<String, Object> replySelect(String review_idx) {
+	public HashMap<String, Object> replySelect(String review_idx, String page) {
 		inter=sqlSession.getMapper(ReviewInter.class);
+		int allCnt = inter.replyAllCnt(review_idx);
+		
+		//생성 가능 페이지 수(나머지가 있으면 페이지 하나 더 생성)
+		int rangePage = allCnt%5 >0 ? 
+					Math.round(allCnt/5)+1 : allCnt/5;
+		int page2=Integer.parseInt(page);
+		if(page2>rangePage) {
+			page2 = rangePage;
+		}
+		int end = page2 * 5;	 //5 : 100
+		int start = end - 5+1;//5 : 81
+		
 		HashMap<String, Object> map = new HashMap<>();
-		map.put("replySelect", inter.replySelect(review_idx));
+		map.put("replySelect", inter.replySelect(review_idx,start,end));
+		map.put("range", rangePage);
+		map.put("currPage", page);
 		return map;
 	}
 

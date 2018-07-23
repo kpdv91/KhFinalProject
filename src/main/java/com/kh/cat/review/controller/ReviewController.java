@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -91,11 +92,12 @@ public class ReviewController {
 		System.out.println("리뷰 리스트 페이지 요청");
 		return "review/reviewList";
 	}
-	@RequestMapping(value = "/reviewList")
-	public @ResponseBody HashMap<String, Object> reviewList(@RequestParam("review_search") String review_search, @RequestParam("store_idx") int store_idx, @RequestParam("range") String range) {
+	@RequestMapping(value = "/reviewList/5/{page}")
+	public @ResponseBody HashMap<String, Object> reviewList(@RequestParam("review_search") String review_search, @RequestParam("store_idx") int store_idx, @RequestParam("range") String range, @PathVariable String page) {
 		logger.info("리뷰 리스트 요청");
-		logger.info(range);
-		return service.reviewList(store_idx, range, review_search);
+		logger.info("페이지 : "+page);
+		logger.info("최신순 : "+range);
+		return service.reviewList(store_idx, range, review_search,page);
 	}
 	@RequestMapping(value = "/reviewHashPhoto")
 	public @ResponseBody HashMap<String, Object> reviewHashPhoto(@RequestParam("review_idx") String review_idx,HttpSession session) {
@@ -158,10 +160,11 @@ public class ReviewController {
 		return service.reviewLikeSelect(loginId);
 	}
 	
-	@RequestMapping(value = "/replySelect")
-	public @ResponseBody HashMap<String, Object> replySelect(@RequestParam("review_idx") String review_idx) {
+	@RequestMapping(value = "/replySelect/5/{page}")
+	public @ResponseBody HashMap<String, Object> replySelect(@RequestParam("review_idx") String review_idx,@PathVariable String page) {
 		logger.info("리뷰댓글 리스트 요청");
-		return service.replySelect(review_idx);
+		logger.info(page);
+		return service.replySelect(review_idx,page);
 	}
 	
 	@RequestMapping(value = "/replyWrite")

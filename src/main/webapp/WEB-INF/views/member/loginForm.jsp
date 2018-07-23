@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>ID 찾기</title>
+<title>로그인 폼</title>
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <style>
     div{
@@ -23,8 +23,10 @@
         padding: 5px;     
 	}
     #loginBtn{
-        background-color: #088A85;
-        color: aliceblue;
+        /* background-color: #088A85; */
+        /* color: aliceblue; */
+        background-color: #33aaaaff;
+        color: white;
         padding-top: 21px;
         padding-bottom: 21px;
         padding-left: 10px;
@@ -32,7 +34,6 @@
     }
     input[type=button] { 
         border:solid 1px blue;
-        margin-right: 
     }    
 	</style>
 </head>

@@ -3,13 +3,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>		
+		<!-- <script src="resources/js/jquery-1.11.3.min.js"></script> -->
+		<script src="resources/js/zer0boxPaging.js?ver=2" type="text/javascript"></script>
 		<title>Insert title here</title>
 		<style>
         button{
             height: 21px;
             vertical-align: middle;
+            
         }
         #reviewSearch{
             width: 15px;
@@ -169,6 +173,24 @@
 	   #starText{
 	   	color: red;
 	   }
+	   #containerA{
+	   	height: 40px;
+	   	margin-top: 35px;
+	   	background-color: rgba(255,255,255,0.7);
+	   	padding-top: 2px;
+	   	position: absolute;    
+	   	bottom: 0px;
+	   	width: 100%;
+	   	vertical-align: middle;	  	
+	   }
+	   #containerA ul{
+	   	padding-left: 20px;
+	   }
+	   #infoW{	   	
+	   	border: 1px solid black;
+	   	width: 150px;
+	   	height: 25px;
+	   }
     </style>
     <script>
     	var mapLevel=7;
@@ -180,11 +202,6 @@
 	
 	<br/><br/><br/>
 	<form id="sendForm" action="reviewWrite" method="post">
-	
-	
-<!-- <input type="button" value="asd" onclick="relayout()"/>
-<input type="button" value="mapdiv" onclick="mapdiv()"/>
-<input type="button" value="크기" onclick="resizeMap()"/> -->
 
 	<div id ="formDiv">
 	<input type="hidden" name="review_idx" value="${review_updateForm.review_idx }"/>
@@ -192,18 +209,20 @@
 		<img  width='80px' height='80px'  src="resources/upload/${sessionScope.loginProfile }"/>
 		<input type="hidden" name='review_profile' value="resources/upload/${sessionScope.loginProfile }"/>
 	</div>
-	<br/>작성자 : <input id="user_Id" name="id" type="text" value="${ sessionScope.loginId}" readonly/><br/><br/><br/><br/>
+	<br/>
+	작성자 : <input id="user_Id" name="id" type="text" value="${ sessionScope.loginId}" readonly/>
+	<br/><br/><br/><br/>
     상호명 : <input id="review_storeName" type="text" name="review_storeName" value="${review_updateForm.review_storeName}"/>
     <input type='hidden'  id="review_storeidx"  name='review_storeidx' />
-    <button type="button" id="search"><img id="reviewSearch" src="resources/img/search.png"></button><br/><br/><br/>
+    <button type="button" id="search" onclick="StoreName()">
+    	<img id="reviewSearch" src="resources/img/search.png"/>
+    </button><br/><br/><br/>
     <div id="searchList">
     	
     	
     </div>
     <div id="mapDiv">
     	 <c:import url="/WEB-INF/views/include/common/map.jsp"/>
-    	 
-<%-- <jsp:include page="../include/common/map.jsp" />  --%>
     </div>
     <div id="starDIV">
     
@@ -234,7 +253,7 @@
 			dataType:"json",
 			data:{"review_idx":elem},
 			success:function(d){
-				console.log(d.reviewPhoto);
+				//console.log(d.reviewPhoto);
 				printHash(d.reviewHash,elem);		
 				printPhoto(d.reviewPhoto,elem);
 			},
@@ -281,7 +300,7 @@
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c7f29813d0150c2927c1529f7d432392&libraries=services"></script>
 	<script>
 	var loginId = "${sessionScope.loginId}";
-	console.log(loginId);
+	//console.log(loginId);
 	var div = "";//div 추가 변수
 	
 	$("#reviewWriteCancel").click(function(){
@@ -359,8 +378,8 @@
 	
 	function hashDel(elem){
 		//var sp = elem.id.split("_")[1];
-		console.log(elem.target);
-		console.log(elem.parentNode);
+		//console.log(elem.target);
+		//console.log(elem.parentNode);
 		//delete hashtagArr[sp];
 		elem.parentNode.remove();
 		$(elem).remove();
@@ -376,7 +395,7 @@
 	//사진 삭제시 초기화가 되지 않기 위해 Ajax 사용
 	function del(elem){
 		var fileName = elem.id.split("/")[2];
-		console.log(fileName);
+		//console.log(fileName);
 		$.ajax({
 			url : "./fileDel",
 			type : "get",
@@ -385,7 +404,7 @@
 				console.log(data);
 				if(data.success == 1 || data.result == 1){
 					//이미지 삭제
-					console.log($(elem).parent().next());
+					//console.log($(elem).parent().next());
 					 $(elem).prev().prev().remove();
 					 $(elem).parent().next().remove();
 					//버튼 삭제
@@ -399,32 +418,55 @@
 		});
 	}
 	
+	
+	showPage = 1;//보여줄 페이지
+	function StoreName(){
+		StoreName_Search(showPage);
+	}
+	
 	//가게 검색 리스트
 	var storeList="";
 	var btn="";
-	$("#search").click(function(){
-		console.log("search click");
-		console.log($("#review_storeName").val());
+	function StoreName_Search(page){
+		//console.log("search click");
+		//console.log($("#review_storeName").val());
 		$("#searchList").empty();
 		btn = "<input id='listClose' type='button' value='X'/><br/>";
 		$("#searchList").append(btn);
 		$.ajax({
-			url : "./revStoreSearch",
+			url : "./revStoreSearch/4/"+page,
 			data : {"review_storeName":$("#review_storeName").val()},
 			success : function(data){
-				console.log(data.list.length);
+				//console.log(data.list.length);
+				showPage = data.currPage;
 				if(data.list.length == 0){					
 					storeList += "<h3>찾으시는 상호명이 없습니다.</h2>";
 				}else{
 					for(var i=0; i<data.list.length; i++){
-						storeList += "<div><a class='store_list' href='#' onclick='mapDiv(this)'>"+data.list[i].store_name+"</a><br/>";
+						storeList += "<div id='storeNameList'><a class='store_list' href='#' onclick='mapDiv(this)'>"+data.list[i].store_name+"</a><br/>";
 						storeList += "<a class='store_addr' href = '#'>"+data.list[i].store_addr+"</a><hr/>";
 						storeList += "<input type='hidden' id='store_idx' value='"+data.list[i].store_idx+"'/></div>";
 					}
 				}
 				$("#searchList").append(storeList);
+				$("#searchList").append("<div id='containerA'></div>");
 				storeList = "";
 				btn="";
+				
+				
+				 $("#containerA").zer0boxPaging({
+		                viewRange : 4,
+		                currPage : data.currPage,
+		                maxPage : data.range,
+		                clickAction : function(e){
+		                    //console.log(e);
+		                    StoreName_Search($(this).attr('page'));
+		                    console.log(this.text);
+		                    console.log($(this)[0].data);
+		                }
+		            });
+				
+				
 			},
 			error : function(e){
 				console.log(e);
@@ -432,15 +474,15 @@
 		});
 		$("#starDIV").css("pointer-events", "none");
 		$("#searchList").css("display","block");
-	});
+	}
 	
 	
 	
 	
 	
 	 function mapDiv(elem){
-		 console.log($(elem).next().next().next().next().val());
-		console.log(elem.parentNode.children[2].text);
+		// console.log($(elem).next().next().next().next().val());
+		//console.log(elem.parentNode.children[2].text);
 		mapLocation=elem.parentNode.children[2].text;
 		$("#mapDiv").css("display","block");		
 		/* $("#mapDiv").text(elem.parentNode.children[2].text); */
@@ -496,6 +538,18 @@
 		        });
 		        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
 		        map.setCenter(coords);
+		        
+		        var iwContent = '<div id="infoW" style="padding:5px;">마커를 클릭해주세요</div>', // 인포윈도우에 표출될 내용
+		        iwPosition = new daum.maps.LatLng(coords); //인포윈도우 표시 위치입니다
+
+		    // 인포윈도우를 생성합니다
+		    var infowindow = new daum.maps.InfoWindow({
+		        position : iwPosition, 
+		        content : iwContent 
+		    });
+		      
+		    // 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
+		    infowindow.open(map, marker); 
 		     // 마커에 클릭이벤트를 등록합니다
 		        daum.maps.event.addListener(marker, 'click', function() {
 				      $("#review_storeName").val(elem.text);
@@ -515,19 +569,8 @@
 		
 		relayout();
 	} 
-	
-	 
-	/* function resizeMap() {
-        var mapContainer = document.getElementById('map');
-        mapContainer.style.width = '650px';
-        mapContainer.style.height = '650px'; 
-    } */
-	/* function mapdiv() {
-        $("#mapDiv").css("display","block");
-    } */
 
 		$(document).on("click","#listClose",function(){
-			console.log("X Click");
 			$("#searchList").css("display","none");
 			$("#mapDiv").css("display","none");
 			$("#starDIV").css("pointer-events", "");

@@ -12,7 +12,7 @@
             }
             
             div{
-                 border: solid 2px navy;   
+                /* border: solid 2px navy;  */  
                 width: 380px;
                 padding: 4%;
                 margin-top: 7%;

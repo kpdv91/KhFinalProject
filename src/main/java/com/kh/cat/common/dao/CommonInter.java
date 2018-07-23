@@ -43,7 +43,7 @@ public interface CommonInter {
 
 	int followtimelinecnt(String id);
 
-	ArrayList<ReviewDTO> timelinereviewlist(String id);
+	ArrayList<ReviewDTO> timelinereviewlist(String id, int start, int end);
 
 	String followcheck(String userid, String id);
 

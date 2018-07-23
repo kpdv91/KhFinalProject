@@ -60,7 +60,9 @@
 		SELECT COUNT(*) FROM follow WHERE id=#{param1}
 	</select>
 	<select id="timelinereviewlist" resultType="review">
-		SELECT * FROM review WHERE id=#{param1} ORDER BY review_date DESC
+		SELECT * FROM (SELECT review_idx,store_idx,id,review_storename,review_star,review_content,review_likecnt,review_date,
+		review_profile,review_replycnt,ROW_NUMBER() OVER (ORDER BY review_idx DESC) AS rnum FROM review WHERE id=#{param1})
+		WHERE rnum BETWEEN #{param2} AND #{param3}
 	</select>
 	<insert id="followinsert" useGeneratedKeys="true" keyColumn="follow_idx" keyProperty="follow_idx" parameterType="follow">
 		INSERT INTO follow VALUES(seq_follow.NEXTVAL,#{id},#{follow_id})

@@ -437,7 +437,7 @@ input[type=button]{
 			reply += "<div class='replyDiv' id='reply'><table  id='reply_table'>";
 			if(loginId != ""){			
 			reply += "<tr class='replyWriteTr'><td><img width='30px' height='30px' src='resources/upload/"+profileSession+"'/></td>";
-			reply += "<td id='reply_loginId'>"+loginId+"</td><td><textarea id='reply_textarea"+idx+"' class='reply_textarea' placeholder='댓글을 작성 해주세요.'></textarea></td>";
+			reply += "<td id='reply_loginId'>"+loginId+"</td><td><textarea maxlength='100' id='reply_textarea"+idx+"' class='reply_textarea' placeholder='댓글을 작성 해주세요.'></textarea></td>";
 			reply += "<td><span id='replyWrite'  onclick='replyWrite(this,"+idx+")'>작성하기</span</td></tr>"
 			}
 			list.forEach(function(item){

@@ -191,6 +191,9 @@
 	   	width: 150px;
 	   	height: 25px;
 	   }
+	   #review_content{
+	   	font-size: 15px;
+	   }
     </style>
     <script>
     	var mapLevel=7;
@@ -210,7 +213,7 @@
 	<br/>
 	작성자 : <input id="user_Id" name="id" type="text" value="${ sessionScope.loginId}" readonly/>
 	<br/><br/><br/><br/>
-    상호명 : <input id="review_storeName" type="text" name="review_storeName" value="${review_updateForm.review_storeName}"/>
+    상호명 : <input id="review_storeName" type="text" name="review_storeName" value="${review_updateForm.review_storeName}" maxlength="20"/>
     <input type='hidden'  id="review_storeidx"  name='review_storeidx' />
     <button type="button" id="search" onclick="StoreName()">
     	<img id="reviewSearch" src="resources/img/search.png"/>
@@ -235,7 +238,7 @@
     </script>
     </div><br/>
     내용<br/>
-    <textarea id="review_content" name="review_content">${review_updateForm.review_content }</textarea><br/><br/>
+    <textarea id="review_content" name="review_content" maxlength="300">${review_updateForm.review_content }</textarea><br/><br/>
     
     해시태그 : <input id="hash" type="text"/><input id="add" type="button" value="추가"/><br/>
     

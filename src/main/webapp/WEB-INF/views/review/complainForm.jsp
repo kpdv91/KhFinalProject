@@ -51,7 +51,7 @@
 	
 	
 	<br/><br/><br/>
-		신고할 ID : <input name="compId" id="compID" type="text" value="${complain_Id }"/>
+		신고할 ID : <input name="compId" id="compID" type="text" value="${complain_Id }" readonly/>
 		<input type="hidden" id="Id" name="Id" value="${sessionScope.loginId}"/>
 		<input type="hidden" id="complain_cate" name="complain_cate" value="${complain_cate }"/> 
 		<input type="hidden" id="idx" name="idx" value="${idx }"/>
@@ -62,7 +62,7 @@
 		  <option value="광고">광고</option>
 		  <option value="음란성">음란성</option>
 		</select><br/><br/>
-		<textarea name="complain_content" id="complain_content" placeholder="신고 내용을 입력해 주세요."></textarea><br/><br/>
+		<textarea name="complain_content" id="complain_content" placeholder="신고 내용을 입력해 주세요." maxlength="300"></textarea><br/><br/>
 		<input type="button" id="comp" value="신고하기"/>
 
 	</body>

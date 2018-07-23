@@ -2,6 +2,7 @@ package com.kh.cat.common.service;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -460,6 +461,7 @@ public class CommonService {
 		inter = sqlSession.getMapper(CommonInter.class);
 		ModelAndView mav = new ModelAndView();
 		ArrayList<TotalDTO> statList = inter.showStat(store_idx);
+		
 		mav.addObject("statList",statList);
 		mav.setViewName("store/showStat");
 		return mav;

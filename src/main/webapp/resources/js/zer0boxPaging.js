@@ -10,14 +10,14 @@
             "margin" : "0 3px",
             "font-weight" : 600,
             "color":"dodgerblue",
-            "cursor":"pointer"            
+            "cursor":"pointer" 
         };
 
         this.empty();//한번 지우고
         var start = 1;
         var end = 5;
         
-        var content = "<ul style='list-style:none; margin:10px'>";
+        var content = "<ul style='list-style:none; margin:10px;'>";
 				
         if(option.currPage > option.viewRange){          	
 			end = Math.ceil(option.currPage/option.viewRange)*option.viewRange;
@@ -29,7 +29,7 @@
         for(var i = start; i<=end;i++){
             if(i <= option.maxPage){
                 if(option.currPage == i){
-                    content +="<li style='background-color:lightgray'>"+i+"</li>";
+                    content +="<li page='"+i+"' style='background-color:lightgray'>"+i+"</li>";
                 }else{
                     content +="<li page='"+i+"'>"+i+"</li>";
                 }

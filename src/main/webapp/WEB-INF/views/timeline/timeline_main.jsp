@@ -1706,7 +1706,7 @@
 			$("#storeList").append(content);
 		}
 		function moveStat(idx) {
-			location.href="./showStat?store_idx="+idx;			
+			var myWin = window.open("./showStat?store_idx="+idx,"통계","width=1000, height=800")
 		}
 		function chgMail(){
 			$("#overlayMail").css("display","inline");

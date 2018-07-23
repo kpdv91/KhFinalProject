@@ -200,10 +200,14 @@
 	<select id="showStat" resultType="total">
 		SELECT * FROM total 
 		<![CDATA[
-		WHERE total_date >= to_date(SYSDATE-15, 'YY/MM/DD') AND total_date < to_date(SYSDATE, 'YY/MM/DD')
+		WHERE total_date > to_date(SYSDATE-15, 'YY/MM/DD') AND total_date < to_date(SYSDATE+1, 'YY/MM/DD')
 		]]>
-		 AND store_idx=#{param1}
+		 AND store_idx=#{param1} ORDER BY total_date ASC
 	</select>
+	
+	<update id="uphitStat">
+		UPDATE total SET total_bhitCnt= total_bhitCnt+1 WHERE total_date= SYSDATE AND store_idx = #{param1}
+	</update>
 	
 	<select id="followlist" resultType="String">
 		SELECT id FROM follow WHERE follow_id=#{param1}

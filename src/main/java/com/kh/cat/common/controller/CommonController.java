@@ -60,9 +60,7 @@ public class CommonController {
 	@RequestMapping(value = "/receivelist")
 	public @ResponseBody HashMap<String, Object> receivelist(@RequestParam Map<String,String> params) {
 		logger.info("받은 메세지 확인");
-		//String id = params.get("id");
 		String msg= params.get("msg");
-		//logger.info("id : {}",id);
 		logger.info("msg : {}",msg);		
 		return commonservice.receivelist(params);
 	}
@@ -100,7 +98,7 @@ public class CommonController {
 	}
 	@RequestMapping(value = "/couponlist")
 	public @ResponseBody HashMap<String, Object> cuponlist(@RequestParam Map<String,String> params) {
-		logger.info("포인트 리스트 요청");		
+		logger.info("쿠폰 리스트 요청");		
 		return commonservice.couponlist(params);
 	}
 	@RequestMapping(value = "/messagesendidcheck")

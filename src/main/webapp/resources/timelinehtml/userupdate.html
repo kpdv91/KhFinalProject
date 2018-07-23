@@ -11,6 +11,7 @@
          button, input[type='button'] {margin-top: 5px;background-color:#088A85;color: aliceblue;}
          #bottom{text-align: center;}
          #updatecontent{color:red;}
+         #overlayMail{display:none;}
       </style>
 
 </head>
@@ -50,7 +51,7 @@
          <tr>
             <th>이메일 : </th>
             <td><input type="email" id="userEmail" placeholder="이메일" onchange="chgMail()"></td>
-            <td><input id="overlayMail" type="button" value="중복체크"/></td>
+            <td><input id="overlayMail" type="button" onclick="emailcheck()"value="중복체크"/></td>
          </tr>
          <tr>
          <th>핸드폰번호</th>

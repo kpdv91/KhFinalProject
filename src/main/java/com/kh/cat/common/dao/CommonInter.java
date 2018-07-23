@@ -19,9 +19,7 @@ import com.kh.cat.dto.TotalDTO;
 
 public interface CommonInter {
 
-	ArrayList<DMDTO> receivelist(String id);
-
-	ArrayList<DMDTO> sendlist(String id);
+	ArrayList<DMDTO> sendlist(String id, int start, int end);
 
 	DMDTO receivedetail(String idx);
 
@@ -29,9 +27,7 @@ public interface CommonInter {
 
 	ArrayList<PointListDTO> pointlist(String id);
 
-	String memberpoint(String id);
-
-	ArrayList<CouponBoxDTO> couponlist(String id);
+	String memberpoint(String id);	
 
 	String messagesendidcheck(String id);
 
@@ -109,5 +105,15 @@ public interface CommonInter {
 	void insertStat(int idx);//통계 0으로 자정에 추가
 
 	ArrayList<TotalDTO> showStat(int store_idx);//통계 가져오기
+
+	ArrayList<CouponBoxDTO> couponlist(String id, int start, int end);
+
+	int couponallCount(String id);
+
+	int receivelistallCount(String id);
+
+	ArrayList<DMDTO> receivelist(String id, int start, int end);
+
+	int sendlistallCount(String id);
 
 }

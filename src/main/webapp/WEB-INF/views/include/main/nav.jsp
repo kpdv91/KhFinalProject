@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>		
 
 <style>
 	#nav ul li{list-style: none;  display: inline;	padding: 0px 10px;}

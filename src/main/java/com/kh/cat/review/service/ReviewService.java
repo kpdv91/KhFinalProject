@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -154,12 +156,25 @@ public class ReviewService {
 	}
 	
 	//리뷰 상호명 검색
-	public HashMap<String, Object> revStoreSearch(String params) {
+	public HashMap<String, Object> revStoreSearch(String params, String page) {
 		
 		logger.info("리뷰 상호명 검색");
 		inter = sqlSession.getMapper(ReviewInter.class);
+		int allCnt = inter.storeListCnt(params);
+		//생성 가능 페이지 수(나머지가 있으면 페이지 하나 더 생성)
+				int rangePage = allCnt%4 >0 ? 
+							Math.round(allCnt/4)+1 : allCnt/4;
+				int page2=Integer.parseInt(page);
+				if(page2>rangePage) {
+					page2 = rangePage;
+				}
+				int end = page2 * 4;	 //5 : 100
+				int start = end - 4+1;//5 : 81
+		
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("list", inter.storeList(params));
+		map.put("list", inter.storeList(params,start,end));
+		map.put("range", rangePage);
+		map.put("currPage", page);
 		
 		return map;
 	}

@@ -23,8 +23,10 @@
         padding: 5px;     
 	}
     #loginBtn{
-        background-color: #088A85;
-        color: aliceblue;
+        /* background-color: #088A85; */
+        /* color: aliceblue; */
+        background-color: #33aaaaff;
+        color: white;
         padding-top: 21px;
         padding-bottom: 21px;
         padding-left: 10px;
@@ -32,7 +34,6 @@
     }
     input[type=button] { 
         border:solid 1px blue;
-        margin-right: 
     }    
 	</style>
 </head>

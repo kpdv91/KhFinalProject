@@ -8,9 +8,10 @@
         #div1 {height : 200px;width : 200px;float : left;}
          #selPicture{position: absolute; left:50px;}
          #updateprofile {height : 128px;width : 128px;border : 1px solid black;text-align: center;}
-         button, input[type='button'] {margin-top: 5px;background-color:#088A85;color: aliceblue;}
+         button, input[type='button'] {margin-top: 5px;background-color: #33aaaaff;color: white;border: 0px;}
          #bottom{text-align: center;}
          #updatecontent{color:red;}
+         #overlayMail{display:none;}
       </style>
 
 </head>
@@ -50,7 +51,7 @@
          <tr>
             <th>이메일 : </th>
             <td><input type="email" id="userEmail" placeholder="이메일" onchange="chgMail()"></td>
-            <td><input id="overlayMail" type="button" value="중복체크"/></td>
+            <td><input id="overlayMail" type="button" onclick="emailcheck()"value="중복체크"/></td>
          </tr>
          <tr>
          <th>핸드폰번호</th>

@@ -41,18 +41,22 @@
 	            padding: 0px 5px;
 	            margin-right: 5px;
 	        }
+	        #moreStore{
+	        	margin-left: 950px;
+	        	cursor: pointer;
+	        }
 		</style>
 	</head>
 	<body>
+		<input id="moreStore" onclick="moreStore()" type="button" value="더보기"/>
 		<div id="searchPage"></div>
-	
 		<input id="mainStore" type="hidden" value="<c:out value="${param.mainStore}"/>">
 	</body>
 	<script>
 		tableSort("리뷰 최신 순","");
 		function tableSort(val, search_content) {
 			$.ajax({
-				url : "./searchSort",
+				url : "./searchSort/6/1",
 				data : {data : val,search_content : search_content,mainStore:$("#mainStore").val()},
 				success : function(data) {
  					console.log(data.list);
@@ -138,6 +142,10 @@
 					console.log(e);
 				}
 			});
+		}
+		
+		function moreStore(){
+			location.href = "./search?search_content=&search_map=";
 		}
 	</script>
 </html>

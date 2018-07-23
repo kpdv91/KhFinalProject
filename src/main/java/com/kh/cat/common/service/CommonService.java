@@ -331,6 +331,7 @@ public class CommonService {
 		map.put("range", rangePage);
 		map.put("currPage", page);
 		map.put("list", result);
+		map.put("size", result.size());
 		map.put("list_hash", result_hash);
 		return map;
 	}

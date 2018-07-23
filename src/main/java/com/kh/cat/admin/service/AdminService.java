@@ -55,19 +55,21 @@ public class AdminService {
 		String revReply_idx = params.get("revReply_idx");
 		String id = params.get("id");
 		String complain_id = params.get("complain_id");
+		String complain_idx = params.get("complain_idx");
 		logger.info("신고된 아이디 : {}", complain_id);
-		
+		logger.info("신고 idx : {}", complain_idx);
 		logger.info("리뷰 idx : "+rev_idx+" / "+"리뷰 댓글 idx : "+revReply_idx+" / "+id);
 		
-	
-		//String revWriter = inter.revWriter(rev_idx);//리뷰 작성자 아이디 조회 쿼리문
-		//logger.info("리뷰 작성자 : {}", revWriter);
 		if(rev_idx != null && revReply_idx.equals("0")) {
 			int result = inter.blackListAdd(complain_id);//블랙리스트에 추가
 			if(result > 0) {
 				map.put("result", result);
 				map.put("msg", "블랙리스트 추가 완료");
-				inter.complainDel(rev_idx, id);//신고내역에서 지우기
+				inter.comp_black(complain_idx);//신고내역에서 블랙유무 변경
+				inter.black_review_del(complain_id);
+				inter.black_revReply_del(complain_id);
+				inter.black_board_del(complain_id);
+				//inter.complainDel(rev_idx, id);//신고내역에서 지우기
 				logger.info("블랙리스트 추가(리뷰) 여부 : {}", result);
 			}
 		}
@@ -77,7 +79,11 @@ public class AdminService {
 			if(result > 0) {
 				map.put("result", result);
 				map.put("msg", "블랙리스트 추가 완료");
-				inter.complainDel2(revReply_idx, id);//신고내역에서 지우기
+				inter.comp_black(complain_idx);//신고내역에서 블랙유무 변경
+				inter.black_review_del(complain_id);
+				inter.black_revReply_del(complain_id);
+				inter.black_board_del(complain_id);
+				//inter.complainDel2(revReply_idx, id);//신고내역에서 지우기
 				logger.info("블랙리스트 추가(리뷰) 여부 : {}", result);
 			}
 		}

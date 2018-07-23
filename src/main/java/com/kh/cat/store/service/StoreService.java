@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.cat.common.dao.CommonInter;
 import com.kh.cat.dto.MenuDTO;
 import com.kh.cat.dto.StoreDTO;
 import com.kh.cat.store.dao.StoreInter;
@@ -33,6 +34,7 @@ public class StoreService {
 	@Autowired SqlSession sqlSession;
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	StoreInter inter;
+	CommonInter commonInter;
 	
 	HashMap<String, String> fileList = new HashMap<String, String>();
 	String storePhoto = "";
@@ -154,6 +156,7 @@ public class StoreService {
 	@Transactional
 	public HashMap<String, Object> storeRegist(String loginId, String[] tagArr, HashMap<String, String> data) {
 		inter = sqlSession.getMapper(StoreInter.class);
+		commonInter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		StoreDTO dto = new StoreDTO();
 		
@@ -179,6 +182,9 @@ public class StoreService {
 		}
 		fileList.clear();
 		map.put("success", 1);
+		
+		commonInter.insertStat(dto.getStore_idx());//통계 추가
+		
 		return map;
 	}
 
@@ -204,6 +210,7 @@ public class StoreService {
 			for(MenuDTO dto : dtoList) {
 				menuList.add(dto.getMenu_photo());
 			}
+			Collections.sort(menuList);
 			mav.addObject("storeMenuD", menuList.get(0));//첫 메뉴 사진
 		}
 		mav.addObject("storeMenu", menuList);//메뉴사진 리스트
@@ -269,6 +276,8 @@ public class StoreService {
 	public void storeUphits(int store_idx) {
 		inter = sqlSession.getMapper(StoreInter.class);
 		inter.storeUphits(store_idx);
+		commonInter = sqlSession.getMapper(CommonInter.class);
+		commonInter.uphitStat(store_idx);//통계 추가
 	}
 
 }

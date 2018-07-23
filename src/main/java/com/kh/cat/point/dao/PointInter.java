@@ -17,5 +17,7 @@ public interface PointInter {
 
 	int myCoupon(CouponBoxDTO dto);
 
+	int pointListAdd(String loginId, int couponPrice);//쿠폰 구매시 쿠폰리스트에 내역 추가
+
 
 }

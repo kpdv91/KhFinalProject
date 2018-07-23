@@ -10,7 +10,7 @@
 			div#tableDiv{position: relative; top: 50px; left: 400px; border: 1px solid black; width: 720px; height: 1000px;}
 			
 			table, th, td{border: 1px solid black; border-collapse: collapse;}
-			table#board_list_table{position: absolute; top: 60px; left: 10px; width: 700px; height: 500px;}      
+			table#board_list_table{position: absolute; top: 60px; left: 10px;/*  width: 700px; height: 500px; */}      
 			th[name="board_idx"]{width: 50px; height: 50px; background-color: lightskyblue;}
 			th[name="board_cate"]{width: 100px; height: 50px; background-color: lightskyblue;}
 			th[name="board_subject"]{width: 350px; height: 50px; background-color: lightskyblue;}
@@ -19,7 +19,7 @@
 			
 					
 			
-			button#write{position: absolute; top:570px; left: 644px; width:auto; height: 30px; background-color: lightskyblue; border: none; border-radius: 2px;}  
+			button#write{position: absolute; top:570px; left: 644px; width:auto; height: 30px; background-color: lightskyblue; border: none; border-radius: 2px;}
 		</style>
 	</head>
 	<body>
@@ -57,6 +57,7 @@
 				success : function (data) {
 					console.log(data);
 					printList(data.list);
+				
 					if(data.list != null){
 						printList(data.list);
 					}
@@ -69,12 +70,16 @@
 		
 		//받아온 리스트
 		function printList(list) {
-			console.log("리스트 어팬드 여부");
 			var content = "";
 			list.forEach(function(item, idx) {
 				content += "<tr>";
 				content += "<td align='center'>"+item.board_idx+"</td>";
-				content += "<td align='center'>"+item.board_cate+"</td>"; 
+				if(item.board_cate == "공지사항"){
+					console.log("공지사항");
+					content += "<td style='font-weight:bold;' align='center'>"+item.board_cate+"</td>"; 
+				}else{
+					content += "<td align='center'>"+item.board_cate+"</td>"; 
+				}
 				content += "<td align='left'><a href='./boardDetail?idx="+item.board_idx+"'>"+item.board_subject+"</a></td>";
 				content += "<td align='center'>"+item.id+"</td>";
 				var date = new Date(item.board_date);

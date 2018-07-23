@@ -50,6 +50,14 @@ public interface AdminInter {
 
 	void alarm_registYN(DMDTO dto);//가게 등록 승인,거절 시 쪽지 알람
 
+	void comp_black(String complain_idx);//블랙리스트 추가시 신고black 1로 변경
+
+	void black_review_del(String complain_id);//블랙추가시 리뷰삭제
+
+	void black_revReply_del(String complain_id);//블랙추가시 리뷰댓글 삭제
+
+	void black_board_del(String complain_id);//블랙추가시 게시판 삭제
+
 	
 
 

@@ -1513,10 +1513,10 @@
 			});
 		}
 		//신고내역 보기 버튼 클릭이벤트
-		function complain_move(rev_idx, revReply_idx, id, complain_id) {
+		function complain_move(complain_idx, rev_idx, revReply_idx, id, complain_id) {
 			console.log("클릭");   
 			console.log(rev_idx, revReply_idx, id, complain_id);  
-			var myWin= window.open("./comp_review_moveWin?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");		
+			var myWin= window.open("./comp_review_moveWin?complain_idx="+complain_idx+"&rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");		
 		}
 		
 		
@@ -1706,7 +1706,7 @@
 			$("#storeList").append(content);
 		}
 		function moveStat(idx) {
-			location.href="./showStat?store_idx="+idx;			
+			var myWin = window.open("./showStat?store_idx="+idx,"통계","width=1000, height=800")
 		}
 		function chgMail(){
 			$("#overlayMail").css("display","inline");

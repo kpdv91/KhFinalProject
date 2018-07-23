@@ -108,9 +108,9 @@
 	<select id="storeSearch_And" resultType="store" parameterType="hashmap">
 		<choose>
 	 		<when test="mainStore==3">
-	 			SELECT * FROM store  
+	 		SELECT * FROM (SELECT * FROM store ORDER BY store_revdate DESC)
 	 			<![CDATA[WHERE ROWNUM <= 3]]>
- 				ORDER BY store_revdate DESC
+ 			
 	 		</when>
 			<otherwise>
 				SELECT * FROM

@@ -5,7 +5,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+		
 		<title>별점</title>
 <style>
 .star-input>.input,
@@ -91,7 +91,7 @@ star-input>.input.focus{
   	</span>
   	<output for="star-input"><b name="review_star" id="starScore">0</b></output>						
 </span>
-<script src="resources/js/jquery-1.11.3.min.js"></script>
+<!-- <script src="resources/js/jquery-1.11.3.min.js"></script> -->
 <script src="resources/js/star.js"></script>
 </body>
 <script>

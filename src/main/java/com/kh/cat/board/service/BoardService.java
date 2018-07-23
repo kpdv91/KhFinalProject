@@ -26,13 +26,29 @@ public class BoardService {
 	BoardInter inter;
 	
 	//게시판 리스트
-	public @ResponseBody HashMap<String, Object> boardList() {
+	public @ResponseBody HashMap<String, Object> boardList(int page) {
+		logger.info("페이지 : {}", page);
 		logger.info("boardList 서비스 요청");
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		inter = sqlSession.getMapper(BoardInter.class);
-		ArrayList<BoardDTO> list = inter.boardList();
-		logger.info("리스트 확인 : " +list); 
+		
+		int allCnt = inter.boardAllCnt();//페이징을 위한 총 게시물 수
+		logger.info("총게시물 수 : {}", allCnt);
+		int range = allCnt % 10 > 0 ? Math.round(allCnt/10)+1 : allCnt/10;
+		
+		if(page > range) {
+			page = range;
+		}
+		
+		int end = page * 10;
+		int start = end - 10 + 1;
+		
+		ArrayList<BoardDTO> list = inter.boardList(start, end);
+		logger.info("리스트 확인 : " +list.size()); 
 		map.put("list", list);
+		map.put("range", range);
+		map.put("currPage", page);
+		
 		
 		return map;
 	}

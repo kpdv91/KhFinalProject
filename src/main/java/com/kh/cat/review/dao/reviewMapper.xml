@@ -28,8 +28,10 @@
 	 	UPDATE store SET store_revCnt = store_revCnt+1, store_revDate = SYSDATE, store_star=#{param2} WHERE store_idx=#{param1}
 	 </update>
 	 <update id="totalUpdate">
-	 	UPDATE total SET total_date=SYSDATE, total_revCnt = total_revCnt+1, total_starAvg=#{param2} WHERE store_idx=#{param1}
+	 	UPDATE total SET  total_revCnt = total_revCnt+1, total_starAvg=#{param2} WHERE store_idx=#{param1} AND total_date > to_date(SYSDATE-1, 'YY/MM/DD')
 	 </update>	 
+	 
+	 
 	 
 	 <insert id="hashtag">
 	 	INSERT INTO hash(hash_tag,hash_cate,review_idx)
@@ -41,9 +43,17 @@
 	 		VALUES(#{param1},#{param2})
 	 </insert>
 	 
-	 <select id="storeList" resultType="store">
+	 
+	 <select id="storeListCnt" resultType="Integer">
+	 	SELECT COUNT(*) FROM store WHERE store_name LIKE '%'|| #{param1}||'%'
+	 </select>
+	 <select id="storeList" resultType="store"> 	
+	 	
 	 	SELECT store_idx, store_name, store_addr 
-	 	FROM store WHERE store_name LIKE '%'|| #{param1}||'%'
+	 	FROM(SELECT store_idx, store_name, store_addr,ROW_NUMBER() 
+	 	OVER(ORDER BY store_idx DESC) AS rnum FROM store WHERE store_name LIKE '%'|| #{param1}||'%')
+		WHERE rnum BETWEEN #{param2} AND #{param3}
+	 	
 	 </select>
 	 
 	 <!-- 리뷰 리스트 -->

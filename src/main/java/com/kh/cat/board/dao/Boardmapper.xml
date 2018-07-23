@@ -30,10 +30,22 @@
 		DELETE FROM board WHERE board_idx = #{param1}
 	</delete>
 	
-	<select id="boardList" resultType="board">
+	<!-- <select id="boardList" resultType="board">
 		SELECT board_idx, id, board_subject, board_content, board_cate, board_date
 			FROM board ORDER BY board_cate ASC, board_idx DESC
+	</select> -->
+	
+	<select id="boardList" resultType="board">
+		SELECT board_idx, id, board_subject, board_cate, board_date FROM
+			(SELECT board_idx, id, board_subject, board_cate, board_date,
+			ROW_NUMBER() OVER (ORDER BY board_cate ASC, board_idx DESC) AS rnum FROM board)
+			WHERE rnum BETWEEN #{param1} AND #{param2}
 	</select>
+	
+	<select id="boardAllCnt" resultType="Integer">
+		SELECT COUNT(*) FROM board
+	</select>
+	
 	
 	<insert id="boardReplyWrite" parameterType="boardReply">
 		INSERT INTO boardReply(boardReply_idx, board_idx, id, boardReply_content, boardReply_date)

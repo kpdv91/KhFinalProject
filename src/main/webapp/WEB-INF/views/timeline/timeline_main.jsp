@@ -1071,20 +1071,7 @@
 		if(page=="resources/timelinehtml/messagebox.html"){
 			receivelistajax(showPage);
 		}else if(page=="resources/timelinehtml/pointbox.html"){
-			$.ajax({
-				url:"./pointlist",
-				type:"get",
-				data:{
-					id : userid
-				},
-				dataType:"json",
-				success:function(d){
-					pointlist(d);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+			pointlistajax(showPage);
 		}else if(page=="resources/timelinehtml/couponbox.html"){
 			couponajax(showPage);
 		}else if(page=="reviewlist"){
@@ -1204,6 +1191,32 @@
 			});
 		}
 	}
+	function pointlistajax(page){
+		$.ajax({
+			url:"./pointlist",
+			type:"get",
+			data:{
+				id : userid,
+				page : page
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d);
+				pointlist(d);
+				$("#container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	pointlistajax($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
 	function couponajax(page){		
 		$.ajax({
 			url:"./couponlist",
@@ -1216,13 +1229,13 @@
 			success:function(d){
 				couponlist(d.list);
 				$("#container").zer0boxPaging({
-	                viewRange : 5,
-	                currPage : d.currPage,
-	                maxPage : d.range,
-	                clickAction : function(e){
-	                	couponajax($(this).attr('page'));
-	                }
-	            });
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	couponajax($(this).attr('page'));
+		            }
+		        });
 			},
 			error:function(e){
 				console.log(e);

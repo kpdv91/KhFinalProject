@@ -30,8 +30,10 @@
 	<select id="memberpoint" resultType="String">
 		SELECT pointCnt FROM member WHERE id=#{param1}
 	</select>
-	<select id="pointlist" resultType="pointList">
-		SELECT * FROM pointList WHERE id=#{param1}
+	<select id="pointList" resultType="pointList">
+		SELECT * FROM (SELECT pointList_idx,id,pointList_point,pointList_type,pointList_cate,pointList_date,ROW_NUMBER()
+	 OVER (ORDER BY pointList_idx DESC) AS rnum FROM pointList WHERE id=#{param1}) 
+	 WHERE rnum BETWEEN #{param2} AND #{param3}
 	</select>
 	<select id="couponlist" resultType="couponBox">
 		SELECT couponBox_code,id,couponBox_use,couponBox_date,couponBox_name,couponBox_price FROM
@@ -241,6 +243,9 @@
 	 </select>
 	 <select id="sendlistallCount" resultType="Integer">
 	 	SELECT COUNT(*) FROM dm WHERE id=#{param1}
+	 </select>
+	 <select id="pointallCount" resultType="Integer">
+	 	SELECT COUNT(*) FROM pointList WHERE id=#{param1}
 	 </select>
 </mapper>
 

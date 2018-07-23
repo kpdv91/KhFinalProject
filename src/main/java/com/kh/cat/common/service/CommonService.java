@@ -107,10 +107,24 @@ public class CommonService {
 	public HashMap<String, Object> pointlist(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		int page = Integer.parseInt(params.get("page"));
 		String id = params.get("id");
+		//총 게시물 수 => 생성 가능 페이지 수
+		int allCnt = inter.pointallCount(id);
+		//생성 가능 페이지 수 : 나머지가 있으면 페이지 하나 더 생성
+		int range = allCnt%5 >0 ? Math.round(allCnt/5)+1 : allCnt/5;
+		if(page>range) {
+			page=range;			
+		}
+		logger.info("총 개시물 수 : {}",allCnt);
+		logger.info("생성 가능 페이지 수 : {}",range);
+		int end = page*5;
+		int start = end-4;
 		logger.info(id);
-		map.put("memberpoint", inter.memberpoint(id));
-		map.put("list", inter.pointlist(id));
+		map.put("memberpoint",inter.memberpoint(id));
+		map.put("list", inter.pointList(id,start,end));
+		map.put("range", range);
+		map.put("currPage",page);
 		return map;
 	}
 

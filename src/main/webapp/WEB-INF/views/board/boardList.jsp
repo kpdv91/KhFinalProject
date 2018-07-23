@@ -75,7 +75,6 @@
 				content += "<tr>";
 				content += "<td align='center'>"+item.board_idx+"</td>";
 				if(item.board_cate == "공지사항"){
-					console.log("공지사항");
 					content += "<td style='font-weight:bold;' align='center'>"+item.board_cate+"</td>"; 
 				}else{
 					content += "<td align='center'>"+item.board_cate+"</td>"; 

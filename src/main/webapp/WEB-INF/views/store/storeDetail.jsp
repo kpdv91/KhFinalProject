@@ -17,7 +17,7 @@
 				font-size: x-large; width: 100px;}
 			#contFrame{width: 1000px; height: 400px; border: solid 2px #2637a4;}
 			.divChg{display: none;}
-			#detailFrame table,tr,td,th{border: solid 1px black;}
+			#detailFrame table,#detailFrame tr,#detailFrame td,#detailFrame th{border: solid 1px black;}
 		</style>
 	</head>
 	<body>

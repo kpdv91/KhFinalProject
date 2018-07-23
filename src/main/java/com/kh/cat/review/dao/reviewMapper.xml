@@ -28,8 +28,10 @@
 	 	UPDATE store SET store_revCnt = store_revCnt+1, store_revDate = SYSDATE, store_star=#{param2} WHERE store_idx=#{param1}
 	 </update>
 	 <update id="totalUpdate">
-	 	UPDATE total SET total_date=SYSDATE, total_revCnt = total_revCnt+1, total_starAvg=#{param2} WHERE store_idx=#{param1}
+	 	UPDATE total SET  total_revCnt = total_revCnt+1, total_starAvg=#{param2} WHERE store_idx=#{param1} AND total_date > to_date(SYSDATE-1, 'YY/MM/DD')
 	 </update>	 
+	 
+	 
 	 
 	 <insert id="hashtag">
 	 	INSERT INTO hash(hash_tag,hash_cate,review_idx)

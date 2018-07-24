@@ -164,6 +164,14 @@
 		</div>
 	</body>
 	<script>
+		$("#dm_write").click(function () {
+			var url = "./dm_writePage";
+			var name = "쪽지보내기";
+			var option = "width=500, height=500, resizeable=no";
+					
+			var myWin= window.open(url, name, option);
+		});
+	 
 	console.log("${cate}");
 	var replyClick = 1;
 	var userid = "${sessionScope.loginId}";
@@ -257,6 +265,18 @@
 			$("#content").load(page,function(res, stat) {});
 			console.log($("#content"));
 	    	ajaxCall(page);	
+		}else if("${cate}"=="가게"){
+			page = "resources/timelinehtml/store_regist_list.html";
+			$("#dm_write").css("background-color","lightgray");
+			$("#dm_write").css("color","black");
+			$("#message").css("background-color","lightgray");
+			$("#message").css("color","black");
+			$("#store_regist_list").css("background-color","darkblue");
+			$("#store_regist_list").css("color","white");
+			$("#complain_list").css("background-color","lightgray");
+			$("#complain_list").css("color","black");
+			$("#content").load(page,function(res, stat) {});
+			ajaxCall(page);
 		}
 	});
 	

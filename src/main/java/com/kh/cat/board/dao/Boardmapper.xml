@@ -34,38 +34,44 @@
 		SELECT board_idx, id, board_subject, board_content, board_cate, board_date
 			FROM board ORDER BY board_cate ASC, board_idx DESC
 	</select> -->
-	
+	<!-- 공지사항 출력 -->
+	<select id="boardList2" resultType="board">
+		SELECT board_idx, id, board_subject, board_cate, board_date FROM board
+			WHERE board_cate='공지사항' ORDER BY board_idx DESC
+	</select>
+	<!-- 문의사항 페이징 -->
 	<select id="boardList" resultType="board">
 		SELECT board_idx, id, board_subject, board_cate, board_date FROM
 			(SELECT board_idx, id, board_subject, board_cate, board_date,
-			ROW_NUMBER() OVER (ORDER BY board_cate ASC, board_idx DESC) AS rnum FROM board)
+			ROW_NUMBER() OVER (ORDER BY board_idx DESC) AS rnum FROM board WHERE board_cate = '문의사항')
 			WHERE rnum BETWEEN #{param1} AND #{param2}
 	</select>
 	
+	<!-- 문의사항 게시물 총 갯수 -->
 	<select id="boardAllCnt" resultType="Integer">
-		SELECT COUNT(*) FROM board
+		SELECT COUNT(*) FROM board WHERE board_cate = '문의사항'
 	</select>
 	
-	
+	<!-- 문의사항 댓글 작성 -->
 	<insert id="boardReplyWrite" parameterType="boardReply">
 		INSERT INTO boardReply(boardReply_idx, board_idx, id, boardReply_content, boardReply_date)
 			VALUES(seq_boardReply.NEXTVAL, #{board_idx}, #{id}, #{boardReply_content}, SYSDATE)
 	</insert>
-	
+	<!-- 문의사항 댓글 리스트 -->
 	<select id="boardReplyList" resultType="boardReply">
 		SELECT boardReply_idx, board_idx, id, boardReply_content, boardReply_date
 			FROM boardReply WHERE board_idx = #{board_idx}
 	</select>
-	
+	<!-- 문의사항 댓글 갯수 -->
 	<select id="replyCnt" resultType="Integer">
 		SELECT COUNT(*) FROM boardReply WHERE board_idx = #{param1}
 	</select>
-	
+	<!-- 문의사항 댓글 수정 -->
 	<update id="boardReplyUpdate" parameterType="boardReply">
 		UPDATE boardReply SET boardReply_content = #{boardReply_content} 
 			WHERE boardReply_idx = #{boardReply_idx} AND board_idx = #{board_idx}
 	</update>
-	
+	<!-- 문의사항 댓글 삭제 -->
 	<delete id="boardReplyDelete">
 		DELETE FROM boardReply 
 			WHERE board_idx = #{param2} AND boardReply_idx = #{param1}

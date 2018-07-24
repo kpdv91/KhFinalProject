@@ -12,9 +12,9 @@ import com.kh.cat.dto.StoreDTO;
 
 public interface AdminInter {
 
-	ArrayList<ComplainDTO> complainList();//신고리스트(관리자)
+	ArrayList<ComplainDTO> complainList(int start, int end);//신고리스트(관리자)
 
-	ArrayList<StoreDTO> storeRegistList();//가게 등록 리스트(관리자)
+	ArrayList<StoreDTO> storeRegistList(int start, int end);//가게 등록 리스트(관리자)
 
 	ArrayList<ReviewDTO> comp_reviewList(String rev_idx);//신고된 리뷰 리스트
 
@@ -57,6 +57,10 @@ public interface AdminInter {
 	void black_revReply_del(String complain_id);//블랙추가시 리뷰댓글 삭제
 
 	void black_board_del(String complain_id);//블랙추가시 게시판 삭제
+
+	int complainAllCnt();//페이징을 위한 신고리스트 총 갯수
+
+	int storeRegistAllCnt();//페이징을 위한 가게 등록 리스트 총 갯수
 
 	
 

@@ -101,12 +101,15 @@ public class MemberService {
 			logger.info("일치 여부 : "+success);//비밀번호가 맞았다 -> 로그인
 			if(success) {//로그인 성공시     ------------------->id,pw가 맞다
 				String profile = inter.getprofile(id);//프로필 가져오기 -logger확인없음
+				String aut = inter.getaut(id);//권한 가져오기
 				//msg = "로그인 성공";
 				page = "main";
 				session.setAttribute("loginId", id);
 				session.setAttribute("loginProfile", profile);	
+				session.setAttribute("loginAut", aut);
 				logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
 				logger.info("세션값 체크 : {}", session.getAttribute("loginProfile"));
+				logger.info("세션값 체크 : {}", session.getAttribute("loginAut"));
 				logger.info("이동할 페이지 : {}", page);			
 			}else {//--------------->id가 있지만 pw가 안맞다
 				String msg = "로그인 실패";
@@ -345,7 +348,7 @@ public class MemberService {
 		    	  pwChange = inter.pwChange(id, hash);//암호화된 비밀번호 DB 에 저장
 		    	  logger.info("암호화된 임시 비빌번호 DB 저장 결과 : {}", pwChange);
 		    	  if(pwChange > 0) {
-		    		  title = "CAT";
+		    		  title = "CAT 사이트에 요청한 임시 비밀번호 발급 안내입니다.";
 		    		  content = id+" 님의 임시 비밀번호는 ["+tmpPw+"] 입니다.";
 		    		  messageHelper.setFrom(setFrom, "CAT");  // 보내는사람 생략하거나 하면 정상작동을 안함
 				      messageHelper.setTo(toMail);     // 받는사람 이메일

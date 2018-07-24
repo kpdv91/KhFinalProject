@@ -39,18 +39,17 @@
 </head>
 <body>
 	
-<form id="login" action="login" method="post">
+<form id="login" action="login" method="post" name="formname">
 <div>
-	
     <table>
    	     <tr>
             <td>아 이 디 &nbsp : </td>
-            <td><input type="text" name="id" placeholder="아이디"></td>
+            <td><input type="text" tabindex="1" name="id" placeholder="아이디" onkeypress="JavaScript:press(this.form)"></td>
             <td rowspan="2"> <input id="loginBtn" type="button" value="로그인"> <!-- <button>로그인</button> --></td>
          </tr>
          <tr>
             <td>비밀번호&nbsp&nbsp: </td>
-            <td><input type="password" name="pw" placeholder="비밀번호"></td>            
+            <td><input type="password" tabindex="2" name="pw" placeholder="비밀번호" onkeypress="JavaScript:press(this.form)"></td>            
          </tr>
          <tr>
            <td colspan="3">
@@ -60,14 +59,12 @@
            </td>
          </tr>
    </table>
-   
 </div>
 </form>
 </body>
 <script>
 
 	var idReg = /^[A-za-z0-9]{5,20}/g;
-
 
 	printMsg();
 	function printMsg(){
@@ -76,6 +73,14 @@
 			alert(msg);
 		}	
 	}
+	
+	function press(f){ 
+		if(f.keyCode == 13){ //javascript에서는 13이 enter키를 의미함 
+			formname.submit(); //formname에 사용자가 지정한 form의 name입력 
+		} 
+	}
+
+	
 
 	function join() {
 		location.href="./joinForm";
@@ -85,13 +90,14 @@
 		var myWin= window.open("./pwFindWin", "PW 찾기","width=500,height=500");	
 	}
 	
-	
 	function popupOpen(){
 
 		var popUrl = "./findIdForm";	//팝업창에 출력될 페이지 URL
+
 		var popOption = "top=0, left=0, width=500, height=500, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
 			window.open(popUrl,"",popOption);
 		}
+
 
 	$("#loginBtn").click(function(){
 		
@@ -102,8 +108,7 @@
 	   }else if($("input[name='pw']").val()==""){//비밀번호
 		   	alert("비밀번호를 입력해주세요!!");
 		   	$("input[name='pw']").focus();
-		   	return false;
-	   
+		   	return false;   
 	   }else if($("input[name='pw']").val().length<8 || $("input[name='pw']").val().length>16){	//비밀번호 유효성
 	   		alert("비밀번호는 8~16자를 입력해주세요.");
 	   		return false;

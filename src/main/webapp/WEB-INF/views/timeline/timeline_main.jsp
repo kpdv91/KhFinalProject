@@ -4,8 +4,7 @@
 <html>
 	<head>
 	<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!-- 
-		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script> -->
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<script src="resources/js/star.js"></script>
 		<script src="resources/js/zer0boxPaging.js" type="text/javascript"></script>
@@ -174,7 +173,7 @@
 	var fallowbtn=1;
 	var aTag = "";
 	var idx = "";
-	showPage = 1;
+	var showPage = 1;
 	//테이블 페이징
 		
 	//리뷰 로그인체크 후 수정 삭제 신고 a 태그 띄워줌
@@ -306,7 +305,7 @@
 				$("#likestore").html("찜한가게 "+d.storelike);
 				$("#friend").html("팔로우 목록 "+d.follow);
 				if("${cate}"=="" || "${cate}"=="팔로우"){
-				timelinereview();
+				timelinereview(showPage);
 				}
 			},
 			error:function(e){
@@ -523,18 +522,30 @@
 		}
 	}
 	//리뷰 리스트
-	function timelinereview(){
+	function timelinereview(page){
+		if(page==null){
+			page=1;
+		}
 		$.ajax({
 			url:"./timelinereviewlist",
 			type:"post",
 			data:{
-				id : "${id}"
+				id : "${id}",
+				page : page
 			},
 			dataType:"json",
 			success:function(d){
 				console.log(d);
 				printList(d.list);
 				atagCreate(d.list);
+				$("#container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	timelinereview($(this).attr('page'));
+		            }
+		        });
 			},
 			error:function(e){
 				console.log(e);
@@ -564,15 +575,19 @@
 				content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
 				content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
 				content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'></td></tr><tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
-				content += "<span id='replySpan' onclick='replySelect("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</span></div>";
+				content += "<span id='replySpan' onclick='replySelect("+item.review_idx+","+showPage+")'>댓글"+item.review_replyCnt+"개</span></div>";
 				content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
 				content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";		
 				idx=item.review_idx;
 				starSelect(idx);//리뷰 별점
 				hashtag(idx);
+				if(loginid != ""){
+					likeSelect(idx);//리뷰 좋아요
+					}
 		})
 		$("#content").empty();
 		$("#content").append(content);
+		$("#content").append("<div id='container'></div>");
 	}
 	//좋아요 리뷰 리스트
 	function revreplyList(list){		 
@@ -590,7 +605,7 @@
 					content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 					content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
 					if(item.id != loginid || loginid == ""){
-						content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike2.png' onclick='likeClick(this,"+item.review_idx+")' />";
+						content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' />";
 					}
 					content += "<br/></div></div>";
 					content += "<table id='review_table'><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
@@ -598,16 +613,20 @@
 					content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
 					content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
 					content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'></td></tr><tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
-					content += "<span id='replySpan' onclick='replySelect("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</span></div>";
+					content += "<span id='replySpan' onclick='replySelect("+item.review_idx+","+showPage+")'>댓글"+item.review_replyCnt+"개</span></div>";
 					content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
 					content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";		
 					idx=item.review_idx;
 					hashtag(idx);
 					starSelect(idx);//리뷰 별점
+					if(loginid != ""){
+						likeSelect(idx);//리뷰 좋아요
+						}
 			})
 		})
 		$("#content").empty();
 		$("#content").append(content);
+		$("#content").append("<div id='container'></div>");
 	}
 	//리뷰 별점 리스트
 	function star_create(star,elem){
@@ -640,11 +659,16 @@
 			$("#bigPhoto"+idx).append(pho);	
 		});
 	}
-	//댓글 아작스
-	function replySelect(idx){
+	function replySelect(idx,page){
 		$("#reviewReply"+idx).toggle(100,function(){
+			console.log(page);
+			replyAjax(idx,page);
+		});
+	}
+	//댓글 아작스
+	function replyAjax(idx,page){
 			$.ajax({
-				url:"./replySelect",
+				url:"./replySelect/5/"+page,
 				type:"post",
 				dataType:"json",
 				data:{"review_idx":idx},
@@ -652,11 +676,22 @@
 					//console.log(d.replySelect);
 					//댓글 리스트 출력
 					replylist(d.replySelect,idx);
+					showPage = d.currPage;
+					$("#reply_textarea"+idx).focus();
+					
+					$("#replyContainer"+idx).zer0boxPaging({
+		                viewRange : 10,
+		                currPage : d.currPage,
+		                maxPage : d.range,
+		                clickAction : function(e){
+		                    console.log($(this).attr('page'));
+		                    replyAjax(idx,$(this).attr('page'));
+		                }
+		            });
 					
 				},
 				error:function(e){console.log(e);}
 			});
-		});
 	}
 	var profileSession="${sessionScope.loginProfile }";
 	//댓글 리스트 출력
@@ -693,6 +728,7 @@
 			reply+="</table></div>";
 			$("#reviewReply"+idx).empty();
 			$("#reviewReply"+idx).append(reply);
+			$("#reviewReply"+idx).append("<div class='replyContainer' id='replyContainer"+idx+"'></div>");
 		}
 	//댓글 수정폼
 		function reply_updateform(elem,reply_idx,review_idx){
@@ -1071,56 +1107,15 @@
 		if(page=="resources/timelinehtml/messagebox.html"){
 			receivelistajax(showPage);
 		}else if(page=="resources/timelinehtml/pointbox.html"){
-			$.ajax({
-				url:"./pointlist",
-				type:"get",
-				data:{
-					id : userid
-				},
-				dataType:"json",
-				success:function(d){
-					pointlist(d);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+			pointlistajax(showPage);
 		}else if(page=="resources/timelinehtml/couponbox.html"){
 			couponajax(showPage);
 		}else if(page=="reviewlist"){
-			timelinereview();
+			timelinereview(showPage);
 		}else if(page=="likereview"){
-			 $.ajax({
-				url:"./timelinelikereview",
-				type:"post",
-				data:{
-					id : "${id}"
-				},
-				dataType:"json",
-				success:function(d){
-					revreplyList(d.list);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+			timelinelikereview(showPage);
 		}else if(page=="timeline_reply"){
-				$.ajax({
-				url:"./timeline_reply",
-				type:"post",
-				data:{
-					id : userid
-				},
-				dataType:"json",
-				success:function(d){
-					revreplyList(d.list);
-				},
-				error:function(e){
-					console.log(e);
-					$("#content").empty();
-					alert("댓글이 없습니다");
-				}
-			});
+			timeline_replyajax(showPage);
 		}else if(page == "resources/timelinehtml/complainList.html"){
 			$.ajax({
 				url:"./complainList",
@@ -1204,6 +1199,85 @@
 			});
 		}
 	}
+	function timeline_replyajax(page){
+		$.ajax({
+			url:"./timeline_reply",
+			type:"post",
+			data:{
+				id : userid,
+				page : page
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d);
+				revreplyList(d.list);
+				$("#container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	timeline_replyajax($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	function timelinelikereview(page){
+		$.ajax({
+			url:"./timelinelikereview",
+			type:"post",
+			data:{
+				id : "${id}",
+				page : page
+			},
+			dataType:"json",
+			success:function(d){
+				revreplyList(d.list);
+				$("#container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	timelinelikereview($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	//포인트 아작스
+	function pointlistajax(page){
+		$.ajax({
+			url:"./pointlist",
+			type:"get",
+			data:{
+				id : userid,
+				page : page
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d);
+				pointlist(d);
+				$("#container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	pointlistajax($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	//쿠폰 아작스
 	function couponajax(page){		
 		$.ajax({
 			url:"./couponlist",
@@ -1216,13 +1290,13 @@
 			success:function(d){
 				couponlist(d.list);
 				$("#container").zer0boxPaging({
-	                viewRange : 5,
-	                currPage : d.currPage,
-	                maxPage : d.range,
-	                clickAction : function(e){
-	                	couponajax($(this).attr('page'));
-	                }
-	            });
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	couponajax($(this).attr('page'));
+		            }
+		        });
 			},
 			error:function(e){
 				console.log(e);
@@ -1277,6 +1351,7 @@
 				content += "</td></tr></table>";
 			})
 		})
+		$("#content").empty();
 		$("#content").append(content);
 	}
 	//쿠폰 리스트
@@ -1318,6 +1393,7 @@
 		});		
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
+		$("#list").append("<div id='container'></div>");
 	}
 	//보낸 리스트 아작스
 	function send(page){
@@ -1400,6 +1476,7 @@
 		});		
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
+		$("#list").append("<div id='container'></div>");
 	}
 	//보낸 메세지 리스트 불러오기
 	function sendlist(list){
@@ -1414,6 +1491,7 @@
 		});
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
+		$("#list").append("<div id='container'></div>");
 	}
 	//메세지 작성하기
 	$("#dm").click(function(e){

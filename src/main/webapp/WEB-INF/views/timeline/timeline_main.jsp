@@ -653,9 +653,14 @@
 			$("#bigPhoto"+idx).append(pho);	
 		});
 	}
-	//댓글 아작스
 	function replySelect(idx,page){
 		$("#reviewReply"+idx).toggle(100,function(){
+			console.log(page);
+			replyAjax(idx,page);
+		});
+	}
+	//댓글 아작스
+	function replyAjax(idx,page){
 			$.ajax({
 				url:"./replySelect/5/"+page,
 				type:"post",
@@ -665,19 +670,22 @@
 					//console.log(d.replySelect);
 					//댓글 리스트 출력
 					replylist(d.replySelect,idx);
-					$("#contain").zer0boxPaging({
-			            viewRange : 5,
-			            currPage : d.currPage,
-			            maxPage : d.range,
-			            clickAction : function(e){
-			            	replySelect(idx,$(this).attr('page'));
-			            }
-			        });
+					showPage = d.currPage;
+					$("#reply_textarea"+idx).focus();
+					
+					$("#replyContainer"+idx).zer0boxPaging({
+		                viewRange : 10,
+		                currPage : d.currPage,
+		                maxPage : d.range,
+		                clickAction : function(e){
+		                    console.log($(this).attr('page'));
+		                    replyAjax(idx,$(this).attr('page'));
+		                }
+		            });
 					
 				},
 				error:function(e){console.log(e);}
 			});
-		});
 	}
 	var profileSession="${sessionScope.loginProfile }";
 	//댓글 리스트 출력
@@ -714,7 +722,7 @@
 			reply+="</table></div>";
 			$("#reviewReply"+idx).empty();
 			$("#reviewReply"+idx).append(reply);
-			$("#reviewReply"+idx).append("<div id='contain'></div>");
+			$("#reviewReply"+idx).append("<div class='replyContainer' id='replyContainer"+idx+"'></div>");
 		}
 	//댓글 수정폼
 		function reply_updateform(elem,reply_idx,review_idx){
@@ -1099,20 +1107,7 @@
 		}else if(page=="reviewlist"){
 			timelinereview(showPage);
 		}else if(page=="likereview"){
-			 $.ajax({
-				url:"./timelinelikereview",
-				type:"post",
-				data:{
-					id : "${id}"
-				},
-				dataType:"json",
-				success:function(d){
-					revreplyList(d.list);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+			timelinelikereview(showPage);
 		}else if(page=="timeline_reply"){
 				$.ajax({
 				url:"./timeline_reply",
@@ -1213,6 +1208,32 @@
 			});
 		}
 	}
+	function timelinelikereview(page){
+		$.ajax({
+			url:"./timelinelikereview",
+			type:"post",
+			data:{
+				id : "${id}",
+				page : page
+			},
+			dataType:"json",
+			success:function(d){
+				revreplyList(d.list);
+				$("#container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	timelinelikereview($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	//포인트 아작스
 	function pointlistajax(page){
 		$.ajax({
 			url:"./pointlist",
@@ -1239,6 +1260,7 @@
 			}
 		});
 	}
+	//쿠폰 아작스
 	function couponajax(page){		
 		$.ajax({
 			url:"./couponlist",
@@ -1312,6 +1334,7 @@
 				content += "</td></tr></table>";
 			})
 		})
+		$("#content").empty();
 		$("#content").append(content);
 	}
 	//쿠폰 리스트

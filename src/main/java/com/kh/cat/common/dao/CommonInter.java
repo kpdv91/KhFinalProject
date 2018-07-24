@@ -128,6 +128,8 @@ public interface CommonInter {
 
 	ArrayList<PointListDTO> pointList(String id, int start, int end);
 
+	ArrayList<Integer> timlinepagereview(String id, int start, int end);
+
 	
 
 }

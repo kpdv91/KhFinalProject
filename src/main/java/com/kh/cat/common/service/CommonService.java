@@ -493,18 +493,29 @@ public class CommonService {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		String id = params.get("id");
+		int page = Integer.parseInt(params.get("page"));
 		ArrayList<Integer> likestore = inter.likestore(id);
 		logger.info("store 개수 " + likestore.size());
 		logger.info("storeidx" + likestore.get(0));
+		int allCnt = likestore.size();
+		int range = allCnt%6 >0 ? Math.round(allCnt/6)+1 : allCnt/6;
+		if(page>range) {
+			page=range;
+		}		
+		int end = page*6;
+		int start = end-5;
+		ArrayList<Integer> likestorepage = inter.timlinepagestore(id,start,end);
 		// ArrayList<ReviewDTO> list = new ArrayList<ReviewDTO>();
 		ArrayList<ArrayList<StoreDTO>> list = new ArrayList<ArrayList<StoreDTO>>();
 		ArrayList<ArrayList<HashDTO>> list_hash = new ArrayList<ArrayList<HashDTO>>();
-		for (int i = 0; i < likestore.size(); i++) {
-			list.add(inter.timelinelikestore(likestore.get(i)));
-			list_hash.add(inter.likestorehash(likestore.get(i)));
+		for (int i = 0; i < likestorepage.size(); i++) {
+			list.add(inter.timelinelikestore(likestorepage.get(i)));
+			list_hash.add(inter.likestorehash(likestorepage.get(i)));
 		}
 		map.put("list", list);
 		map.put("list_hash", list_hash);
+		map.put("range", range);
+		map.put("currPage",page);
 		return map;
 	}
 
@@ -550,19 +561,40 @@ public class CommonService {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		String id = params.get("id");
-		logger.info(id);
 		ArrayList<String> followlist = inter.followlist(id);
 		ArrayList<String> following = inter.following(id);
 		ArrayList<ArrayList<MemberDTO>> list = new ArrayList<ArrayList<MemberDTO>>();
 		ArrayList<ArrayList<MemberDTO>> listing = new ArrayList<ArrayList<MemberDTO>>();
-		for (int i = 0; i < followlist.size(); i++) {
-			list.add(inter.followlistprofile(followlist.get(i)));
+		int page = Integer.parseInt(params.get("page"));
+		System.out.println(page+"페이지");
+		int allCnt1 = followlist.size();
+		int allCnt2 = following.size();
+		int range1 = allCnt1%6 >0 ? Math.round(allCnt1/6)+1 : allCnt1/6;
+		int range2 = allCnt2%6 >0 ? Math.round(allCnt2/6)+1 : allCnt2/6;
+		int page1 = 0;
+		int page2=0;
+		if(page>range1) {
+			page1=range1;
 		}
-		for (int j = 0; j < following.size(); j++) {
-			listing.add(inter.followingprofile(following.get(j)));
+		if(page>range2) {
+			page2=range2;
 		}
-		map.put("fallowlist", list);
-		map.put("fallowing", listing);
+		int end = page*6;
+		int start = end-5;
+		ArrayList<String> pagefollowlist = inter.pagefollowlist(id,start,end);
+		ArrayList<String> pagefollowing = inter.pagefollowing(id,start,end);
+		for (int i = 0; i < pagefollowlist.size(); i++) {
+			list.add(inter.followlistprofile(pagefollowlist.get(i)));
+		}
+		for (int j = 0; j < pagefollowing.size(); j++) {
+			listing.add(inter.followingprofile(pagefollowing.get(j)));
+		}
+		map.put("followlist", list);
+		map.put("following", listing);
+		map.put("range1", range1);
+		map.put("range2", range2);
+		map.put("currPage1",page1);
+		map.put("currPage2",page2);
 		return map;
 	}
 

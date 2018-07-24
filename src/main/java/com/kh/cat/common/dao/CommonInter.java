@@ -134,4 +134,10 @@ public interface CommonInter {
 
 	ArrayList<Integer> timlinepagerereview(String id, int start, int end);
 
+	ArrayList<Integer> timlinepagestore(String id, int start, int end);
+
+	ArrayList<String> pagefollowlist(String id, int start, int end);
+
+	ArrayList<String> pagefollowing(String id, int start, int end);
+
 }

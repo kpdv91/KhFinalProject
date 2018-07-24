@@ -191,6 +191,10 @@
 	<select id="storeList" resultType="store">
 		SELECT store_idx FROM store
 	</select>
+
+	<select id="getStarAvg" resultType="Double">
+		SELECT total_starAvg FROM total WHERE store_idx=#{param1}
+	</select>
 	
 	<insert id="insertStat">
 		INSERT INTO total(store_idx, total_date, total_revCnt, total_bhitCnt, total_starAvg) VALUES(#{param1},#{param2},0,0,0)

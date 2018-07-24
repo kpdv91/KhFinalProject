@@ -472,16 +472,16 @@ public class CommonService {
 	public void cron() {
 		inter = sqlSession.getMapper(CommonInter.class);
 		ArrayList<StoreDTO> storeList = inter.storeList();
+		
 		Date today = new Date();
-       
         SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
-        
         String sysdate = date.format(today);
         
 		int idx;
 		for (StoreDTO dto : storeList) {
 			idx = dto.getStore_idx();
-			inter.insertStat(idx,sysdate);
+			double starAvg = inter.getStarAvg(idx);
+			inter.insertStat(idx,starAvg,sysdate);
 		}
 
 	}

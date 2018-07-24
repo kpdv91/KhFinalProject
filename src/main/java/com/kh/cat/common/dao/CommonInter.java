@@ -25,8 +25,6 @@ public interface CommonInter {
 
 	DMDTO senddetail(String idx);
 
-	ArrayList<PointListDTO> pointlist(String id);
-
 	String memberpoint(String id);	
 
 	String messagesendidcheck(String id);
@@ -45,7 +43,7 @@ public interface CommonInter {
 
 	int followtimelinecnt(String id);
 
-	ArrayList<ReviewDTO> timelinereviewlist(String id);
+	ArrayList<ReviewDTO> timelinereviewlist(String id, int start, int end);
 
 	String followcheck(String userid, String id);
 
@@ -125,6 +123,12 @@ public interface CommonInter {
 	int searchOrStoreCount(HashMap<String, Object> search_content_Map);
 
 	int searchHashStoreCount(HashMap<String, Object> search_content_Map);
+
+	int pointallCount(String id);
+
+	ArrayList<PointListDTO> pointList(String id, int start, int end);
+
+	ArrayList<Integer> timlinepagereview(String id, int start, int end);
 
 	void insertStat(int idx, String sysdate);
 

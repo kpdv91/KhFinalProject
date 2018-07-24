@@ -5,11 +5,11 @@
 		<meta charset="UTF-8">
 		<title>Insert title here</title>
 		<style>
-			div#complain_main{position: relative; border: 1px solid black; width: 750px; height: 100%;}
-			div#complain_subMain{position: absolute; top: 10px; left: 5px; width: 700px; height: auto; border: 1px solid black;}
+			div#complain_main{position: relative; border: 1px solid black; width: 750px; height: 1000px;}
+			div#complain_subMain{position: absolute; top: 10px; left: 25px; width: 700px; height: auto; border: 1px solid black;}
 			
 			/* table, th, td{ border: 1px solid black; border-left: none; border-right:none; border-collapse: collapse; text-align: center;} */             
-			table#complain_table{width: 700px; height: 30px;}	  
+			table#complain_table{width: 700px; height: 30px; text-align: center;}	      
 			
 			th#user_id{width: 120px; height: 30px;}
 			th#complain_type{width: 100px; height: 30px;}
@@ -36,6 +36,11 @@
 					<tbody id="complail_tbody" class="complain_table">
 						
 					</tbody>
+					<tr>
+					<td colspan="5" id="complain_paging">
+						<div id="complain_container"></div>
+					</td>
+				</tr>
 				</table>
 			</div>
 		</div>

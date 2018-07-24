@@ -29,10 +29,31 @@ public class AdminService {
 	//신고 리스트
 	public HashMap<String, Object> ComplainList(HashMap<String, String> params) {
 		logger.info("신고 리스트 서비스 요청");
+		
+		int page = Integer.parseInt(params.get("page"));
+		
 		inter = sqlSession.getMapper(AdminInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		ArrayList<ComplainDTO> list = inter.complainList();
+		
+		int allCnt = inter.complainAllCnt();//신고리스트 총 갯수
+		int range = allCnt % 10 > 0 ? Math.round(allCnt/10)+1 : allCnt/10;
+		
+		if(page > range) {
+			page = range;
+		}
+		
+		int end = page * 10;
+		int start = end - 10 + 1;
+		
+		
+		ArrayList<ComplainDTO> list = inter.complainList(start, end);
+		logger.info("start : {}", start);
+		logger.info("end : {}", end);
+		logger.info("page : {}", page);
+		
 		map.put("list", list);
+		map.put("range", range);
+		map.put("currPage", page);
 		return map;
 	}
 

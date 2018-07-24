@@ -4,9 +4,9 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<!-- <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script> -->
-		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-		<script src="./resources/js/zer0boxPaging.js" type="text/javascript"></script>
+		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+		<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+		<script src="resources/js/zer0boxPaging.js" type="text/javascript"></script>
 		<title>Insert title here</title>
 		<style>
 			div#tableDiv{position: relative; top: 50px; left: 400px; border: 1px solid black; width: 740px; height: 1000px;}    
@@ -73,7 +73,7 @@
 					if(data.list2 != null && data.list != null){
 						printList(data.list2, data.list);		
 						$("#board_container").zer0boxPaging({ 
-			                viewRange : 10,
+			                viewRange : 5,
 			                currPage : data.currPage,
 			                maxPage : data.range,
 			                clickAction : function(e){

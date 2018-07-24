@@ -1104,6 +1104,8 @@
 			pointlistajax(showPage);
 		}else if(page=="resources/timelinehtml/couponbox.html"){
 			couponajax(showPage);
+		}else if(page == "resources/timelinehtml/complainList.html"){
+			complainListPaging(showPage);	
 		}else if(page=="reviewlist"){
 			timelinereview(showPage);
 		}else if(page=="likereview"){
@@ -1123,18 +1125,6 @@
 					console.log(e);
 					$("#content").empty();
 					alert("댓글이 없습니다");
-				}
-			});
-		}else if(page == "resources/timelinehtml/complainList.html"){
-			$.ajax({
-				url:"./complainList",
-				type:"post",
-				dataType:"json",
-				success:function(data){
-					complain_list(data.list);
-				},
-				error:function(error){
-					console.log(error);
 				}
 			});
 		}else if(page == "resources/timelinehtml/store_regist_list.html"){
@@ -1208,6 +1198,31 @@
 			});
 		}
 	}
+	//신고내역리스트 페이징
+	function complainListPaging(page) {
+		$.ajax({
+			url:"./complainList",
+			type:"post",
+			data : {page : page},
+			dataType:"json",
+			success:function(data){
+				complain_list(data.list);
+				$("#complain_container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : data.currPage,
+		            maxPage : data.range,
+		            clickAction : function(e){
+		            	complainListPaging($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(error){
+				console.log(error);
+			}
+		});
+	}
+	
+	
 	function timelinelikereview(page){
 		$.ajax({
 			url:"./timelinelikereview",
@@ -1550,17 +1565,16 @@
 					content +="<td class='comp_detail1'>"+item.complain_cate+"</td>";
 					var date = new Date(item.complain_date);			
 					content +="<td class='comp_detail1'>"+date.toLocaleDateString("ko-KR")+"</td>";
-					content +="<td><button id='complain_move' onclick='complain_move("+item.complain_idx+", "+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
+					content +="<td id='comp_btn'><button id='complain_move' onclick='complain_move("+item.complain_idx+", "+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
 					content += "</tr>";
 					content += "<tr>";
 					content +="<td style='display: none;'>신고 내용 : </td>";
-					content +="<td style='display: none;' colspan='5'>"+item.complain_content+"</td>";
+					content +="<td style='display: none;' colspan='5' align='left'>"+item.complain_content+"</td>";
 					content += "</tr>";
 				}
 			});		
 			$("#complail_tbody").empty();
 			$("#complail_tbody").append(content);//내용 붙이기
-			
 			
 			$(".comp_detail1").click(function () {
 				console.log("클릭");

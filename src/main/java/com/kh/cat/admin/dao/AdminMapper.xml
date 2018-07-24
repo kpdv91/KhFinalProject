@@ -14,7 +14,10 @@
 
 	<!-- 신고리스트(관리자) -->
 	<select id="complainList" resultType="complain">
-		SELECT * FROM complain ORDER BY complain_idx
+		SELECT complain_idx, id, complain_id, complain_type, complain_content, complain_cate, complain_date, complain_black, review_idx, revreply_idx FROM
+		(SELECT complain_idx, id, complain_id, complain_type, complain_content, complain_cate, complain_date, complain_black, review_idx, revreply_idx,
+		ROW_NUMBER() OVER (ORDER BY complain_idx DESC) AS rnum FROM complain)
+		WHERE rnum BETWEEN #{param1} AND #{param2}
 	</select>
 	
 	<!-- 가게 등록 리스트(관리자) -->
@@ -133,6 +136,11 @@
 	<delete id="black_board_del">
 		DELETE FROM board WHERE id = #{param1}
 	</delete>
+	
+	<!-- 신고리스트 총 갯수 -->
+	<select id="complainAllCnt" resultType="Integer">
+		SELECT COUNT(*) FROM complain
+	</select>
 </mapper>
 
 

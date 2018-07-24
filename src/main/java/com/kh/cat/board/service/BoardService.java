@@ -42,6 +42,9 @@ public class BoardService {
 		
 		int end = page * 10;
 		int start = end - 10 + 1;
+		logger.info("start : {}", start);
+		logger.info("end : {}", end);
+		logger.info("page : {}", page);
 		ArrayList<BoardDTO> list2 = inter.boardList2();//공지사항 리스트
 		ArrayList<BoardDTO> list = inter.boardList(start, end);//문의사항 리스트
 		logger.info("공지사항 : {}", list2.size());

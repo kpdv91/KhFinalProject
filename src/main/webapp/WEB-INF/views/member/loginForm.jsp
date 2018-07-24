@@ -39,17 +39,17 @@
 </head>
 <body>
 	
-<form id="login" action="login" method="post" name="formname">
+<form id="login" action="login" method="post">
 <div>
     <table>
    	     <tr>
             <td>아 이 디 &nbsp : </td>
-            <td><input type="text" tabindex="1" name="id" placeholder="아이디" onkeypress="JavaScript:press(this.form)"></td>
-            <td rowspan="2"> <input id="loginBtn" type="button" value="로그인"> <!-- <button>로그인</button> --></td>
+            <td><input type="text" tabindex="1" name="id" id="userId" placeholder="아이디"></td>
+            <td rowspan="2"> <input id="loginBtn" type="button" value="로그인"></td>
          </tr>
          <tr>
             <td>비밀번호&nbsp&nbsp: </td>
-            <td><input type="password" tabindex="2" name="pw" placeholder="비밀번호" onkeypress="JavaScript:press(this.form)"></td>            
+            <td><input type="password" tabindex="2" name="pw" id="userPw" placeholder="비밀번호"></td>            
          </tr>
          <tr>
            <td colspan="3">
@@ -72,14 +72,19 @@
 		if(msg!=""){
 			alert(msg);
 		}	
-	}
-	
-	function press(f){ 
-		if(f.keyCode == 13){ //javascript에서는 13이 enter키를 의미함 
-			formname.submit(); //formname에 사용자가 지정한 form의 name입력 
-		} 
-	}
+	}	
 
+	$("#userId").keyup(function(e){
+		if(e.keyCode == 13)  
+			$("#login").submit(); 
+		}
+	);
+	
+	$("#userPw").keyup(function(e){
+		if(e.keyCode == 13)  
+			$("#login").submit(); 
+		}
+	);
 	
 
 	function join() {

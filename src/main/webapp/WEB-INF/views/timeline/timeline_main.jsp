@@ -1117,20 +1117,6 @@
 		}else if(page=="likereview"){
 			timelinelikereview(showPage);
 		}else if(page=="timeline_reply"){
-				$.ajax({
-				url:"./timeline_reply",
-				type:"post",
-				data:{
-					id : userid
-				},
-				dataType:"json",
-				success:function(d){
-					revreplyList(d.list);
-				},
-				error:function(e){
-					console.log(e);
-					$("#content").empty();
-					alert("댓글이 없습니다");
 			timeline_replyajax(showPage);
 		}else if(page == "resources/timelinehtml/store_regist_list.html"){
 			$.ajax({

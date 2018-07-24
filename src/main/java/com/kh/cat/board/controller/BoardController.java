@@ -31,9 +31,9 @@ public class BoardController {
 
 	// 게시판 리스트
 	@RequestMapping(value = "/boardList")
-	public @ResponseBody HashMap<String, Object> boardList() {
+	public @ResponseBody HashMap<String, Object> boardList(@RequestParam("page") int page) {
 		logger.info("boardList 요청");
-		return boardService.boardList();
+		return boardService.boardList(page);
 	}
 
 	// 게시판 작성하기 페이지 이동

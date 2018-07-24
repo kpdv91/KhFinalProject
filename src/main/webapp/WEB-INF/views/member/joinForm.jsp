@@ -288,9 +288,11 @@
         	alert("비밀번호값이 변경 되었습니다. 다시 확인 해주세요.");    
         }else if(exptext.test($("input[name='userEmail']").val())==false){//이메일 형식이 알파벳+숫자@알파벳+숫자.알파벳+숫자 형식이 아닐경우
     		alert("이메일 형식이 올바르지 않습니다.");
+    		$("input[name='userEmail']").focus();
     		return false;
         }else if(!idReg.test( $("input[name='userId']").val() )){	//id 유효성
            	alert("아이디는 5~20자리의 영문자 또는 숫자이어야 합니다.");
+           	$("input[name='userId']").focus();
            	return false;
         }else{	
 

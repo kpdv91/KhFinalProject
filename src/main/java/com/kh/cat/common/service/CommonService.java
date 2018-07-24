@@ -1,8 +1,9 @@
 package com.kh.cat.common.service;
 
-import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -532,10 +533,16 @@ public class CommonService {
 	public void cron() {
 		inter = sqlSession.getMapper(CommonInter.class);
 		ArrayList<StoreDTO> storeList = inter.storeList();
+		Date today = new Date();
+       
+        SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
+        
+        String sysdate = date.format(today);
+        
 		int idx;
 		for (StoreDTO dto : storeList) {
 			idx = dto.getStore_idx();
-			inter.insertStat(idx);
+			inter.insertStat(idx,sysdate);
 		}
 
 	}

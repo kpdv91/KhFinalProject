@@ -345,7 +345,7 @@ public class MemberService {
 		    	  pwChange = inter.pwChange(id, hash);//암호화된 비밀번호 DB 에 저장
 		    	  logger.info("암호화된 임시 비빌번호 DB 저장 결과 : {}", pwChange);
 		    	  if(pwChange > 0) {
-		    		  title = "CAT";
+		    		  title = "CAT 사이트에 요청한 임시 비밀번호 발급 안내입니다.";
 		    		  content = id+" 님의 임시 비밀번호는 ["+tmpPw+"] 입니다.";
 		    		  messageHelper.setFrom(setFrom, "CAT");  // 보내는사람 생략하거나 하면 정상작동을 안함
 				      messageHelper.setTo(toMail);     // 받는사람 이메일

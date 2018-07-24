@@ -66,6 +66,8 @@
 </body>
 <script>
 
+	var idReg = /^[A-za-z0-9]{5,20}/g;
+
 
 	printMsg();
 	function printMsg(){
@@ -78,12 +80,6 @@
 	function join() {
 		location.href="./joinForm";
 	};
-		
-		 /* window.open("./findIdForm","","top=0, left=0, width=800, height=556, directories='no', location=no, menubar=no, resizable=no, status=yes, toolbar=no")  ;
-	     
-	     window.opener = "nothing";
-	     window.open('', '_parent', '');
-	     window.close(); */
 	
 	function pwFind() {
 		var myWin= window.open("./pwFindWin", "PW 찾기","width=500,height=500");	
@@ -93,47 +89,28 @@
 	function popupOpen(){
 
 		var popUrl = "./findIdForm";	//팝업창에 출력될 페이지 URL
-
-		//var popOption = "top=0, left=0, width=800, height=556, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
 		var popOption = "top=0, left=0, width=500, height=500, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
 			window.open(popUrl,"",popOption);
-
 		}
 
-
-
-/* var idReg = /^[a-z]+[a-z0-9]{4,19}$/g;
-if( !idReg.test( $("input[name=id]").val() ) ) {
-    alert("아이디는 영문자로 시작하는 5~20자 영문자 또는 숫자이어야 합니다.");
-    return; 
-}  */
-
-
-//var idReg = /^[a-z0-9]+[a-z0-9]{4,19}$/g;
-var idReg = /^[A-za-z0-9]{5,20}/g;
-
-
-$("#loginBtn").click(function(){
-	
-	if($("input[name='id']").val()==""){//아이디
-        alert("아이디를 입력해주세요!!");
-        $("input[name='id']").focus();
-        return false;
-   }else if($("input[name='pw']").val()==""){//비밀번호
-	   	alert("비밀번호를 입력해주세요!!");
-	   	$("input[name='pw']").focus();
-	   	return false;
-   
-   }else if($("input[name='pw']").val().length<8 || $("input[name='pw']").val().length>16){	//비밀번호 유효성
-   		alert("비밀번호는 8~16자를 입력해주세요.");
-   		return false;
-   }/* else if(!idReg.test( $("input[name='id']").val() )){	//id 유효성
-  		alert("아이디는 5~20자리의 영문자 또는 숫자이어야 합니다.");
-  		return false;
-   } */else{
-   		$("#login").submit();//submit
-   }
-});		
+	$("#loginBtn").click(function(){
+		
+		if($("input[name='id']").val()==""){//아이디
+	        alert("아이디를 입력해주세요!!");
+	        $("input[name='id']").focus();
+	        return false;
+	   }else if($("input[name='pw']").val()==""){//비밀번호
+		   	alert("비밀번호를 입력해주세요!!");
+		   	$("input[name='pw']").focus();
+		   	return false;
+	   
+	   }else if($("input[name='pw']").val().length<8 || $("input[name='pw']").val().length>16){	//비밀번호 유효성
+	   		alert("비밀번호는 8~16자를 입력해주세요.");
+	   		return false;
+	   }else{
+	   		$("#login").submit();//submit
+	   }
+	});		
 
 
 

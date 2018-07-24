@@ -93,16 +93,20 @@ public class StoreController {
 	@RequestMapping(value = "/storeDetail", method = RequestMethod.GET)
 	public ModelAndView storeDetail(@RequestParam("store_idx") int store_idx, HttpServletRequest request, HttpServletResponse response) {
 		logger.info("가게 상세 페이지 요청.");
-		String sIdx = Integer.toString(store_idx);
-		int sf = storeService.uphitSF(sIdx, request);//조회 유무 판단
-		if(sf==0) {
-			Cookie ck = new Cookie("StoreDetail"+store_idx, sIdx);
-			ck.setMaxAge(24*60*60);
-			ck.setPath("/");
-			response.addCookie(ck);  
-			storeService.storeUphits(store_idx);//조회수 증가
+		String aut = (String) request.getSession().getAttribute("loginAut");
+		
+		if(!aut.equals("admin")) {
+			String sIdx = Integer.toString(store_idx);
+			int sf = storeService.uphitSF(sIdx, request);//조회 유무 판단
+			if(sf==0) {
+				Cookie ck = new Cookie("StoreDetail"+store_idx, sIdx);
+				ck.setMaxAge(24*60*60);
+				ck.setPath("/");
+				response.addCookie(ck);  
+				storeService.storeUphits(store_idx);//조회수 증가
+			}
 		}
-		return storeService.storeDetail(store_idx);
+		return storeService.storeDetail(store_idx,aut);
 	}
 	
 	//찜 확인

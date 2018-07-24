@@ -1778,13 +1778,13 @@
 			var content = "";
 			list.forEach(function(item){
 				content += "<tr><td>"+item.store_name+"</td>";
-				content += "<td><input type='button' value='보기' onclick='moveStat("+item.store_idx+")'></td></tr>";
+				content += "<td><input type='button' value='보기' onclick='moveStat("+item.store_idx+",\""+item.store_name+"\")'></td></tr>";
 				
 			})
 			$("#storeList").append(content);
 		}
-		function moveStat(idx) {
-			var myWin = window.open("./showStat?store_idx="+idx,"통계","width=1000, height=800")
+		function moveStat(idx, name) {
+			var myWin = window.open("./showStat?store_idx="+idx+"&store_name="+name,"통계")
 		}
 		function chgMail(){
 			$("#overlayMail").css("display","inline");

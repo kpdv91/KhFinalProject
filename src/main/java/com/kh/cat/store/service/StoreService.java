@@ -201,28 +201,32 @@ public class StoreService {
 	}
 
 	//맛집 상세 보기
-	public ModelAndView storeDetail(int store_idx) {
+	public ModelAndView storeDetail(int store_idx, String aut) {
 		ModelAndView mav = new ModelAndView();
 		inter = sqlSession.getMapper(StoreInter.class);
-		
-		mav.addObject("storeDetail", inter.storeDetail(store_idx));//가게 기본 정보
-		mav.addObject("storeHash", inter.storeHash(store_idx));//해쉬태그 
-		
-		ArrayList<MenuDTO> dtoList = inter.menuPhoto(store_idx);
-		ArrayList<String> menuList = new ArrayList<String>();
-		if(dtoList.size()==0) {
-			mav.addObject("storeMenuD", "storeMenuD.png");//기본 메뉴 사진
-		}else{
-			for(MenuDTO dto : dtoList) {
-				menuList.add(dto.getMenu_photo());
+		int registSF = inter.registSF(store_idx);
+		if(registSF==0 && !aut.equals("admin")) {
+			mav.addObject("message", "아직 등록된 맛집이 아닙니다.");//메뉴사진 리스트	
+			mav.setViewName("main");
+		}else {
+			mav.addObject("storeDetail", inter.storeDetail(store_idx));//가게 기본 정보
+			mav.addObject("storeHash", inter.storeHash(store_idx));//해쉬태그 
+			
+			ArrayList<MenuDTO> dtoList = inter.menuPhoto(store_idx);
+			ArrayList<String> menuList = new ArrayList<String>();
+			if(dtoList.size()==0) {
+				mav.addObject("storeMenuD", "storeMenuD.png");//기본 메뉴 사진
+			}else{
+				for(MenuDTO dto : dtoList) {
+					menuList.add(dto.getMenu_photo());
+				}
+				Collections.sort(menuList);
+				mav.addObject("storeMenuD", menuList.get(0));//첫 메뉴 사진
 			}
-			Collections.sort(menuList);
-			mav.addObject("storeMenuD", menuList.get(0));//첫 메뉴 사진
-		}
-		mav.addObject("storeMenu", menuList);//메뉴사진 리스트
+			mav.addObject("storeMenu", menuList);//메뉴사진 리스트	
 		
-	
-		mav.setViewName("store/storeDetail");
+			mav.setViewName("store/storeDetail");
+		}
 		
 		return mav;
 	}
@@ -284,6 +288,11 @@ public class StoreService {
 		inter.storeUphits(store_idx);
 		commonInter = sqlSession.getMapper(CommonInter.class);
 		commonInter.uphitStat(store_idx);//통계 추가
+	}
+
+	public int registSF(int store_idx) {
+		inter = sqlSession.getMapper(StoreInter.class);
+		return inter.registSF(store_idx);
 	}
 
 }

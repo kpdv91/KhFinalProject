@@ -207,10 +207,10 @@ public class CommonController {
 	
 	//가게 통계 보기
 	@RequestMapping(value = "/showStat", method = RequestMethod.GET)
-	public ModelAndView storeDetail(@RequestParam("store_idx") int store_idx) {
+	public ModelAndView storeDetail(@RequestParam("store_idx") int store_idx, @RequestParam("store_name") String store_name) {
 		logger.info("가게 통계 페이지 요청.");
 
-		return commonservice.showStat(store_idx);
+		return commonservice.showStat(store_idx, store_name);
 	}
 	@RequestMapping(value = "/timelinefallowlist")
 	public @ResponseBody HashMap<String, Object> timelinefallowlist(@RequestParam Map<String,String> params) {

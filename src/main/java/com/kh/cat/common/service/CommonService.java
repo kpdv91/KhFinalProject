@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 
@@ -366,25 +367,6 @@ public class CommonService {
 	}
 
 	public HashMap<String, Object> timelinelikereview(Map<String, String> params) {
-		/*inter = sqlSession.getMapper(CommonInter.class);
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		int page = Integer.parseInt(params.get("page"));
-		String id = params.get("id");
-		//총 게시물 수 => 생성 가능 페이지 수
-		int allCnt = inter.reviewtimelinecnt(id);
-		//생성 가능 페이지 수 : 나머지가 있으면 페이지 하나 더 생성
-		int range = allCnt%10 >0 ? Math.round(allCnt/10)+1 : allCnt/10;
-		if(page>range) {
-			page=range;
-		}
-		logger.info("총 개시물 수 : {}",allCnt);
-		logger.info("생성 가능 페이지 수 : {}",range);
-		int end = page*10;
-		int start = end-9;
-		logger.info(id);
-		map.put("list", inter.timelinereviewlist(id,start,end));
-		map.put("range", range);
-		map.put("currPage",page);*/
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		String id = params.get("id");
@@ -416,15 +398,32 @@ public class CommonService {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		String id = params.get("id");
+		int page = Integer.parseInt(params.get("page"));
 		ArrayList<Integer> review = inter.my_reply(id);
 		logger.info("review " + review.size());
 		logger.info("reviewlist" + review.get(0));
+		
+		HashSet<Integer> set = new HashSet<Integer>(review);
+		review = new ArrayList<Integer>(set);
+		int allCnt = review.size();
+		int range = allCnt%10 >0 ? Math.round(allCnt/10)+1 : allCnt/10;
+		if(page>range) {
+			page=range;
+		}		
+		int end = page*10;
+		int start = end-9;
+		ArrayList<Integer> reviewpage = inter.timlinepagereview(id,start,end);
+		set = new HashSet<Integer>(reviewpage);
+		reviewpage = new ArrayList<Integer>(set);
+		
 		// ArrayList<ReviewDTO> list = new ArrayList<ReviewDTO>();
 		ArrayList<ArrayList<ReviewDTO>> list = new ArrayList<ArrayList<ReviewDTO>>();
-		for (int i = 0; i < review.size(); i++) {
-			list.add(inter.timelinelikereview(review.get(i)));
+		for (int i = 0; i < reviewpage.size(); i++) {
+			list.add(inter.timelinelikereview(reviewpage.get(i)));
 		}
 		map.put("list", list);
+		map.put("range", range);
+		map.put("currPage",page);
 		return map;
 	}
 

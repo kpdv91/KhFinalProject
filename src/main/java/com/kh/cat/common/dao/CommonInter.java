@@ -132,4 +132,6 @@ public interface CommonInter {
 
 	void insertStat(int idx, String sysdate);
 
+	ArrayList<Integer> timlinepagerereview(String id, int start, int end);
+
 }

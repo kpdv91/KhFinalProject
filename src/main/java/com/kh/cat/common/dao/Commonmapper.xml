@@ -78,6 +78,10 @@
 	</select>
 	<select id="timlinepagereview" resultType="Integer">
 	SELECT review_idx FROM (SELECT review_idx,ROW_NUMBER() OVER (ORDER BY review_idx DESC) 
+		AS rnum FROM revreply WHERE id=#{param1}) WHERE rnum BETWEEN #{param2} AND #{param3}
+	</select>
+	<select id="timlinepagerereview" resultType="Integer">
+	SELECT review_idx FROM (SELECT review_idx,ROW_NUMBER() OVER (ORDER BY review_idx DESC) 
 		AS rnum FROM revlike WHERE id=#{param1}) WHERE rnum BETWEEN #{param2} AND #{param3}
 	</select>
 	<select id="timelinelikereview" resultType="review">

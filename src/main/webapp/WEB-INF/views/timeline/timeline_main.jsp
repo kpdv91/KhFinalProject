@@ -581,6 +581,9 @@
 				idx=item.review_idx;
 				starSelect(idx);//리뷰 별점
 				hashtag(idx);
+				if(loginid != ""){
+					likeSelect(idx);//리뷰 좋아요
+					}
 		})
 		$("#content").empty();
 		$("#content").append(content);
@@ -602,7 +605,7 @@
 					content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 					content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
 					if(item.id != loginid || loginid == ""){
-						content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike2.png' onclick='likeClick(this,"+item.review_idx+")' />";
+						content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' />";
 					}
 					content += "<br/></div></div>";
 					content += "<table id='review_table'><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
@@ -616,6 +619,9 @@
 					idx=item.review_idx;
 					hashtag(idx);
 					starSelect(idx);//리뷰 별점
+					if(loginid != ""){
+						likeSelect(idx);//리뷰 좋아요
+						}
 			})
 		})
 		$("#content").empty();
@@ -1125,8 +1131,7 @@
 					console.log(e);
 					$("#content").empty();
 					alert("댓글이 없습니다");
-				}
-			});
+			timeline_replyajax(showPage);
 		}else if(page == "resources/timelinehtml/store_regist_list.html"){
 			$.ajax({
 				url:"./storeRegistList",
@@ -1221,7 +1226,32 @@
 			}
 		});
 	}
-	
+	function timeline_replyajax(page){
+		$.ajax({
+			url:"./timeline_reply",
+			type:"post",
+			data:{
+				id : userid,
+				page : page
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d);
+				revreplyList(d.list);
+				$("#container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	timeline_replyajax($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
 	
 	function timelinelikereview(page){
 		$.ajax({

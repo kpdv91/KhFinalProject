@@ -1112,24 +1112,14 @@
 			couponajax(showPage);
 		}else if(page == "resources/timelinehtml/complainList.html"){
 			complainListPaging(showPage);	
+		}else if(page == "resources/timelinehtml/store_regist_list.html"){
+			storeRegistListPaging(showPage);	
 		}else if(page=="reviewlist"){
 			timelinereview(showPage);
 		}else if(page=="likereview"){
 			timelinelikereview(showPage);
 		}else if(page=="timeline_reply"){
 			timeline_replyajax(showPage);
-		}else if(page == "resources/timelinehtml/store_regist_list.html"){
-			$.ajax({
-				url:"./storeRegistList",
-				type:"post",
-				dataType:"json",
-				success:function(data){
-					store_regist_list(data.list);
-				},
-				error:function(error){
-					console.log(error);
-				}
-			});
 		}else if(page == "likestore"){
 			$.ajax({
 				url:"./timelinelikestore",
@@ -1189,6 +1179,30 @@
 			});
 		}
 	}
+	//가게 등록 리스트 페이징
+	function storeRegistListPaging(page) {
+		$.ajax({
+			url:"./storeRegistList",
+			type:"post",
+			data : {page : page},
+			dataType:"json",
+			success:function(data){
+				store_regist_list(data.list);
+				$("#storeRegist_container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : data.currPage,
+		            maxPage : data.range,
+		            clickAction : function(e){
+		            	storeRegistListPaging($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(error){
+				console.log(error);
+			}
+		});
+	}
+	
 	//신고내역리스트 페이징
 	function complainListPaging(page) {
 		$.ajax({

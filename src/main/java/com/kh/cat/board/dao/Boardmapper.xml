@@ -35,12 +35,19 @@
 			FROM board ORDER BY board_cate ASC, board_idx DESC
 	</select> -->
 	
+	<select id="boardList2" resultType="board">
+		SELECT board_idx, id, board_subject, board_cate, board_date FROM board
+			WHERE board_cate='공지사항' ORDER BY board_idx DESC
+	</select>
+	
 	<select id="boardList" resultType="board">
 		SELECT board_idx, id, board_subject, board_cate, board_date FROM
 			(SELECT board_idx, id, board_subject, board_cate, board_date,
-			ROW_NUMBER() OVER (ORDER BY board_cate ASC, board_idx DESC) AS rnum FROM board)
+			ROW_NUMBER() OVER (ORDER BY board_idx DESC) AS rnum FROM board WHERE board_cate = '문의사항')
 			WHERE rnum BETWEEN #{param1} AND #{param2}
 	</select>
+	
+	
 	
 	<select id="boardAllCnt" resultType="Integer">
 		SELECT COUNT(*) FROM board

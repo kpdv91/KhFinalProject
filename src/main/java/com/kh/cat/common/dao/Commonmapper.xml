@@ -30,8 +30,10 @@
 	<select id="memberpoint" resultType="String">
 		SELECT pointCnt FROM member WHERE id=#{param1}
 	</select>
-	<select id="pointlist" resultType="pointList">
-		SELECT * FROM pointList WHERE id=#{param1}
+	<select id="pointList" resultType="pointList">
+		SELECT * FROM (SELECT pointList_idx,id,pointList_point,pointList_type,pointList_cate,pointList_date,ROW_NUMBER()
+	 OVER (ORDER BY pointList_idx DESC) AS rnum FROM pointList WHERE id=#{param1}) 
+	 WHERE rnum BETWEEN #{param2} AND #{param3}
 	</select>
 	<select id="couponlist" resultType="couponBox">
 		SELECT couponBox_code,id,couponBox_use,couponBox_date,couponBox_name,couponBox_price FROM
@@ -58,7 +60,9 @@
 		SELECT COUNT(*) FROM follow WHERE id=#{param1}
 	</select>
 	<select id="timelinereviewlist" resultType="review">
-		SELECT * FROM review WHERE id=#{param1} ORDER BY review_date DESC
+		SELECT * FROM (SELECT review_idx,store_idx,id,review_storename,review_star,review_content,review_likecnt,review_date,
+		review_profile,review_replycnt,ROW_NUMBER() OVER (ORDER BY review_idx DESC) AS rnum FROM review WHERE id=#{param1})
+		WHERE rnum BETWEEN #{param2} AND #{param3}
 	</select>
 	<insert id="followinsert" useGeneratedKeys="true" keyColumn="follow_idx" keyProperty="follow_idx" parameterType="follow">
 		INSERT INTO follow VALUES(seq_follow.NEXTVAL,#{id},#{follow_id})
@@ -71,6 +75,14 @@
 	</delete>
 	<select id="timelinereview" resultType="Integer">
 		SELECT review_idx FROM revlike WHERE id=#{param1}
+	</select>
+	<select id="timlinepagereview" resultType="Integer">
+	SELECT review_idx FROM (SELECT review_idx,ROW_NUMBER() OVER (ORDER BY review_idx DESC) 
+		AS rnum FROM revreply WHERE id=#{param1}) WHERE rnum BETWEEN #{param2} AND #{param3}
+	</select>
+	<select id="timlinepagerereview" resultType="Integer">
+	SELECT review_idx FROM (SELECT review_idx,ROW_NUMBER() OVER (ORDER BY review_idx DESC) 
+		AS rnum FROM revlike WHERE id=#{param1}) WHERE rnum BETWEEN #{param2} AND #{param3}
 	</select>
 	<select id="timelinelikereview" resultType="review">
 		SELECT * FROM review WHERE review_idx=#{param1} ORDER BY review_date DESC
@@ -177,6 +189,10 @@
 	<select id="likestore" resultType="Integer">
 		SELECT store_idx FROM storelike WHERE id=#{param1}
 	</select>
+	<select id="timlinepagestore" resultType="Integer">
+		SELECT store_idx FROM (SELECT store_idx,ROW_NUMBER() OVER (ORDER BY store_idx DESC) 
+		AS rnum FROM storelike WHERE id=#{param1}) WHERE rnum BETWEEN #{param2} AND #{param3}
+	</select>
 	<select id="timelinelikestore" resultType="store">
 		SELECT * FROM store WHERE store_idx=#{param1}
 	</select>
@@ -191,9 +207,13 @@
 	<select id="storeList" resultType="store">
 		SELECT store_idx FROM store
 	</select>
+
+	<select id="getStarAvg" resultType="Double">
+		SELECT total_starAvg FROM total WHERE store_idx=#{param1}
+	</select>
 	
 	<insert id="insertStat">
-		INSERT INTO total(store_idx, total_date, total_revCnt, total_bhitCnt, total_starAvg) VALUES(#{param1},SYSDATE,0,0,0)
+		INSERT INTO total(store_idx, total_date, total_revCnt, total_bhitCnt, total_starAvg) VALUES(#{param1},#{param3},0,0,#{param2})
 	</insert>
 	
 	<select id="showStat" resultType="total">
@@ -205,14 +225,22 @@
 	</select>
 	
 	<update id="uphitStat">
-		UPDATE total SET total_bhitCnt= total_bhitCnt+1 WHERE total_date= SYSDATE AND store_idx = #{param1}
+		UPDATE total SET total_bhitCnt= total_bhitCnt+1 WHERE  total_date > to_date(SYSDATE-1, 'YY/MM/DD') AND store_idx = #{param1}
 	</update>
 	
 	<select id="followlist" resultType="String">
 		SELECT id FROM follow WHERE follow_id=#{param1}
 	</select>
+	<select id="pagefollowlist" resultType="String">
+	SELECT id FROM (SELECT id,ROW_NUMBER() OVER (ORDER BY follow_idx DESC) 
+		AS rnum FROM follow WHERE follow_id=#{param1}) WHERE rnum BETWEEN #{param2} AND #{param3}
+	</select>
 	<select id="following" resultType="String">
 		SELECT follow_id FROM follow WHERE id=#{param1}
+	</select>
+	<select id="pagefollowing" resultType="String">
+	SELECT follow_id FROM (SELECT follow_id,ROW_NUMBER() OVER (ORDER BY follow_idx DESC) 
+		AS rnum FROM follow WHERE id=#{param1}) WHERE rnum BETWEEN #{param2} AND #{param3}
 	</select>
 	<select id="followlistprofile" resultType="member">
 		SELECT id,profile FROM member WHERE id=#{param1}
@@ -240,6 +268,9 @@
 	 </select>
 	 <select id="sendlistallCount" resultType="Integer">
 	 	SELECT COUNT(*) FROM dm WHERE id=#{param1}
+	 </select>
+	 <select id="pointallCount" resultType="Integer">
+	 	SELECT COUNT(*) FROM pointList WHERE id=#{param1}
 	 </select>
 </mapper>
 

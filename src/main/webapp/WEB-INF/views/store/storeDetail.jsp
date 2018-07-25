@@ -124,8 +124,11 @@
 	</body>
 	<script>
 	//뒤로가기 버튼 클릭이벤트
+	var cate = "가게";
+	var alarmuserid="${sessionScope.loginId}";
 	function backBtn() {
-		history.back();
+		//history.back();
+		location.href="./alarmtimeline?id="+alarmuserid+"&cate="+cate;
 	}
 	
 	var id="";

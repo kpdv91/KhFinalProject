@@ -25,8 +25,6 @@ public interface CommonInter {
 
 	DMDTO senddetail(String idx);
 
-	ArrayList<PointListDTO> pointlist(String id);
-
 	String memberpoint(String id);	
 
 	String messagesendidcheck(String id);
@@ -45,7 +43,7 @@ public interface CommonInter {
 
 	int followtimelinecnt(String id);
 
-	ArrayList<ReviewDTO> timelinereviewlist(String id);
+	ArrayList<ReviewDTO> timelinereviewlist(String id, int start, int end);
 
 	String followcheck(String userid, String id);
 
@@ -101,8 +99,10 @@ public interface CommonInter {
 	void alarmdminsert(int dm_idx, String id);
 
 	ArrayList<StoreDTO> storeList();//store idx 셀렉
+	
+	double getStarAvg(int idx);//평균 별점 가져오기
 
-	void insertStat(int idx);//통계 0으로 자정에 추가
+	void insertStat(int idx, double starAvg, String sysdate);//통계 0으로 자정에 추가
 
 	ArrayList<TotalDTO> showStat(int store_idx);//통계 가져오기
 
@@ -125,5 +125,19 @@ public interface CommonInter {
 	int searchOrStoreCount(HashMap<String, Object> search_content_Map);
 
 	int searchHashStoreCount(HashMap<String, Object> search_content_Map);
+
+	int pointallCount(String id);
+
+	ArrayList<PointListDTO> pointList(String id, int start, int end);
+
+	ArrayList<Integer> timlinepagereview(String id, int start, int end);
+
+	ArrayList<Integer> timlinepagerereview(String id, int start, int end);
+
+	ArrayList<Integer> timlinepagestore(String id, int start, int end);
+
+	ArrayList<String> pagefollowlist(String id, int start, int end);
+
+	ArrayList<String> pagefollowing(String id, int start, int end);
 
 }

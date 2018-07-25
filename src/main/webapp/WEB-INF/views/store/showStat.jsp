@@ -10,10 +10,27 @@
 
 		<title>가게 통계 페이지</title>
 		<style>
+		#statCate{
+			position: absolute;
+			left: 5%;
+			top:15%;
+			z-index: 1;
+		}
+		#statCate input{
+			display: block;
+			margin: 50px 0px;
+		}
 		</style>
 	</head>
 	<body>
+		
 		<div id="Line_Controls_Chart">
+		<div id=statCate>
+			<input type="button" value="ALL" onclick="reDrow('all')">
+			<input type="button" value="조회수" onclick="reDrow('hit')">
+			<input type="button" value="리뷰수" onclick="reDrow('rev')">
+			<input type="button" value="별점" onclick="reDrow('star')">
+		</div>
 		<!-- 라인 차트 생성할 영역 -->
 			<div id="lineChartArea" style="padding:0px 20px 0px 0px;"></div>
 		<!-- 컨트롤바를 생성할 영역 -->
@@ -23,6 +40,7 @@
 	
 	<script>
 	var dataCnt =  ${statList.size()};
+	var cate = "";
 	
 	if(dataCnt<2){
 		alert("데이터가 충분하지 않습니다.");
@@ -43,24 +61,50 @@
 		 
 		        function drawDashboard() {
 		 
-		          var data = new google.visualization.DataTable();
-		          //그래프에 표시할 컬럼 추가
-		          data.addColumn('datetime' , '날짜');
-		          data.addColumn('number'   , '조회수');
-		          data.addColumn('number'   , '리뷰수');
-		          data.addColumn('number'   , '별점');
+		          	var data = new google.visualization.DataTable();
+		         	 //그래프에 표시할 컬럼 추가
+					data.addColumn('datetime' , '날짜');
+					console.log(cate);
+					
+					 data.addColumn('number'   , '조회수');
+					 data.addColumn('number'   , '리뷰수');
+					 data.addColumn('number'   , '별점');
+				
 		 
 		          //그래프에 표시할 데이터
 		          var dataRow = [];
+		          var min=0;
 		        
 		        <c:forEach var="item" items="${statList}">
 			        var date =	"${item.total_date}";
-			        var hitCnt = ${item.total_bhitCnt};
-			    	var revCnt = ${item.total_revCnt};
-			    	var starAvg =	${item.total_starAvg};
-			    	console.log(date, hitCnt, revCnt , starAvg);
-			    	var dateN = date. split('-');
-			    	dataRow = [new Date(dateN[0],dateN[1]-1,dateN[2]), hitCnt, revCnt , starAvg];
+			        var dateN = date. split('-');
+			
+			        if(cate=="all"){
+			        	var hitCnt = ${item.total_bhitCnt};
+			        	var revCnt = ${item.total_revCnt};
+			        	var starAvg =	${item.total_starAvg};
+			        	dataRow = [new Date(dateN[0],dateN[1]-1,dateN[2]), hitCnt, revCnt , starAvg];
+			        }else if(cate=="hit"){
+			        	var hitCnt = ${item.total_bhitCnt};
+			        	dataRow = [new Date(dateN[0],dateN[1]-1,dateN[2]), hitCnt, null, null];
+			        	console.log(hitCnt+" / "+min);
+			        	if(hitCnt>min){
+			        		min=(hitCnt+9)/10*10;
+			        		console.log(min);
+			        	}
+			        	
+			        }else if(cate=="rev"){
+			        	var revCnt = ${item.total_revCnt}
+			        	dataRow = [new Date(dateN[0],dateN[1]-1,dateN[2]), null, revCnt, null];
+			        	if(revCnt>min){
+			        		min=(revCnt+9)/10*10;
+			        		console.log(min);
+			        	}
+			        }else if(cate=="star"){
+			        	var starAvg =	${item.total_starAvg}
+			        	dataRow = [new Date(dateN[0],dateN[1]-1,dateN[2]), null, null, starAvg];
+			        	min=5;
+			        }
 		            data.addRow(dataRow);
 			    </c:forEach> 
 			    
@@ -81,7 +125,7 @@
 		                                                                  days  : {format: ['dd']}
 		                                                                  }
 		                                                                },textStyle: {fontSize:12}},
-		                vAxis              : {minValue: 5,viewWindow:{min:0},gridlines:{count:-1},textStyle:{fontSize:12}},
+		                vAxis              : {minValue: min,viewWindow:{min:0},gridlines:{count:-1},textStyle:{fontSize:12}},
 		                animation        : {startup: true,duration: 1000,easing: 'in' },
 		                annotations    : {pattern: chartDateformat,
 		                                textStyle: {
@@ -134,8 +178,15 @@
 		 
 		$(document).ready(function(){
 		  google.charts.load('current', {'packages':['line','controls']});
+		  cate = "all";
 		  chartDrowFun.chartDrow(); //chartDrow() 실행
 		});
+	
+	function reDrow(da) {
+		cate = da;
+		chartDrowFun.chartDrow();
+	}
+	
 
 	</script>
 </html>

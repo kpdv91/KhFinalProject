@@ -1,9 +1,11 @@
 package com.kh.cat.common.service;
 
-import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 
@@ -107,10 +109,24 @@ public class CommonService {
 	public HashMap<String, Object> pointlist(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		int page = Integer.parseInt(params.get("page"));
 		String id = params.get("id");
+		//총 게시물 수 => 생성 가능 페이지 수
+		int allCnt = inter.pointallCount(id);
+		//생성 가능 페이지 수 : 나머지가 있으면 페이지 하나 더 생성
+		int range = allCnt%5 >0 ? Math.round(allCnt/5)+1 : allCnt/5;
+		if(page>range) {
+			page=range;			
+		}
+		logger.info("총 개시물 수 : {}",allCnt);
+		logger.info("생성 가능 페이지 수 : {}",range);
+		int end = page*5;
+		int start = end-4;
 		logger.info(id);
-		map.put("memberpoint", inter.memberpoint(id));
-		map.put("list", inter.pointlist(id));
+		map.put("memberpoint",inter.memberpoint(id));
+		map.put("list", inter.pointList(id,start,end));
+		map.put("range", range);
+		map.put("currPage",page);
 		return map;
 	}
 
@@ -189,9 +205,24 @@ public class CommonService {
 	public HashMap<String, Object> timelinereviewlist(Map<String, String> params) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		int page = Integer.parseInt(params.get("page"));
 		String id = params.get("id");
+		//총 게시물 수 => 생성 가능 페이지 수
+		int allCnt = inter.reviewtimelinecnt(id);
+		//생성 가능 페이지 수 : 나머지가 있으면 페이지 하나 더 생성
+		int range = allCnt%10 >0 ? Math.round(allCnt/10)+1 : allCnt/10;
+		if(page>range) {
+			page=range;
+		}
+		logger.info("총 개시물 수 : {}",allCnt);
+		logger.info("생성 가능 페이지 수 : {}",range);
+		int end = page*10;
+		int start = end-9;
 		logger.info(id);
-		map.put("list", inter.timelinereviewlist(id));
+		//ArrayList<Object> list=inter.couponlist(id,start,end)
+		map.put("list", inter.timelinereviewlist(id,start,end));
+		map.put("range", range);
+		map.put("currPage",page);
 		return map;
 	}
 
@@ -339,14 +370,27 @@ public class CommonService {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		String id = params.get("id");
+		int page = Integer.parseInt(params.get("page"));
+		//총 게시물 수 => 생성 가능 페이지 수
 		ArrayList<Integer> review = inter.timelinereview(id);
-		logger.info("review " + review.size());
-		logger.info("reviewlist" + review.get(0));
+		//생성 가능 페이지 수 : 나머지가 있으면 페이지 하나 더 생성]
+		int allCnt = review.size();
+		int range = allCnt%10 >0 ? Math.round(allCnt/10)+1 : allCnt/10;
+		if(page>range) {
+			page=range;
+		}		
+		int end = page*10;
+		int start = end-9;
+		ArrayList<Integer> reviewpage = inter.timlinepagereview(id,start,end);
+		
 		ArrayList<ArrayList<ReviewDTO>> list = new ArrayList<ArrayList<ReviewDTO>>();
-		for (int i = 0; i < review.size(); i++) {
-			list.add(inter.timelinelikereview(review.get(i)));
-		}
-		map.put("list", list);
+		
+		for (int i = 0; i < reviewpage.size(); i++) {
+			list.add(inter.timelinelikereview(reviewpage.get(i)));
+		}		
+		map.put("list",list);
+		map.put("range", range);
+		map.put("currPage",page);
 		return map;
 	}
 
@@ -354,15 +398,32 @@ public class CommonService {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		String id = params.get("id");
+		int page = Integer.parseInt(params.get("page"));
 		ArrayList<Integer> review = inter.my_reply(id);
 		logger.info("review " + review.size());
 		logger.info("reviewlist" + review.get(0));
+		
+		HashSet<Integer> set = new HashSet<Integer>(review);
+		review = new ArrayList<Integer>(set);
+		int allCnt = review.size();
+		int range = allCnt%10 >0 ? Math.round(allCnt/10)+1 : allCnt/10;
+		if(page>range) {
+			page=range;
+		}		
+		int end = page*10;
+		int start = end-9;
+		ArrayList<Integer> reviewpage = inter.timlinepagereview(id,start,end);
+		set = new HashSet<Integer>(reviewpage);
+		reviewpage = new ArrayList<Integer>(set);
+		
 		// ArrayList<ReviewDTO> list = new ArrayList<ReviewDTO>();
 		ArrayList<ArrayList<ReviewDTO>> list = new ArrayList<ArrayList<ReviewDTO>>();
-		for (int i = 0; i < review.size(); i++) {
-			list.add(inter.timelinelikereview(review.get(i)));
+		for (int i = 0; i < reviewpage.size(); i++) {
+			list.add(inter.timelinelikereview(reviewpage.get(i)));
 		}
 		map.put("list", list);
+		map.put("range", range);
+		map.put("currPage",page);
 		return map;
 	}
 
@@ -432,18 +493,29 @@ public class CommonService {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		String id = params.get("id");
+		int page = Integer.parseInt(params.get("page"));
 		ArrayList<Integer> likestore = inter.likestore(id);
 		logger.info("store 개수 " + likestore.size());
 		logger.info("storeidx" + likestore.get(0));
+		int allCnt = likestore.size();
+		int range = allCnt%6 >0 ? Math.round(allCnt/6)+1 : allCnt/6;
+		if(page>range) {
+			page=range;
+		}		
+		int end = page*6;
+		int start = end-5;
+		ArrayList<Integer> likestorepage = inter.timlinepagestore(id,start,end);
 		// ArrayList<ReviewDTO> list = new ArrayList<ReviewDTO>();
 		ArrayList<ArrayList<StoreDTO>> list = new ArrayList<ArrayList<StoreDTO>>();
 		ArrayList<ArrayList<HashDTO>> list_hash = new ArrayList<ArrayList<HashDTO>>();
-		for (int i = 0; i < likestore.size(); i++) {
-			list.add(inter.timelinelikestore(likestore.get(i)));
-			list_hash.add(inter.likestorehash(likestore.get(i)));
+		for (int i = 0; i < likestorepage.size(); i++) {
+			list.add(inter.timelinelikestore(likestorepage.get(i)));
+			list_hash.add(inter.likestorehash(likestorepage.get(i)));
 		}
 		map.put("list", list);
 		map.put("list_hash", list_hash);
+		map.put("range", range);
+		map.put("currPage",page);
 		return map;
 	}
 
@@ -471,10 +543,16 @@ public class CommonService {
 	public void cron() {
 		inter = sqlSession.getMapper(CommonInter.class);
 		ArrayList<StoreDTO> storeList = inter.storeList();
+		
+		Date today = new Date();
+        SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
+        String sysdate = date.format(today);
+        
 		int idx;
 		for (StoreDTO dto : storeList) {
 			idx = dto.getStore_idx();
-			inter.insertStat(idx);
+			double starAvg = inter.getStarAvg(idx);
+			inter.insertStat(idx,starAvg,sysdate);
 		}
 
 	}
@@ -483,19 +561,40 @@ public class CommonService {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		String id = params.get("id");
-		logger.info(id);
 		ArrayList<String> followlist = inter.followlist(id);
 		ArrayList<String> following = inter.following(id);
 		ArrayList<ArrayList<MemberDTO>> list = new ArrayList<ArrayList<MemberDTO>>();
 		ArrayList<ArrayList<MemberDTO>> listing = new ArrayList<ArrayList<MemberDTO>>();
-		for (int i = 0; i < followlist.size(); i++) {
-			list.add(inter.followlistprofile(followlist.get(i)));
+		int page = Integer.parseInt(params.get("page"));
+		System.out.println(page+"페이지");
+		int allCnt1 = followlist.size();
+		int allCnt2 = following.size();
+		int range1 = allCnt1%6 >0 ? Math.round(allCnt1/6)+1 : allCnt1/6;
+		int range2 = allCnt2%6 >0 ? Math.round(allCnt2/6)+1 : allCnt2/6;
+		int page1 = 0;
+		int page2=0;
+		if(page>range1) {
+			page1=range1;
 		}
-		for (int j = 0; j < following.size(); j++) {
-			listing.add(inter.followingprofile(following.get(j)));
+		if(page>range2) {
+			page2=range2;
 		}
-		map.put("fallowlist", list);
-		map.put("fallowing", listing);
+		int end = page*6;
+		int start = end-5;
+		ArrayList<String> pagefollowlist = inter.pagefollowlist(id,start,end);
+		ArrayList<String> pagefollowing = inter.pagefollowing(id,start,end);
+		for (int i = 0; i < pagefollowlist.size(); i++) {
+			list.add(inter.followlistprofile(pagefollowlist.get(i)));
+		}
+		for (int j = 0; j < pagefollowing.size(); j++) {
+			listing.add(inter.followingprofile(pagefollowing.get(j)));
+		}
+		map.put("followlist", list);
+		map.put("following", listing);
+		map.put("range1", range1);
+		map.put("range2", range2);
+		map.put("currPage1",page1);
+		map.put("currPage2",page2);
 		return map;
 	}
 

@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -183,7 +185,11 @@ public class StoreService {
 		fileList.clear();
 		map.put("success", 1);
 		
-		commonInter.insertStat(dto.getStore_idx());//통계 추가
+		Date today = new Date();
+        SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
+        String sysdate = date.format(today);
+		
+		commonInter.insertStat(dto.getStore_idx(),0,sysdate);//통계 추가
 		
 		return map;
 	}

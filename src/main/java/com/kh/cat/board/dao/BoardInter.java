@@ -15,7 +15,7 @@ public interface BoardInter {
 
 	int boardDelete(int idx);
 
-	ArrayList<BoardDTO> boardList(int start, int end);//게시물 리스트
+	ArrayList<BoardDTO> boardList(int start, int end);//게시물(문의사항) 리스트
 
 	int boardReplyWrite(BoardReplyDTO dto);//게시판 댓글작성
 
@@ -28,5 +28,7 @@ public interface BoardInter {
 	int boardReplyDelete(int board_idx, int boardReply_idx);//게시판 댓글 삭제
 
 	int boardAllCnt();//페이징을 위한 총 게시물 수
+
+	ArrayList<BoardDTO> boardList2();// 공지사항 리스트
 
 }

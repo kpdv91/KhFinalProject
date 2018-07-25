@@ -32,6 +32,8 @@ public interface MemberInter {
 
 	int userupdate(MemberDTO dto);
 
-	int userpwupdate(MemberDTO dto);	
+	int userpwupdate(MemberDTO dto);
+
+	String getaut(String id); //권한 가져오기
 
 }

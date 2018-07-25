@@ -42,9 +42,14 @@ public class BoardService {
 		
 		int end = page * 10;
 		int start = end - 10 + 1;
-		
-		ArrayList<BoardDTO> list = inter.boardList(start, end);
-		logger.info("리스트 확인 : " +list.size()); 
+		logger.info("start : {}", start);
+		logger.info("end : {}", end);
+		logger.info("page : {}", page);
+		ArrayList<BoardDTO> list2 = inter.boardList2();//공지사항 리스트
+		ArrayList<BoardDTO> list = inter.boardList(start, end);//문의사항 리스트
+		logger.info("공지사항 : {}", list2.size());
+		logger.info("리스트 확인 : " +list.size());
+		map.put("list2", list2);
 		map.put("list", list);
 		map.put("range", range);
 		map.put("currPage", page);

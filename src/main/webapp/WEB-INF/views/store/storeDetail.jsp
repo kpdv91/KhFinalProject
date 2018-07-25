@@ -107,10 +107,6 @@
 				</div>
 				<div class="divChg" id="loca">
 					<div id="map" style="width:100%;height:100%;"></div>
-					<p>
-						<button onclick="setZoomable(true)">지도 확대/축소 켜기</button>
-						<button onclick="setZoomable(false)">지도 확대/축소 끄기</button>
-					</p>
 				</div>
 			</div>
 		</div>
@@ -143,8 +139,8 @@
 		$("#info").css("display","inline");
 	}
 	
-	var mapContaine;
 	var map;
+	var isMap=false;//맵 생성 여부
 	//선택에 따라 정보,메뉴,위치 보기
 	function divSnH(e) {
 		$(".tab").css("background-color","white");
@@ -198,6 +194,7 @@
 			    } 
 			});
 			map.setZoomable(false);
+			isMap = true;
 		}else{
 			alert("올바른 명령이 아닙니다.")
 		}
@@ -209,6 +206,18 @@
 	    // 마우스 휠로 지도 확대,축소 가능여부를 설정합니다
 	    map.setZoomable(zoomable);    
 	}
+	
+	var zoom=false;//줌인or아웃 플레그
+	//맵에서만 줌인
+	$("body").click(function(e) {
+		if(isMap==true){
+		setZoomable(zoom)
+		}
+		zoom=false;
+	});
+	$("#map").click(function(e) {
+		zoom=true;
+	});
 	
 	//메뉴판 선택
 	function menuShow(e) {
@@ -289,7 +298,6 @@
 		}
 		
 	}
-
 
 	</script>
 </html>

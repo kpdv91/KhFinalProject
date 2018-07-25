@@ -45,13 +45,13 @@
 	 
 	 
 	 <select id="storeListCnt" resultType="Integer">
-	 	SELECT COUNT(*) FROM store WHERE store_name LIKE '%'|| #{param1}||'%'
+	 	SELECT COUNT(*) FROM store WHERE store_name LIKE '%'|| #{param1}||'%' 
 	 </select>
 	 <select id="storeList" resultType="store"> 	
 	 	
 	 	SELECT store_idx, store_name, store_addr 
 	 	FROM(SELECT store_idx, store_name, store_addr,ROW_NUMBER() 
-	 	OVER(ORDER BY store_idx DESC) AS rnum FROM store WHERE store_name LIKE '%'|| #{param1}||'%')
+	 	OVER(ORDER BY store_idx DESC) AS rnum FROM store WHERE store_name LIKE '%'|| #{param1}||'%' AND store_regist=1)
 		WHERE rnum BETWEEN #{param2} AND #{param3}
 	 	
 	 </select>
@@ -61,27 +61,42 @@
 	 	<choose>
 	 		<when test="store_idx==0">
 	 			SELECT * FROM(SELECT review_idx,store_idx,id,review_storeName,review_star,review_content,review_likeCnt,review_date,review_profile
-				,review_replyCnt,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review)
+				,review_replyCnt,ROW_NUMBER() OVER(
+				<if test="range.equals('최신순')">
+			 		ORDER BY review_date DESC
+				</if>		
+				<if test="range.equals('좋아요순')">
+					ORDER BY review_likeCnt DESC,review_date DESC
+				</if>
+				) AS rnum FROM review)
 				WHERE rnum BETWEEN #{start} AND #{end}
 	 		</when>
 	 		<when test="store_idx>0">
 		 		SELECT * FROM(SELECT review_idx,store_idx,id,review_storeName,review_star,review_content,review_likeCnt,review_date,review_profile
-				,review_replyCnt,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review WHERE store_idx= #{store_idx})
+				,review_replyCnt,ROW_NUMBER() OVER(
+				<if test="range.equals('최신순')">
+			 		ORDER BY review_date DESC
+				</if>		
+				<if test="range.equals('좋아요순')">
+					ORDER BY review_likeCnt DESC,review_date DESC
+				</if>
+				) AS rnum FROM review WHERE store_idx= #{store_idx})
 				WHERE rnum BETWEEN #{start} AND #{end}
 			</when>
 			<otherwise>
 				SELECT * FROM(SELECT review_idx,store_idx,id,review_storeName,review_star,review_content,review_likeCnt,review_date,review_profile
-				,review_replyCnt,ROW_NUMBER() OVER(ORDER BY review_idx DESC) AS rnum FROM review WHERE review_storeName LIKE '%'||#{review_search}||'%')
+				,review_replyCnt,ROW_NUMBER() OVER(
+				<if test="range.equals('최신순')">
+			 		ORDER BY review_date DESC
+				</if>		
+				<if test="range.equals('좋아요순')">
+					ORDER BY review_likeCnt DESC,review_date DESC
+				</if>
+				) AS rnum FROM review WHERE review_storeName LIKE '%'||#{review_search}||'%')
 				WHERE rnum BETWEEN #{start} AND #{end}
 	 		</otherwise>
-	 	</choose>
-	 	<if test="range.equals('최신순')">
-	 		ORDER BY review_date DESC
-		</if>		
-		<if test="range.equals('좋아요순')">
-			ORDER BY review_likeCnt DESC
-		</if>
-	</select>
+	 	</choose>  		 	
+	</select> 
 	
 	<!-- 페이징 count -->
 	<select id="allCount" resultType="Integer">

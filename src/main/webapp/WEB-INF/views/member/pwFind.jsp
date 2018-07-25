@@ -33,13 +33,6 @@
 		</style>
 	</head>
 	<body>
-		<!-- 아이디 : <input type="text" id="user_id"/>
-		이름 : <input type="text" id="user_name"/>
-		이메일 : <input type="text" id="user_email"/>  
-		<br/><br/>    
-		<button id="pwFindBtn">비밀번호 찾기</button>
-		<br><br>
-		<span id="msg"></span> -->
 	<div>
     <table>
          <tr>

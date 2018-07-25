@@ -6,11 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>회원가입</title>
-		<style>
-            table,td,th {
-                
-            }
-            
+		<style>            
             div{
                 /* border: solid 2px navy;  */
                   
@@ -23,7 +19,7 @@
                 /* margin: -150px 0 0 -75px 
                 top: 50%;
                 left: 40%;  */     
-    }
+    		}
 			#div1 {
 				height : 150px;
 				width : 150px;
@@ -64,11 +60,9 @@
 		<div id="div1" >
 			<div id="profile" name="profile">
 				<img alt="noprofile" src="resources/img/member/noprofile.jpg" height=150px width=150px>
-			</div>
-            <!--<div id="pic">-->
+			</div>            
 			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			 <input type="button" onclick="FileUp()" value="사진찾기"/>
-            <!--</div>-->
+			 <input type="button" onclick="FileUp()" value="사진찾기"/>            
 		</div>
         <div id="div2">
         <table>
@@ -103,8 +97,7 @@
             <input type="hidden" id="userPhone" name="userPhone"/>
         </td>
         <tr>
-            <td></td>
-            
+            <td></td>           
             <td>
                 <input id="cancel" type="button" onclick="location.href='main'" value="취소"/>
                 <input id="joinId" type="button" value="가입"/>
@@ -270,8 +263,7 @@
             $("input[name='hp2']").focus(); 
         }else if($("#hp3").val()==""){//핸드폰번호
         	alert("핸드폰번호를 입력해주세요!!");
-            $("input[name='hp3']").focus();
-        
+            $("input[name='hp3']").focus();        
         }else if($("input[name='userPw']").val().length<8 || $("input[name='userPw']").val().length>16){	//비밀번호 유효성
            	alert("비밀번호는 8~16자를 입력해주세요.");
         }else if(chkSum<1){
@@ -330,5 +322,6 @@
 	            pwVal=0;
 	        }
 	    }
+	    
 	</script>
 </html>

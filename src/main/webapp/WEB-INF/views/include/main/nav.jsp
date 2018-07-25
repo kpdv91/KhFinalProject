@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>		
+<!-- <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script> -->
+<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
 
 <style>
 	#nav ul li{list-style: none;  display: inline;	padding: 0px 10px;}
@@ -100,9 +101,9 @@
 <script>
 var profilecli=1;
 var alarmck=1;
-console.log(profilecli);
+//console.log(profilecli);
 var loginid="${sessionScope.loginId}";
-console.log(loginid);
+//console.log(loginid);
 	
 	function search(){
 		location.href = "./search?search_content=" + $("#search_content").val()+"&search_map=" + $("#search_map").val();

@@ -99,8 +99,10 @@ public interface CommonInter {
 	void alarmdminsert(int dm_idx, String id);
 
 	ArrayList<StoreDTO> storeList();//store idx 셀렉
+	
+	double getStarAvg(int idx);//평균 별점 가져오기
 
-	void insertStat(int idx);//통계 0으로 자정에 추가
+	void insertStat(int idx, double starAvg, String sysdate);//통계 0으로 자정에 추가
 
 	ArrayList<TotalDTO> showStat(int store_idx);//통계 가져오기
 
@@ -129,8 +131,6 @@ public interface CommonInter {
 	ArrayList<PointListDTO> pointList(String id, int start, int end);
 
 	ArrayList<Integer> timlinepagereview(String id, int start, int end);
-
-	void insertStat(int idx, String sysdate);
 
 	ArrayList<Integer> timlinepagerereview(String id, int start, int end);
 

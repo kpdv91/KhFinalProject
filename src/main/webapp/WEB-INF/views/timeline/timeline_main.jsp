@@ -164,6 +164,14 @@
 		</div>
 	</body>
 	<script>
+		$("#dm_write").click(function () {
+			var url = "./dm_writePage";
+			var name = "쪽지보내기";
+			var option = "width=500, height=500, resizeable=no";
+					
+			var myWin= window.open(url, name, option);
+		});
+	 
 	console.log("${cate}");
 	var replyClick = 1;
 	var userid = "${sessionScope.loginId}";
@@ -257,6 +265,18 @@
 			$("#content").load(page,function(res, stat) {});
 			console.log($("#content"));
 	    	ajaxCall(page);	
+		}else if("${cate}"=="가게"){
+			page = "resources/timelinehtml/store_regist_list.html";
+			$("#dm_write").css("background-color","lightgray");
+			$("#dm_write").css("color","black");
+			$("#message").css("background-color","lightgray");
+			$("#message").css("color","black");
+			$("#store_regist_list").css("background-color","darkblue");
+			$("#store_regist_list").css("color","white");
+			$("#complain_list").css("background-color","lightgray");
+			$("#complain_list").css("color","black");
+			$("#content").load(page,function(res, stat) {});
+			ajaxCall(page);
 		}
 	});
 	
@@ -1134,36 +1154,16 @@
 			pointlistajax(showPage);
 		}else if(page=="resources/timelinehtml/couponbox.html"){
 			couponajax(showPage);
+		}else if(page == "resources/timelinehtml/complainList.html"){
+			complainListPaging(showPage);	
+		}else if(page == "resources/timelinehtml/store_regist_list.html"){
+			storeRegistListPaging(showPage);	
 		}else if(page=="reviewlist"){
 			timelinereview(showPage);
 		}else if(page=="likereview"){
 			timelinelikereview(showPage);
 		}else if(page=="timeline_reply"){
 			timeline_replyajax(showPage);
-		}else if(page == "resources/timelinehtml/complainList.html"){
-			$.ajax({
-				url:"./complainList",
-				type:"post",
-				dataType:"json",
-				success:function(data){
-					complain_list(data.list);
-				},
-				error:function(error){
-					console.log(error);
-				}
-			});
-		}else if(page == "resources/timelinehtml/store_regist_list.html"){
-			$.ajax({
-				url:"./storeRegistList",
-				type:"post",
-				dataType:"json",
-				success:function(data){
-					store_regist_list(data.list);
-				},
-				error:function(error){
-					console.log(error);
-				}
-			});
 		}else if(page == "likestore"){
 			likestoreajax(showPage);
 		}else if(page == "resources/timelinehtml/userupdate.html"){
@@ -1220,7 +1220,7 @@
 			},
 			dataType:"json",
 			success:function(d){
-				console.log(d);
+				//console.log(d);
 				likestorelist(d.list,d.list_hash);
 				$("#container").zer0boxPaging({
 		            viewRange : 5,
@@ -1233,6 +1233,54 @@
 			},
 			error:function(e){
 				console.log(e);
+			}
+		});
+	}
+
+	//가게 등록 리스트 페이징
+	function storeRegistListPaging(page) {
+		$.ajax({
+			url:"./storeRegistList",
+			type:"post",
+			data : {page : page},
+			dataType:"json",
+			success:function(data){
+				store_regist_list(data.list);
+				$("#storeRegist_container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : data.currPage,
+		            maxPage : data.range,
+		            clickAction : function(e){
+		            	storeRegistListPaging($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(error){
+				console.log(error);
+			}
+		});
+	}
+	
+	//신고내역리스트 페이징
+	function complainListPaging(page) {
+		$.ajax({
+			url:"./complainList",
+			type:"post",
+			data : {page : page},
+			dataType:"json",
+			success:function(data){
+				complain_list(data.list);
+				$("#complain_container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : data.currPage,
+		            maxPage : data.range,
+		            clickAction : function(e){
+		            	complainListPaging($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(error){
+				console.log(error);
 			}
 		});
 	}
@@ -1262,6 +1310,7 @@
 			}
 		});
 	}
+	
 	function timelinelikereview(page){
 		$.ajax({
 			url:"./timelinelikereview",
@@ -1612,17 +1661,16 @@
 					content +="<td class='comp_detail1'>"+item.complain_cate+"</td>";
 					var date = new Date(item.complain_date);			
 					content +="<td class='comp_detail1'>"+date.toLocaleDateString("ko-KR")+"</td>";
-					content +="<td><button id='complain_move' onclick='complain_move("+item.complain_idx+", "+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
+					content +="<td id='comp_btn'><button id='complain_move' onclick='complain_move("+item.complain_idx+", "+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
 					content += "</tr>";
 					content += "<tr>";
 					content +="<td style='display: none;'>신고 내용 : </td>";
-					content +="<td style='display: none;' colspan='5'>"+item.complain_content+"</td>";
+					content +="<td style='display: none;' colspan='5' align='left'>"+item.complain_content+"</td>";
 					content += "</tr>";
 				}
 			});		
 			$("#complail_tbody").empty();
 			$("#complail_tbody").append(content);//내용 붙이기
-			
 			
 			$(".comp_detail1").click(function () {
 				console.log("클릭");

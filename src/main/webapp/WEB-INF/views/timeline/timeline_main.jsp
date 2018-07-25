@@ -4,8 +4,7 @@
 <html>
 	<head>
 	<c:import url="/WEB-INF/views/include/main/nav.jsp"/>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!-- 
-		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script> -->
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 		<script src="resources/js/star.js"></script>
 		<script src="resources/js/zer0boxPaging.js" type="text/javascript"></script>
@@ -52,7 +51,7 @@
 			.storeTable{float: left;margin-left:1px; margin-right: 10px;margin-top: 10px;border:1px solid black;width:250px;height:250px;}
 			.storeImg{width: 250px;height: 100px;}
 			#hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;margin-right: 5px;}
-			#fallowlist{border: 1px solid #33aaaaff;display:none;position:absolute;left:810px;width:410px;top:154px;background-color:white;z-index:1;}
+			#fallowlist{border: 1px solid #33aaaaff;display:none;position:absolute;left:810px;width:410px;top:154px;background-color:white;z-index:15;}
 			.followbtn{border:1px solid lightgray;}
 			#follower{background-color:darkblue;color:white;width:50px;}
 			#following{width:50px;position:absolute;left:50px;top:0px;}
@@ -121,7 +120,7 @@
 			.star-input>.input>label[for="p4.5"]{width:135px;z-index:2;}
 			.star-input>.input>label[for="p5.0"]{width:150px;z-index:1;}
 			.star-input>output{display:inline-block;width:60px; font-size:18px;text-align:right;vertical-align:middle;}
-			
+			#div_table{height:auto;overflow:hidden;}
 		</style>
 	</head>
 	<body>
@@ -160,11 +159,19 @@
 				<div id="total">통계</div>
 			</c:if>
 		</div>
+		
 		<div id="content">
-			
 		</div>
 	</body>
 	<script>
+		$("#dm_write").click(function () {
+			var url = "./dm_writePage";
+			var name = "쪽지보내기";
+			var option = "width=500, height=500, resizeable=no";
+					
+			var myWin= window.open(url, name, option);
+		});
+	 
 	console.log("${cate}");
 	var replyClick = 1;
 	var userid = "${sessionScope.loginId}";
@@ -174,7 +181,7 @@
 	var fallowbtn=1;
 	var aTag = "";
 	var idx = "";
-	showPage = 1;
+	var showPage = 1;
 	//테이블 페이징
 		
 	//리뷰 로그인체크 후 수정 삭제 신고 a 태그 띄워줌
@@ -258,6 +265,18 @@
 			$("#content").load(page,function(res, stat) {});
 			console.log($("#content"));
 	    	ajaxCall(page);	
+		}else if("${cate}"=="가게"){
+			page = "resources/timelinehtml/store_regist_list.html";
+			$("#dm_write").css("background-color","lightgray");
+			$("#dm_write").css("color","black");
+			$("#message").css("background-color","lightgray");
+			$("#message").css("color","black");
+			$("#store_regist_list").css("background-color","darkblue");
+			$("#store_regist_list").css("color","white");
+			$("#complain_list").css("background-color","lightgray");
+			$("#complain_list").css("color","black");
+			$("#content").load(page,function(res, stat) {});
+			ajaxCall(page);
 		}
 	});
 	
@@ -306,7 +325,7 @@
 				$("#likestore").html("찜한가게 "+d.storelike);
 				$("#friend").html("팔로우 목록 "+d.follow);
 				if("${cate}"=="" || "${cate}"=="팔로우"){
-				timelinereview();
+				timelinereview(showPage);
 				}
 			},
 			error:function(e){
@@ -340,36 +359,29 @@
 				url:"./timelinefallowlist",
 				type:"post",
 				data:{
-					id : "${id}"
+					id : "${id}",
+					page : showPage
 				},
 				dataType:"json",
 				success:function(d){
+					console.log(d);
 					$("#friend").css("background-color","darkblue");
 					$("#friend").css("color","white");
 					var content = "<div id='userfallow'>";
-					content += "<div class='followbtn' id='follower' onclick='follower()'>팔로워</div><div class='followbtn' id='following' onclick='following()'>팔로잉</div>";
+					content += "<div class='followbtn' id='follower' onclick='follower("+showPage+")'>팔로워</div><div class='followbtn' id='following' onclick='following("+showPage+")'>팔로잉</div>";
 					content += "<div id='followlistdiv'>팔로워 목록이 없습니다</div></div>"
 					$("#fallowlist").append(content);
 					$("#fallowlist").css('display','block');
-					var cont="";
-					  for(var i =0;i<d.fallowlist.length;i++){
-						 for(var j=0;j<d.fallowlist[i].length;j++){
-							 cont += "<div id='followdiv"+d.fallowlist[i][j].id+"' class='followdiv'>";
-							 if(d.fallowlist[i][j].profile==0){
-								 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
-							 }else{
-								 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/upload/"+d.fallowlist[i][j].profile+"' onclick='usertimeline(id)'/>";
-							 }
-							cont += "<p>"+d.fallowlist[i][j].id+"</p>";
-							if("${id}"==userid){
-							cont += "<button class='fbtn' id='"+d.fallowlist[i][j].id+"' onclick='followck(id)'>팔로우 추가</button>"
-							}
-							cont += "</div>";	
-						 }
-						}
-					  $("#followlistdiv").empty();
-					  $("#followlistdiv").append(cont);
+					followlist(d.followlist);
 					timelinefallowlist(d);
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage1,
+			            maxPage : d.range1,
+			            clickAction : function(e){
+			            	likestoreajax($(this).attr('page'));
+			            }
+			        });
 				},
 				error:function(e){
 					console.log(e);
@@ -392,19 +404,20 @@
 		location.href="./timeline?id="+gotime[1];
 	}
 	function timelinefallowlist(d){		
-		  for(var i =0;i<d.fallowing.length;i++){
-				 for(var j=0;j<d.fallowing[i].length;j++){
-					$("#"+d.fallowing[i][j].id).html("팔로우 취소");
-				 }
-			}
+		d.followlist.forEach(function(i){
+			  i.forEach(function(item){
+					$("#"+item.id).html("팔로우 취소");
+				 })
+			})
 	}
 	//팔로우 리스트
-	function follower(){
+	function follower(page){
 		$.ajax({
 			url:"./timelinefallowlist",
 			type:"post",
 			data:{
-				id : "${id}"
+				id : "${id}",
+				page:page
 			},
 			dataType:"json",
 			success:function(d){
@@ -412,64 +425,94 @@
 				$("#following").css("color","black");
 				$("#follower").css("background-color","darkblue");
 				$("#follower").css("color","white");
-				var cont="";
-				  for(var i =0;i<d.fallowlist.length;i++){
-					 for(var j=0;j<d.fallowlist[i].length;j++){
-						 cont += "<div id='followdiv"+d.fallowlist[i][j].id+"' class='followdiv'>";
-						 if(d.fallowlist[i][j].profile==0){
-							 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
-						 }else{
-							 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/upload/"+d.fallowlist[i][j].profile+"' onclick='usertimeline(id)'/>";
-						 }
-						cont += "<p>"+d.fallowlist[i][j].id+"</p>";
-						if("${id}"==userid){
-							cont += "<button class='fbtn' id='"+d.fallowlist[i][j].id+"' onclick='followck(id)'>팔로우 추가</button>"
-							}
-						cont += "</div>";	
-					 }
-					}
-				  $("#followlistdiv").empty();
-				  $("#followlistdiv").append(cont);
+				console.log(d.followlist);
+				followlist(d.followlist);
 				timelinefallowlist(d);
+				$("#container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : d.currPage1,
+		            maxPage : d.range1,
+		            clickAction : function(e){
+		            	follower($(this).attr('page'));
+		            }
+		        });
 			},
 			error:function(e){
 				console.log(e);
 			}
 		});
 	}
+	//팔로우 리스트 뿌리기
+	function followlist(d){
+		console.log(d);
+		var cont="";
+		d.forEach(function(i){
+			  i.forEach(function(item){
+				  cont += "<div id='followdiv"+item.id+"' class='followdiv'>";
+					 if(item.profile==0){
+						 cont += "<img class='friendprofile' id='img_"+item.id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
+					 }else{
+						 cont += "<img class='friendprofile' id='img_"+item.id+"' src='resources/upload/"+item.profile+"' onclick='usertimeline(id)'/>";
+					 }
+					cont += "<p>"+item.id+"</p>";
+					if("${id}"==userid){
+						cont += "<button class='fbtn' id='"+item.id+"' onclick='followck(id)'>팔로우 추가</button>"
+						}
+					cont += "</div>";
+			  })
+		})
+		  $("#followlistdiv").empty();
+		  $("#followlistdiv").append(cont);
+		  $("#followlistdiv").append("<div id='container'></div>");
+	}
+	function followinglist(d){
+		 var cont="";
+		  d.forEach(function(i){
+			  i.forEach(function(item){
+						 console.log(item.profile);
+						 cont += "<div id='followdiv"+item.id+"' class='followdiv'>";
+						 if(item.profile==0){
+							 cont += "<img class='friendprofile' id='img_"+item.id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
+						 }else{
+							 cont += "<img class='friendprofile' id='img_"+item.id+"' src='resources/upload/"+item.profile+"' onclick='usertimeline(id)'/>";
+						 }
+						cont += "<p>"+item.id+"</p>";
+						if("${id}"==userid){
+							cont += "<button class='fbtn' id='"+item.id+"' onclick='followck(id)'>팔로우 취소</button>"
+						}
+						cont += "</div>";	
+					})
+			  })
+		  $("#followlistdiv").empty();
+		  $("#followlistdiv").append(cont);
+		  $("#followlistdiv").append("<div id='container'></div>");
+	}
 	//팔로잉 리스트
-	function following(){
+	function following(page){
+		console.log(page);
 		$.ajax({
 			url:"./timelinefallowlist",
 			type:"post",
 			data:{
-				id : "${id}"
+				id : "${id}",
+				page : page
 			},
 			dataType:"json",
 			success:function(d){
-				console.log(d);
+				console.log(d.following);
 				$("#follower").css("background-color","lightgray");
 				$("#follower").css("color","black");
 				$("#following").css("background-color","darkblue");
 				$("#following").css("color","white");
-				var cont="";
-				  for(var i =0;i<d.fallowing.length;i++){
-					 for(var j=0;j<d.fallowing[i].length;j++){
-						 cont += "<div id='followdiv"+d.fallowing[i][j].id+"' class='followdiv'>";
-						 if(d.fallowlist[i][j].profile==0){
-							 cont += "<img class='friendprofile' id='img_"+d.fallowing[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
-						 }else{
-							 cont += "<img class='friendprofile' id='img_"+d.fallowing[i][j].id+"' src='resources/upload/"+d.fallowing[i][j].profile+"' onclick='usertimeline(id)'/>";
-						 }
-						cont += "<p>"+d.fallowing[i][j].id+"</p>";
-						if("${id}"==userid){
-							cont += "<button class='fbtn' id='"+d.fallowlist[i][j].id+"' onclick='followck(id)'>팔로우 취소</button>"
-						}
-						cont += "</div>";	
-					 }
-					}
-				  $("#followlistdiv").empty();
-				  $("#followlistdiv").append(cont);				
+				followinglist(d.following);	
+				$("#container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : d.currPage2,
+		            maxPage : d.range2,
+		            clickAction : function(e){
+		            	following($(this).attr('page'));
+		            }
+		        });
 			},
 			error:function(e){
 				console.log(e);
@@ -523,18 +566,30 @@
 		}
 	}
 	//리뷰 리스트
-	function timelinereview(){
+	function timelinereview(page){
+		if(page==null){
+			page=1;
+		}
 		$.ajax({
 			url:"./timelinereviewlist",
 			type:"post",
 			data:{
-				id : "${id}"
+				id : "${id}",
+				page : page
 			},
 			dataType:"json",
 			success:function(d){
 				console.log(d);
 				printList(d.list);
 				atagCreate(d.list);
+				$("#container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	timelinereview($(this).attr('page'));
+		            }
+		        });
 			},
 			error:function(e){
 				console.log(e);
@@ -564,15 +619,19 @@
 				content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
 				content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
 				content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'></td></tr><tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
-				content += "<span id='replySpan' onclick='replySelect("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</span></div>";
+				content += "<span id='replySpan' onclick='replySelect("+item.review_idx+","+showPage+")'>댓글"+item.review_replyCnt+"개</span></div>";
 				content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
 				content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";		
 				idx=item.review_idx;
 				starSelect(idx);//리뷰 별점
 				hashtag(idx);
+				if(loginid != ""){
+					likeSelect(idx);//리뷰 좋아요
+					}
 		})
 		$("#content").empty();
 		$("#content").append(content);
+		$("#content").append("<div id='container'></div>");
 	}
 	//좋아요 리뷰 리스트
 	function revreplyList(list){		 
@@ -590,7 +649,7 @@
 					content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 					content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
 					if(item.id != loginid || loginid == ""){
-						content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike2.png' onclick='likeClick(this,"+item.review_idx+")' />";
+						content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' />";
 					}
 					content += "<br/></div></div>";
 					content += "<table id='review_table'><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
@@ -598,16 +657,20 @@
 					content += "<tr><td colspan='2'><textarea id='review_content' readonly>"+item.review_content+"</textarea></td></tr>";
 					content += "<tr><td colspan='2' id='reviewList_hash"+item.review_idx+"'></td></tr>";
 					content += "<tr><td colspan='2' id='reviewList_photo"+item.review_idx+"'></td></tr><tr id='likeCntTr'><td colspan='2'>"+item.review_likeCnt+"명이 좋아합니다.</td></tr></table>";
-					content += "<span id='replySpan' onclick='replySelect("+item.review_idx+")'>댓글"+item.review_replyCnt+"개</span></div>";
+					content += "<span id='replySpan' onclick='replySelect("+item.review_idx+","+showPage+")'>댓글"+item.review_replyCnt+"개</span></div>";
 					content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
 					content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";		
 					idx=item.review_idx;
 					hashtag(idx);
 					starSelect(idx);//리뷰 별점
+					if(loginid != ""){
+						likeSelect(idx);//리뷰 좋아요
+						}
 			})
 		})
 		$("#content").empty();
 		$("#content").append(content);
+		$("#content").append("<div id='container'></div>");
 	}
 	//리뷰 별점 리스트
 	function star_create(star,elem){
@@ -640,11 +703,16 @@
 			$("#bigPhoto"+idx).append(pho);	
 		});
 	}
-	//댓글 아작스
-	function replySelect(idx){
+	function replySelect(idx,page){
 		$("#reviewReply"+idx).toggle(100,function(){
+			console.log(page);
+			replyAjax(idx,page);
+		});
+	}
+	//댓글 아작스
+	function replyAjax(idx,page){
 			$.ajax({
-				url:"./replySelect",
+				url:"./replySelect/5/"+page,
 				type:"post",
 				dataType:"json",
 				data:{"review_idx":idx},
@@ -652,11 +720,22 @@
 					//console.log(d.replySelect);
 					//댓글 리스트 출력
 					replylist(d.replySelect,idx);
+					showPage = d.currPage;
+					$("#reply_textarea"+idx).focus();
+					
+					$("#replyContainer"+idx).zer0boxPaging({
+		                viewRange : 10,
+		                currPage : d.currPage,
+		                maxPage : d.range,
+		                clickAction : function(e){
+		                    console.log($(this).attr('page'));
+		                    replyAjax(idx,$(this).attr('page'));
+		                }
+		            });
 					
 				},
 				error:function(e){console.log(e);}
 			});
-		});
 	}
 	var profileSession="${sessionScope.loginProfile }";
 	//댓글 리스트 출력
@@ -693,6 +772,7 @@
 			reply+="</table></div>";
 			$("#reviewReply"+idx).empty();
 			$("#reviewReply"+idx).append(reply);
+			$("#reviewReply"+idx).append("<div class='replyContainer' id='replyContainer"+idx+"'></div>");
 		}
 	//댓글 수정폼
 		function reply_updateform(elem,reply_idx,review_idx){
@@ -1071,95 +1151,21 @@
 		if(page=="resources/timelinehtml/messagebox.html"){
 			receivelistajax(showPage);
 		}else if(page=="resources/timelinehtml/pointbox.html"){
-			$.ajax({
-				url:"./pointlist",
-				type:"get",
-				data:{
-					id : userid
-				},
-				dataType:"json",
-				success:function(d){
-					pointlist(d);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+			pointlistajax(showPage);
 		}else if(page=="resources/timelinehtml/couponbox.html"){
 			couponajax(showPage);
-		}else if(page=="reviewlist"){
-			timelinereview();
-		}else if(page=="likereview"){
-			 $.ajax({
-				url:"./timelinelikereview",
-				type:"post",
-				data:{
-					id : "${id}"
-				},
-				dataType:"json",
-				success:function(d){
-					revreplyList(d.list);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
-		}else if(page=="timeline_reply"){
-				$.ajax({
-				url:"./timeline_reply",
-				type:"post",
-				data:{
-					id : userid
-				},
-				dataType:"json",
-				success:function(d){
-					revreplyList(d.list);
-				},
-				error:function(e){
-					console.log(e);
-					$("#content").empty();
-					alert("댓글이 없습니다");
-				}
-			});
 		}else if(page == "resources/timelinehtml/complainList.html"){
-			$.ajax({
-				url:"./complainList",
-				type:"post",
-				dataType:"json",
-				success:function(data){
-					complain_list(data.list);
-				},
-				error:function(error){
-					console.log(error);
-				}
-			});
+			complainListPaging(showPage);	
 		}else if(page == "resources/timelinehtml/store_regist_list.html"){
-			$.ajax({
-				url:"./storeRegistList",
-				type:"post",
-				dataType:"json",
-				success:function(data){
-					store_regist_list(data.list);
-				},
-				error:function(error){
-					console.log(error);
-				}
-			});
+			storeRegistListPaging(showPage);	
+		}else if(page=="reviewlist"){
+			timelinereview(showPage);
+		}else if(page=="likereview"){
+			timelinelikereview(showPage);
+		}else if(page=="timeline_reply"){
+			timeline_replyajax(showPage);
 		}else if(page == "likestore"){
-			$.ajax({
-				url:"./timelinelikestore",
-				type:"post",
-				data:{
-					id : "${id}"
-				},
-				dataType:"json",
-				success:function(d){
-					likestorelist(d.list,d.list_hash);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+			likestoreajax(showPage);
 		}else if(page == "resources/timelinehtml/userupdate.html"){
 			$.ajax({
 				url:"./timelineuserupdate",
@@ -1204,6 +1210,160 @@
 			});
 		}
 	}
+	function likestoreajax(page){
+		$.ajax({
+			url:"./timelinelikestore",
+			type:"post",
+			data:{
+				id : "${id}",
+				page:page
+			},
+			dataType:"json",
+			success:function(d){
+				//console.log(d);
+				likestorelist(d.list,d.list_hash);
+				$("#container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	likestoreajax($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+
+	//가게 등록 리스트 페이징
+	function storeRegistListPaging(page) {
+		$.ajax({
+			url:"./storeRegistList",
+			type:"post",
+			data : {page : page},
+			dataType:"json",
+			success:function(data){
+				store_regist_list(data.list);
+				$("#storeRegist_container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : data.currPage,
+		            maxPage : data.range,
+		            clickAction : function(e){
+		            	storeRegistListPaging($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(error){
+				console.log(error);
+			}
+		});
+	}
+	
+	//신고내역리스트 페이징
+	function complainListPaging(page) {
+		$.ajax({
+			url:"./complainList",
+			type:"post",
+			data : {page : page},
+			dataType:"json",
+			success:function(data){
+				complain_list(data.list);
+				$("#complain_container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : data.currPage,
+		            maxPage : data.range,
+		            clickAction : function(e){
+		            	complainListPaging($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(error){
+				console.log(error);
+			}
+		});
+	}
+	function timeline_replyajax(page){
+		$.ajax({
+			url:"./timeline_reply",
+			type:"post",
+			data:{
+				id : userid,
+				page : page
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d);
+				revreplyList(d.list);
+				$("#container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	timeline_replyajax($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	
+	function timelinelikereview(page){
+		$.ajax({
+			url:"./timelinelikereview",
+			type:"post",
+			data:{
+				id : "${id}",
+				page : page
+			},
+			dataType:"json",
+			success:function(d){
+				revreplyList(d.list);
+				$("#container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	timelinelikereview($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	//포인트 아작스
+	function pointlistajax(page){
+		$.ajax({
+			url:"./pointlist",
+			type:"get",
+			data:{
+				id : userid,
+				page : page
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d);
+				pointlist(d);
+				$("#container").zer0boxPaging({
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	pointlistajax($(this).attr('page'));
+		            }
+		        });
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	}
+	//쿠폰 아작스
 	function couponajax(page){		
 		$.ajax({
 			url:"./couponlist",
@@ -1216,13 +1376,13 @@
 			success:function(d){
 				couponlist(d.list);
 				$("#container").zer0boxPaging({
-	                viewRange : 5,
-	                currPage : d.currPage,
-	                maxPage : d.range,
-	                clickAction : function(e){
-	                	couponajax($(this).attr('page'));
-	                }
-	            });
+		            viewRange : 5,
+		            currPage : d.currPage,
+		            maxPage : d.range,
+		            clickAction : function(e){
+		            	couponajax($(this).attr('page'));
+		            }
+		        });
 			},
 			error:function(e){
 				console.log(e);
@@ -1257,9 +1417,15 @@
 	}
 	//좋아하는 가게 리스트
 	function likestorelist(list,hash){
+		$("#content").empty();
 		var content ="";
+		content+="<div id='div_table'></div>";
+		$("#content").append(content);
+		content="";
+		
 		list.forEach(function(i, idx){
 			i.forEach(function(item,idx){
+				content += "<div>";
 				content += "<table class='storeTable'>";
 				content += "<tr><td colspan='2'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' /></td></tr>";
 				content += "<tr>";
@@ -1275,9 +1441,12 @@
 					})
 				})
 				content += "</td></tr></table>";
+				content += "</div>";
 			})
 		})
-		$("#content").append(content);
+		$("#div_table").empty();
+		$("#div_table").append(content);
+		$("#div_table").after("<div id='container' ></div>");
 	}
 	//쿠폰 리스트
 	function couponlist(list){
@@ -1318,6 +1487,7 @@
 		});		
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
+		$("#list").append("<div id='container'></div>");
 	}
 	//보낸 리스트 아작스
 	function send(page){
@@ -1400,6 +1570,7 @@
 		});		
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
+		$("#list").append("<div id='container'></div>");
 	}
 	//보낸 메세지 리스트 불러오기
 	function sendlist(list){
@@ -1414,6 +1585,7 @@
 		});
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
+		$("#list").append("<div id='container'></div>");
 	}
 	//메세지 작성하기
 	$("#dm").click(function(e){
@@ -1489,17 +1661,16 @@
 					content +="<td class='comp_detail1'>"+item.complain_cate+"</td>";
 					var date = new Date(item.complain_date);			
 					content +="<td class='comp_detail1'>"+date.toLocaleDateString("ko-KR")+"</td>";
-					content +="<td><button id='complain_move' onclick='complain_move("+item.complain_idx+", "+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
+					content +="<td id='comp_btn'><button id='complain_move' onclick='complain_move("+item.complain_idx+", "+item.review_idx+", "+item.revReply_idx+", \""+item.id+"\", \""+item.complain_id+"\")'>보 기</button></td>";
 					content += "</tr>";
 					content += "<tr>";
 					content +="<td style='display: none;'>신고 내용 : </td>";
-					content +="<td style='display: none;' colspan='5'>"+item.complain_content+"</td>";
+					content +="<td style='display: none;' colspan='5' align='left'>"+item.complain_content+"</td>";
 					content += "</tr>";
 				}
 			});		
 			$("#complail_tbody").empty();
 			$("#complail_tbody").append(content);//내용 붙이기
-			
 			
 			$(".comp_detail1").click(function () {
 				console.log("클릭");

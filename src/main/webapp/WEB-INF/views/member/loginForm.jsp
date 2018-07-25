@@ -41,16 +41,15 @@
 	
 <form id="login" action="login" method="post">
 <div>
-	
     <table>
    	     <tr>
             <td>아 이 디 &nbsp : </td>
-            <td><input type="text" name="id" placeholder="아이디"></td>
-            <td rowspan="2"> <input id="loginBtn" type="button" value="로그인"> <!-- <button>로그인</button> --></td>
+            <td><input type="text" tabindex="1" name="id" id="userId" placeholder="아이디"></td>
+            <td rowspan="2"> <input id="loginBtn" type="button" value="로그인"></td>
          </tr>
          <tr>
             <td>비밀번호&nbsp&nbsp: </td>
-            <td><input type="password" name="pw" placeholder="비밀번호"></td>            
+            <td><input type="password" tabindex="2" name="pw" id="userPw" placeholder="비밀번호"></td>            
          </tr>
          <tr>
            <td colspan="3">
@@ -60,12 +59,12 @@
            </td>
          </tr>
    </table>
-   
 </div>
 </form>
 </body>
 <script>
 
+	var idReg = /^[A-za-z0-9]{5,20}/g;
 
 	printMsg();
 	function printMsg(){
@@ -73,67 +72,55 @@
 		if(msg!=""){
 			alert(msg);
 		}	
-	}
+	}	
+
+	$("#userId").keyup(function(e){
+		if(e.keyCode == 13)  
+			$("#login").submit(); 
+		}
+	);
+	
+	$("#userPw").keyup(function(e){
+		if(e.keyCode == 13)  
+			$("#login").submit(); 
+		}
+	);
+	
 
 	function join() {
 		location.href="./joinForm";
 	};
-		
-		 /* window.open("./findIdForm","","top=0, left=0, width=800, height=556, directories='no', location=no, menubar=no, resizable=no, status=yes, toolbar=no")  ;
-	     
-	     window.opener = "nothing";
-	     window.open('', '_parent', '');
-	     window.close(); */
 	
 	function pwFind() {
 		var myWin= window.open("./pwFindWin", "PW 찾기","width=500,height=500");	
 	}
 	
-	
 	function popupOpen(){
 
 		var popUrl = "./findIdForm";	//팝업창에 출력될 페이지 URL
 
-		//var popOption = "top=0, left=0, width=800, height=556, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
 		var popOption = "top=0, left=0, width=500, height=500, resizable=no, scrollbars=no, status=no;";    //팝업창 옵션(optoin)
 			window.open(popUrl,"",popOption);
-
 		}
 
 
-
-/* var idReg = /^[a-z]+[a-z0-9]{4,19}$/g;
-if( !idReg.test( $("input[name=id]").val() ) ) {
-    alert("아이디는 영문자로 시작하는 5~20자 영문자 또는 숫자이어야 합니다.");
-    return; 
-}  */
-
-
-//var idReg = /^[a-z0-9]+[a-z0-9]{4,19}$/g;
-var idReg = /^[A-za-z0-9]{5,20}/g;
-
-
-$("#loginBtn").click(function(){
-	
-	if($("input[name='id']").val()==""){//아이디
-        alert("아이디를 입력해주세요!!");
-        $("input[name='id']").focus();
-        return false;
-   }else if($("input[name='pw']").val()==""){//비밀번호
-	   	alert("비밀번호를 입력해주세요!!");
-	   	$("input[name='pw']").focus();
-	   	return false;
-   
-   }else if($("input[name='pw']").val().length<8 || $("input[name='pw']").val().length>16){	//비밀번호 유효성
-   		alert("비밀번호는 8~16자를 입력해주세요.");
-   		return false;
-   }/* else if(!idReg.test( $("input[name='id']").val() )){	//id 유효성
-  		alert("아이디는 5~20자리의 영문자 또는 숫자이어야 합니다.");
-  		return false;
-   } */else{
-   		$("#login").submit();//submit
-   }
-});		
+	$("#loginBtn").click(function(){
+		
+		if($("input[name='id']").val()==""){//아이디
+	        alert("아이디를 입력해주세요!!");
+	        $("input[name='id']").focus();
+	        return false;
+	   }else if($("input[name='pw']").val()==""){//비밀번호
+		   	alert("비밀번호를 입력해주세요!!");
+		   	$("input[name='pw']").focus();
+		   	return false;   
+	   }else if($("input[name='pw']").val().length<8 || $("input[name='pw']").val().length>16){	//비밀번호 유효성
+	   		alert("비밀번호는 8~16자를 입력해주세요.");
+	   		return false;
+	   }else{
+	   		$("#login").submit();//submit
+	   }
+	});		
 
 
 

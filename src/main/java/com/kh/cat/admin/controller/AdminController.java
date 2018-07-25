@@ -49,6 +49,13 @@ public class AdminController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/dm_writePage")
+	public String dm_writePage() {
+		logger.info("쪽지 새창 요청");	
+		return "admin/dm_write";
+	}
+	
+	
 	// 게시물 삭제시 쪽지 보내기
 	@RequestMapping(value = "/dm_write_rev_revRe_del")
 	public @ResponseBody HashMap<String, Object> dm_write_rev_revRe_del(@RequestParam HashMap<String, String> params,

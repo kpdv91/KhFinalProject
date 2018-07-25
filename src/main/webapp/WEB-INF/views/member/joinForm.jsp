@@ -6,11 +6,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>회원가입</title>
-		<style>
-            table,td,th {
-                
-            }
-            
+		<style>            
             div{
                 /* border: solid 2px navy;  */
                   
@@ -23,7 +19,7 @@
                 /* margin: -150px 0 0 -75px 
                 top: 50%;
                 left: 40%;  */     
-    }
+    		}
 			#div1 {
 				height : 150px;
 				width : 150px;
@@ -64,11 +60,9 @@
 		<div id="div1" >
 			<div id="profile" name="profile">
 				<img alt="noprofile" src="resources/img/member/noprofile.jpg" height=150px width=150px>
-			</div>
-            <!--<div id="pic">-->
+			</div>            
 			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			 <input type="button" onclick="FileUp()" value="사진찾기"/>
-            <!--</div>-->
+			 <input type="button" onclick="FileUp()" value="사진찾기"/>            
 		</div>
         <div id="div2">
         <table>
@@ -103,8 +97,7 @@
             <input type="hidden" id="userPhone" name="userPhone"/>
         </td>
         <tr>
-            <td></td>
-            
+            <td></td>           
             <td>
                 <input id="cancel" type="button" onclick="location.href='main'" value="취소"/>
                 <input id="joinId" type="button" value="가입"/>
@@ -270,8 +263,7 @@
             $("input[name='hp2']").focus(); 
         }else if($("#hp3").val()==""){//핸드폰번호
         	alert("핸드폰번호를 입력해주세요!!");
-            $("input[name='hp3']").focus();
-        
+            $("input[name='hp3']").focus();        
         }else if($("input[name='userPw']").val().length<8 || $("input[name='userPw']").val().length>16){	//비밀번호 유효성
            	alert("비밀번호는 8~16자를 입력해주세요.");
         }else if(chkSum<1){
@@ -288,9 +280,11 @@
         	alert("비밀번호값이 변경 되었습니다. 다시 확인 해주세요.");    
         }else if(exptext.test($("input[name='userEmail']").val())==false){//이메일 형식이 알파벳+숫자@알파벳+숫자.알파벳+숫자 형식이 아닐경우
     		alert("이메일 형식이 올바르지 않습니다.");
+    		$("input[name='userEmail']").focus();
     		return false;
         }else if(!idReg.test( $("input[name='userId']").val() )){	//id 유효성
            	alert("아이디는 5~20자리의 영문자 또는 숫자이어야 합니다.");
+           	$("input[name='userId']").focus();
            	return false;
         }else{	
 
@@ -328,5 +322,6 @@
 	            pwVal=0;
 	        }
 	    }
+	    
 	</script>
 </html>

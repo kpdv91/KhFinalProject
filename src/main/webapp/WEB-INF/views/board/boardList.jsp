@@ -12,6 +12,7 @@
 			div#tableDiv{position: relative; top: 50px; left: 400px; border: 1px solid black; width: 740px; height: 1000px;}    
 			 
 			table, th, td{border-top: 1px solid black; border-bottom: 1px solid black; border-collapse: collapse;}
+			td{/* border-top: 1px solid red; */ border-bottom: 1px solid lightgray;}
 			table#board_list_table{position: absolute; top: 60px; left: 65px; border-bottom: none; border-left: none; border-right: none;/*  width: 700px; height: 500px; */}      
 			th[name="board_idx"]{width: 50px; height: 50px; background-color: lightskyblue;}
 			th[name="board_cate"]{width: 100px; height: 50px; background-color: lightskyblue;}

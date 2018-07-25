@@ -55,6 +55,14 @@ public class AdminController {
 		return "admin/dm_write";
 	}
 	
+	// 관리자-쪽지보내기
+	@RequestMapping(value = "/dm_write")
+	public @ResponseBody HashMap<String, Object> dm_write(@RequestParam HashMap<String, String> params) {
+		logger.info("쪽지보내기 요청");
+		return adminService.dm_write(params);
+	}
+	
+	
 	
 	// 게시물 삭제시 쪽지 보내기
 	@RequestMapping(value = "/dm_write_rev_revRe_del")
@@ -90,7 +98,7 @@ public class AdminController {
 	@RequestMapping(value = "/storeRegistList")
 	public @ResponseBody HashMap<String, Object> storeRegistList(@RequestParam HashMap<String, String> params) {
 		logger.info("가게 등록 리스트 요청");
-		return adminService.StoreRegistList(params);
+		return adminService.storeRegistList(params);
 	}
 	
 	//블랙리스트 추가(관리자)

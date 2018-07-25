@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <!-- <div id="map" style="width:1000px;height:500px;"></div> -->
-<div id="map"></div>
+<div id="map" style="margin-left: 50px"></div>
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c7f29813d0150c2927c1529f7d432392&libraries=services"></script>
 <script>
@@ -83,6 +83,7 @@
 			    daum.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
 			    daum.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
 			}
+			map.setZoomable(false);
 			
 			// 지도 위에 표시되고 있는 마커를 모두 제거합니다
 			function removeMarker() {
@@ -109,6 +110,12 @@
 			//지도를 재졍렬 합니다.
 			function relayout(){
 				map.relayout();
+			}
+			
+			// 버튼 클릭에 따라 지도 확대, 축소 기능을 막거나 풀고 싶은 경우에는 map.setZoomable 함수를 사용합니다
+			function setZoomable(zoomable) {
+				// 마우스 휠로 지도 확대,축소 가능여부를 설정합니다
+				map.setZoomable(zoomable);    
 			}
 		</script>
 </body>

@@ -11,7 +11,17 @@
 		keyProperty = "idx" (키가 될 필드(dto변수))
 		keyColumn = "idx" (키가 저장될 DB 컬럼)
 	-->
-
+	<!-- 쪽지보내기 -->
+	<insert id="dm_write" parameterType="dm" useGeneratedKeys="true" keyProperty="dm_idx" keyColumn="dm_idx">
+		INSERT INTO dm(dm_idx, id, dm_id, dm_content, dm_date) 
+			VALUES(seq_dm.NEXTVAL, #{id}, #{dm_id}, #{dm_content}, SYSDATE)
+	</insert>
+	<!-- 쪽지보낼시 알람추가 -->
+	<insert id="alarm_dm" parameterType="dm">
+		INSERT INTO alarm(alarm_idx, alarm_id, alarm_cate, dm_idx, alarm_read) 
+			VALUES(seq_alarm.NEXTVAL, #{dm_id}, '메세지', #{dm_idx}, 0)
+	</insert>
+	
 	<!-- 신고리스트(관리자) -->
 	<select id="complainList" resultType="complain">
 		SELECT complain_idx, id, complain_id, complain_type, complain_content, complain_cate, complain_date, complain_black, review_idx, revreply_idx FROM

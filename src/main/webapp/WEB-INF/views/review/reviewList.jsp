@@ -329,7 +329,8 @@ input[type=button]{
 				"range":elem
 				},
 			success:function(d){
-				$("#reviewListDiv").empty();
+				console.log(d.reviewList);
+				 $("#reviewListDiv").empty();
 				printList(d.reviewList);
 				atagCreate(d.reviewList);
 				showPage = d.currPage;

@@ -297,9 +297,9 @@
 		        }
 			}
 			
-			if(tagList.length>=11){
+			if(tagList.length>8){
 				tagList.pop();
-				alert("태그는 최대 10개입니다.");
+				alert("태그는 최대 8개입니다.");
 			}else if(cnt>=2){
 				tagList.pop();
 				alert("중복되는 태그가 있습니다");

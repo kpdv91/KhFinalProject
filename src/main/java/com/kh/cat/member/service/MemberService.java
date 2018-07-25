@@ -112,12 +112,12 @@ public class MemberService {
 				logger.info("세션값 체크 : {}", session.getAttribute("loginAut"));
 				logger.info("이동할 페이지 : {}", page);			
 			}else {//--------------->id가 있지만 pw가 안맞다
-				String msg = "로그인 실패";
+				String msg = "비밀번호가 일치하지 않습니다.";
 				mav.addObject("msg", msg);//모델에 들어갈 내용
 				logger.info("발생할 메시지 2: {}", msg);		
 			}
 		}else {//------------------>회원가입된 id가 아니다
-			String msg = "로그인 실패";
+			String msg = "등록된 ID가 아닙니다.";
 			mav.addObject("msg", msg);//모델에 들어갈 내용
 			logger.info("발생할 메시지 2: {}", msg);
 		}

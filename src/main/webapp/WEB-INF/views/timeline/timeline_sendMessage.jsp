@@ -22,7 +22,7 @@
 			<div>
 		내용:
 			</div>
-			<input type="textarea" id="content"/>
+			<textarea id="content" maxlength="100" placeholder="내용은 100자까지입니다"></textarea>
 			<button id="message">보내기</button>		
 		</div>
 	</body>

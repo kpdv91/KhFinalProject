@@ -34,7 +34,7 @@
 			button#store_regist_yes{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
 			button#store_regist_no{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
 			
-			#content{position: absolute; width: 800px;height: auto;left : 400px;}
+			#content{position: absolute; width: 600px;height: auto;left : 400px;}
 			hr{margin-top:200px;}
 			
 	        #storeName_td{font-weight: bold;}
@@ -51,7 +51,7 @@
 			.storeTable{float: left;margin-left:1px; margin-right: 10px;margin-top: 10px;border:1px solid black;width:250px;height:250px;}
 			.storeImg{width: 250px;height: 100px;}
 			#hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;margin-right: 5px;}
-			#fallowlist{border: 1px solid #33aaaaff;display:none;position:absolute;left:810px;width:410px;top:154px;background-color:white;z-index:1;}
+			#fallowlist{border: 1px solid #33aaaaff;display:none;position:absolute;left:810px;width:410px;top:154px;background-color:white;z-index:15;}
 			.followbtn{border:1px solid lightgray;}
 			#follower{background-color:darkblue;color:white;width:50px;}
 			#following{width:50px;position:absolute;left:50px;top:0px;}
@@ -120,7 +120,9 @@
 			.star-input>.input>label[for="p4.5"]{width:135px;z-index:2;}
 			.star-input>.input>label[for="p5.0"]{width:150px;z-index:1;}
 			.star-input>output{display:inline-block;width:60px; font-size:18px;text-align:right;vertical-align:middle;}
-			
+			#div_table{height:auto;overflow:hidden;}
+			#container{text-align: center;}
+			.replyContainer{text-align: center;}
 		</style>
 	</head>
 	<body>
@@ -159,8 +161,8 @@
 				<div id="total">통계</div>
 			</c:if>
 		</div>
+		
 		<div id="content">
-			
 		</div>
 	</body>
 	<script>
@@ -182,8 +184,6 @@
 	var aTag = "";
 	var idx = "";
 	var showPage = 1;
-	//테이블 페이징
-		
 	//리뷰 로그인체크 후 수정 삭제 신고 a 태그 띄워줌
 	function atagCreate(list){
 		aTag = "";
@@ -359,36 +359,31 @@
 				url:"./timelinefallowlist",
 				type:"post",
 				data:{
-					id : "${id}"
+					id : "${id}",
+					page : showPage
 				},
 				dataType:"json",
 				success:function(d){
+					//console.log(d.followlist.length);
 					$("#friend").css("background-color","darkblue");
 					$("#friend").css("color","white");
 					var content = "<div id='userfallow'>";
-					content += "<div class='followbtn' id='follower' onclick='follower()'>팔로워</div><div class='followbtn' id='following' onclick='following()'>팔로잉</div>";
-					content += "<div id='followlistdiv'>팔로워 목록이 없습니다</div></div>"
-					$("#fallowlist").append(content);
-					$("#fallowlist").css('display','block');
-					var cont="";
-					  for(var i =0;i<d.fallowlist.length;i++){
-						 for(var j=0;j<d.fallowlist[i].length;j++){
-							 cont += "<div id='followdiv"+d.fallowlist[i][j].id+"' class='followdiv'>";
-							 if(d.fallowlist[i][j].profile==0){
-								 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
-							 }else{
-								 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/upload/"+d.fallowlist[i][j].profile+"' onclick='usertimeline(id)'/>";
-							 }
-							cont += "<p>"+d.fallowlist[i][j].id+"</p>";
-							if("${id}"==userid){
-							cont += "<button class='fbtn' id='"+d.fallowlist[i][j].id+"' onclick='followck(id)'>팔로우 추가</button>"
-							}
-							cont += "</div>";	
-						 }
-						}
-					  $("#followlistdiv").empty();
-					  $("#followlistdiv").append(cont);
-					timelinefallowlist(d);
+					content += "<div class='followbtn' id='follower' onclick='follower("+showPage+")'>팔로워</div><div class='followbtn' id='following' onclick='following("+showPage+")'>팔로잉</div>";				
+						content += "<div id='followlistdiv'>팔로워 목록이 없습니다</div></div>";
+						$("#fallowlist").append(content);
+						$("#fallowlist").css('display','block');
+					if(d.followlist.length!=0){
+						followlist(d.followlist);
+						timelinefallowlist(d);
+						$("#container").zer0boxPaging({
+				            viewRange : 5,
+				            currPage : d.currPage1,
+				            maxPage : d.range1,
+				            clickAction : function(e){
+				            	follower($(this).attr('page'));
+				            }
+				        });
+					}
 				},
 				error:function(e){
 					console.log(e);
@@ -407,23 +402,24 @@
 		console.log(e);
 		var gotime=[];
 		gotime = e.split("_");
-		console.log(gotime[1]);
+		//console.log(gotime[1]);
 		location.href="./timeline?id="+gotime[1];
 	}
 	function timelinefallowlist(d){		
-		  for(var i =0;i<d.fallowing.length;i++){
-				 for(var j=0;j<d.fallowing[i].length;j++){
-					$("#"+d.fallowing[i][j].id).html("팔로우 취소");
-				 }
-			}
+		d.followlist.forEach(function(i){
+			  i.forEach(function(item){
+					$("#"+item.id).html("팔로우 취소");
+				 })
+			})
 	}
 	//팔로우 리스트
-	function follower(){
+	function follower(page){
 		$.ajax({
 			url:"./timelinefallowlist",
 			type:"post",
 			data:{
-				id : "${id}"
+				id : "${id}",
+				page:page
 			},
 			dataType:"json",
 			success:function(d){
@@ -431,64 +427,110 @@
 				$("#following").css("color","black");
 				$("#follower").css("background-color","darkblue");
 				$("#follower").css("color","white");
-				var cont="";
-				  for(var i =0;i<d.fallowlist.length;i++){
-					 for(var j=0;j<d.fallowlist[i].length;j++){
-						 cont += "<div id='followdiv"+d.fallowlist[i][j].id+"' class='followdiv'>";
-						 if(d.fallowlist[i][j].profile==0){
-							 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
-						 }else{
-							 cont += "<img class='friendprofile' id='img_"+d.fallowlist[i][j].id+"' src='resources/upload/"+d.fallowlist[i][j].profile+"' onclick='usertimeline(id)'/>";
-						 }
-						cont += "<p>"+d.fallowlist[i][j].id+"</p>";
-						if("${id}"==userid){
-							cont += "<button class='fbtn' id='"+d.fallowlist[i][j].id+"' onclick='followck(id)'>팔로우 추가</button>"
-							}
-						cont += "</div>";	
-					 }
-					}
-				  $("#followlistdiv").empty();
-				  $("#followlistdiv").append(cont);
-				timelinefallowlist(d);
+				console.log(d.followlist.length);
+				if(d.followlist.length==0){
+					var content = "";
+					content += "<div id='followlistdiv'>팔로워 목록이 없습니다</div></div>";
+					$("#followlistdiv").empty();
+					$("#followlistdiv").append(content);
+				}else{
+					followlist(d.followlist);
+					timelinefallowlist(d);
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage1,
+			            maxPage : d.range1,
+			            clickAction : function(e){
+			            	follower($(this).attr('page'));
+			            }
+			        });
+				}
 			},
 			error:function(e){
 				console.log(e);
 			}
 		});
 	}
+	//팔로우 리스트 뿌리기
+	function followlist(d){
+		//console.log(d);
+		var cont="";
+		cont+="<div style='height:auto;overflow:hidden'>";
+		d.forEach(function(i){
+			  i.forEach(function(item){
+				  cont += "<div id='followdiv"+item.id+"' class='followdiv'>";
+					 if(item.profile==0){
+						 cont += "<img class='friendprofile' id='img_"+item.id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
+					 }else{
+						 cont += "<img class='friendprofile' id='img_"+item.id+"' src='resources/upload/"+item.profile+"' onclick='usertimeline(id)'/>";
+					 }
+					cont += "<p>"+item.id+"</p>";
+					if("${id}"==userid){
+						cont += "<button class='fbtn' id='"+item.id+"' onclick='followck(id)'>팔로우 추가</button>"
+						}
+					cont += "</div>";
+			  })
+		})
+		cont+="</div>";
+		  $("#followlistdiv").empty();
+		  $("#followlistdiv").append(cont);
+		  $("#followlistdiv").append("<div id='container'></div>");
+	}
+	function followinglist(d){
+		 var cont="";
+		  d.forEach(function(i){
+			  i.forEach(function(item){
+						 console.log(item.profile);
+						 cont += "<div id='followdiv"+item.id+"' class='followdiv'>";
+						 if(item.profile==0){
+							 cont += "<img class='friendprofile' id='img_"+item.id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
+						 }else{
+							 cont += "<img class='friendprofile' id='img_"+item.id+"' src='resources/upload/"+item.profile+"' onclick='usertimeline(id)'/>";
+						 }
+						cont += "<p>"+item.id+"</p>";
+						if("${id}"==userid){
+							cont += "<button class='fbtn' id='"+item.id+"' onclick='followck(id)'>팔로우 취소</button>"
+						}
+						cont += "</div>";	
+					})
+			  })
+		  $("#followlistdiv").empty();
+		  $("#followlistdiv").append(cont);
+		  $("#followlistdiv").append("<div id='container'></div>");
+	}
 	//팔로잉 리스트
-	function following(){
+	function following(page){
+		console.log(page);
 		$.ajax({
 			url:"./timelinefallowlist",
 			type:"post",
 			data:{
-				id : "${id}"
+				id : "${id}",
+				page : page
 			},
 			dataType:"json",
 			success:function(d){
-				console.log(d);
+				//console.log(d.following.length);
 				$("#follower").css("background-color","lightgray");
 				$("#follower").css("color","black");
 				$("#following").css("background-color","darkblue");
 				$("#following").css("color","white");
-				var cont="";
-				  for(var i =0;i<d.fallowing.length;i++){
-					 for(var j=0;j<d.fallowing[i].length;j++){
-						 cont += "<div id='followdiv"+d.fallowing[i][j].id+"' class='followdiv'>";
-						 if(d.fallowlist[i][j].profile==0){
-							 cont += "<img class='friendprofile' id='img_"+d.fallowing[i][j].id+"' src='resources/img/member/noprofile.jpg' onclick='usertimeline(id)'/>";
-						 }else{
-							 cont += "<img class='friendprofile' id='img_"+d.fallowing[i][j].id+"' src='resources/upload/"+d.fallowing[i][j].profile+"' onclick='usertimeline(id)'/>";
-						 }
-						cont += "<p>"+d.fallowing[i][j].id+"</p>";
-						if("${id}"==userid){
-							cont += "<button class='fbtn' id='"+d.fallowlist[i][j].id+"' onclick='followck(id)'>팔로우 취소</button>"
-						}
-						cont += "</div>";	
-					 }
-					}
-				  $("#followlistdiv").empty();
-				  $("#followlistdiv").append(cont);				
+				if(d.following.length==0){
+					var content = "";
+					content += "<div id='followlistdiv'>팔로잉 목록이 없습니다</div></div>";
+					$("#followlistdiv").empty();
+					$("#followlistdiv").append(content);
+				}else{
+					followinglist(d.following);	
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage2,
+			            maxPage : d.range2,
+			            clickAction : function(e){
+			            	following($(this).attr('page'));
+			            }
+			        });
+				}				
 			},
 			error:function(e){
 				console.log(e);
@@ -555,17 +597,22 @@
 			},
 			dataType:"json",
 			success:function(d){
-				console.log(d);
-				printList(d.list);
-				atagCreate(d.list);
-				$("#container").zer0boxPaging({
-		            viewRange : 5,
-		            currPage : d.currPage,
-		            maxPage : d.range,
-		            clickAction : function(e){
-		            	timelinereview($(this).attr('page'));
-		            }
-		        });
+				console.log(d.list.length);
+				if(d.list.length!=0){
+					printList(d.list);
+					atagCreate(d.list);
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage,
+			            maxPage : d.range,
+			            clickAction : function(e){
+			            	timelinereview($(this).attr('page'));
+			            }
+			        });
+				}else{
+					$("#content").empty();
+					$("#content").append("<div id='container'>작성한 리뷰가 없습니다.</div>");
+				}				
 			},
 			error:function(e){
 				console.log(e);
@@ -586,8 +633,8 @@
 				}
 				content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 				content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
-				if(userid != "${id}"){
-					content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick("+item.review_idx+")' />";
+				if(item.id != loginid || loginid == ""){
+					content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' />";
 				}
 				content += "<br/></div></div>";
 				content += "<table id='review_table'><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
@@ -721,7 +768,7 @@
 			reply += "<div class='replyDiv' id='reply'><table  id='reply_table'>";
 			if(loginid != ""){			
 			reply += "<tr><td><img width='30px' height='30px' src='resources/upload/"+profileSession+"'/></td>";
-			reply += "<td id='reply_loginId'>"+loginid+"</td><td><textarea id='reply_textarea"+idx+"' class='reply_textarea'></textarea></td>";
+			reply += "<td id='reply_loginId'>"+loginid+"</td><td><textarea id='reply_textarea"+idx+"' class='reply_textarea' maxlength='100'></textarea></td>";
 			reply += "<td><input id='replyWrite' type='button' value='작성' onclick='replyWrite(this,"+idx+")'/></td></tr>"
 			}
 			list.forEach(function(item){
@@ -729,7 +776,7 @@
 				reply +="<tr class='reply_table' id='reply_table"+item.revreply_idx+"'>";
 				reply +="<td rowspan='2'><input type='hidden' value='"+item.revreply_idx+"'/><img id='reply_img' src='"+item.revreply_profile+"'/></td>";
 				reply +="<td rowspan='2' id='reply_id'>"+item.id+"</td>";
-				reply +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
+				reply +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' maxlength='100' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
 				reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td></tr><tr>";
 				reply+="<td  class='reply_btn' >";
 				if(item.id==loginid){										
@@ -1141,20 +1188,7 @@
 		}else if(page=="timeline_reply"){
 			timeline_replyajax(showPage);
 		}else if(page == "likestore"){
-			$.ajax({
-				url:"./timelinelikestore",
-				type:"post",
-				data:{
-					id : "${id}"
-				},
-				dataType:"json",
-				success:function(d){
-					likestorelist(d.list,d.list_hash);
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+			likestoreajax(showPage);
 		}else if(page == "resources/timelinehtml/userupdate.html"){
 			$.ajax({
 				url:"./timelineuserupdate",
@@ -1199,6 +1233,41 @@
 			});
 		}
 	}
+	function likestoreajax(page){
+		$.ajax({
+			url:"./timelinelikestore",
+			type:"post",
+			data:{
+				id : "${id}",
+				page:page
+			},
+			dataType:"json",
+			success:function(d){
+				console.log(d.list.length);
+				if(d.list.length!=0){
+					likestorelist(d.list,d.list_hash);
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage,
+			            maxPage : d.range,
+			            clickAction : function(e){
+			            	likestoreajax($(this).attr('page'));
+			            }
+			        });
+				}else{
+					$("#content").empty();
+					$("#content").append("<div>좋야요한 가게가 없습니다</div>");
+				}
+				
+			},
+			error:function(e){
+				console.log(e);
+				$("#content").empty();
+				$("#content").append("<div id='container'>좋야요한 가게가 없습니다</div>");
+			}
+		});
+	}
+
 	//가게 등록 리스트 페이징
 	function storeRegistListPaging(page) {
 		$.ajax({
@@ -1256,19 +1325,25 @@
 			},
 			dataType:"json",
 			success:function(d){
-				console.log(d);
-				revreplyList(d.list);
-				$("#container").zer0boxPaging({
-		            viewRange : 5,
-		            currPage : d.currPage,
-		            maxPage : d.range,
-		            clickAction : function(e){
-		            	timeline_replyajax($(this).attr('page'));
-		            }
-		        });
+				if(d.list.length!=0){
+					revreplyList(d.list);
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage,
+			            maxPage : d.range,
+			            clickAction : function(e){
+			            	timeline_replyajax($(this).attr('page'));
+			            }
+			        });
+				}else{
+					$("#content").append("<div>작성한 댓글이 없습니다</div>");
+				}
+				
 			},
 			error:function(e){
 				console.log(e);
+				$("#content").empty();
+				$("#content").append("<div id='container'>작성한 댓글이 없습니다</div>");
 			}
 		});
 	}
@@ -1283,15 +1358,21 @@
 			},
 			dataType:"json",
 			success:function(d){
-				revreplyList(d.list);
-				$("#container").zer0boxPaging({
-		            viewRange : 5,
-		            currPage : d.currPage,
-		            maxPage : d.range,
-		            clickAction : function(e){
-		            	timelinelikereview($(this).attr('page'));
-		            }
-		        });
+				console.log(d.list.length);
+				if(d.list.length!=0){
+					revreplyList(d.list);
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage,
+			            maxPage : d.range,
+			            clickAction : function(e){
+			            	timelinelikereview($(this).attr('page'));
+			            }
+			        });
+				}else{
+					$("#content").empty();
+					$("#content").append("<div id='container'>좋아요한 리뷰가 없습니다</div>");					
+				}				
 			},
 			error:function(e){
 				console.log(e);
@@ -1379,13 +1460,19 @@
 	}
 	//좋아하는 가게 리스트
 	function likestorelist(list,hash){
+		$("#content").empty();
 		var content ="";
+		content+="<div id='div_table'></div>";
+		$("#content").append(content);
+		content="";
+		
 		list.forEach(function(i, idx){
 			i.forEach(function(item,idx){
+				content += "<div>";
 				content += "<table class='storeTable'>";
 				content += "<tr><td colspan='2'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' /></td></tr>";
 				content += "<tr>";
-				content += "<th><a href='#'>"+item.store_name+"</a></th><td rowspan='2'>하트</td></tr>";
+				content += "<th><a href='./storeDetail?store_idx="+item.store_idx+"'>"+item.store_name+"</a></th></tr>";
 				content += "<tr>";
 				content += "<th>"+item.store_addr+"</th></tr>";
 				content += "<tr><td id='"+item.store_idx+"' colspan='2'>";
@@ -1397,10 +1484,12 @@
 					})
 				})
 				content += "</td></tr></table>";
+				content += "</div>";
 			})
 		})
-		$("#content").empty();
-		$("#content").append(content);
+		$("#div_table").empty();
+		$("#div_table").append(content);
+		$("#div_table").after("<div id='container' ></div>");
 	}
 	//쿠폰 리스트
 	function couponlist(list){
@@ -1420,7 +1509,7 @@
 		});
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
-		$("#list").append("<div id='container'></div>");
+		$("#paging").append("<div id='container'></div>");
 	}
 	//포인트 리스트
 	function pointlist(d){
@@ -1441,7 +1530,7 @@
 		});		
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
-		$("#list").append("<div id='container'></div>");
+		$("#paging").append("<div id='container'></div>");
 	}
 	//보낸 리스트 아작스
 	function send(page){
@@ -1513,33 +1602,35 @@
 	};
 	//받은 리스트 불러오기
 	function receivelist(list){
-		var content = "";		
+		var content = "";
 		list.forEach(function(item, idx){
+			var dm_content=item.dm_content.substring(0,20);
 			content += "<tr>"
 			content +="<td>"+item.id+"</td>"
-			content +="<td id='"+item.dm_idx+"' onclick='receivedetail(id)'>"+item.dm_content+"</td>"
+			content +="<td id='"+item.dm_idx+"' onclick='receivedetail(id)'>"+dm_content+"</td>"
 			var date = new Date(item.dm_date);			
 			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
 			content += "</tr>"			
 		});		
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
-		$("#list").append("<div id='container'></div>");
+		$("#paging").append("<div id='container'></div>");
 	}
 	//보낸 메세지 리스트 불러오기
 	function sendlist(list){
-		var content = "";		
+		var content = "";
 		list.forEach(function(item, idx){
+			var dm_content=item.dm_content.substring(0,20);
 			content += "<tr>"
 			content +="<td>"+item.dm_id+"</td>"
-			content +="<td id='"+item.dm_idx+"' onclick='senddetail(id)'>"+item.dm_content+"</td>"
+			content +="<td id='"+item.dm_idx+"' onclick='senddetail(id)'>"+dm_content+"</td>"
 			var date = new Date(item.dm_date);	
 			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
 			content += "</tr>"			
 		});
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
-		$("#list").append("<div id='container'></div>");
+		$("#paging").append("<div id='container'></div>");
 	}
 	//메세지 작성하기
 	$("#dm").click(function(e){

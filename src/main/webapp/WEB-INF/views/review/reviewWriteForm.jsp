@@ -23,6 +23,7 @@
         textarea{
             width: 400px;
             height: 200px;
+            resize: none;
         }
         input[type=button]{
             vertical-align: middle;
@@ -112,11 +113,11 @@
        	margin-left: 15px;
        }
        #searchList{
-		width: 250px;
+		width: 300px;
 		height: 400px; 
 		background-color: rgba(46,100,254,0.7);
 		margin-top:-42px;     
-		margin-left: 401px;
+		margin-left: 405px;
 		z-index: 2;
 		position: absolute;
 		display: none;
@@ -131,7 +132,7 @@
 		height: 400px;
 		background-color: orange;
 		margin-top:-42px;  
-		margin-left:2px;   
+		margin-left:5px;   
 		z-index: 2;
 		position: absolute;
 		display: none;
@@ -184,12 +185,22 @@
 	   	vertical-align: middle;	  	
 	   }
 	   #containerA ul{
-	   	padding-left: 20px;
+	   	padding-left: 0px;
 	   }
 	   #infoW{	   	
 	   	border: 1px solid black;
 	   	width: 150px;
 	   	height: 25px;
+	   }
+	   #review_content{
+	   	font-size: 15px;
+	   }
+	   #storeNameList{
+	   	width: 300px;
+        display: inline-block;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
 	   }
     </style>
     <script>
@@ -210,7 +221,7 @@
 	<br/>
 	작성자 : <input id="user_Id" name="id" type="text" value="${ sessionScope.loginId}" readonly/>
 	<br/><br/><br/><br/>
-    상호명 : <input id="review_storeName" type="text" name="review_storeName" value="${review_updateForm.review_storeName}"/>
+    상호명 : <input id="review_storeName" type="text" placeholder="상호명을 입력해 주세요" name="review_storeName" value="${review_updateForm.review_storeName}" maxlength="20"/>
     <input type='hidden'  id="review_storeidx"  name='review_storeidx' />
     <button type="button" id="search" onclick="StoreName()">
     	<img id="reviewSearch" src="resources/img/search.png"/>
@@ -235,9 +246,9 @@
     </script>
     </div><br/>
     내용<br/>
-    <textarea id="review_content" name="review_content">${review_updateForm.review_content }</textarea><br/><br/>
+    <textarea id="review_content" name="review_content" maxlength="300" placeholder="리뷰 내용을 입력해 주세요.">${review_updateForm.review_content }</textarea><br/><br/>
     
-    해시태그 : <input id="hash" type="text"/><input id="add" type="button" value="추가"/><br/>
+    해시태그 : <input id="hash" type="text" placeholder="해시태그를 입력해 주세요." maxlength="20"/><input id="add" type="button" value="추가"/><br/>
     
     <div id="tag"></div>
     

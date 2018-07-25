@@ -478,6 +478,7 @@
 	}
 	function followinglist(d){
 		 var cont="";
+		 cont+="<div style='height:auto;overflow:hidden'>";
 		  d.forEach(function(i){
 			  i.forEach(function(item){
 						 console.log(item.profile);
@@ -494,6 +495,7 @@
 						cont += "</div>";	
 					})
 			  })
+			  cont+="</div>";
 		  $("#followlistdiv").empty();
 		  $("#followlistdiv").append(cont);
 		  $("#followlistdiv").append("<div id='container'></div>");

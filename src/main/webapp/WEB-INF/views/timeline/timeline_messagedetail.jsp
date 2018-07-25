@@ -10,7 +10,7 @@
 			table, th{border: 1px solid black;border-top: 1px solid black;border-collapse: collapse;padding: 5px 10px;}
 			td{border: 1px solid black;width: 100px;border-collapse: collapse;padding: 5px 10px;}
 			#messageid{width: 200px;}
-			#messagecontent{height: 200px;}
+			#messagecontent{width: 400px;height: 200px;}
 			#close{position: absolute;left: 300px;}
 			#reply{position: absolute;left: 250px;}
 		</style>
@@ -22,7 +22,7 @@
  		<td id="messageid">${detail.id}</td>
  	</tr>
  	<tr>
- 		<td id="messagecontent" colspan="2">${detail.dm_content}</td>
+ 		<td colspan="2"><textarea id="messagecontent" readonly>${detail.dm_content}</textarea></td>
  	</tr>
  </table>
  <button id="reply">답장</button>

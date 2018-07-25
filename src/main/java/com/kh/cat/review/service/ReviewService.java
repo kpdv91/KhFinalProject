@@ -162,14 +162,14 @@ public class ReviewService {
 		inter = sqlSession.getMapper(ReviewInter.class);
 		int allCnt = inter.storeListCnt(params);
 		//생성 가능 페이지 수(나머지가 있으면 페이지 하나 더 생성)
-				int rangePage = allCnt%4 >0 ? 
-							Math.round(allCnt/4)+1 : allCnt/4;
+				int rangePage = allCnt%5 >0 ? 
+							Math.round(allCnt/5)+1 : allCnt/5;
 				int page2=Integer.parseInt(page);
 				if(page2>rangePage) {
 					page2 = rangePage;
 				}
-				int end = page2 * 4;	 //5 : 100
-				int start = end - 4+1;//5 : 81
+				int end = page2 * 5;	 //5 : 100
+				int start = end - 5+1;//5 : 81
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("list", inter.storeList(params,start,end));

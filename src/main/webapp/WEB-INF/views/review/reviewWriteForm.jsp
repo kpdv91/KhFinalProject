@@ -230,7 +230,7 @@
     	
     	
     </div>
-    <div id="mapDiv">
+    <div id="mapDiv" >
     	 <c:import url="/WEB-INF/views/include/common/map.jsp"/>
     </div>
     <div id="starDIV">
@@ -252,7 +252,7 @@
     
     <div id="tag"></div>
     
-    <script>
+    <script>    
     hashtag("${review_updateForm.review_idx}")
   //해시태그,사진
 	function hashtag(elem){
@@ -315,13 +315,10 @@
 	$("#reviewWriteCancel").click(function(){
 		location.href="./";
 	});
-	if("${review_updateForm.review_content }" != ""){
-		$("#write").val("수정하기");
-		$("#reviewWriteCancel").css("display","none");
-	}
 	$(document).ready(function(){
 		$("#Logo").css("pointer-events","none");
-		
+		$("#searchBtn").css("pointer-events","none");
+		$("#search_content").css("pointer-events","none");
 		window.history.forward(1);
 		history.pushState(null, document.title, location.href); 
 		window.addEventListener('popstate', function(event) { history.pushState(null, document.title, location.href); });
@@ -443,7 +440,7 @@
 		btn = "<input id='listClose' type='button' value='X'/><br/>";
 		$("#searchList").append(btn);
 		$.ajax({
-			url : "./revStoreSearch/4/"+page,
+			url : "./revStoreSearch/5/"+page,
 			data : {"review_storeName":$("#review_storeName").val()},
 			success : function(data){
 				//console.log(data.list.length);
@@ -464,7 +461,7 @@
 				
 				
 				 $("#containerA").zer0boxPaging({
-		                viewRange : 4,
+		                viewRange : 5,
 		                currPage : data.currPage,
 		                maxPage : data.range,
 		                clickAction : function(e){

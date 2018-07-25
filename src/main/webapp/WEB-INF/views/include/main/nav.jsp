@@ -69,7 +69,7 @@
 				<option value="중랑구">중랑구</option>
 			</select>
             <input type="text" id="search_content" onkeyup="enterkey()" />
-            <button type="button" onclick="search()">검색</button>
+            <button id='searchBtn' type="button" onclick="search()">검색</button>
        	</div>
        	<c:if test="${sessionScope.loginId != null}">
 			<div id="alarm" onclick="alarmclick()">알람</div>

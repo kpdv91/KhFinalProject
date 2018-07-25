@@ -20,7 +20,7 @@
 	#searchBox{ width: 420px; height: 45px; border: 1px solid #2637a4; background-color: #ffffff; float:left;}    
 	/* #menu{position: absolute; top: 17px; left: 500px;} */
 	#nav select{font-size: 14px; width: 100px; padding: 10px; border: 0px; outline: none; }
-	#nav #search_content{font-size: 14px; width: 260px; padding: 10px; border: 0px; outline: none; }
+	#nav #search_content{font-size: 14px; width: 235px; padding: 10px; border: 0px; outline: none; }
 	#nav button{width: 50px; height: 100%; border: 0px; background-color: #2637a4; outline: none; float: right; color:#ffffff;}
 	#profileimg{width: 80px;height : 80px;position:absolute;left:1450px;top:1px;cursor: pointer;}
 	.btn{background-color:blue; color:white;width:80px;border: 2px solid white;cursor: pointer;}
@@ -68,7 +68,7 @@
 				<option value="중구">중구</option>
 				<option value="중랑구">중랑구</option>
 			</select>
-            <input type="text" id="search_content" onkeyup="enterkey()" placeholder="리뷰가 5개 이상인 가게부터 검색"/>
+            <input type="text" id="search_content" onkeyup="enterkey()" />
             <button type="button" onclick="search()">검색</button>
        	</div>
        	<c:if test="${sessionScope.loginId != null}">

@@ -6,18 +6,35 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>Insert title here</title>
-		<style></style>
+		<style>
+			div#dm_div{position: relative; top:5px; left:5px; width: 265px; height: 230px;}
+			div#dm_div_content{position: absolute; top: 30px; left: 7px;}
+			div#div_btn{position: absolute; top: 200px; left: 152px;}  
+			span#contentCnt{position: absolute; top: 190px; left: 7px; color: gray; font-size: 10px;}
+			textarea#dm_content{resize: none;}
+		</style>
 	</head>
-	<body>
-		받는 사람 : <input type="text" id="user1"/>
-		보내는 사람 : <input type="text" readonly="readonly" value="${sessionScope.loginId }" id="user2"/>
-		내용 : <textarea rows="10" cols="10" style="resize: none;" id="dm_content"></textarea>
-		
-		<button id="dm_exit">닫기</button>
-		<button id="dm_write">보내기</button>
+	<body>                                 
+		<div id="dm_div">
+			&nbsp;받는 사람 : <input type="text" id="user1"/><br/>
+			<input type="hidden" readonly="readonly" value="${sessionScope.loginId }" id="user2"/><br/>
+			<div id="dm_div_content"><textarea rows="10" cols="34" id="dm_content" onkeyup="contentCnt()" maxlength="100"></textarea></div>
+			<span id="contentCnt">0/100</span>
+			<div id="div_btn">
+				<button id="dm_exit">닫기</button>
+				<button id="dm_write">보내기</button>
+			</div>
+		</div>
 	</body>
 	<script>
 		var overlay = false;
+		//onkeyup 이벤트(#dm_content)
+		function contentCnt() {
+			var cnt = $("#dm_content").val();
+			console.log(cnt.length);
+			$("#contentCnt").html(cnt.length+"/300");
+		}
+		
 		//받는 사람 아이디 있는지 체크
 		$("#user1").focusout(function () {
 			$.ajax({
@@ -68,6 +85,7 @@
 						console.log(data);
 						if(data.result > 0){
 							alert(data.msg);
+							self.close();
 						}
 					},
 					error : function (error) {
@@ -76,7 +94,7 @@
 				});
 			}
 		});
-		
+		//쪽지창 닫기
 		$("#dm_exit").click(function () {
 			self.close();
 		});

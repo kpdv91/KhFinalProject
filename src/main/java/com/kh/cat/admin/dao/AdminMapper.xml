@@ -16,12 +16,11 @@
 		INSERT INTO dm(dm_idx, id, dm_id, dm_content, dm_date) 
 			VALUES(seq_dm.NEXTVAL, #{id}, #{dm_id}, #{dm_content}, SYSDATE)
 	</insert>
-	
+	<!-- 쪽지보낼시 알람추가 -->
 	<insert id="alarm_dm" parameterType="dm">
 		INSERT INTO alarm(alarm_idx, alarm_id, alarm_cate, dm_idx, alarm_read) 
-			VALUES(seq_alarm.NEXTVAL, #{dm_id}, '메세지', #{dm_idx}, 1)
+			VALUES(seq_alarm.NEXTVAL, #{dm_id}, '메세지', #{dm_idx}, 0)
 	</insert>
-	
 	
 	<!-- 신고리스트(관리자) -->
 	<select id="complainList" resultType="complain">

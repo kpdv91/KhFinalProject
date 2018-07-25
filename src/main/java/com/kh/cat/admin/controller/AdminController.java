@@ -98,7 +98,7 @@ public class AdminController {
 	@RequestMapping(value = "/storeRegistList")
 	public @ResponseBody HashMap<String, Object> storeRegistList(@RequestParam HashMap<String, String> params) {
 		logger.info("가게 등록 리스트 요청");
-		return adminService.StoreRegistList(params);
+		return adminService.storeRegistList(params);
 	}
 	
 	//블랙리스트 추가(관리자)

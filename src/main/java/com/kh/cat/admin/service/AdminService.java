@@ -58,7 +58,7 @@ public class AdminService {
 	}
 
 	//가게 등록 리스트
-	public HashMap<String, Object> StoreRegistList(HashMap<String, String> params) {
+	public HashMap<String, Object> storeRegistList(HashMap<String, String> params) {
 		logger.info("가게 등록 리스트 서비스 요청");
 		
 		int page = Integer.parseInt(params.get("page"));

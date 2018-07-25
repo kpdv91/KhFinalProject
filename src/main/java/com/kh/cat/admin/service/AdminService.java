@@ -58,7 +58,7 @@ public class AdminService {
 	}
 
 	//가게 등록 리스트
-	public HashMap<String, Object> StoreRegistList(HashMap<String, String> params) {
+	public HashMap<String, Object> storeRegistList(HashMap<String, String> params) {
 		logger.info("가게 등록 리스트 서비스 요청");
 		
 		int page = Integer.parseInt(params.get("page"));
@@ -315,6 +315,33 @@ public class AdminService {
 			}
 		}
 		
+		return map;
+	}
+
+	//관리자 쪽지 보내기
+	public HashMap<String, Object> dm_write(HashMap<String, String> params) {
+		logger.info("쪽지 보내기 서비스 실행");
+		DMDTO dto = new DMDTO();
+		String user1 = params.get("user1");
+		String user2 = params.get("user2");
+		String dm_content = params.get("dm_content");
+		dto.setDm_id(user1);
+		dto.setId(user2);
+		dto.setDm_content(dm_content);
+		
+		logger.info("받는 사람 : {}", user1);
+		logger.info("보내는 사람 : {}", user2);
+		logger.info("쪽지 내용 : {}", dm_content);
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		inter = sqlSession.getMapper(AdminInter.class);
+		int result = inter.dm_write(dto);
+		logger.info("쪽지 번호 : {}", dto.getDm_idx());
+		if(result > 0) {
+			inter.alarm_dm(dto);
+			map.put("msg", "메세지 보내기 성공");
+			map.put("result", result);
+		}
 		return map;
 	}
 

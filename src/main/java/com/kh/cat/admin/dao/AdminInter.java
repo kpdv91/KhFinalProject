@@ -62,6 +62,12 @@ public interface AdminInter {
 
 	int storeRegistAllCnt();//페이징을 위한 가게 등록 리스트 총 갯수
 
+	int dm_write(DMDTO dto);//쪽지보내기
+
+	void alarm_dm(DMDTO dto);//쪽지보낼 때 알람 등록
+
+	
+
 	
 
 

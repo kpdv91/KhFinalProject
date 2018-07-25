@@ -6,18 +6,32 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>Insert title here</title>
-		<style></style>
+		<style>
+			div#dm_div{position: relative; top:5px; left:5px; width: 265px; height: 230px;}
+			div#dm_div_content{position: absolute; top: 30px; left: 7px;}
+			div#div_btn{position: absolute; top: 200px; left: 152px;}  
+			span#contentCnt{position: absolute; top: 190px; left: 7px; color: gray; font-size: 10px;}
+			textarea#dm_content{resize: none;}
+		</style>
 	</head>
 	<body>
 		<input type="hidden" id="store_idx" value="${store_idx }"/>
-		받는 사람 : <input type="text" readonly="readonly" id="dm_id" value="${id }"/><br/><br/>
-		내용 : <textarea rows="10" cols="7" style="resize: none;" id="dm_content"></textarea>
-		<br/><br/>
-		<button id="win_exit">닫기</button>
-		<button id="dm_write">보내기</button>
-		
+		<div id="dm_div">
+			&nbsp;받는 사람 : <input type="text" id="dm_id" readonly="readonly" value="${id }"/><br/>
+			<div id="dm_div_content"><textarea rows="10" cols="34" id="dm_content" onkeyup="contentCnt()" maxlength="100"></textarea></div>
+			<span id="contentCnt">0/100</span>
+			<div id="div_btn">
+				<button id="win_exit">닫기</button>
+				<button id="dm_write">보내기</button>
+			</div>
+		</div>
 	</body>
 	<script>
+		function contentCnt() {
+			var cnt = $("#dm_content").val();
+			$("#contentCnt").html(cnt.length+"/100");
+		}
+	
 		$("#dm_write").click(function () {
 			$.ajax({
 				url:"./dm_write_regNo",
@@ -31,6 +45,7 @@
 				success:function(data){
 					console.log(data);			
 					alert(data.msg);
+					self.close();
 				},
 				error:function(error){
 					console.log(error);

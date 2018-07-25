@@ -35,4 +35,6 @@ public interface StoreInter {
 
 	void storeUphits(int store_idx);
 
+	int registSF(int store_idx);
+
 }

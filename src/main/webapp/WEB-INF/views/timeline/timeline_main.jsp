@@ -169,7 +169,7 @@
 		$("#dm_write").click(function () {
 			var url = "./dm_writePage";
 			var name = "쪽지보내기";
-			var option = "width=500, height=500, resizeable=no";
+			var option = "width=270, height=230, resizeable=no";
 					
 			var myWin= window.open(url, name, option);
 		});
@@ -1745,7 +1745,7 @@
 				if(item.store_regist == 0){
 					var id = new String(item.id);
 					content +="<tr>";
-					content +="<td>"+item.store_name+"</td>";
+					content +="<td id='store_regist_name'>"+item.store_name+"</td>";
 					content +="<td>"+item.store_ceo+"</td>";
 					content +="<td>"+item.store_addr+"</td>";
 					var date = new Date(item.store_revDate);			
@@ -1792,7 +1792,7 @@
 		function registNo(store_idx, id) {
 			console.log(store_idx, id);
 			var myWin= window.open("./registNoWin?store_idx="+store_idx+
-					"&id="+id,"가게 등록 거절","width=500,height=500");	
+					"&id="+id,"가게 등록 거절","width=270,height=230");	
 		}
 		//회원정보 사진 클릭
 		var profileck=0;
@@ -1918,13 +1918,13 @@
 			var content = "";
 			list.forEach(function(item){
 				content += "<tr><td>"+item.store_name+"</td>";
-				content += "<td><input type='button' value='보기' onclick='moveStat("+item.store_idx+")'></td></tr>";
+				content += "<td><input type='button' value='보기' onclick='moveStat("+item.store_idx+",\""+item.store_name+"\")'></td></tr>";
 				
 			})
 			$("#storeList").append(content);
 		}
-		function moveStat(idx) {
-			var myWin = window.open("./showStat?store_idx="+idx,"통계","width=1000, height=800")
+		function moveStat(idx, name) {
+			var myWin = window.open("./showStat?store_idx="+idx+"&store_name="+name,"통계")
 		}
 		function chgMail(){
 			$("#overlayMail").css("display","inline");

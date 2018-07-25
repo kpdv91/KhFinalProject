@@ -208,6 +208,7 @@ public class ReviewService {
 				}
 			}
 		}
+		System.out.println(allCnt);
 		//생성 가능 페이지 수(나머지가 있으면 페이지 하나 더 생성)
 		int rangePage = allCnt%5 >0 ? 
 					Math.round(allCnt/5)+1 : allCnt/5;

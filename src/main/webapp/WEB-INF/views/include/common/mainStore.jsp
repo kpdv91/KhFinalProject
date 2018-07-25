@@ -32,14 +32,19 @@
 				width: 250px;
 				height: 250px;
 			}
-			#hashtag{
+			#storehashtag{
 	        	border: 2px solid #33aaaaff;
 	            font-size: 14px;
-	            width: auto;            
+	            width: 70px;            
 	            text-align: center; 
 	            float: left;
 	            padding: 0px 5px;
 	            margin-right: 5px;
+	            
+	            display: inline-block;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
 	        }
 	        #moreStore{
 	        	margin-left: 950px;
@@ -84,13 +89,17 @@
 				content += "<td rowspan='2'><img class='storeLikeImg' id='storeLike"+item.store_idx+"' width='30px' height='30px' src='resources/img/storeLike/heart.png' onclick='storeLike("+item.store_idx+")'/></td></tr>";
 				content += "<tr><td>주소</td>";
 				content += "<th>"+item.store_addr+"</th></tr>";
-				content += "<tr><td id='"+item.store_idx+"' colspan='3'>";
 				
-				list_hash[index].forEach(function(item){
-					content += "<div id='hashtag'>#"+item.hash_tag+"</div>";
-				});
+				if(list_hash[index].length != 0){
+					content += "<tr><td id='"+item.store_idx+"' colspan='3'>";
+					
+					list_hash[index].forEach(function(item){
+						content += "<div id='storehashtag'>#"+item.hash_tag+"</div>";
+					});
+					content += "</td></tr>";
+				}
 				
-				content += "</td></tr></table>";
+				content += "</table>";
 				storeLikeChk(item.store_idx);
 			});
 			$("#searchPage").append(content);

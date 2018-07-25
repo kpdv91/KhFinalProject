@@ -45,14 +45,19 @@
 				margin-left: 900px;
 				border-radius: 5px;
 			}
-			#hashtag{
+			#storehashtag{
 	        	border: 2px solid #33aaaaff;
 	            font-size: 14px;
-	            width: auto;            
+	            width: 70px;            
 	            text-align: center; 
 	            float: left;
 	            padding: 0px 5px;
 	            margin-right: 5px;
+	            
+				display: inline-block;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
 	        }
 	        #tableLine{
 	        	overflow: auto;
@@ -77,6 +82,11 @@
 	
 		<c:import url="/WEB-INF/views/include/common/map.jsp"/><br/>
 		<!-- <script>displayMap(mapLocation, mapContent)</script> -->
+		
+		<p>
+			<button onclick="setZoomable(true)">지도 확대/축소 켜기</button>
+			<button onclick="setZoomable(false)">지도 확대/축소 끄기</button>
+		</p>
 		
 		<select id="sortSel" name="sortSel" onchange="sort(this.value)">
 			<option value="리뷰 최신 순" selected="selected" >리뷰 최신 순</option>
@@ -116,6 +126,10 @@
 		<br/><br/><br/>
 	</body>
 	<script>
+	$(document).ready(function(){
+		$("#sortSel option:eq(0)").prop("selected", true);//셀렉트박스 원래대로
+	});
+	
 	showPage = 1;//보여줄 페이지
 	var id = "${sessionScope.loginId}";
 	var search_content = "<%=request.getParameter("search_content") %>";
@@ -178,7 +192,7 @@
 						
 						showPage = data.currPage;
 						$("#store_container").zer0boxPaging({
-			                viewRange : 6,
+			                viewRange : 5,
 			                currPage : data.currPage,
 			                maxPage : data.range,
 			                clickAction : function(e){
@@ -187,7 +201,6 @@
 			                    tableSort(val,search_content,$(this).attr('page'));
 			                }
 			            });
-						
 						removeMarker();
 						markerRefresh(data.list);
 					}else{
@@ -214,13 +227,17 @@
 				content += "<td rowspan='2'><img class='storeLikeImg' id='storeLike"+item.store_idx+"' width='30px' height='30px' src='resources/img/storeLike/heart.png' onclick='storeLike("+item.store_idx+")'/></td></tr>";
 				content += "<tr><td>주소</td>";
 				content += "<th>"+item.store_addr+"</th></tr>";
-				content += "<tr><td id='"+item.store_idx+"' colspan='3'>";
 				
-				list_hash[index].forEach(function(item){
-					content += "<div id='hashtag'>#"+item.hash_tag+"</div>";
-				});
-				
-				content += "</td></tr></table>";
+				if(list_hash[index].length != 0){
+					content += "<tr><td id='"+item.store_idx+"' colspan='3'>";
+					
+					list_hash[index].forEach(function(item){
+						content += "<div id='storehashtag'>#"+item.hash_tag+"</div>";
+					});
+					content += "</td></tr>";
+				}
+
+				content += "</table>";
 				storeLikeChk(item.store_idx);
 			});
 			$("#searchPage").append(content);

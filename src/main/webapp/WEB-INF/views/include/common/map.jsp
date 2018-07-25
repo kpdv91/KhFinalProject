@@ -83,6 +83,7 @@
 			    daum.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
 			    daum.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
 			}
+			map.setZoomable(false);
 			
 			// 지도 위에 표시되고 있는 마커를 모두 제거합니다
 			function removeMarker() {
@@ -109,6 +110,11 @@
 			//지도를 재졍렬 합니다.
 			function relayout(){
 				map.relayout();
+			}
+			
+			function setZoomable(zoomable) {
+				// 마우스 휠로 지도 확대,축소 가능여부를 설정합니다
+				map.setZoomable(zoomable);    
 			}
 		</script>
 </body>

@@ -315,7 +315,8 @@ public class CommonService {
 		//총 게시물 수 => 생성 가능 페이지 수
 		int allCnt = 0;
 		if(params.get("search_content").equals("")) {
-			allCnt=inter.allCount();
+			allCnt=inter.allCount(search_content_Map);
+			System.out.println("전체 가게 수 : "+allCnt);
 		}else {
 			search_content_Map.put("store_searchCnt", search_content_And);
 			allCnt = inter.searchAndStoreCount(search_content_Map);

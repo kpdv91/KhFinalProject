@@ -170,26 +170,29 @@
 				url:"./searchSort/6/"+page,
 				data:{data:val,search_content:search_content,search_map:search_map},
 				success:function(data){
-					console.log(data);
-					console.log(data.list);
-					console.log(data.list_hash);
-					$("#searchPage").empty();
-					storePrintList(data.list,data.list_hash);
-					
-					showPage = data.currPage;
-					$("#store_container").zer0boxPaging({
-		                viewRange : 6,
-		                currPage : data.currPage,
-		                maxPage : data.range,
-		                clickAction : function(e){
-		                    //console.log(e);
-		                    console.log($(this).attr('page'));
-		                    tableSort(val,search_content,$(this).attr('page'));
-		                }
-		            });
-					
-					removeMarker();
-					markerRefresh(data.list);
+					if(data.size>0){
+						console.log(data.list);
+						console.log(data.list_hash);
+						$("#searchPage").empty();
+						storePrintList(data.list,data.list_hash);
+						
+						showPage = data.currPage;
+						$("#store_container").zer0boxPaging({
+			                viewRange : 6,
+			                currPage : data.currPage,
+			                maxPage : data.range,
+			                clickAction : function(e){
+			                    //console.log(e);
+			                    console.log($(this).attr('page'));
+			                    tableSort(val,search_content,$(this).attr('page'));
+			                }
+			            });
+						
+						removeMarker();
+						markerRefresh(data.list);
+					}else{
+						$("#searchPage").append("<h2 align='center'>검색 결과가 없습니다.</h2>");
+					}
 				},
 				error:function(e){
 					console.log(e)

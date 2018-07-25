@@ -89,6 +89,11 @@
 	<update id="userpwupdate" parameterType="member">
 		UPDATE member SET pw=#{pw},name=#{name},email=#{email},phone=#{phone},profile=#{profile} WHERE id = #{id}
 	</update>
+	
+	<!-- 권한 가져오기 -->
+	<select id="getaut" resultType="String" parameterType="String">
+		SELECT aut FROM member WHERE id=#{param1}
+	</select>
 
 </mapper>
 

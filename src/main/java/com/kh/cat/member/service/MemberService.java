@@ -101,20 +101,23 @@ public class MemberService {
 			logger.info("일치 여부 : "+success);//비밀번호가 맞았다 -> 로그인
 			if(success) {//로그인 성공시     ------------------->id,pw가 맞다
 				String profile = inter.getprofile(id);//프로필 가져오기 -logger확인없음
+				String aut = inter.getaut(id);//권한 가져오기
 				//msg = "로그인 성공";
 				page = "main";
 				session.setAttribute("loginId", id);
 				session.setAttribute("loginProfile", profile);	
+				session.setAttribute("loginAut", aut);
 				logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
 				logger.info("세션값 체크 : {}", session.getAttribute("loginProfile"));
+				logger.info("세션값 체크 : {}", session.getAttribute("loginAut"));
 				logger.info("이동할 페이지 : {}", page);			
 			}else {//--------------->id가 있지만 pw가 안맞다
-				String msg = "로그인 실패";
+				String msg = "비밀번호가 일치하지 않습니다.";
 				mav.addObject("msg", msg);//모델에 들어갈 내용
 				logger.info("발생할 메시지 2: {}", msg);		
 			}
 		}else {//------------------>회원가입된 id가 아니다
-			String msg = "로그인 실패";
+			String msg = "등록된 ID가 아닙니다.";
 			mav.addObject("msg", msg);//모델에 들어갈 내용
 			logger.info("발생할 메시지 2: {}", msg);
 		}

@@ -34,7 +34,7 @@
 			button#store_regist_yes{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
 			button#store_regist_no{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
 			
-			#content{position: absolute; width: 800px;height: auto;left : 400px;}
+			#content{position: absolute; width: 600px;height: auto;left : 400px;}
 			hr{margin-top:200px;}
 			
 	        #storeName_td{font-weight: bold;}
@@ -121,6 +121,8 @@
 			.star-input>.input>label[for="p5.0"]{width:150px;z-index:1;}
 			.star-input>output{display:inline-block;width:60px; font-size:18px;text-align:right;vertical-align:middle;}
 			#div_table{height:auto;overflow:hidden;}
+			#container{text-align: center;}
+			.replyContainer{text-align: center;}
 		</style>
 	</head>
 	<body>
@@ -364,24 +366,26 @@
 				},
 				dataType:"json",
 				success:function(d){
-					console.log(d);
+					//console.log(d.followlist.length);
 					$("#friend").css("background-color","darkblue");
 					$("#friend").css("color","white");
 					var content = "<div id='userfallow'>";
-					content += "<div class='followbtn' id='follower' onclick='follower("+showPage+")'>팔로워</div><div class='followbtn' id='following' onclick='following("+showPage+")'>팔로잉</div>";
-					content += "<div id='followlistdiv'>팔로워 목록이 없습니다</div></div>"
-					$("#fallowlist").append(content);
-					$("#fallowlist").css('display','block');
-					followlist(d.followlist);
-					timelinefallowlist(d);
-					$("#container").zer0boxPaging({
-			            viewRange : 5,
-			            currPage : d.currPage1,
-			            maxPage : d.range1,
-			            clickAction : function(e){
-			            	likestoreajax($(this).attr('page'));
-			            }
-			        });
+					content += "<div class='followbtn' id='follower' onclick='follower("+showPage+")'>팔로워</div><div class='followbtn' id='following' onclick='following("+showPage+")'>팔로잉</div>";				
+						content += "<div id='followlistdiv'>팔로워 목록이 없습니다</div></div>";
+						$("#fallowlist").append(content);
+						$("#fallowlist").css('display','block');
+					if(d.followlist.length!=0){
+						followlist(d.followlist);
+						timelinefallowlist(d);
+						$("#container").zer0boxPaging({
+				            viewRange : 5,
+				            currPage : d.currPage1,
+				            maxPage : d.range1,
+				            clickAction : function(e){
+				            	follower($(this).attr('page'));
+				            }
+				        });
+					}
 				},
 				error:function(e){
 					console.log(e);
@@ -400,7 +404,7 @@
 		console.log(e);
 		var gotime=[];
 		gotime = e.split("_");
-		console.log(gotime[1]);
+		//console.log(gotime[1]);
 		location.href="./timeline?id="+gotime[1];
 	}
 	function timelinefallowlist(d){		
@@ -425,17 +429,24 @@
 				$("#following").css("color","black");
 				$("#follower").css("background-color","darkblue");
 				$("#follower").css("color","white");
-				console.log(d.followlist);
-				followlist(d.followlist);
-				timelinefallowlist(d);
-				$("#container").zer0boxPaging({
-		            viewRange : 5,
-		            currPage : d.currPage1,
-		            maxPage : d.range1,
-		            clickAction : function(e){
-		            	follower($(this).attr('page'));
-		            }
-		        });
+				//console.log(d.followlist.length);
+				if(d.following.length==0){
+					var content = "";
+					content += "<div id='followlistdiv'>팔로워 목록이 없습니다</div></div>";
+					$("#followlistdiv").empty();
+					$("#followlistdiv").append(content);
+				}else{
+					followlist(d.followlist);
+					timelinefallowlist(d);
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage1,
+			            maxPage : d.range1,
+			            clickAction : function(e){
+			            	follower($(this).attr('page'));
+			            }
+			        });
+				}
 			},
 			error:function(e){
 				console.log(e);
@@ -444,8 +455,9 @@
 	}
 	//팔로우 리스트 뿌리기
 	function followlist(d){
-		console.log(d);
+		//console.log(d);
 		var cont="";
+		cont+="<div style='height:auto;overflow:hidden'>";
 		d.forEach(function(i){
 			  i.forEach(function(item){
 				  cont += "<div id='followdiv"+item.id+"' class='followdiv'>";
@@ -461,6 +473,7 @@
 					cont += "</div>";
 			  })
 		})
+		cont+="</div>";
 		  $("#followlistdiv").empty();
 		  $("#followlistdiv").append(cont);
 		  $("#followlistdiv").append("<div id='container'></div>");
@@ -499,20 +512,27 @@
 			},
 			dataType:"json",
 			success:function(d){
-				console.log(d.following);
+				//console.log(d.following.length);
 				$("#follower").css("background-color","lightgray");
 				$("#follower").css("color","black");
 				$("#following").css("background-color","darkblue");
 				$("#following").css("color","white");
-				followinglist(d.following);	
-				$("#container").zer0boxPaging({
-		            viewRange : 5,
-		            currPage : d.currPage2,
-		            maxPage : d.range2,
-		            clickAction : function(e){
-		            	following($(this).attr('page'));
-		            }
-		        });
+				if(d.following.length==0){
+					var content = "";
+					content += "<div id='followlistdiv'>팔로잉 목록이 없습니다</div></div>";
+					$("#followlistdiv").empty();
+					$("#followlistdiv").append(content);
+				}else{
+					followinglist(d.following);	
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage2,
+			            maxPage : d.range2,
+			            clickAction : function(e){
+			            	following($(this).attr('page'));
+			            }
+			        });
+				}				
 			},
 			error:function(e){
 				console.log(e);
@@ -579,17 +599,22 @@
 			},
 			dataType:"json",
 			success:function(d){
-				console.log(d);
-				printList(d.list);
-				atagCreate(d.list);
-				$("#container").zer0boxPaging({
-		            viewRange : 5,
-		            currPage : d.currPage,
-		            maxPage : d.range,
-		            clickAction : function(e){
-		            	timelinereview($(this).attr('page'));
-		            }
-		        });
+				console.log(d.list.length);
+				if(d.list.length!=0){
+					printList(d.list);
+					atagCreate(d.list);
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage,
+			            maxPage : d.range,
+			            clickAction : function(e){
+			            	timelinereview($(this).attr('page'));
+			            }
+			        });
+				}else{
+					$("#content").empty();
+					$("#content").append("<div id='container'>작성한 리뷰가 없습니다.</div>");
+				}				
 			},
 			error:function(e){
 				console.log(e);
@@ -610,8 +635,8 @@
 				}
 				content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 				content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
-				if(userid != "${id}"){
-					content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick("+item.review_idx+")' />";
+				if(item.id != loginid || loginid == ""){
+					content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' />";
 				}
 				content += "<br/></div></div>";
 				content += "<table id='review_table'><tr id='tableTop'><td id='storeName_td'>"+item.review_storeName+"</td>";
@@ -1220,19 +1245,27 @@
 			},
 			dataType:"json",
 			success:function(d){
-				//console.log(d);
-				likestorelist(d.list,d.list_hash);
-				$("#container").zer0boxPaging({
-		            viewRange : 5,
-		            currPage : d.currPage,
-		            maxPage : d.range,
-		            clickAction : function(e){
-		            	likestoreajax($(this).attr('page'));
-		            }
-		        });
+				console.log(d.list.length);
+				if(d.list.length!=0){
+					likestorelist(d.list,d.list_hash);
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage,
+			            maxPage : d.range,
+			            clickAction : function(e){
+			            	likestoreajax($(this).attr('page'));
+			            }
+			        });
+				}else{
+					$("#content").empty();
+					$("#content").append("<div>좋야요한 가게가 없습니다</div>");
+				}
+				
 			},
 			error:function(e){
 				console.log(e);
+				$("#content").empty();
+				$("#content").append("<div id='container'>좋야요한 가게가 없습니다</div>");
 			}
 		});
 	}
@@ -1294,19 +1327,25 @@
 			},
 			dataType:"json",
 			success:function(d){
-				console.log(d);
-				revreplyList(d.list);
-				$("#container").zer0boxPaging({
-		            viewRange : 5,
-		            currPage : d.currPage,
-		            maxPage : d.range,
-		            clickAction : function(e){
-		            	timeline_replyajax($(this).attr('page'));
-		            }
-		        });
+				if(d.list.length!=0){
+					revreplyList(d.list);
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage,
+			            maxPage : d.range,
+			            clickAction : function(e){
+			            	timeline_replyajax($(this).attr('page'));
+			            }
+			        });
+				}else{
+					$("#content").append("<div>작성한 댓글이 없습니다</div>");
+				}
+				
 			},
 			error:function(e){
 				console.log(e);
+				$("#content").empty();
+				$("#content").append("<div id='container'>작성한 댓글이 없습니다</div>");
 			}
 		});
 	}
@@ -1321,15 +1360,21 @@
 			},
 			dataType:"json",
 			success:function(d){
-				revreplyList(d.list);
-				$("#container").zer0boxPaging({
-		            viewRange : 5,
-		            currPage : d.currPage,
-		            maxPage : d.range,
-		            clickAction : function(e){
-		            	timelinelikereview($(this).attr('page'));
-		            }
-		        });
+				console.log(d.list.length);
+				if(d.list.length!=0){
+					revreplyList(d.list);
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage,
+			            maxPage : d.range,
+			            clickAction : function(e){
+			            	timelinelikereview($(this).attr('page'));
+			            }
+			        });
+				}else{
+					$("#content").empty();
+					$("#content").append("<div id='container'>좋아요한 리뷰가 없습니다</div>");					
+				}				
 			},
 			error:function(e){
 				console.log(e);
@@ -1429,7 +1474,7 @@
 				content += "<table class='storeTable'>";
 				content += "<tr><td colspan='2'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' /></td></tr>";
 				content += "<tr>";
-				content += "<th><a href='#'>"+item.store_name+"</a></th><td rowspan='2'>하트</td></tr>";
+				content += "<th><a href='./storeDetail?store_idx="+item.store_idx+"'>"+item.store_name+"</a></th></tr>";
 				content += "<tr>";
 				content += "<th>"+item.store_addr+"</th></tr>";
 				content += "<tr><td id='"+item.store_idx+"' colspan='2'>";
@@ -1466,7 +1511,7 @@
 		});
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
-		$("#list").append("<div id='container'></div>");
+		$("#paging").append("<div id='container'></div>");
 	}
 	//포인트 리스트
 	function pointlist(d){
@@ -1487,7 +1532,7 @@
 		});		
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
-		$("#list").append("<div id='container'></div>");
+		$("#paging").append("<div id='container'></div>");
 	}
 	//보낸 리스트 아작스
 	function send(page){
@@ -1570,7 +1615,7 @@
 		});		
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
-		$("#list").append("<div id='container'></div>");
+		$("#paging").append("<div id='container'></div>");
 	}
 	//보낸 메세지 리스트 불러오기
 	function sendlist(list){
@@ -1585,7 +1630,7 @@
 		});
 		$("#list").empty();
 		$("#list").append(content);//내용 붙이기
-		$("#list").append("<div id='container'></div>");
+		$("#paging").append("<div id='container'></div>");
 	}
 	//메세지 작성하기
 	$("#dm").click(function(e){

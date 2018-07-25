@@ -184,8 +184,6 @@
 	var aTag = "";
 	var idx = "";
 	var showPage = 1;
-	//테이블 페이징
-		
 	//리뷰 로그인체크 후 수정 삭제 신고 a 태그 띄워줌
 	function atagCreate(list){
 		aTag = "";
@@ -429,8 +427,8 @@
 				$("#following").css("color","black");
 				$("#follower").css("background-color","darkblue");
 				$("#follower").css("color","white");
-				//console.log(d.followlist.length);
-				if(d.following.length==0){
+				console.log(d.followlist.length);
+				if(d.followlist.length==0){
 					var content = "";
 					content += "<div id='followlistdiv'>팔로워 목록이 없습니다</div></div>";
 					$("#followlistdiv").empty();
@@ -770,7 +768,7 @@
 			reply += "<div class='replyDiv' id='reply'><table  id='reply_table'>";
 			if(loginid != ""){			
 			reply += "<tr><td><img width='30px' height='30px' src='resources/upload/"+profileSession+"'/></td>";
-			reply += "<td id='reply_loginId'>"+loginid+"</td><td><textarea id='reply_textarea"+idx+"' class='reply_textarea'></textarea></td>";
+			reply += "<td id='reply_loginId'>"+loginid+"</td><td><textarea id='reply_textarea"+idx+"' class='reply_textarea' maxlength='100'></textarea></td>";
 			reply += "<td><input id='replyWrite' type='button' value='작성' onclick='replyWrite(this,"+idx+")'/></td></tr>"
 			}
 			list.forEach(function(item){
@@ -778,7 +776,7 @@
 				reply +="<tr class='reply_table' id='reply_table"+item.revreply_idx+"'>";
 				reply +="<td rowspan='2'><input type='hidden' value='"+item.revreply_idx+"'/><img id='reply_img' src='"+item.revreply_profile+"'/></td>";
 				reply +="<td rowspan='2' id='reply_id'>"+item.id+"</td>";
-				reply +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
+				reply +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' maxlength='100' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
 				reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td></tr><tr>";
 				reply+="<td  class='reply_btn' >";
 				if(item.id==loginid){										
@@ -1604,11 +1602,12 @@
 	};
 	//받은 리스트 불러오기
 	function receivelist(list){
-		var content = "";		
+		var content = "";
 		list.forEach(function(item, idx){
+			var dm_content=item.dm_content.substring(0,20);
 			content += "<tr>"
 			content +="<td>"+item.id+"</td>"
-			content +="<td id='"+item.dm_idx+"' onclick='receivedetail(id)'>"+item.dm_content+"</td>"
+			content +="<td id='"+item.dm_idx+"' onclick='receivedetail(id)'>"+dm_content+"</td>"
 			var date = new Date(item.dm_date);			
 			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
 			content += "</tr>"			
@@ -1619,11 +1618,12 @@
 	}
 	//보낸 메세지 리스트 불러오기
 	function sendlist(list){
-		var content = "";		
+		var content = "";
 		list.forEach(function(item, idx){
+			var dm_content=item.dm_content.substring(0,20);
 			content += "<tr>"
 			content +="<td>"+item.dm_id+"</td>"
-			content +="<td id='"+item.dm_idx+"' onclick='senddetail(id)'>"+item.dm_content+"</td>"
+			content +="<td id='"+item.dm_idx+"' onclick='senddetail(id)'>"+dm_content+"</td>"
 			var date = new Date(item.dm_date);	
 			content +="<td>"+date.toLocaleDateString("ko-KR")+"</td>"
 			content += "</tr>"			
@@ -1916,13 +1916,13 @@
 			var content = "";
 			list.forEach(function(item){
 				content += "<tr><td>"+item.store_name+"</td>";
-				content += "<td><input type='button' value='보기' onclick='moveStat("+item.store_idx+")'></td></tr>";
+				content += "<td><input type='button' value='보기' onclick='moveStat("+item.store_idx+",\""+item.store_name+"\")'></td></tr>";
 				
 			})
 			$("#storeList").append(content);
 		}
-		function moveStat(idx) {
-			var myWin = window.open("./showStat?store_idx="+idx,"통계","width=1000, height=800")
+		function moveStat(idx, name) {
+			var myWin = window.open("./showStat?store_idx="+idx+"&store_name="+name,"통계")
 		}
 		function chgMail(){
 			$("#overlayMail").css("display","inline");

@@ -14,6 +14,9 @@
 		#regist table,tr,td,th{
 			border: solid 1px black;
 		}
+		#regist input{
+			margin: 3px 0px 3px 6px;
+		}
 		#regist{
 			position: relative;
 			width:800px;
@@ -43,54 +46,54 @@
 				</tr>
 				<tr>
 					<th>상호명</th>
-					<td><input type="text" name="store_name" placeholder="상호명"/></td>
+					<td><input type="text" name="store_name" placeholder="상호명" maxlength="20" size="40"/></td>
 				</tr>
 				<tr>
 					<th>대표자</th>
-					<td><input type="text" name="store_ceo" placeholder="대표자"/></td>
+					<td><input type="text" name="store_ceo" placeholder="대표자" maxlength="10"/></td>
 				</tr>
 				<tr>
 					<th>전화번호</th>
 					<td>
-						<input type="text" name="store_phone_H"/>-
-						<input type="text" name="store_phone_B"/>-
-						<input type="text" name="store_phone_T"/>
+						<input type="text" name="store_phone_H" maxlength="4" size="1"/>
+						-<input type="text" name="store_phone_B" maxlength="4" size="1"/>
+						-<input type="text" name="store_phone_T" maxlength="4" size="1"/>
 					</td>
 				</tr>
 				<tr>
 					<th>주소</th>
 					<td>
-						<input type="text" name="store_addr" id="address" placeholder="주소" readonly="readonly">
-						<input type="button" onclick="searchAddr()" value="주소 검색"><br>
+						<input type="button" onclick="searchAddr()" value="주소 검색">
+						<input type="text" name="store_addr" id="address" placeholder="주소" readonly="readonly" size="40">
+						<input type="text" name="store_addr_D" placeholder="상세 주소" maxlength="30" size="50"/>
+						<br>
 						<div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
 					</td>
 				</tr>
 				<tr>
 					<th>상세 주소</th>
-					<td>
-						<input type="text" name="store_addr_D" placeholder="상세 주소">
-					</td>
+					<td><input type="text" name="store_addr_D" placeholder="상세 주소" maxlength="30"/></td>
 				</tr>
 				<tr>
 					<th>음식 종류</th>
-					<td><input type="text" name="store_food" placeholder="ex) 한식, 퓨전, 고기집"/></td>
+					<td><input type="text" name="store_food" placeholder="ex) 한식, 퓨전, 고기집" maxlength="20"/></td>
 				</tr>
 				<tr>
 					<th>예상 예산(2인기준)</th>
-					<td><input type="text" name="store_price" placeholder="ex) 45000"/>원</td>
+					<td><input type="text" name="store_price" placeholder="ex) 45000" maxlength="6"/>원</td>
 				</tr>
 				<tr>
 					<th>영업 시간</th>
-					<td><input type="text" name="store_time" placeholder="ex) 평일, 토요일: 11:00~20:00/일요일, 공휴일:09:00~18:00"/></td>
+					<td><input type="text" name="store_time" placeholder="ex) 평일, 토요일: 11:00~20:00/일요일, 공휴일:09:00~18:00" maxlength="50"/></td>
 				</tr>
 				<tr>
 					<th>휴무일</th>
-					<td><input type="text" name="store_rest" placeholder="ex) 매달 셋째주 일요일"/></td>
+					<td><input type="text" name="store_rest" placeholder="ex) 매달 셋째주 일요일" maxlength="50"/></td>
 				</tr>
 				<tr>
 					<th>해시 태그</th>
 					<td>
-						<input type="text" id="tag" name="store_tag" placeholder="ex) 줄서는맛집"/>
+						<input type="text" id="tag" name="store_tag" placeholder="ex) 줄서는맛집" maxlength="20"/>
 						<input type="button" onclick="tagAdd()" value="추가">
 					</td>
 				</tr>
@@ -294,9 +297,9 @@
 		        }
 			}
 			
-			if(tagList.length>=11){
+			if(tagList.length>8){
 				tagList.pop();
-				alert("태그는 최대 10개입니다.");
+				alert("태그는 최대 8개입니다.");
 			}else if(cnt>=2){
 				tagList.pop();
 				alert("중복되는 태그가 있습니다");
@@ -348,16 +351,16 @@
 					},
 				success:function(data){
 					console.log(data);
-					alert(" 등록 성공");
+					alert("등록에 성공했습니다.\n승인까지는 1~2일 소요됩니다.");
 					location.href="./";
 				},
 				error:function(e){
+					alert("오류 발생.");
 					console.log(e);
 				}
 			});
 		}
-		
 	}
-    
+	
     </script>
 </html>

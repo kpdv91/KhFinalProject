@@ -85,5 +85,9 @@
 	 <update id="storeUphits">
 		UPDATE store SET store_bHit=store_bHit+1 WHERE store_idx = #{param1}
 	</update>
-	 
+	
+	 <!-- 등록 여부 검사 -->
+	<select id="registSF" resultType="Integer">
+		SELECT store_regist FROM store WHERE store_idx = #{param1} 
+	</select>
 </mapper>

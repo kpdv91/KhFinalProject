@@ -12,8 +12,8 @@
 		<style>
 			/* h1{color: #2637a4;} */
 			#detailFrame{position: relative;top: 50px; left: 20%;height: 600px;}
-			#detailFrame ul{width: 800px;}
-			#detailFrame ul li{list-style: none;  display: inline;	padding: 0px 10px; border: solid 2px #2637a4;
+			#infoFrame ul{width: 500px; float: left;}
+			#infoFrame ul li{list-style: none;  display: inline;	padding: 0px 10px; border: solid 2px #2637a4;
 				font-size: x-large; width: 100px;}
 			#contFrame{width: 1000px; height: 400px; border: solid 2px #2637a4;}
 			.divChg{display: none;}
@@ -22,7 +22,7 @@
 	</head>
 	<body>
 		<div id="detailFrame">
-			<div id="tabFrame">
+			<div id="infoFrame">
 				<c:if test="${sessionScope.loginId == '관리자' }">
 					<button id="back" onclick="backBtn()">뒤로가기</button>
 				</c:if>
@@ -31,16 +31,16 @@
 					<li class="tab" onclick="divSnH(this)">메뉴</li>
 					<li class="tab" onclick="divSnH(this)">위치</li>
 				</ul>
-			</div>
-			<div id="infoFrame">
 				<span id="title">${storeDetail.store_name}</span>
 				<ul>
 					<li>별점 ${storeDetail.store_star}</li>
 					<li>조회 ${storeDetail.store_bHit}</li>
 					<li>리뷰 ${storeDetail.store_revCnt}</li>
 					<li id="likeCnt">찜수 ${storeDetail.store_storeLikeCnt}</li>
+					<li>
 				</ul>
-				<input type="button" id="storeLike" value="찜" onclick="storeLike()">
+				<img id="storeLike" alt="찜하트" src="" width="30px" onclick="storeLike()">
+
 			</div>
 			<div id="contFrame">
 				<div class="divChg" id="info">
@@ -107,10 +107,6 @@
 				</div>
 				<div class="divChg" id="loca">
 					<div id="map" style="width:100%;height:100%;"></div>
-					<p>
-						<button onclick="setZoomable(true)">지도 확대/축소 켜기</button>
-						<button onclick="setZoomable(false)">지도 확대/축소 끄기</button>
-					</p>
 				</div>
 			</div>
 		</div>
@@ -143,8 +139,8 @@
 		$("#info").css("display","inline");
 	}
 	
-	var mapContaine;
 	var map;
+	var isMap=false;//맵 생성 여부
 	//선택에 따라 정보,메뉴,위치 보기
 	function divSnH(e) {
 		$(".tab").css("background-color","white");
@@ -198,6 +194,7 @@
 			    } 
 			});
 			map.setZoomable(false);
+			isMap = true;
 		}else{
 			alert("올바른 명령이 아닙니다.")
 		}
@@ -209,6 +206,18 @@
 	    // 마우스 휠로 지도 확대,축소 가능여부를 설정합니다
 	    map.setZoomable(zoomable);    
 	}
+	
+	var zoom=false;//줌인or아웃 플레그
+	//맵에서만 줌인
+	$("body").click(function(e) {
+		if(isMap==true){
+		setZoomable(zoom)
+		}
+		zoom=false;
+	});
+	$("#map").click(function(e) {
+		zoom=true;
+	});
 	
 	//메뉴판 선택
 	function menuShow(e) {
@@ -252,10 +261,10 @@
 			success:function(data){
 				id=data.loginId;
 				if(data.likeChk==1){
-					$("#storeLike").css("background-color","red");
+					$("#storeLike").attr("src","./resources/img/storeLike/heart2.png");
 					likeChk=1;
 				}else{
-					$("#storeLike").css("background-color","#2637a4");
+					$("#storeLike").attr("src","./resources/img/storeLike/heart.png");
 					likeChk=0;
 				}
 			},
@@ -289,7 +298,6 @@
 		}
 		
 	}
-
 
 	</script>
 </html>

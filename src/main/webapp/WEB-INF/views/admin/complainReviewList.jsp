@@ -106,6 +106,7 @@
 	</body>
 	<script>
 		$(document).ready(function () {
+			window.resizeTo(500, 500);
 			var rev_idx = ${rev_idx};
 			var revReply_idx = ${revReply_idx};
 			$.ajax({
@@ -137,7 +138,8 @@
 			var revReply_idx = ${revReply_idx};
 			var id = "${id}";
 			var complain_id = "${complain_id}";
-			var myWin= window.open("./rev_revRe_delDM?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");
+			var option = "width=270, height=230";
+			var myWin= window.open("./rev_revRe_delDM?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지", option);
 		});
 		
 		//신고취하

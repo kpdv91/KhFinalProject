@@ -315,7 +315,8 @@ public class CommonService {
 		//총 게시물 수 => 생성 가능 페이지 수
 		int allCnt = 0;
 		if(params.get("search_content").equals("")) {
-			allCnt=inter.allCount();
+			allCnt=inter.allCount(search_content_Map);
+			System.out.println("전체 가게 수 : "+allCnt);
 		}else {
 			search_content_Map.put("store_searchCnt", search_content_And);
 			allCnt = inter.searchAndStoreCount(search_content_Map);
@@ -530,11 +531,11 @@ public class CommonService {
 	}
 
 	// 현재 날짜 기준으로 통계 데이터 가져오기
-	public ModelAndView showStat(int store_idx) {
+	public ModelAndView showStat(int store_idx, String store_name) {
 		inter = sqlSession.getMapper(CommonInter.class);
 		ModelAndView mav = new ModelAndView();
 		ArrayList<TotalDTO> statList = inter.showStat(store_idx);
-		
+		mav.addObject("store_name",store_name);
 		mav.addObject("statList",statList);
 		mav.setViewName("store/showStat");
 		return mav;

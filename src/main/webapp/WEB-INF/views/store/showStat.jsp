@@ -23,7 +23,7 @@
 		</style>
 	</head>
 	<body>
-		
+		<h4>${store_name}</h4>
 		<div id="Line_Controls_Chart">
 		<div id=statCate>
 			<input type="button" value="ALL" onclick="reDrow('all')">
@@ -40,6 +40,14 @@
 	
 	<script>
 	var dataCnt =  ${statList.size()};
+	var mRS = 0;
+	 if(dataCnt<5){
+     	mRS = 172800000
+     	}
+     else{
+     	mRS = 432000000
+     	}
+	
 	var cate = "";
 	
 	if(dataCnt<2){
@@ -119,12 +127,7 @@
 		                              legend          : { position: "top", textStyle: {fontSize: 13}},
 		                              pointSize        : 5,
 		                              tooltip          : {textStyle : {fontSize:12}, showColorCode : true,trigger: 'both'},
-		                              hAxis              : {format: chartDateformat, gridlines:{count:chartLineCount,units: {
-		                                                                  years : {format: ['yy']},
-		                                                                  months: {format: ['MM']},
-		                                                                  days  : {format: ['dd']}
-		                                                                  }
-		                                                                },textStyle: {fontSize:12}},
+		                              hAxis              : {format: chartDateformat,textStyle: {fontSize:12}},
 		                vAxis              : {minValue: min,viewWindow:{min:0},gridlines:{count:-1},textStyle:{fontSize:12}},
 		                animation        : {startup: true,duration: 1000,easing: 'in' },
 		                annotations    : {pattern: chartDateformat,
@@ -141,7 +144,7 @@
 		              }
 		            });
 		 
-		            var control = new google.visualization.ControlWrapper({
+		            var control = new google.visualization.ControlWrapper({//
 		              controlType: 'ChartRangeFilter',
 		              containerId: 'controlsArea',  //control bar를 생성할 영역
 		              options: {
@@ -149,14 +152,9 @@
 		                        chartType: 'LineChart',
 		                        chartOptions: {
 		                        chartArea: {'width': '60%','height' : 80},
-		                          hAxis: {'baselineColor': 'none', format: chartDateformat, textStyle: {fontSize:12},
-		                            gridlines:{count:controlLineCount,units: {
-		                                  years : {format: ['yy']},
-		                                  months: {format: ['MM']},
-		                                  days  : {format: ['dd']}
-		                                  }
-		                            }}
-		                        }
+		                          hAxis: {'baselineColor': 'none', format: chartDateformat, textStyle: {fontSize:12}}
+		                        },
+		                        minRangeSize: mRS
 		                  },
 		                    filterColumnIndex: 0
 		                }
@@ -180,13 +178,13 @@
 		  google.charts.load('current', {'packages':['line','controls']});
 		  cate = "all";
 		  chartDrowFun.chartDrow(); //chartDrow() 실행
+		 /*  programmaticSlider.setState({'lowValue': 2, 'highValue': 5}); */
 		});
 	
 	function reDrow(da) {
 		cate = da;
 		chartDrowFun.chartDrow();
 	}
-	
 
 	</script>
 </html>

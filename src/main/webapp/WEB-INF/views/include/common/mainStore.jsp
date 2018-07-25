@@ -8,11 +8,21 @@
 		<title>Insert title here</title>
 		<style>
 			#searchPage{
-				width:1100px;
+				width:1200px;
 				height: 500px;
 			}
-			.storeTable, .storeTable tr, .storeTable td{
-				border: 1px solid black;
+			.storeTable{
+				float: left;
+				margin-right: 10px;
+				margin-top: 10px;
+				width: 365px;
+				border: 2px solid #142e5b;
+				border-collapse: collapse;
+				padding: 5px 10px;
+				text-align: center;
+			}
+			.storeTable tr, .storeTable td{
+				border: none;
 				border-collapse: collapse;
 				padding: 5px 10px;
 				text-align: center;
@@ -24,22 +34,25 @@
 				white-space: nowrap;
 				overflow: hidden;
 			}
-			.storeTable{
-				float: left;
-				margin: 10px;
-			}
 			.storeImg{
-				width: 250px;
+				width: 300px;
 				height: 250px;
 			}
-			#hashtag{
+			#storehashtag{
 	        	border: 2px solid #33aaaaff;
 	            font-size: 14px;
-	            width: auto;            
+	            width: 70px;            
 	            text-align: center; 
 	            float: left;
 	            padding: 0px 5px;
 	            margin-right: 5px;
+	            margin-bottom: 2px;
+				padding: 3px;
+	            
+				display: inline-block;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
 	        }
 	        #moreStore{
 	        	margin-left: 950px;
@@ -84,13 +97,20 @@
 				content += "<td rowspan='2'><img class='storeLikeImg' id='storeLike"+item.store_idx+"' width='30px' height='30px' src='resources/img/storeLike/heart.png' onclick='storeLike("+item.store_idx+")'/></td></tr>";
 				content += "<tr><td>주소</td>";
 				content += "<th>"+item.store_addr+"</th></tr>";
-				content += "<tr><td id='"+item.store_idx+"' colspan='3'>";
 				
-				list_hash[index].forEach(function(item){
-					content += "<div id='hashtag'>#"+item.hash_tag+"</div>";
-				});
+				if(list_hash[index].length != 0){
+					content += "<tr><td style='border-top: 2px solid #142e5b; height:70px;' id='"+item.store_idx+"' colspan='3'>";
+					
+					list_hash[index].forEach(function(item){
+						content += "<div id='storehashtag'>#"+item.hash_tag+"</div>";
+					});
+					content += "</td></tr>";
+				}else{
+					content += "<tr><td style='border-top: 2px solid #142e5b; height:70px;' id='"+item.store_idx+"' colspan='3'>";
+					content += "해시태그가 없습니다.</td></tr>";
+				}
 				
-				content += "</td></tr></table>";
+				content += "</table>";
 				storeLikeChk(item.store_idx);
 			});
 			$("#searchPage").append(content);

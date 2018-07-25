@@ -8,11 +8,21 @@
 		<title>Insert title here</title>
 		<style>
 			#searchPage{
-				width:1100px;
+				width:1200px;
 				height: 500px;
 			}
-			.storeTable, .storeTable tr, .storeTable td{
-				border: 1px solid black;
+			.storeTable{
+				float: left;
+				margin-right: 10px;
+				margin-top: 10px;
+				width: 365px;
+				border: 2px solid #142e5b;
+				border-collapse: collapse;
+				padding: 5px 10px;
+				text-align: center;
+			}
+			.storeTable tr, .storeTable td{
+				border: none;
 				border-collapse: collapse;
 				padding: 5px 10px;
 				text-align: center;
@@ -24,12 +34,8 @@
 				white-space: nowrap;
 				overflow: hidden;
 			}
-			.storeTable{
-				float: left;
-				margin: 10px;
-			}
 			.storeImg{
-				width: 250px;
+				width: 300px;
 				height: 250px;
 			}
 			#storehashtag{
@@ -40,8 +46,10 @@
 	            float: left;
 	            padding: 0px 5px;
 	            margin-right: 5px;
+	            margin-bottom: 2px;
+				padding: 3px;
 	            
-	            display: inline-block;
+				display: inline-block;
 				text-overflow: ellipsis;
 				white-space: nowrap;
 				overflow: hidden;
@@ -91,12 +99,15 @@
 				content += "<th>"+item.store_addr+"</th></tr>";
 				
 				if(list_hash[index].length != 0){
-					content += "<tr><td id='"+item.store_idx+"' colspan='3'>";
+					content += "<tr><td style='border-top: 2px solid #142e5b; height:40px; overflow: hidden;' id='"+item.store_idx+"' colspan='3'>";
 					
 					list_hash[index].forEach(function(item){
 						content += "<div id='storehashtag'>#"+item.hash_tag+"</div>";
 					});
 					content += "</td></tr>";
+				}else{
+					content += "<tr><td style='border-top: 2px solid #142e5b; height:40px;' id='"+item.store_idx+"' colspan='3'>";
+					content += "해시태그가 없습니다.</td></tr>";
 				}
 				
 				content += "</table>";

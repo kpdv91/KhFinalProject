@@ -9,16 +9,25 @@
 		<title>검색</title>
 		<style>
 			#searchPage{
-				width:1010px;
+				width:1200px;
 				height: auto;
-				overflow: auto;
 			}
 			#map{
 				width:1000px;
 				height:500px;
 			}
-			.storeTable, .storeTable tr, .storeTable td{
-				border: 1px solid black;
+			.storeTable{
+				float: left;
+				margin-right: 10px;
+				margin-top: 10px;
+				width: 365px;
+				border: 2px solid #142e5b;
+				border-collapse: collapse;
+				padding: 5px 10px;
+				text-align: center;
+			}
+			.storeTable tr, .storeTable td{
+				border: none;
 				border-collapse: collapse;
 				padding: 5px 10px;
 				text-align: center;
@@ -30,19 +39,14 @@
 				white-space: nowrap;
 				overflow: hidden;
 			}
-			.storeTable{
-				float: left;
-				margin-right: 10px;
-				margin-top: 10px;
-			}
 			.storeImg{
-				width: 250px;
+				width: 300px;
 				height: 250px;
 			}
 			#sortSel{
 				height: 30px;
 				float: left;
-				margin-left: 900px;
+				margin-left: 1000px;
 				border-radius: 5px;
 			}
 			#storehashtag{
@@ -53,6 +57,8 @@
 	            float: left;
 	            padding: 0px 5px;
 	            margin-right: 5px;
+	            margin-bottom: 2px;
+				padding: 3px;
 	            
 				display: inline-block;
 				text-overflow: ellipsis;
@@ -63,7 +69,7 @@
 	        	overflow: auto;
 	        }
 	        #store_container{
-	        	margin-left: 300px;
+	        	margin-left: 400px;
 	        }
 		</style>
 	</head>
@@ -83,10 +89,10 @@
 		<c:import url="/WEB-INF/views/include/common/map.jsp"/><br/>
 		<!-- <script>displayMap(mapLocation, mapContent)</script> -->
 		
-		<p>
+		<!-- <p>
 			<button onclick="setZoomable(true)">지도 확대/축소 켜기</button>
 			<button onclick="setZoomable(false)">지도 확대/축소 끄기</button>
-		</p>
+		</p> -->
 		
 		<select id="sortSel" name="sortSel" onchange="sort(this.value)">
 			<option value="리뷰 최신 순" selected="selected" >리뷰 최신 순</option>
@@ -229,12 +235,15 @@
 				content += "<th>"+item.store_addr+"</th></tr>";
 				
 				if(list_hash[index].length != 0){
-					content += "<tr><td id='"+item.store_idx+"' colspan='3'>";
+					content += "<tr><td style='border-top: 2px solid #142e5b; height:70px;' id='"+item.store_idx+"' colspan='3'>";
 					
 					list_hash[index].forEach(function(item){
 						content += "<div id='storehashtag'>#"+item.hash_tag+"</div>";
 					});
 					content += "</td></tr>";
+				}else{
+					content += "<tr><td style='border-top: 2px solid #142e5b; height:70px;' id='"+item.store_idx+"' colspan='3'>";
+					content += "해시태그가 없습니다.</td></tr>";
 				}
 
 				content += "</table>";
@@ -292,5 +301,15 @@
 				}
 			});
 		}
+		
+		var zoom=false;//줌인or아웃 플레그
+		//맵에서만 줌인
+		$("body").click(function(e) {
+			setZoomable(zoom)
+			zoom=false;
+		});
+		$("#map").click(function(e) {
+			zoom=true;
+		});
 	</script>
 </html>

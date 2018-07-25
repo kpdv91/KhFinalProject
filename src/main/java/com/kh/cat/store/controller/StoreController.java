@@ -94,11 +94,16 @@ public class StoreController {
 	public ModelAndView storeDetail(@RequestParam("store_idx") int store_idx, HttpServletRequest request, HttpServletResponse response) {
 		logger.info("가게 상세 페이지 요청.");
 		String aut = (String) request.getSession().getAttribute("loginAut");
+		int registSF = storeService.registSF(store_idx);//등록 여부 판단
+		
+		if(aut==null) {//비로그인시 권한을 unLogin 처리
+			aut="unLogin";	
+		}
 		
 		if(!aut.equals("admin")) {
 			String sIdx = Integer.toString(store_idx);
 			int sf = storeService.uphitSF(sIdx, request);//조회 유무 판단
-			if(sf==0) {
+			if(sf==0&&registSF==1) {
 				Cookie ck = new Cookie("StoreDetail"+store_idx, sIdx);
 				ck.setMaxAge(24*60*60);
 				ck.setPath("/");
@@ -106,7 +111,7 @@ public class StoreController {
 				storeService.storeUphits(store_idx);//조회수 증가
 			}
 		}
-		return storeService.storeDetail(store_idx,aut);
+		return storeService.storeDetail(store_idx,aut,registSF);
 	}
 	
 	//찜 확인

@@ -201,14 +201,15 @@ public class StoreService {
 	}
 
 	//맛집 상세 보기
-	public ModelAndView storeDetail(int store_idx, String aut) {
+	public ModelAndView storeDetail(int store_idx, String aut, int registSF) {
 		ModelAndView mav = new ModelAndView();
 		inter = sqlSession.getMapper(StoreInter.class);
-		int registSF = inter.registSF(store_idx);
+		
 		if(registSF==0 && !aut.equals("admin")) {
 			mav.addObject("message", "아직 등록된 맛집이 아닙니다.");//메뉴사진 리스트	
 			mav.setViewName("main");
 		}else {
+			
 			mav.addObject("storeDetail", inter.storeDetail(store_idx));//가게 기본 정보
 			mav.addObject("storeHash", inter.storeHash(store_idx));//해쉬태그 
 			
@@ -290,6 +291,7 @@ public class StoreService {
 		commonInter.uphitStat(store_idx);//통계 추가
 	}
 
+	//등록여부 판단
 	public int registSF(int store_idx) {
 		inter = sqlSession.getMapper(StoreInter.class);
 		return inter.registSF(store_idx);

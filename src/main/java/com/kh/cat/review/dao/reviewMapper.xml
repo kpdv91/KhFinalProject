@@ -45,13 +45,13 @@
 	 
 	 
 	 <select id="storeListCnt" resultType="Integer">
-	 	SELECT COUNT(*) FROM store WHERE store_name LIKE '%'|| #{param1}||'%'
+	 	SELECT COUNT(*) FROM store WHERE store_name LIKE '%'|| #{param1}||'%' 
 	 </select>
 	 <select id="storeList" resultType="store"> 	
 	 	
 	 	SELECT store_idx, store_name, store_addr 
 	 	FROM(SELECT store_idx, store_name, store_addr,ROW_NUMBER() 
-	 	OVER(ORDER BY store_idx DESC) AS rnum FROM store WHERE store_name LIKE '%'|| #{param1}||'%')
+	 	OVER(ORDER BY store_idx DESC) AS rnum FROM store WHERE store_name LIKE '%'|| #{param1}||'%' AND store_regist=1)
 		WHERE rnum BETWEEN #{param2} AND #{param3}
 	 	
 	 </select>

@@ -1,99 +1,88 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-		<title>회원가입</title>
-		<style>            
-            div{
-                /* border: solid 2px navy;  */
-                  
-                width: 380px;
-                padding: 4%;
-                margin-top: 7%;
-                /* margin-left: 12%;  */
-                /* position: absolute; */
-
-                /* margin: -150px 0 0 -75px 
-                top: 50%;
-                left: 40%;  */     
-    		}
-			#div1 {
-				height : 150px;
-				width : 150px;
-				float : left;              
-			}
-            #div2 {
-                width: 800px;
-                float : left;
-            }
-			#profile {
-				height : 150px;
-				width : 150px;
-				border : 1px solid black;
-				text-align: center;       
-			}
-            /* button {
-                margin-top: 5px;
-                background-color:#088A85;
-                color: aliceblue;
-            } */
-            #confirmPw{
-                text-align: center;
-                font-size: 12px;
-                color: red;
-            }
-            input[type=button] { 
-       			background-color: #33aaaaff;
-        		color: white;
-            	border: 0px;
-            	/* outline: 0px; */
-    		} 
-            
-            
-		</style>
-	</head>
-	<body>
-		<form action="join" id="join" method="post">
-		<div id="div1" >
-			<div id="profile" name="profile">
-				<img alt="noprofile" src="resources/img/member/noprofile.jpg" height=150px width=150px>
-			</div>            
-			 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			 <input type="button" onclick="FileUp()" value="사진찾기"/>            
-		</div>
-        <div id="div2">
-        <table>
-        <tr>
-            <th>아이디 : </th> 
-            <td><input type="text" id="userId" name="userId" placeholder="아이디" onchange="chgId()"></td>
-            <td><input id="overlay" type="button" value="중복체크"/></td>
-         </tr>
-         <tr>
-            <th>비밀번호 : </th>
-            <td><input type="password" id="userPw" name="userPw" onkeyup="chgPw()" placeholder="비밀번호" ></td>
-         </tr>
-         <tr>
-            <th>비밀번호확인 : </th>
-            <td><input type="password" id="userPwChk" name="userPwChk" placeholder="비밀번호확인" onkeyup="chgPw()"></td>           
+<head>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<jsp:include page="Header.jsp"/>
+</head>
+<title>회원가입</title>
+<style>
+	#hp1,#hp2,#hp3 {
+		width : 80px;
+	}
+	#cancel, #joinId {
+		width : 50px;
+		background-color: #33aaaaff;
+	}
+	#div1 {
+		position:absolute;
+		top:20%;
+		left:28%;
+		height : 150px;
+		width : 150px;
+		float : left;              
+		text-align:center;
+	}
+    
+    input[type=button] { 
+  		background-color: #33aaaaff;
+   		color: white;
+       	border: 0px;
+       	/* outline: 0px; */
+	} 
+</style>
+<body>
+	<div id="div1" >
+		<div id="profile" name="profile">
+			<img alt="noprofile" src="resources/img/member/noprofile.jpg" height=150px width=150px>
+		</div>            
+		 <input type="button" onclick="FileUp()" value="사진찾기"/>            
+	</div>
+<div style="margin-top: 50px;"></div>
+<div class="row">
+	<div class="col-xs-4 col-sm-4"></div>
+	 <div class="col-xs-4 col-sm-4" style="position:absolute; top:9%; left:38%;">
+	   <form action="join" id="join" method="post">
+	   
+	   <table class="table">
+	    <thead>
+	       <tr>
+	       	<td colspan="2" class="text-center"><h2>회원가입</h2></td>
+	       </tr>
+	    </thead>
+	    
+	     <tr>
+	       <th>아이디</th>
+	       <td><input type="text" id="userId" name="userId" placeholder="아이디" onchange="chgId()" class="form-control"></td>
+	       <td><input id="overlay" type="button" value="중복체크"/></td>
+	     </tr>
+	     
+	     <tr>
+	       <th>비밀번호</th>
+	       <td><input type="password" id="userPw" name="userPw" onkeyup="chgPw()" placeholder="비밀번호" class="form-control"></td>
+	     </tr>
+	          	     
+	     <tr>
+            <th>비밀번호확인  </th>
+            <td><input type="password" id="userPwChk" name="userPwChk" placeholder="비밀번호확인" onkeyup="chgPw()" class="form-control"></td>           
          </tr>
          <tr>          
             <td id="confirmPw" colspan="2"><span></span></td>           
          </tr>   
-         <th>이름 : </th>
-            <td><input type="text" id="userName" name="userName" placeholder="이름"></td>
+         <th>이름  </th>
+            <td><input type="text" id="userName" name="userName" placeholder="이름" class="form-control"></td>
          <tr>
-            <th>이메일 : </th>
-            <td><input type="email" id="userEmail" name="userEmail" placeholder="이메일" onchange="chgMail()"></td>
+            <th>이메일  </th>
+            <td><input type="email" id="userEmail" name="userEmail" placeholder="이메일" onchange="chgMail()" class="form-control"></td>
             <td><input id="overlayMail" type="button" value="중복체크"/></td>
          </tr>
          <th>핸드폰번호</th>
         <td>
-            <input id="hp1" name="hp1" type="text" class="frm_input tel" size="3" maxlength="3" placeholder="01X"/>-
-            <input id="hp2" name="hp2" type="text" class="frm_input tel" size="3" maxlength="4" placeholder="XXXX"/>-
-            <input id="hp3" name="hp3" type="text" class="frm_input tel" size="3" maxlength="4" placeholder="XXXX"/>
+            <input id="hp1" name="hp1" type="text"  size="3" maxlength="3" placeholder="   01X"/>-
+            <input id="hp2" name="hp2" type="text"  size="3" maxlength="4" placeholder="   XXXX"/>-
+            <input id="hp3" name="hp3" type="text"  size="3" maxlength="4" placeholder="   XXXX"/>
             <input type="hidden" id="userPhone" name="userPhone"/>
         </td>
         <tr>
@@ -103,14 +92,18 @@
                 <input id="joinId" type="button" value="가입"/>
             </td>
         </tr>
-        </div>
-	</table>
-	</form>
-	</body>
-	<script>
-	
-	
-    // 중복확인과 회원가입 아작스 사용하기 위해 url,data를 선언
+	   </table>
+	   </div>
+	   </form>
+	 </div>
+
+
+
+
+
+</body>
+<script>
+// 중복확인과 회원가입 아작스 사용하기 위해 url,data를 선언
     var url;
     var data;
     
@@ -120,7 +113,7 @@
     var pwVal=0;//PW 중복확인 체크해주는 값
     var mailVal=0;//Email 중복확인 체크해주는 값
        
-	var imgLen = $("#profile img").length;
+	//var imgLen = $("#profile img").length;
 	     
     function chgId(){//ID 중복확인 후, ID의 값이 변경되면 실행.
     	idVal=0;
@@ -324,4 +317,7 @@
 	    }
 	    
 	</script>
+
+
+
 </html>

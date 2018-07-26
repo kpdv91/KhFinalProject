@@ -661,6 +661,7 @@
 	//좋아요 리뷰 리스트
 	function revreplyList(list){		 
 		var content = "";
+		console.log(list);
 		list.forEach(function(i){
 			i.forEach(function(item){
 				//console.log(item.id);
@@ -1336,6 +1337,7 @@
 			},
 			dataType:"json",
 			success:function(d){
+				console.log(d);
 				if(d.list.length!=0){
 					revreplyList(d.list);
 					$("#container").zer0boxPaging({
@@ -1369,7 +1371,7 @@
 			},
 			dataType:"json",
 			success:function(d){
-				console.log(d.list.length);
+				console.log(d.list);
 				if(d.list.length!=0){
 					revreplyList(d.list);
 					$("#container").zer0boxPaging({

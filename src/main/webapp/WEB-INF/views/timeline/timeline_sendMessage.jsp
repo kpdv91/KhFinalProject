@@ -61,31 +61,35 @@
 	 $("#message").click(function(){
 		 id= $("#sendId").val();
 		 contentmsg= $("#content").val();
-		 if(id != userid){
 		 console.log(contentmsg);
-		  $.ajax({
-			url:"./sendmsg",
-			type:"get",
-			data:{
-				userid : userid,
-				id : id,				
-				content: contentmsg
-			},
-			dataType:"json",
-			success:function(d){
-				if(d.success>0){
-					alert("메세지를 보냈습니다.");
-					self.close();
-				}else{
-					alert("메세지를 보내는데 실패 했습니다.");
-				}
-			},
-			error:function(e){
-				console.log(e);
-			}
-		 });
+		 if(contentmsg==""){
+			 alert("메세지를 입력하세요");
 		 }else{
-			 alert("본인에게는 메세지를 보낼 수 없습니다.")
+			 if(id != userid){
+			  $.ajax({
+				url:"./sendmsg",
+				type:"get",
+				data:{
+					userid : userid,
+					id : id,				
+					content: contentmsg
+				},
+				dataType:"json",
+				success:function(d){
+					if(d.success>0){
+						alert("메세지를 보냈습니다.");
+						self.close();
+					}else{
+						alert("메세지를 보내는데 실패 했습니다.");
+					}
+				},
+				error:function(e){
+					console.log(e);
+				}
+			 });
+			 }else{
+				 alert("본인에게는 메세지를 보낼 수 없습니다.")
+			 }
 		 }
 	});
 	</script>

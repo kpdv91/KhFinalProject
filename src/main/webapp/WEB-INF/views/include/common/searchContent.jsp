@@ -15,6 +15,7 @@
 			#map{
 				width:1000px;
 				height:500px;
+				margin-left: 50px;
 			}
 			.storeTable{
 				float: left;

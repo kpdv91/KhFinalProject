@@ -207,10 +207,8 @@ var showPage=1;
 			},
 			dataType:"json",
 			success:function(d){
-				//console.log(d);
 				$("#alarmlist").css("display","inline");
 				if(d.list.length>0){
-					//console.log(d.range);
 					alarmlist(d.list);
 					$("#container").zer0boxPaging({
 			            viewRange : 5,

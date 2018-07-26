@@ -703,7 +703,7 @@ input[type=button]{
 	
 	//신고하기
 	function complain(elem){
-		var complain_Id = $(elem).parents()[1].childNodes[0].data;
+		var complain_Id = $(elem).parents()[1].childNodes[0].id;
 		var review_idx = $(elem).parents().parents()[1].childNodes[1].value;
 		var Win = window.open("./complainPage?complain_Id="+complain_Id+"&idx="+review_idx+"&complain_cate=리뷰","Complain",'height=500,width=500,top=200,left=600');
 		//console.log(review_idx);
@@ -713,7 +713,7 @@ input[type=button]{
 	//댓글신고
 	function replyComplain(elem){
 		var reply_idx = $(elem).parents().parents().prev()[0].childNodes[0].childNodes[0].value;
-		var complain_Id = $(elem).parents().parents().prev()[0].childNodes[1].childNodes[0].data;
+		var complain_Id = $(elem).parents().parents().prev()[0].childNodes[1].childNodes[0].id;
 		var Win = window.open("./complainPage?complain_Id="+complain_Id+"&idx="+reply_idx+"&complain_cate=댓글","Complain",'height=500,width=500,top=200,left=600');
 	} 
 	

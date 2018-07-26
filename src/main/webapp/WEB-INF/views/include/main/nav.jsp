@@ -17,11 +17,11 @@
 	input:-ms-input-placeholder{color:#a8a8a8;}
 	input:-webkit-input-placeholder{color:#a8a8a8;}
 	input:-moz-input-placeholder{color:#a8a8a8;}            
-	#searchBox{ width: 420px; height: 45px; border: 1px solid #2637a4; background-color: #ffffff; float:left;}    
+	#searchBox{ width: 430px; height: 45px; border: 1px solid #2637a4; background-color: #ffffff; float:left;}    
 	/* #menu{position: absolute; top: 17px; left: 500px;} */
-	#nav select{font-size: 14px; width: 100px; padding: 10px; border: 0px; outline: none; }
-	#nav #search_content{font-size: 14px; width: 235px; padding: 10px; border: 0px; outline: none; }
-	#nav button{width: 50px; height: 100%; border: 0px; background-color: #2637a4; outline: none; float: right; color:#ffffff;}
+	#nav select{font-size: 15px; width: 110px; padding: 10px; border:0px; border-right:1px solid #2637a4; outline: none; height: 45px; text-align: center;}
+	#nav #search_content{font-size: 15px; width: 235px; padding: 10px; border: 0px; outline: none; }
+	#nav button{font-size: 15px; width: 50px; height: 100%; border: 0px; background-color: #2637a4; outline: none; float: right; color:#ffffff;}
 	#profileimg{width: 80px;height : 80px;position:absolute;left:1450px;top:1px;cursor: pointer;}
 	.btn{background-color:blue; color:white;width:80px;border: 2px solid white;cursor: pointer;}
 	#proimg{width: 50px;height : 50px;}

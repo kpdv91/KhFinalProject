@@ -603,7 +603,17 @@ public class CommonService {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		String id = params.get("id");
-		map.put("list", inter.alarmlist(id));
+		int page = Integer.parseInt(params.get("page"));
+		int allCnt = inter.alarmcnt(id);
+		int range = allCnt%5 >0 ? Math.round(allCnt/5)+1 : allCnt/5;
+		if(page>range) {
+			page=range;
+		}		
+		int end = page*5;
+		int start = end-4;
+		map.put("list", inter.alarmlist(id,start,end));
+		map.put("range", range);
+		map.put("currPage",page);
 		return map;
 	}
 

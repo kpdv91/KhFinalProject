@@ -254,7 +254,9 @@
 		SELECT id,profile FROM member WHERE id=#{param1}
 	</select>
 	<select id="alarmlist" resultType="alarm">
-		SELECT * FROM alarm WHERE alarm_id=#{param1} AND alarm_read=0
+	SELECT alarm_idx,alarm_id,alarm_cate,revlike_idx,revreply_idx,follow_idx,dm_idx,alarm_read FROM 
+	(SELECT alarm_idx,alarm_id,alarm_cate,revlike_idx,revreply_idx,follow_idx,dm_idx,alarm_read,ROW_NUMBER() OVER (ORDER BY alarm_idx DESC) 
+		AS rnum FROM alarm WHERE alarm_id=#{param1} AND alarm_read=0) WHERE rnum BETWEEN #{param2} AND #{param3}
 	</select>
 	<insert id="alarminsert">
 		INSERT INTO alarm(alarm_idx,alarm_id,alarm_cate,follow_idx,alarm_read) VALUES(seq_alarm.NEXTVAL,#{param2},'팔로우',#{param1},0)
@@ -276,6 +278,9 @@
 	 </select>
 	 <select id="pointallCount" resultType="Integer">
 	 	SELECT COUNT(*) FROM pointList WHERE id=#{param1}
+	 </select>
+	 <select id="alarmcnt" resultType="Integer">
+	 	SELECT COUNT(*) FROM alarm WHERE alarm_id=#{param1} AND alarm_read=0
 	 </select>
 </mapper>
 

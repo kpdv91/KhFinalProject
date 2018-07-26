@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
-
+<!-- <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="resources/js/zer0boxPaging.js" type="text/javascript"></script>
 <style>
 	#nav ul li{list-style: none;  display: inline;	padding: 0px 10px;}
 	#nav a{text-decoration: none; color: white; }    
@@ -104,6 +104,7 @@ var alarmck=1;
 //console.log(profilecli);
 var loginid="${sessionScope.loginId}";
 //console.log(loginid);
+var showPage=1;
 	
 	function search(){
 		location.href = "./search?search_content=" + $("#search_content").val()+"&search_map=" + $("#search_map").val();
@@ -189,30 +190,43 @@ var loginid="${sessionScope.loginId}";
 	}
 	function alarmclick(){
 		if(alarmck==1){
-			$.ajax({
-				url:"./alarmlist",
-				type:"post",
-				data:{
-					id : loginid
-				},
-				dataType:"json",
-				success:function(d){
-					console.log(d);
-					$("#alarmlist").css("display","inline");
-					if(d.list.length>0){
-						alarmlist(d.list);
-					}			
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+			alarmajax(showPage);
 			alarmck=0;
 		}else{
 			alarmck=1;
 			$("#alarmlist").css("display","none");
 		}
 	}
+	function alarmajax(page){
+		$.ajax({
+			url:"./alarmlist",
+			type:"post",
+			data:{
+				id : loginid,
+				page:page
+			},
+			dataType:"json",
+			success:function(d){
+				//console.log(d);
+				$("#alarmlist").css("display","inline");
+				if(d.list.length>0){
+					//console.log(d.range);
+					alarmlist(d.list);
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage,
+			            maxPage : d.range,
+			            clickAction : function(e){
+			            	alarmajax($(this).attr('page'));
+			            }
+			        });
+				}			
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	};
 	function alarmlist(list){
 		var content="";
 		list.forEach(function(item){
@@ -233,6 +247,7 @@ var loginid="${sessionScope.loginId}";
 		})
 		$("#alarmlist").empty();
 		$("#alarmlist").append(content);
+		$("#alarmlist").append("<div id='container'></div>");
 	}
 	function alarmtime(id){
 		var alarmuserid=$("#alarmid").val();

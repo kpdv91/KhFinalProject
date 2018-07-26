@@ -49,6 +49,7 @@
 			.reply_clk{display:none;}
 			.ddd{display:none;}
 			.storeTable{float: left;margin-left:1px; margin-right: 10px;margin-top: 10px;border:1px solid black;width:250px;height:250px;}
+			.storeTable tr,.storeTable td{border:1px solid black;}
 			.storeImg{width: 250px;height: 100px;}
 			#hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;margin-right: 5px;}
 			#fallowlist{border: 1px solid #33aaaaff;display:none;position:absolute;left:810px;width:410px;top:154px;background-color:white;z-index:15;}
@@ -1482,10 +1483,11 @@
 		list.forEach(function(i, idx){
 			i.forEach(function(item,idx){
 				content += "<div>";
-				content += "<table class='storeTable'>";
+				content += "<table id='store"+item.store_idx+"' class='storeTable'>";
 				content += "<tr><td colspan='2'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' /></td></tr>";
 				content += "<tr>";
-				content += "<th><a href='./storeDetail?store_idx="+item.store_idx+"'>"+item.store_name+"</a></th></tr>";
+				content += "<th><a href='./storeDetail?store_idx="+item.store_idx+"'>"+item.store_name+"</a></th>";
+				content += "<td rowspan='2'><img class='storeLikeImg' id='storeLike"+item.store_idx+"' width='30px' height='30px' src='resources/img/storeLike/heart.png' onclick='storeLike("+item.store_idx+")'/></td></tr>";
 				content += "<tr>";
 				content += "<th>"+item.store_addr+"</th></tr>";
 				content += "<tr><td id='"+item.store_idx+"' colspan='2'>";
@@ -1498,11 +1500,59 @@
 				})
 				content += "</td></tr></table>";
 				content += "</div>";
+				storeLikeChk(item.store_idx);
 			})
 		})
 		$("#div_table").empty();
 		$("#div_table").append(content);
 		$("#div_table").after("<div id='container' ></div>");
+	}
+	//찜하기
+	function storeLike(idx) {
+		if(id==null){
+			alert("로그인이 필요한 서비스입니다.");
+		}else{
+			$.ajax({
+				url:"./storeLike",
+				type:"get",
+				data:{
+					"store_idx":idx
+				},
+				success:function(data){
+					alert(data.msg);
+					if(data.msg == "찜 했습니다."){
+						$("#storeLike"+idx).attr("src","resources/img/storeLike/heart2.png");
+					}else if(data.msg == "찜 취소했습니다."){
+						$("#storeLike"+idx).attr("src","resources/img/storeLike/heart.png");
+						$("#store"+idx).remove();
+					} 
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}
+	}
+	//찜 확인
+	function storeLikeChk(idx) {
+		$.ajax({
+			url:"./storeLikeChk",
+			type:"get",
+			data:{
+				"store_idx":idx
+			},
+			success:function(data){
+				id=data.loginId;
+				if(data.likeChk==1){
+					$("#storeLike"+idx).attr("src","resources/img/storeLike/heart2.png");
+				}else{
+					$("#storeLike"+idx).attr("src","resources/img/storeLike/heart.png");
+				}
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
 	}
 	//쿠폰 리스트
 	function couponlist(list){

@@ -98,7 +98,7 @@
 							${sessionScope.loginId }
 						</td>
 						  
-						<td id="replyTd_content"><textarea id="boardReply_content" rows="4" cols="70"></textarea></td>
+						<td id="replyTd_content"><textarea id="boardReply_content" rows="4" cols="70" maxlength="300"></textarea></td>
 						
 						<td id="replyTd_write"><button id="replyWrite">댓글등록</button></td>
 					</tr>

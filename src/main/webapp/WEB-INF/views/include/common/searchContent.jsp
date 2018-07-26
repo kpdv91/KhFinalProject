@@ -211,6 +211,8 @@
 						removeMarker();
 						markerRefresh(data.list);
 					}else{
+						$("#searchPage").empty();
+						removeMarker();
 						$("#searchPage").append("<h2 align='center'>검색 결과가 없습니다.</h2>");
 					}
 				},

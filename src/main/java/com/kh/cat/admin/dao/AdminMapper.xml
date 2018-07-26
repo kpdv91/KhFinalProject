@@ -34,7 +34,7 @@
 	<select id="storeRegistList" resultType="store">
 		SELECT store_idx, id, store_photo, store_name, store_ceo, store_addr, store_time, store_food, store_phone, store_rest, store_bhit, store_revcnt, store_revdate, store_price, store_star, store_regist, store_storelikecnt FROM
 		(SELECT store_idx, id, store_photo, store_name, store_ceo, store_addr, store_time, store_food, store_phone, store_rest, store_bhit, store_revcnt, store_revdate, store_price, store_star, store_regist, store_storelikecnt ,
-		ROW_NUMBER() OVER (ORDER BY store_idx DESC) AS rnum FROM store)
+		ROW_NUMBER() OVER (ORDER BY store_idx DESC) AS rnum FROM store WHERE store_regist=0)
 		WHERE rnum BETWEEN #{param1} AND #{param2}
 	</select>
 	

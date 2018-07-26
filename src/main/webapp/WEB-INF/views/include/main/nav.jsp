@@ -26,7 +26,7 @@
 	.btn{background-color:blue; color:white;width:80px;border: 2px solid white;cursor: pointer;}
 	#proimg{width: 50px;height : 50px;}
 	#profileck{background-color:white;border: 1px solid #2637a4;position:absolute;left:1350px;width:175px;top:80px;z-index:3;}
-	#userid{margin-left:70px;top:5px;position:absolute;}
+	#profileuserid{margin-left:70px;top:5px;position:absolute;}
 	#alarm{background-color:#088A85;width:50px;height:25px;position:absolute;left:1370px;top:40px;text-align: center;color:white;font-size: 20px;cursor:pointer;}
 	#alarmlist{text-align: center;display:none;width:300px;position:absolute;left:1120px;top:65px;background-color:white;border:1px solid #2637a4;z-index:1;}
 	.alarmlistdiv{border:1px solid #2637a4;cursor:pointer;width:300px;z-index:2;}
@@ -172,7 +172,7 @@ var showPage=1;
 		}else{
 		content +="<img id='proimg' src='resources/upload/"+data.profile+"'>";
 		}
-		content += "<h3 id='userid'>"+data.id+"</h3>";
+		content += "<h3 id='profileuserid'>"+data.id+"</h3>";
 		content += "<h4>보유 포인트 : "+data.pointCnt+"point</h4>";
 		content += "<div class='btn' id='"+data.id+"' onclick='gotimeline(id)'>타임라인</div>";
 		content += "<div class='btn' id='"+data.id+"' onclick='logout()'>로그아웃</div>";

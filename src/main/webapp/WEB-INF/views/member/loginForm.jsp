@@ -62,6 +62,12 @@
 	position:relative;
 		top:15px;
 	}
+	#search_content{
+		height:15px;
+	}
+	#nav select{
+		height:43px;
+	}
   </style>
 
   <body cellpadding="0" cellspacing="0" marginleft="0" margintop="0" width="100%" height="100%" align="center">

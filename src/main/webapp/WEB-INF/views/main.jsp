@@ -16,7 +16,7 @@
 	<body>
 		<div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
 		<br/><br/>
-		<div style="margin-left:300px;">
+		<div style="margin-left:250px;">
 			<c:import url="/WEB-INF/views/include/common/mainStore.jsp">
 				<c:param name="mainStore" value="3"/>
 			</c:import>

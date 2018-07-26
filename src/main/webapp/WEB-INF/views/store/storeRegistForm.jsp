@@ -71,10 +71,6 @@
 					</td>
 				</tr>
 				<tr>
-					<th>상세 주소</th>
-					<td><input type="text" name="store_addr_D" placeholder="상세 주소" maxlength="30"/></td>
-				</tr>
-				<tr>
 					<th>음식 종류</th>
 					<td><input type="text" name="store_food" placeholder="ex) 한식, 퓨전, 고기집" maxlength="20"/></td>
 				</tr>
@@ -297,9 +293,9 @@
 		        }
 			}
 			
-			if(tagList.length>=11){
+			if(tagList.length>8){
 				tagList.pop();
-				alert("태그는 최대 10개입니다.");
+				alert("태그는 최대 8개입니다.");
 			}else if(cnt>=2){
 				tagList.pop();
 				alert("중복되는 태그가 있습니다");

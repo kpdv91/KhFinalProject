@@ -9,16 +9,26 @@
 		<title>검색</title>
 		<style>
 			#searchPage{
-				width:1010px;
+				width:1200px;
 				height: auto;
-				overflow: auto;
 			}
 			#map{
 				width:1000px;
 				height:500px;
+				margin-left: 50px;
 			}
-			.storeTable, .storeTable tr, .storeTable td{
-				border: 1px solid black;
+			.storeTable{
+				float: left;
+				margin-right: 10px;
+				margin-top: 10px;
+				width: 365px;
+				border: 2px solid #142e5b;
+				border-collapse: collapse;
+				padding: 5px 10px;
+				text-align: center;
+			}
+			.storeTable tr, .storeTable td{
+				border: none;
 				border-collapse: collapse;
 				padding: 5px 10px;
 				text-align: center;
@@ -30,35 +40,37 @@
 				white-space: nowrap;
 				overflow: hidden;
 			}
-			.storeTable{
-				float: left;
-				margin-right: 10px;
-				margin-top: 10px;
-			}
 			.storeImg{
-				width: 250px;
+				width: 300px;
 				height: 250px;
 			}
 			#sortSel{
 				height: 30px;
 				float: left;
-				margin-left: 900px;
+				margin-left: 1000px;
 				border-radius: 5px;
 			}
-			#hashtag{
+			#storehashtag{
 	        	border: 2px solid #33aaaaff;
 	            font-size: 14px;
-	            width: auto;            
+	            width: 70px;            
 	            text-align: center; 
 	            float: left;
 	            padding: 0px 5px;
 	            margin-right: 5px;
+	            margin-bottom: 2px;
+				padding: 3px;
+	            
+				display: inline-block;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				overflow: hidden;
 	        }
 	        #tableLine{
 	        	overflow: auto;
 	        }
 	        #store_container{
-	        	margin-left: 300px;
+	        	margin-left: 400px;
 	        }
 		</style>
 	</head>
@@ -77,6 +89,11 @@
 	
 		<c:import url="/WEB-INF/views/include/common/map.jsp"/><br/>
 		<!-- <script>displayMap(mapLocation, mapContent)</script> -->
+		
+		<!-- <p>
+			<button onclick="setZoomable(true)">지도 확대/축소 켜기</button>
+			<button onclick="setZoomable(false)">지도 확대/축소 끄기</button>
+		</p> -->
 		
 		<select id="sortSel" name="sortSel" onchange="sort(this.value)">
 			<option value="리뷰 최신 순" selected="selected" >리뷰 최신 순</option>
@@ -116,6 +133,10 @@
 		<br/><br/><br/>
 	</body>
 	<script>
+	$(document).ready(function(){
+		$("#sortSel option:eq(0)").prop("selected", true);//셀렉트박스 원래대로
+	});
+	
 	showPage = 1;//보여줄 페이지
 	var id = "${sessionScope.loginId}";
 	var search_content = "<%=request.getParameter("search_content") %>";
@@ -178,7 +199,7 @@
 						
 						showPage = data.currPage;
 						$("#store_container").zer0boxPaging({
-			                viewRange : 6,
+			                viewRange : 5,
 			                currPage : data.currPage,
 			                maxPage : data.range,
 			                clickAction : function(e){
@@ -187,7 +208,6 @@
 			                    tableSort(val,search_content,$(this).attr('page'));
 			                }
 			            });
-						
 						removeMarker();
 						markerRefresh(data.list);
 					}else{
@@ -214,13 +234,20 @@
 				content += "<td rowspan='2'><img class='storeLikeImg' id='storeLike"+item.store_idx+"' width='30px' height='30px' src='resources/img/storeLike/heart.png' onclick='storeLike("+item.store_idx+")'/></td></tr>";
 				content += "<tr><td>주소</td>";
 				content += "<th>"+item.store_addr+"</th></tr>";
-				content += "<tr><td id='"+item.store_idx+"' colspan='3'>";
 				
-				list_hash[index].forEach(function(item){
-					content += "<div id='hashtag'>#"+item.hash_tag+"</div>";
-				});
-				
-				content += "</td></tr></table>";
+				if(list_hash[index].length != 0){
+					content += "<tr><td style='border-top: 2px solid #142e5b; height:70px;' id='"+item.store_idx+"' colspan='3'>";
+					
+					list_hash[index].forEach(function(item){
+						content += "<div id='storehashtag'>#"+item.hash_tag+"</div>";
+					});
+					content += "</td></tr>";
+				}else{
+					content += "<tr><td style='border-top: 2px solid #142e5b; height:70px;' id='"+item.store_idx+"' colspan='3'>";
+					content += "해시태그가 없습니다.</td></tr>";
+				}
+
+				content += "</table>";
 				storeLikeChk(item.store_idx);
 			});
 			$("#searchPage").append(content);
@@ -275,5 +302,15 @@
 				}
 			});
 		}
+		
+		var zoom=false;//줌인or아웃 플레그
+		//맵에서만 줌인
+		$("body").click(function(e) {
+			setZoomable(zoom)
+			zoom=false;
+		});
+		$("#map").click(function(e) {
+			zoom=true;
+		});
 	</script>
 </html>

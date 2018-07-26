@@ -72,7 +72,7 @@ public class ReviewController {
 		}
 	}
 	
-	@RequestMapping(value = "/revStoreSearch/4/{page}")
+	@RequestMapping(value = "/revStoreSearch/5/{page}")
 	public @ResponseBody HashMap<String, Object> revStoreSearch(@RequestParam("review_storeName") String params,@PathVariable String page) {
 		logger.info("가게 리스트 요청");
 		logger.info(params);

@@ -45,7 +45,7 @@
 	 
 	 
 	 <select id="storeListCnt" resultType="Integer">
-	 	SELECT COUNT(*) FROM store WHERE store_name LIKE '%'|| #{param1}||'%' 
+	 	SELECT COUNT(*) FROM store WHERE store_name LIKE '%'|| #{param1}||'%' AND store_regist=1
 	 </select>
 	 <select id="storeList" resultType="store"> 	
 	 	

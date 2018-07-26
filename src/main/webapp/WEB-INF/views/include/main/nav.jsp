@@ -28,8 +28,8 @@
 	#profileck{background-color:white;border: 1px solid #2637a4;position:absolute;left:1350px;width:175px;top:80px;z-index:3;}
 	#userid{margin-left:70px;top:5px;position:absolute;}
 	#alarm{background-color:#088A85;width:50px;height:25px;position:absolute;left:1370px;top:40px;text-align: center;color:white;font-size: 20px;cursor:pointer;}
-	#alarmlist{text-align: center;display:none;width:200px;position:absolute;left:1220px;top:65px;background-color:white;border:1px solid #2637a4;z-index:1;}
-	.alarmlistdiv{border:1px solid #2637a4;cursor:pointer;width:200px;z-index:2;}
+	#alarmlist{text-align: center;display:none;width:300px;position:absolute;left:1120px;top:65px;background-color:white;border:1px solid #2637a4;z-index:1;}
+	.alarmlistdiv{border:1px solid #2637a4;cursor:pointer;width:300px;z-index:2;}
 </style>
 
 <nav id="nav">

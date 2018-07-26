@@ -70,10 +70,10 @@
 						<div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
 					</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<th>상세 주소</th>
 					<td><input type="text" name="store_addr_D" placeholder="상세 주소" maxlength="30"/></td>
-				</tr>
+				</tr> -->
 				<tr>
 					<th>음식 종류</th>
 					<td><input type="text" name="store_food" placeholder="ex) 한식, 퓨전, 고기집" maxlength="20"/></td>

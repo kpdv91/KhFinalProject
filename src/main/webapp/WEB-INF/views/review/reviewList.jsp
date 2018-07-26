@@ -271,6 +271,12 @@ input[type=button]{
 				border-right: 0px;
 				border-bottom: 1px dashed #142e5b;
 			}
+			.idSpan{
+				cursor: pointer;
+			}
+			.idSpan:hover{
+				color: navy;
+			}
 		</style>
 		
 	</head>
@@ -335,6 +341,9 @@ input[type=button]{
 				printList(d.reviewList);
 				atagCreate(d.reviewList);
 				showPage = d.currPage;
+				if(d.reviewList == ""){
+				$("#review_range").css("display","none");
+				}
 				
 				$("#container").zer0boxPaging({
 	                viewRange : 5,
@@ -360,7 +369,7 @@ input[type=button]{
 			content += "<table><tr><td>"
 			content += "<div id='abc'>"
 			content += "<div id='review'><img id='reviewListPro' width='45px' height='45px' src='"+item.review_profile+"' /><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-			content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'><img class='reviewLikeImg' id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' /><br/>";
+			content += "<div id='listTop'><span class='idSpan' id='"+item.id+"' onclick='timelineLoc(id)'>"+item.id+"</span><div id='listTop_R' class='listTop_R"+item.review_idx+"'><img class='reviewLikeImg' id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' /><br/>";
 			if(item.id != loginId || loginId == ""){
 			content += "<span id='complain' class='span' href='#' onclick='complain(this)'>신고</span>";
 			}
@@ -394,6 +403,11 @@ input[type=button]{
 		
 	} 
 
+	function timelineLoc(elem){
+		console.log(elem);
+		location.href="./timeline?id="+elem;
+	}
+	
 
 	//댓글 리스트
 	function replySelect(idx,page){

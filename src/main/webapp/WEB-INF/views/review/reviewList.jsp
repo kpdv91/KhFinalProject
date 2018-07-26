@@ -573,7 +573,7 @@ input[type=button]{
 	}
 	//좋아요 클릭
 	function likeClick(elem,idx){
-		var name=$(elem).parents()[1].childNodes[0].data;
+		var name=$(elem).parents()[1].childNodes[0].id;
 		flag=idx;
 		console.log(idx+"/"+loginId);
 		if(loginId == ""){
@@ -719,7 +719,7 @@ input[type=button]{
 	function printHash(hash,elem){
 		tag="";
 		hash.forEach(function(item){
-			tag += "<div id='hashtag'>#"+item.hash_tag+"</div>";
+			tag += "<div id='hashtag'>"+item.hash_tag+"</div>";
 		});
 		$("#reviewList_hash"+elem).append(tag);
 	}

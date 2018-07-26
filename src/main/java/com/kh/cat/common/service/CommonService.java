@@ -381,6 +381,7 @@ public class CommonService {
 		ArrayList<Integer> review = inter.timelinereview(id);
 		//생성 가능 페이지 수 : 나머지가 있으면 페이지 하나 더 생성]
 		int allCnt = review.size();
+		System.out.println(review.size());
 		int range = allCnt%10 >0 ? Math.round(allCnt/10)+1 : allCnt/10;
 		if(page>range) {
 			page=range;
@@ -390,8 +391,7 @@ public class CommonService {
 		ArrayList<Integer> reviewpage = inter.timlinepagereview(id,start,end);
 		
 		ArrayList<ArrayList<ReviewDTO>> list = new ArrayList<ArrayList<ReviewDTO>>();
-		
-		for (int i = 0; i < reviewpage.size(); i++) {
+		for (int i = 0; i < reviewpage.size(); i++) {			
 			list.add(inter.timelinelikereview(reviewpage.get(i)));
 		}		
 		map.put("list",list);
@@ -608,7 +608,17 @@ public class CommonService {
 		inter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		String id = params.get("id");
-		map.put("list", inter.alarmlist(id));
+		int page = Integer.parseInt(params.get("page"));
+		int allCnt = inter.alarmcnt(id);
+		int range = allCnt%5 >0 ? Math.round(allCnt/5)+1 : allCnt/5;
+		if(page>range) {
+			page=range;
+		}		
+		int end = page*5;
+		int start = end-4;
+		map.put("list", inter.alarmlist(id,start,end));
+		map.put("range", range);
+		map.put("currPage",page);
 		return map;
 	}
 

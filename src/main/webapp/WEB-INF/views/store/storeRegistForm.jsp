@@ -46,18 +46,18 @@
 				</tr>
 				<tr>
 					<th>상호명</th>
-					<td><input type="text" name="store_name" placeholder="상호명" maxlength="20" size="40"/></td>
+					<td><input type="text" name="store_name" placeholder="상호명" maxlength="20" size="40" /></td>
 				</tr>
 				<tr>
 					<th>대표자</th>
-					<td><input type="text" name="store_ceo" placeholder="대표자" maxlength="10"/></td>
+					<td><input type="text" name="store_ceo" placeholder="대표자" maxlength="10" onkeyup="testChk(this)" /></td>
 				</tr>
 				<tr>
 					<th>전화번호</th>
 					<td>
-						<input type="text" name="store_phone_H" maxlength="4" size="1"/>
-						-<input type="text" name="store_phone_B" maxlength="4" size="1"/>
-						-<input type="text" name="store_phone_T" maxlength="4" size="1"/>
+						<input type="text" name="store_phone_H" maxlength="4" size="1" onkeyup="numChk(this)"/>
+						-<input type="text" name="store_phone_B" maxlength="4" size="1" onkeyup="numChk(this)"/>
+						-<input type="text" name="store_phone_T" maxlength="4" size="1" onkeyup="numChk(this)"/>
 					</td>
 				</tr>
 				<tr>
@@ -70,17 +70,13 @@
 						<div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
 					</td>
 				</tr>
-				<!-- <tr>
-					<th>상세 주소</th>
-					<td><input type="text" name="store_addr_D" placeholder="상세 주소" maxlength="30"/></td>
-				</tr> -->
 				<tr>
 					<th>음식 종류</th>
 					<td><input type="text" name="store_food" placeholder="ex) 한식, 퓨전, 고기집" maxlength="20"/></td>
 				</tr>
 				<tr>
 					<th>예상 예산(2인기준)</th>
-					<td><input type="text" name="store_price" placeholder="ex) 45000" maxlength="6"/>원</td>
+					<td><input type="text" name="store_price" placeholder="ex) 45000" maxlength="6" onkeyup="numChk(this)"/>원</td>
 				</tr>
 				<tr>
 					<th>영업 시간</th>
@@ -93,7 +89,7 @@
 				<tr>
 					<th>해시 태그</th>
 					<td>
-						<input type="text" id="tag" name="store_tag" placeholder="ex) 줄서는맛집" maxlength="20"/>
+						<input type="text" id="tag" name="store_tag" placeholder="ex) 줄서는맛집" maxlength="20" onkeyup="testChk(this)" />
 						<input type="button" onclick="tagAdd()" value="추가">
 					</td>
 				</tr>
@@ -286,13 +282,14 @@
 	//해쉬 태그 추가
 	function tagAdd() {
 		hTag = $("#tag").val();
-		if(hTag==""){
+		if(hTag==""||hTag.replace(/\s/g,"") == ""){
+			$("#tag").val("");
 			alert("태그 내용을 입력해주세요.");
 		}else{
-			tagList.push(hTag);
+			tagList.push("#"+hTag);
 			var cnt =0;
 			for (var i = 0; i < tagList.length; i++) {
-		        if (tagList[i] == hTag) {
+		        if (tagList[i] == "#"+hTag) {
 		        	cnt++;
 		        }
 			}
@@ -307,7 +304,7 @@
 			//"<img alt='x이미지' src='resources/img/store/delImg.jpg' width='15' height='15' onclick='tagDel(this)'>"
 			else{
 				$("#tags").append("<div>"
-						+"<input type='text' class='tag' readonly='readonly' value='"+hTag+"'>"
+						+"<input type='text' class='tag' readonly='readonly' value='#"+hTag+"'>"
 						+"<input type='button' value='-' onclick='tagDel(this)'>"
 						+"</div>");
 				console.log(tagList);
@@ -323,15 +320,100 @@
 		tagList.splice(tagList.indexOf(hTag),1);
 	}
 	
+	var regNumber = /^[0-9]*$/;
+	var tChk = /[^\w\s]/i;
+	
+	function numChk(e) {
+		if(!regNumber.test($(e).val())){
+			alert("숫자만 입력하세요");
+			$(e).val("");
+		}
+	}
+	
+	function tChk(e) {
+		alert("d");
+		if(tChk.test($(e).val())){
+			alert("특수문자 입력 불가.");
+			$(e).val("");
+		}
+	}
+	
+	function testChk(e) {
+		if(tChk.test($(e).val())){
+			alert("특수문자 입력 불가.");
+			$(e).val("");
+		}
+	}
+	
+	var blank_pattern = /^\s+|\s+$/g;
+
 	//등록요청
     function storeRegist() {
+		var store_name =  $("input[name='store_name']");
+		var store_ceo =  $("input[name='store_ceo']");
+		var store_phone_H =  $("input[name='store_phone_H']");
+		var store_phone_B =  $("input[name='store_phone_B']");
+		var store_phone_T =  $("input[name='store_phone_T']");
+		var store_addr_F =  $("input[name='store_addr']");
+		var store_addr_D =  $("input[name='store_addr_D']");
+		var store_food =  $("input[name='store_food']");
+		var store_price =  $("input[name='store_price']");
+		var store_time =  $("input[name='store_time']");
+		var store_rest =  $("input[name='store_rest']");
+		var store_tag =  $("input[name='store_tag']");
+		
 		var store_phone="";
 		var store_addr="";
 		store_phone = $("input[name='store_phone_H']").val()+"-"
 		+$("input[name='store_phone_B']").val()+"-"+$("input[name='store_phone_T']").val();
 		store_addr = $("input[name='store_addr']").val()+" "+$("input[name='store_addr_D']").val()
-		if(false){
-			alert("");
+		if(store_name.val()=="" || store_name.val().replace(/\s/g,"") == ""){
+			alert("상호명을 입력하세요.");
+			store_name.val("");
+			store_name.focus();
+		}else if(store_ceo.val()=="" || store_ceo.val().replace(/\s/g,"") == ""){
+			alert("대표자를 입력하세요.");
+			store_ceo.val("");
+			store_ceo.focus();
+		}else if(store_phone_H.val()=="" || store_phone_H.val().replace(/\s/g,"") == ""){
+			alert("전화번호를 입력하세요.");
+			store_phone_H.val("");
+			store_phone_H.focus();
+		}else if(store_phone_B.val()=="" || store_phone_B.val().replace(/\s/g,"") == ""){
+			alert("전화번호를 입력하세요.");
+			store_phone_B.val("");
+			store_phone_B.focus();
+		}else if(store_phone_T.val()=="" || store_phone_T.val().replace(/\s/g,"") == ""){
+			alert("전화번호를 입력하세요.");
+			store_phone_T.val("");
+			store_phone_T.focus();
+		}else if(store_addr_F.val()=="" || store_addr_F.val().replace(/\s/g,"") == ""){
+			alert("주소를 선택하세요.");
+			store_addr_F.val("");
+			store_addr_F.focus();
+		}else if(store_addr_D.val()=="" || store_addr_D.val().replace(/\s/g,"") == ""){
+			alert("상세주소를 입력하세요.");
+			store_addr_D.val("");
+			store_addr_D.focus();
+		}else if(store_food.val()=="" || store_food.val().replace(/\s/g,"") == ""){
+			alert("음식 종류를 입력하세요.");
+			store_food.val("");
+			store_food.focus();
+		}else if(store_price.val()=="" || store_price.val().replace(/\s/g,"") == ""){
+			alert("예상 예산을 입력하세요.");
+			store_price.val("");
+			store_price.focus();
+		}else if(store_time.val()=="" || store_time.val().replace(/\s/g,"") == ""){
+			alert("영업 시간을 입력하세요.");
+			store_time.val("");
+			store_time.focus();
+		}else if(store_rest.val()=="" || store_rest.val().replace(/\s/g,"") == ""){
+			alert("휴무일을 입력하세요.");
+			store_rest.val("");
+			store_rest.focus();
+		}else if(tagList.length==0){
+			alert("해시태그를 한개 이상 입력하세요.");
+			store_tag.focus();
 		}else{
 			console.log(tagList);
 			$.ajax({
@@ -346,8 +428,7 @@
 					"store_food":$("input[name='store_food']").val(),
 					"store_price":$("input[name='store_price']").val(),
 					"store_time":$("input[name='store_time']").val(),
-					"store_rest":$("input[name='store_rest']").val(),
-					"store_tag":$("input[name='store_tag']").val()
+					"store_rest":$("input[name='store_rest']").val()		
 					},
 				success:function(data){
 					console.log(data);

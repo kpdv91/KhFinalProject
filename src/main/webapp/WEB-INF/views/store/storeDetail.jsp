@@ -10,38 +10,37 @@
 		<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c7f29813d0150c2927c1529f7d432392&libraries=services"></script>
 		<title>맛집 상세보기</title>
 		<style>
-			/* h1{color: #2637a4;} */
 			#detailFrame{position: relative;top: 50px; left: 20%;height: 600px;}
+			#infoFrame{width:1000px; height: 100px;}
 			#infoFrame ul{width: 500px; float: left;}
-			#infoFrame ul li{list-style: none;  display: inline;	padding: 0px 10px; border: solid 2px #2637a4;
-				font-size: x-large; width: 100px;}
+			#infoFrame ul li{list-style: none;  display: inline;	padding: 0px 10px; border: solid 2px #2637a4; font-size: x-large; width: 100px;}
 			#contFrame{width: 1000px; height: 400px; border: solid 2px #2637a4;}
 			.divChg{display: none;}
-			#detailFrame table,#detailFrame tr,#detailFrame td,#detailFrame th{border: solid 1px black;}
+			#detailFrame table, tr, td, th{border: solid 1px black;}
 		</style>
 	</head>
 	<body>
 		<div id="detailFrame">
+		<span id="title">${storeDetail.store_name}</span>
 			<div id="infoFrame">
 				<c:if test="${sessionScope.loginId == '관리자' }">
 					<button id="back" onclick="backBtn()">뒤로가기</button>
 				</c:if>
-				<ul>
+				<ul style="left: 0px">
 					<li class="tab" id="defau" onclick="divSnH(this)">정보</li>
 					<li class="tab" onclick="divSnH(this)">메뉴</li>
 					<li class="tab" onclick="divSnH(this)">위치</li>
 				</ul>
-				<span id="title">${storeDetail.store_name}</span>
-				<ul>
+				
+				<ul style="left: 500px">
 					<li>별점 ${storeDetail.store_star}</li>
 					<li>조회 ${storeDetail.store_bHit}</li>
 					<li>리뷰 ${storeDetail.store_revCnt}</li>
 					<li id="likeCnt">찜수 ${storeDetail.store_storeLikeCnt}</li>
-					<li>
+					<li><img id="storeLike" alt="찜하트" src="" width="30px" onclick="storeLike()"></li>
 				</ul>
-				<img id="storeLike" alt="찜하트" src="" width="30px" onclick="storeLike()">
-
 			</div>
+			
 			<div id="contFrame">
 				<div class="divChg" id="info">
 					<table style="float: left;">

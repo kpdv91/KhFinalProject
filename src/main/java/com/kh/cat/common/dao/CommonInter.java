@@ -86,8 +86,6 @@ public interface CommonInter {
 
 	ArrayList<MemberDTO> followingprofile(String string);
 
-	ArrayList<AlarmDTO> alarmlist(String id);
-
 	int followinsert(FollowDTO dto);
 
 	void alarminsert(int follow_idx, String id);
@@ -139,5 +137,9 @@ public interface CommonInter {
 	ArrayList<String> pagefollowlist(String id, int start, int end);
 
 	ArrayList<String> pagefollowing(String id, int start, int end);
+
+	int alarmcnt(String id);
+
+	ArrayList<AlarmDTO> alarmlist(String id, int start, int end);
 
 }

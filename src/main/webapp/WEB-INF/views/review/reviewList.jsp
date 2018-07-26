@@ -461,7 +461,7 @@ input[type=button]{
 				var date = new Date(item.revreply_date);
 				reply +="<tr class='reply_table' id='reply_table"+item.revreply_idx+"'>";
 				reply +="<td rowspan='2'><input type='hidden' value='"+item.revreply_idx+"'/><img id='reply_img' src='"+item.revreply_profile+"'/></td>";
-				reply +="<td rowspan='2' id='reply_id'>"+item.id+"</td>";
+				reply +="<td rowspan='2' id='reply_id'><span id='"+item.id+"' onclick='timelineLoc(id)'>"+item.id+"</span></td>";
 				reply +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
 				reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td></tr><tr>";
 				reply+="<td  class='reply_btn' >";
@@ -573,7 +573,7 @@ input[type=button]{
 	}
 	//좋아요 클릭
 	function likeClick(elem,idx){
-		var name=$(elem).parents()[1].childNodes[0].data;
+		var name=$(elem).parents()[1].childNodes[0].id;
 		flag=idx;
 		console.log(idx+"/"+loginId);
 		if(loginId == ""){
@@ -719,7 +719,7 @@ input[type=button]{
 	function printHash(hash,elem){
 		tag="";
 		hash.forEach(function(item){
-			tag += "<div id='hashtag'>#"+item.hash_tag+"</div>";
+			tag += "<div id='hashtag'>"+item.hash_tag+"</div>";
 		});
 		$("#reviewList_hash"+elem).append(tag);
 	}

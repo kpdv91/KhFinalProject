@@ -36,8 +36,8 @@ public class PointService {
 		CouponBoxDTO dto = new CouponBoxDTO();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
-		//쿠폰코드 랜덤으로 섞기
-		int certNumLength = 6;
+		//쿠폰코드 랜덤으로 섞기**********************************************
+		int certNumLength = 10;
 		Random random = new Random(System.currentTimeMillis());
 		int range = (int) Math.pow(10, certNumLength);
 		int trim = (int) Math.pow(10, certNumLength-1);
@@ -45,7 +45,7 @@ public class PointService {
 		if(code > range) {
 			code = code - trim;
 		}
-		
+		//************************************************************
 		java.sql.Date today = new java.sql.Date(new java.util.Date().getTime());
 		logger.info("현재시간 : {}", today);
 		int a =0;
@@ -69,7 +69,7 @@ public class PointService {
 			map.put("couponPurchaseMsg", result);//쿠폰구매여부
 			int success = inter.myCoupon(dto);//쿠폰함 추가 쿼리
 			logger.info("쿠폰함 추가 성공 여부 : {}", success);
-			int pointListAdd = inter.pointListAdd(loginId, couponPrice);
+			int pointListAdd = inter.pointListAdd(loginId, couponPrice);//포인트 리스트에 추가
 			map.put("couponBoxMsg", success);//쿠폰함 추가 여부
 			map.put("msg", "쿠폰 구매 완료");
 		}

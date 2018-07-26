@@ -132,7 +132,7 @@
 		height: 400px;
 		background-color: orange;
 		margin-top:-42px;  
-		margin-left:5px;   
+		margin-left:4px;   
 		z-index: 2;
 		position: absolute;
 		display: none;
@@ -248,7 +248,7 @@
     내용<br/>
     <textarea id="review_content" name="review_content" maxlength="300" placeholder="리뷰 내용을 입력해 주세요.">${review_updateForm.review_content }</textarea><br/><br/>
     
-    해시태그 : <input id="hash" type="text" placeholder="해시태그를 입력해 주세요." maxlength="20"/><input id="add" type="button" value="추가"/><br/>
+    해시태그 : <input id="hash" type="text" value='#' placeholder="해시태그를 입력해 주세요." maxlength="20"/><input id="add" type="button" value="추가"/><br/>
     
     <div id="tag"></div>
     
@@ -371,13 +371,13 @@
 	//해시태그 추가 버튼시 div 생성
 	$("#add").click(function(){
 		if($("#hash").val() != ""){
-		div = "<div class='hashTag' id='hashTag'>#"+$("#hash").val()+
+		div = "<div class='hashTag' id='hashTag'>"+$("#hash").val()+
 		"<button onclick='hashDel(this)' class='hashDel'>-</button>"+
 		"<input type='hidden' name='hash_tag' value='"+$("#hash").val()+"'/></div>";		
 		$("#tag").append(div);	
 		//hashtagArr[i] = $("#hash").val();
 		//i++;
-		$("#hash").val("");
+		$("#hash").val("#");
 		}
 		
 	});

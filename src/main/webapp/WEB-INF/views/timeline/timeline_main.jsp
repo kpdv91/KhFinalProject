@@ -49,6 +49,7 @@
 			.reply_clk{display:none;}
 			.ddd{display:none;}
 			.storeTable{float: left;margin-left:1px; margin-right: 10px;margin-top: 10px;border:1px solid black;width:250px;height:250px;}
+			.storeTable tr,.storeTable td{border:1px solid black;}
 			.storeImg{width: 250px;height: 100px;}
 			#hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;margin-right: 5px;}
 			#fallowlist{border: 1px solid #33aaaaff;display:none;position:absolute;left:810px;width:410px;top:154px;background-color:white;z-index:15;}
@@ -629,12 +630,12 @@
 				content += "<div id='review'>"
 				//console.log(item.review_profile);
 				if(item.review_profile=="resources/upload/0"){
-				content += "<img id='review_profile' src='resources/img/member/noprofile.jpg'";
+				content += "<img id='review_profile' src='resources/img/member/noprofile.jpg'/>";
 				}else{
-				content += "<img id='review_profile' src='"+item.review_profile+"'";
+				content += "<img id='review_profile' src='"+item.review_profile+"'/>";
 				}
 				content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-				content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
+				content += "<div id='listTop'><div onclick='tiemlines(\""+item.id+"\")'>"+item.id+"</div><div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
 				if(item.id != loginid || loginid == ""){
 					content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' />";
 				}
@@ -661,18 +662,20 @@
 	//좋아요 리뷰 리스트
 	function revreplyList(list){		 
 		var content = "";
+		console.log(list);
 		list.forEach(function(i){
 			i.forEach(function(item){
+				//console.log(item.id);
 				content += "<div id='abc'>"
 					content += "<div id='review'>"
 					//console.log(item.review_profile);
 					if(item.review_profile=="resources/upload/0"){
-					content += "<img id='review_profile' src='resources/img/member/noprofile.jpg'";
+					content += "<img id='review_profile' src='resources/img/member/noprofile.jpg'/>";
 					}else{
-					content += "<img id='review_profile' src='"+item.review_profile+"'";
+					content += "<img id='review_profile' src='"+item.review_profile+"'/>";
 					}
 					content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-					content += "<div id='listTop'>"+item.id+"<div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
+					content += "<div id='listTop'><div onclick='tiemlines(\""+item.id+"\")'>"+item.id+"</div><div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
 					if(item.id != loginid || loginid == ""){
 						content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' />";
 					}
@@ -696,6 +699,10 @@
 		$("#content").empty();
 		$("#content").append(content);
 		$("#content").append("<div id='container'></div>");
+	}
+	function tiemlines(id){
+		console.log(id);
+		location.href="./timeline?id="+id;
 	}
 	//리뷰 별점 리스트
 	function star_create(star,elem){
@@ -762,6 +769,10 @@
 				error:function(e){console.log(e);}
 			});
 	}
+	/* function othertime(id){
+		console.log(id);
+		//location.href="./timeline?id="+id;
+	} */
 	var profileSession="${sessionScope.loginProfile }";
 	//댓글 리스트 출력
 	 function replylist(list,idx){
@@ -776,8 +787,8 @@
 			list.forEach(function(item){
 				var date = new Date(item.revreply_date);
 				reply +="<tr class='reply_table' id='reply_table"+item.revreply_idx+"'>";
-				reply +="<td rowspan='2'><input type='hidden' value='"+item.revreply_idx+"'/><img id='reply_img' src='"+item.revreply_profile+"'/></td>";
-				reply +="<td rowspan='2' id='reply_id'>"+item.id+"</td>";
+				reply +="<td rowspan='2'><input type='hidden' value='"+item.revreply_idx+"'/><img id='reply_img' src='"+item.revreply_profile+"' onclick='othertime("+item.id+")'/></td>";
+				reply +="<td rowspan='2' id='reply_id'><div onclick='tiemlines(\""+item.id+"\")'>"+item.id+"</div></td>";
 				reply +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' maxlength='100' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
 				reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td></tr><tr>";
 				reply+="<td  class='reply_btn' >";
@@ -1327,6 +1338,7 @@
 			},
 			dataType:"json",
 			success:function(d){
+				console.log(d);
 				if(d.list.length!=0){
 					revreplyList(d.list);
 					$("#container").zer0boxPaging({
@@ -1360,7 +1372,7 @@
 			},
 			dataType:"json",
 			success:function(d){
-				console.log(d.list.length);
+				console.log(d.list);
 				if(d.list.length!=0){
 					revreplyList(d.list);
 					$("#container").zer0boxPaging({
@@ -1471,10 +1483,11 @@
 		list.forEach(function(i, idx){
 			i.forEach(function(item,idx){
 				content += "<div>";
-				content += "<table class='storeTable'>";
+				content += "<table id='store"+item.store_idx+"' class='storeTable'>";
 				content += "<tr><td colspan='2'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' /></td></tr>";
 				content += "<tr>";
-				content += "<th><a href='./storeDetail?store_idx="+item.store_idx+"'>"+item.store_name+"</a></th></tr>";
+				content += "<th><a href='./storeDetail?store_idx="+item.store_idx+"'>"+item.store_name+"</a></th>";
+				content += "<td rowspan='2'><img class='storeLikeImg' id='storeLike"+item.store_idx+"' width='30px' height='30px' src='resources/img/storeLike/heart.png' onclick='storeLike("+item.store_idx+")'/></td></tr>";
 				content += "<tr>";
 				content += "<th>"+item.store_addr+"</th></tr>";
 				content += "<tr><td id='"+item.store_idx+"' colspan='2'>";
@@ -1487,11 +1500,59 @@
 				})
 				content += "</td></tr></table>";
 				content += "</div>";
+				storeLikeChk(item.store_idx);
 			})
 		})
 		$("#div_table").empty();
 		$("#div_table").append(content);
 		$("#div_table").after("<div id='container' ></div>");
+	}
+	//찜하기
+	function storeLike(idx) {
+		if(id==null){
+			alert("로그인이 필요한 서비스입니다.");
+		}else{
+			$.ajax({
+				url:"./storeLike",
+				type:"get",
+				data:{
+					"store_idx":idx
+				},
+				success:function(data){
+					alert(data.msg);
+					if(data.msg == "찜 했습니다."){
+						$("#storeLike"+idx).attr("src","resources/img/storeLike/heart2.png");
+					}else if(data.msg == "찜 취소했습니다."){
+						$("#storeLike"+idx).attr("src","resources/img/storeLike/heart.png");
+						$("#store"+idx).remove();
+					} 
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+		}
+	}
+	//찜 확인
+	function storeLikeChk(idx) {
+		$.ajax({
+			url:"./storeLikeChk",
+			type:"get",
+			data:{
+				"store_idx":idx
+			},
+			success:function(data){
+				id=data.loginId;
+				if(data.likeChk==1){
+					$("#storeLike"+idx).attr("src","resources/img/storeLike/heart2.png");
+				}else{
+					$("#storeLike"+idx).attr("src","resources/img/storeLike/heart.png");
+				}
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
 	}
 	//쿠폰 리스트
 	function couponlist(list){

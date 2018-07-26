@@ -18,8 +18,8 @@
 		<div id="dm_div">
 			&nbsp;받는 사람 : <input type="text" id="user1"/><br/>
 			<input type="hidden" readonly="readonly" value="${sessionScope.loginId }" id="user2"/><br/>
-			<div id="dm_div_content"><textarea rows="10" cols="34" id="dm_content" onkeyup="contentCnt()" maxlength="100"></textarea></div>
-			<span id="contentCnt">0/100</span>
+			<div id="dm_div_content"><textarea rows="10" cols="34" id="dm_content" onkeyup="contentCnt()" maxlength="300"></textarea></div>
+			<span id="contentCnt">0/300</span>
 			<div id="div_btn">
 				<button id="dm_exit">닫기</button>
 				<button id="dm_write">보내기</button>

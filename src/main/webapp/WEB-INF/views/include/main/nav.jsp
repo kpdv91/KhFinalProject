@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
-
+<!-- <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="resources/js/zer0boxPaging.js" type="text/javascript"></script>
 <style>
 	#nav ul li{list-style: none;  display: inline;	padding: 0px 10px;}
 	#nav a{text-decoration: none; color: white; }    
@@ -17,11 +17,11 @@
 	input:-ms-input-placeholder{color:#a8a8a8;}
 	input:-webkit-input-placeholder{color:#a8a8a8;}
 	input:-moz-input-placeholder{color:#a8a8a8;}            
-	#searchBox{ width: 420px; height: 45px; border: 1px solid #2637a4; background-color: #ffffff; float:left;}    
+	#searchBox{ width: 430px; height: 45px; border: 1px solid #2637a4; background-color: #ffffff; float:left;}    
 	/* #menu{position: absolute; top: 17px; left: 500px;} */
-	#nav select{font-size: 14px; width: 100px; padding: 10px; border: 0px; outline: none; }
-	#nav #search_content{font-size: 14px; width: 235px; padding: 10px; border: 0px; outline: none; }
-	#nav button{width: 50px; height: 100%; border: 0px; background-color: #2637a4; outline: none; float: right; color:#ffffff;}
+	#nav select{font-size: 15px; width: 110px; padding: 10px; border:0px; border-right:1px solid #2637a4; outline: none; height: 45px; text-align: center;}
+	#nav #search_content{font-size: 15px; width: 235px; padding: 10px; border: 0px; outline: none; }
+	#nav button{font-size: 15px; width: 50px; height: 100%; border: 0px; background-color: #2637a4; outline: none; float: right; color:#ffffff;}
 	#profileimg{width: 80px;height : 80px;position:absolute;left:1450px;top:1px;cursor: pointer;}
 	.btn{background-color:blue; color:white;width:80px;border: 2px solid white;cursor: pointer;}
 	#proimg{width: 50px;height : 50px;}
@@ -104,6 +104,7 @@ var alarmck=1;
 //console.log(profilecli);
 var loginid="${sessionScope.loginId}";
 //console.log(loginid);
+var showPage=1;
 	
 	function search(){
 		location.href = "./search?search_content=" + $("#search_content").val()+"&search_map=" + $("#search_map").val();
@@ -189,30 +190,41 @@ var loginid="${sessionScope.loginId}";
 	}
 	function alarmclick(){
 		if(alarmck==1){
-			$.ajax({
-				url:"./alarmlist",
-				type:"post",
-				data:{
-					id : loginid
-				},
-				dataType:"json",
-				success:function(d){
-					console.log(d);
-					$("#alarmlist").css("display","inline");
-					if(d.list.length>0){
-						alarmlist(d.list);
-					}			
-				},
-				error:function(e){
-					console.log(e);
-				}
-			});
+			alarmajax(showPage);
 			alarmck=0;
 		}else{
 			alarmck=1;
 			$("#alarmlist").css("display","none");
 		}
 	}
+	function alarmajax(page){
+		$.ajax({
+			url:"./alarmlist",
+			type:"post",
+			data:{
+				id : loginid,
+				page:page
+			},
+			dataType:"json",
+			success:function(d){
+				$("#alarmlist").css("display","inline");
+				if(d.list.length>0){
+					alarmlist(d.list);
+					$("#container").zer0boxPaging({
+			            viewRange : 5,
+			            currPage : d.currPage,
+			            maxPage : d.range,
+			            clickAction : function(e){
+			            	alarmajax($(this).attr('page'));
+			            }
+			        });
+				}			
+			},
+			error:function(e){
+				console.log(e);
+			}
+		});
+	};
 	function alarmlist(list){
 		var content="";
 		list.forEach(function(item){
@@ -233,6 +245,7 @@ var loginid="${sessionScope.loginId}";
 		})
 		$("#alarmlist").empty();
 		$("#alarmlist").append(content);
+		$("#alarmlist").append("<div id='container'></div>");
 	}
 	function alarmtime(id){
 		var alarmuserid=$("#alarmid").val();

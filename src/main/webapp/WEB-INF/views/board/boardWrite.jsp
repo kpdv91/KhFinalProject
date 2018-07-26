@@ -54,7 +54,7 @@
                     <td name="td_boardWrite_subject" colspan="3"><input type="text" id="board_subject"/></td>
                 </tr>
                 <tr>
-                    <td name="td_boardWrite_content" colspan="4"><textarea rows="15" id="board_content"></textarea></td>
+                    <td name="td_boardWrite_content" colspan="4"><textarea rows="15" id="board_content" maxlength="1000"></textarea></td>
                 </tr>
 			</table>
             <button id="exit">취소</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

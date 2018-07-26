@@ -18,8 +18,8 @@
 		<input type="hidden" id="store_idx" value="${store_idx }"/>
 		<div id="dm_div">
 			&nbsp;받는 사람 : <input type="text" id="dm_id" readonly="readonly" value="${id }"/><br/>
-			<div id="dm_div_content"><textarea rows="10" cols="34" id="dm_content" onkeyup="contentCnt()" maxlength="100"></textarea></div>
-			<span id="contentCnt">0/100</span>
+			<div id="dm_div_content"><textarea rows="10" cols="34" id="dm_content" onkeyup="contentCnt()" maxlength="300"></textarea></div>
+			<span id="contentCnt">0/300</span>
 			<div id="div_btn">
 				<button id="win_exit">닫기</button>
 				<button id="dm_write">보내기</button>
@@ -29,7 +29,7 @@
 	<script>
 		function contentCnt() {
 			var cnt = $("#dm_content").val();
-			$("#contentCnt").html(cnt.length+"/100");
+			$("#contentCnt").html(cnt.length+"/300");
 		}
 	
 		$("#dm_write").click(function () {

@@ -368,7 +368,14 @@ input[type=button]{
 		list.forEach(function(item){
 			content += "<table><tr><td>"
 			content += "<div id='abc'>"
-			content += "<div id='review'><img id='reviewListPro' width='45px' height='45px' src='"+item.review_profile+"' /><input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
+			content += "<div id='review'>";
+			if(item.review_profile == "resources/upload/0"){
+				content += "<img id='reviewListPro' width='45px' height='45px' src='resources/img/member/noprofile.jpg' />";
+			}else{
+				content += "<img id='reviewListPro' width='45px' height='45px' src='"+item.review_profile+"' />";
+			}
+			
+			content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
 			content += "<div id='listTop'><span class='idSpan' id='"+item.id+"' onclick='timelineLoc(id)'>"+item.id+"</span><div id='listTop_R' class='listTop_R"+item.review_idx+"'><img class='reviewLikeImg' id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' /><br/>";
 			if(item.id != loginId || loginId == ""){
 			content += "<span id='complain' class='span' href='#' onclick='complain(this)'>신고</span>";
@@ -460,7 +467,13 @@ input[type=button]{
 			list.forEach(function(item){
 				var date = new Date(item.revreply_date);
 				reply +="<tr class='reply_table' id='reply_table"+item.revreply_idx+"'>";
-				reply +="<td rowspan='2'><input type='hidden' value='"+item.revreply_idx+"'/><img id='reply_img' src='"+item.revreply_profile+"'/></td>";
+				reply +="<td rowspan='2'><input type='hidden' value='"+item.revreply_idx+"'/>";
+				if(item.revreply_profile == "resources/upload/0"){
+					reply += "<img id='reply_img' src='"+item.revreply_profile+"'/></td>";
+				}else{
+					reply += "<img id='reply_img' src='resources/img/member/noprofile.jpg'/></td>";
+				}
+				
 				reply +="<td rowspan='2' id='reply_id'><span id='"+item.id+"' onclick='timelineLoc(id)'>"+item.id+"</span></td>";
 				reply +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
 				reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td></tr><tr>";
@@ -539,7 +552,11 @@ input[type=button]{
 	
 	 //댓글 작성
 	 function replyWrite(elem,idx){
-		 var name=$(elem).parents().parents().parents()[4].childNodes[0].childNodes[2].childNodes[0].data;
+		 if($("#reply_textarea"+idx).val() == ""){
+			 alert("댓글을 작성해 주세요.");
+		 }
+		 else{
+		 var name=$(elem).parents().parents().parents()[4].childNodes[0].childNodes[2].childNodes[0].id;
 		 console.log(showPage);
 		  $.ajax({
 				url:"./replyWrite",
@@ -552,6 +569,7 @@ input[type=button]{
 				},
 				error:function(e){console.log(e);}
 			}); 
+		 }
 		 
 	 }
 	
@@ -692,7 +710,7 @@ input[type=button]{
 		//console.log(complain_Id);
 	}
 	
-	//댓글신고할때 idx 값이랑 cate만 바꿔서!
+	//댓글신고
 	function replyComplain(elem){
 		var reply_idx = $(elem).parents().parents().prev()[0].childNodes[0].childNodes[0].value;
 		var complain_Id = $(elem).parents().parents().prev()[0].childNodes[1].childNodes[0].data;

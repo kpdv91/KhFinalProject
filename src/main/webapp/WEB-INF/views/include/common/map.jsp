@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <!-- <div id="map" style="width:1000px;height:500px;"></div> -->
-<div id="map" style="margin-left: 50px"></div>
+<div id="map"></div>
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c7f29813d0150c2927c1529f7d432392&libraries=services"></script>
 <script>

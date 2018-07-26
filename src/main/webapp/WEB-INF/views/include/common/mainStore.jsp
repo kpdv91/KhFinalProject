@@ -99,14 +99,14 @@
 				content += "<th>"+item.store_addr+"</th></tr>";
 				
 				if(list_hash[index].length != 0){
-					content += "<tr><td style='border-top: 2px solid #142e5b; height:40px; overflow: hidden;' id='"+item.store_idx+"' colspan='3'>";
+					content += "<tr><td style='border-top: 2px solid #142e5b; height:70px;' id='"+item.store_idx+"' colspan='3'>";
 					
 					list_hash[index].forEach(function(item){
 						content += "<div id='storehashtag'>#"+item.hash_tag+"</div>";
 					});
 					content += "</td></tr>";
 				}else{
-					content += "<tr><td style='border-top: 2px solid #142e5b; height:40px;' id='"+item.store_idx+"' colspan='3'>";
+					content += "<tr><td style='border-top: 2px solid #142e5b; height:70px;' id='"+item.store_idx+"' colspan='3'>";
 					content += "해시태그가 없습니다.</td></tr>";
 				}
 				

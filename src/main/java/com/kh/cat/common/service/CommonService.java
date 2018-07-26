@@ -305,9 +305,13 @@ public class CommonService {
 		String search_content = params.get("search_content");
 		String search_content_And = search_content.replaceAll(" ", "%");
 		String[] search_content_Split = search_content.split(" ");
+		String mapSearch = params.get("search_map");
 		
 		HashMap<String, Object> search_content_Map = new HashMap<String, Object>();
-		search_content_Map.put("map", params.get("search_map"));
+		if(mapSearch == null) {
+			mapSearch = "";
+		}
+		search_content_Map.put("map", mapSearch);
 		search_content_Map.put("content", search_content_And);
 		search_content_Map.put("sort", params.get("data"));
 		search_content_Map.put("mainStore", params.get("mainStore"));

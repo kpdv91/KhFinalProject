@@ -112,6 +112,10 @@
     var idVal=0;//ID 중복확인 체크해주는 값
     var pwVal=0;//PW 중복확인 체크해주는 값
     var mailVal=0;//Email 중복확인 체크해주는 값
+    
+    var str=document.getElementById("userId");
+	
+	var special_pattern = /[~!@\#$%<>^&*\()\-=+_\’]/gi;
        
 	//var imgLen = $("#profile img").length;
 	     
@@ -122,7 +126,19 @@
     function chgMail(){//Mail 중복확인 후, Mail의 값이 변경되면 실행.
     	mailVal=0;
     }
-      
+     
+    /* function check(){
+    	var str=document.getElementById("userId");
+    	
+    	var special_pattern = /[~!@\#$%<>^&*\()\-=+_\’]/gi;
+    	if(special_pattern.test(str.value)==true){
+    		alert("특수문자는 사용할 수 없습니다.");
+    		return false;
+    	}
+    	
+    } */
+    
+    
     //ID 중복 확인
     $("#overlay").click(function(){
         data ={};
@@ -141,10 +157,18 @@
             success:function(d){
                 console.log(d);
                 if(reqUrl=="./rest/overlay"){
+                	if(special_pattern.test(str.value)==true){
+                		alert("특수문자는 사용할 수 없습니다.");
+                		return false;
+                	}
+              		if($("input[name='userId']").val().indexOf(" ") >= 0) {
+            	        alert("아이디에 공백을 사용할 수 없습니다.");
+            	        return false;
+                	}
                     if(d.use == "Y"){
                         chkSum ++;
                         alert("사용 가능한 아이디 입니다.");
-                        idVal=1;
+                        idVal=1;                    
                     }else{
                         alert("누군가가 사용 하고 있는 아이디 입니다.");
                         $("#userId").val("");
@@ -256,7 +280,10 @@
             $("input[name='hp2']").focus(); 
         }else if($("#hp3").val()==""){//핸드폰번호
         	alert("핸드폰번호를 입력해주세요!!");
-            $("input[name='hp3']").focus();        
+            $("input[name='hp3']").focus();
+        }else if($("input[name='userId']").val().indexOf(" ") >= 0) {
+            alert("아이디에 공백을 사용할 수 없습니다.")
+            $("input[name='userId']").focus();
         }else if($("input[name='userPw']").val().length<8 || $("input[name='userPw']").val().length>16){	//비밀번호 유효성
            	alert("비밀번호는 8~16자를 입력해주세요.");
         }else if(chkSum<1){

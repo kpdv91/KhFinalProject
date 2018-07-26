@@ -132,7 +132,7 @@
 		height: 400px;
 		background-color: orange;
 		margin-top:-42px;  
-		margin-left:5px;   
+		margin-left:4px;   
 		z-index: 2;
 		position: absolute;
 		display: none;

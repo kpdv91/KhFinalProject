@@ -83,9 +83,7 @@ public class StoreController {
 			,@RequestParam HashMap<String, String> data, HttpServletRequest session) {
 		logger.info("맛집 등록 요청.");
 		String loginId = (String) session.getSession().getAttribute("loginId");
-		logger.info("tagArr[] : "+tagArr.length);
-		logger.info("tagArr[] : "+tagArr[0]);
-		logger.info(data.get("store_addr"));
+		
 		return storeService.storeRegist(loginId, tagArr, data);
 	}
 	

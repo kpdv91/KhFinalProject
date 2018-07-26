@@ -33,7 +33,7 @@
   		padding-bottom: 40px;
   		font-family: "Nanum Gothic", arial, helvetica, sans-serif;
   		background-repeat: no-repeat;
-  		background:linear-gradient(to bottom right, #0098FF, #6BA8D1);
+  		/* background:linear-gradient(to bottom right, #0098FF, #6BA8D1); */
 	}
 	
     .card {
@@ -61,6 +61,12 @@
 	#menuFrame ul{
 	position:relative;
 		top:15px;
+	}
+	#search_content{
+		height:15px;
+	}
+	#nav select{
+		height:43px;
 	}
   </style>
 

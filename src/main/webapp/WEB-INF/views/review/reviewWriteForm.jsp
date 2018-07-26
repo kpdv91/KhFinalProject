@@ -215,8 +215,8 @@
 	<div id ="formDiv">
 	<input type="hidden" name="review_idx" value="${review_updateForm.review_idx }"/>
 	<div id="review_profile">
-		<img  width='80px' height='80px'  src="resources/upload/${sessionScope.loginProfile }"/>
-		<input type="hidden" name='review_profile' value="resources/upload/${sessionScope.loginProfile }"/>
+		<img id="profileImage"  width='80px' height='80px'  src="resources/upload/${sessionScope.loginProfile }"/>
+		<input id="profileHidden" type="hidden" name='review_profile' value="resources/upload/${sessionScope.loginProfile }"/>
 	</div>
 	<br/>
 	작성자 : <input id="user_Id" name="id" type="text" value="${ sessionScope.loginId}" readonly/>
@@ -308,6 +308,14 @@
 	</body>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c7f29813d0150c2927c1529f7d432392&libraries=services"></script>
 	<script>
+	var loginId="";
+	if("${sessionScope.loginProfile}" == "0"){
+		console.log("${sessionScope.loginProfile}");
+		$("#profileImage").attr("src","resources/img/member/noprofile.jpg");
+		$("#profileHidden").val("resources/img/member/noprofile.jpg");
+	}else{
+		console.log("${sessionScope.loginProfile}");
+	}
 	var loginId = "${sessionScope.loginId}";
 	//console.log(loginId);
 	var div = "";//div 추가 변수

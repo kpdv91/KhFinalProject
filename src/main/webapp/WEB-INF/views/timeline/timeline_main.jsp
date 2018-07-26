@@ -49,7 +49,7 @@
 			.reply_clk{display:none;}
 			.ddd{display:none;}
 			.storeTable{float: left;margin-left:1px; margin-right: 10px;margin-top: 10px;border:1px solid black;width:250px;height:250px;}
-			.storeTable tr,.storeTable td{border:1px solid black;}
+			
 			.storeImg{width: 250px;height: 100px;}
 			#hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;margin-right: 5px;}
 			#fallowlist{border: 1px solid #33aaaaff;display:none;position:absolute;left:810px;width:410px;top:154px;background-color:white;z-index:15;}
@@ -635,7 +635,7 @@
 				content += "<img id='review_profile' src='"+item.review_profile+"'/>";
 				}
 				content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-				content += "<div id='listTop'><div onclick='tiemlines(\""+item.id+"\")'>"+item.id+"</div><div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
+				content += "<div id='listTop'><span onclick='tiemlines(\""+item.id+"\")'>"+item.id+"</span><div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
 				if(item.id != loginid || loginid == ""){
 					content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' />";
 				}
@@ -675,7 +675,7 @@
 					content += "<img id='review_profile' src='"+item.review_profile+"'/>";
 					}
 					content += "<input type='hidden' id='review_idx"+item.review_idx+"' value='"+item.review_idx+"'/>";
-					content += "<div id='listTop'><div onclick='tiemlines(\""+item.id+"\")'>"+item.id+"</div><div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
+					content += "<div id='listTop'><span onclick='tiemlines(\""+item.id+"\")'>"+item.id+"</span><div id='listTop_R' class='listTop_R"+item.review_idx+"'>";
 					if(item.id != loginid || loginid == ""){
 						content += "<img id='reviewLike"+item.review_idx+"' width='30px' height='30px' src='resources/img/reviewLike/reviewLike.png' onclick='likeClick(this,"+item.review_idx+")' />";
 					}

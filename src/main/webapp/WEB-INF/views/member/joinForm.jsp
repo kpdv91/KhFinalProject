@@ -159,10 +159,12 @@
                 if(reqUrl=="./rest/overlay"){
                 	if(special_pattern.test(str.value)==true){
                 		alert("특수문자는 사용할 수 없습니다.");
+                		$("#userId").val("");
                 		return false;
                 	}
               		if($("input[name='userId']").val().indexOf(" ") >= 0) {
             	        alert("아이디에 공백을 사용할 수 없습니다.");
+            	        $("#userId").val("");
             	        return false;
                 	}
                     if(d.use == "Y"){
@@ -281,9 +283,9 @@
         }else if($("#hp3").val()==""){//핸드폰번호
         	alert("핸드폰번호를 입력해주세요!!");
             $("input[name='hp3']").focus();
-        }else if($("input[name='userId']").val().indexOf(" ") >= 0) {
+        /* }else if($("input[name='userId']").val().indexOf(" ") >= 0) {
             alert("아이디에 공백을 사용할 수 없습니다.")
-            $("input[name='userId']").focus();
+            $("input[name='userId']").focus(); */
         }else if($("input[name='userPw']").val().length<8 || $("input[name='userPw']").val().length>16){	//비밀번호 유효성
            	alert("비밀번호는 8~16자를 입력해주세요.");
         }else if(chkSum<1){

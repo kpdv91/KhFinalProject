@@ -33,24 +33,29 @@
 		}
 	
 		$("#dm_write").click(function () {
-			$.ajax({
-				url:"./dm_write_regNo",
-				type:"post",
-				data:{
-					store_idx : $("#store_idx").val(),
-					id : $("#dm_id").val(),
-					dm_content : $("#dm_content").val()
-				},
-				dataType:"json",
-				success:function(data){
-					console.log(data);			
-					alert(data.msg);
-					self.close();
-				},
-				error:function(error){
-					console.log(error);
-				}
-			});
+			if($("#dm_content").val()==""){
+				alert("메세지를 입력해주세요.");
+				$("#dm_content").focus();
+			}else{
+				$.ajax({
+					url:"./dm_write_regNo",
+					type:"post",
+					data:{
+						store_idx : $("#store_idx").val(),
+						id : $("#dm_id").val(),
+						dm_content : $("#dm_content").val()
+					},
+					dataType:"json",
+					success:function(data){
+						console.log(data);			
+						alert(data.msg);
+						self.close();
+					},
+					error:function(error){
+						console.log(error);
+					}
+				});
+			}
 		});
 	</script>
 </html>

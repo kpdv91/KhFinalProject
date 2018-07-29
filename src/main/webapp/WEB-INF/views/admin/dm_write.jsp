@@ -66,11 +66,12 @@
 			var user1 = $("#user1").val();
 			var dm_content = $("#dm_content").val();
 			if(user1 == ""){
-				alert("유저 아이디 작성");
+				alert("받는사람의 아이디를 입력해주세요.");
 			}else if(dm_content == ""){
-				alert("쪽지 내용 입력")
+				alert("메세지를 입력해주세요.");
+				$("#dm.content").focus();
 			}else if(overlay == false){
-				alert("받는 사람 아이디 확인")
+				alert("받는 사람 아이디 확인");
 			}else{
 				$.ajax({
 					url : "./dm_write",

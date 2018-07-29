@@ -203,6 +203,7 @@ public class BoardService {
 		inter = sqlSession.getMapper(BoardInter.class);
 		
 		ArrayList<BoardReplyDTO> list = inter.boardReplyList(Integer.parseInt(idx));
+		logger.info("리스트 : {}", list);
 		//int replyCnt = inter.replyCnt(Integer.parseInt(idx));
 		
 		//if(replyCnt > 0) {

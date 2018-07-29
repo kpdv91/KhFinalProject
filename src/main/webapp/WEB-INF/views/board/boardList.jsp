@@ -23,8 +23,8 @@
 			a:link{text-decoration: none; color: #000000;}
 			a:visited{text-decoration: none; color: #000000;}
 			a:active{text-decoration: none; color: #000000;}			 			
-			
-			button#write{position: absolute; top:15px; left: 656px; width:auto; height: 30px; background-color: lightskyblue; border: none; border-radius: 2px;}
+			  
+			button#write{position: absolute; top:15px; left: 608px; width:auto; height: 30px; background-color: lightskyblue; border: none; border-radius: 2px;}
 		</style>
 	</head>
 	<body>

@@ -9,7 +9,7 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script> -->
 		<title>Insert title here</title>
 		<style>
-			#reviewListDiv{ margin-left: 0px; }
+			/* #reviewListDiv{ margin-left: 0px; }
 			#review{ border: 1px solid #142e5b; width: 500px; height: auto;}
 	        #listTop{ border-bottom: 1px solid #142e5b; height: 50px; line-height: 50px; }
 	        #listTop_R{float: right; height: 50px; width: 150px; line-height: 25px; 
@@ -79,7 +79,272 @@
 	       #review_Write{ margin-left: 490px; }
        
 	       #review_range{ width: 80px; height: 28px; border-radius: 5px; font-size: 15px; 
-	       		text-align-last: center; margin-left: 350px; border: 2px solid #142e5b;}
+	       		text-align-last: center; margin-left: 350px; border: 2px solid #142e5b;} */
+	       				#reviewListDiv{margin-left: 550px;}
+		
+		#review{
+            border: 2px solid #142e5b;
+            width: 500px;
+            height: auto;            
+        }
+        #listTop{
+            border-bottom: 2px solid #142e5b;
+            height: 50px;
+            line-height: 50px;
+        }
+        #listTop_R{
+            float: right;
+            height: 50px;
+            width: 150px;
+            line-height: 25px;
+            text-align: right;
+            font-size: 13
+            px;
+        }
+       #review_table tr,#review_table td{
+				/* border:1px solid black; */
+				border-collapse: collapse;
+				margin:0 auto;
+        }
+        #review_table{
+            height: 170px;
+    		border-bottom: 2px solid #142e5b;
+            border-collapse: collapse;
+			width: 500px;
+			margin:0 auto;
+        }
+        .starTd{
+            text-align: right;
+            overflow: hidden;
+        }
+        #hashtag{
+            border: 2px solid black;
+            width: 60px;
+            height: 25px;
+            font-size: 12px;
+            text-align: center;
+            line-height: 25px;
+            float: left;
+            margin-left: 5px;
+            margin-bottom: 2px;
+        }
+        #review_content{
+            border: 0px;
+            width: 99%;
+            height: 100%;
+            resize: none;
+        }
+        #photo{
+           
+            width: 60px;
+            height: 50px;
+            float: left;
+            margin-left: 5px;
+        }
+        .reviewReply{
+            border-bottom: 2px solid #142e5b;
+            border-left: 2px solid #142e5b;
+            border-right: 2px solid #142e5b;
+            width: 500px;
+            display: none;
+        }
+        #starDiv{
+        	width: 100%;
+        	height: 30px;
+        }
+        #reviewList_hash,#reviewList_photo{
+        	width: 600px;
+       		height: auto;
+       		overflow: hidden;
+        }
+        #hashtag{
+        	border: 2px solid #33aaaaff;
+            font-size: 14px;
+            width: auto;            
+            text-align: center; 
+            float: left;
+            padding: 0px 5px;
+        }
+        #storeName_td{
+        	font-weight: bold;
+        	width: 300px;
+        }
+        #tableTop{height: 40px;}
+        .span{
+        	text-decoration: none;
+        	color: black;
+        	font-size: 13px;
+        	cursor: pointer;
+        }
+        .span:hover{	color: red;}
+        .bigPhoto{
+        	width: 250px;
+        	height: 250px;
+        	background-color: white;
+        	display: none;
+        	border-radius: 10px;
+        	overflow: hidden; 
+        	margin-left: 5px;
+        }
+        
+        
+.star-input>.input,
+.star-input>.input>label:hover,
+.star-input>.input>input:focus+label,
+.star-input>.input>input:checked+label{
+    display: inline-block;
+    vertical-align:middle;
+    background:url('resources/img/star/grade_img.png')no-repeat;
+}
+.star-input{
+    display:inline-block; 
+    white-space:nowrap;
+    width:225px;height:40px;
+   line-height:30px; padding-top: 5px;
+}
+.star-input>.input{
+    display:inline-block;
+    width:150px;height:28px;
+    background-size:150px;
+    white-space:nowrap;
+    overflow:hidden;
+    position: relative;
+}
+.star-input>.input>input{
+    position:absolute;
+    width:1px;height:1px;
+    opacity:0;
+}
+star-input>.input.focus{
+    outline:1px dotted #ddd;
+}
+.star-input>.input>label{
+    width:30px;height:0;
+    padding:28px 0 0 0;
+    overflow: hidden;
+    float:left;
+    cursor: pointer;
+    position: absolute;
+    top: 0;left: 0;
+}
+.star-input>.input>label:hover,
+.star-input>.input>input:focus+label,
+.star-input>.input>input:checked+label{
+    background-size: 150px;
+    background-position: 0 bottom;
+}
+.star-input>.input>label:hover~label{
+    background-image: none;
+}
+.star-input>.input>label[for="p0.5"]{width:15px;z-index:10;}
+.star-input>.input>label[for="p1.0"]{width:30px;z-index:9;}
+.star-input>.input>label[for="p1.5"]{width:45px;z-index:8;}
+.star-input>.input>label[for="p2.0"]{width:60px;z-index:7;}
+.star-input>.input>label[for="p2.5"]{width:75px;z-index:6;}
+.star-input>.input>label[for="p3.0"]{width:90px;z-index:5;}
+.star-input>.input>label[for="p3.5"]{width:105px;z-index:4;}
+
+.star-input>.input>label[for="p4.0"]{width:120px;z-index:3;}
+.star-input>.input>label[for="p4.5"]{width:135px;z-index:2;}
+.star-input>.input>label[for="p5.0"]{width:150px;z-index:1;}
+.star-input>output{
+    display:inline-block;
+    width:60px; font-size:18px;
+    text-align:right; 
+    vertical-align:middle;
+}
+
+input[type=button]{
+            vertical-align: middle;
+            padding: 0px 5px;
+            background-color: #33aaaaff;
+            color: white;
+            border-radius: 7px;
+            /* width: 70px; */
+            height: 28px;
+            outline: 0px;
+            border: 0px;
+       }
+       #review_Write{	margin-left: 550px;}
+       
+       #review_range{
+				width: 80px;
+				height: 28px;
+				border-radius: 5px;
+				font-size: 15px;
+				text-align-last: center;
+				margin-left: 350px;
+				border: 1px solid black;
+			}
+			#reviewListPro{
+				float: left;
+				border-radius: 8px;
+				overflow: hidden;
+			}
+			#likeCntTr{height: 30px;}
+			#replySpan{
+				display: table-cell;
+				height: 30px;
+				vertical-align: middle;
+				cursor: pointer;
+			}
+			#reply_img{
+				width: 30px;
+				height: 30px;
+			}
+			#reply_table{
+				font-size: 13px;
+				border: none;
+				width: 100%;
+			}
+			.reply_textarea{				
+				 resize: none;
+				 width: 330px;
+				 border-radius: 5px;
+			}
+			#replyWrite{width: 50px; font-size: 13px; margin-left: 5px;}
+			#replyWrite:hover{
+				color: red;
+			}
+			.reply_ck{
+				width: 50px;
+				font-size: 12px;
+				margin-right: 5px;
+				cursor: pointer;
+			}
+			.reply_ck:hover{color: red;}
+			#reply_id{height: 50px;}
+			.replyDiv{
+				width: 500px;
+				
+			}
+			.reviewLikeImg{cursor: pointer;	}
+			.PhotoImg{cursor: pointer;}
+			#complain{cursor: pointer;}
+			.review_photo_td{
+				padding-top: 5px;
+			}
+			#container{
+				margin-right: 530px;
+				text-align: center;
+			}
+			.replyContainer{
+				margin-right: 30px;
+				text-align: center;
+			}
+			.replyWriteTr td{
+				padding-top: 7px;
+				padding-bottom: 10px;
+				border-left: 0px;
+				border-right: 0px;
+				border-bottom: 1px dashed #142e5b;
+			}
+			.idSpan{
+				cursor: pointer;
+			}
+			.idSpan:hover{
+				color: navy;
+			}
 	       		     
 	       	div#btnDiv{position: relative; width: 500px; height: 50px;  
 	       		text-align: center; padding-top: 21px;}         	                 
@@ -163,6 +428,7 @@
 					console.log(data);
 					if(data.result > 0){
 						alert(data.msg);
+						self.close();
 					}
 				},
 				error : function(error){

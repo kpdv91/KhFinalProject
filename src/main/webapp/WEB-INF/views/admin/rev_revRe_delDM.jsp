@@ -49,28 +49,34 @@
 		
 		//쪽지 보내기
 		$("#dm_write").click(function () {
-			$.ajax({
-				url:"./dm_write_rev_revRe_del",
-				type:"post",
-				data:{
-					review_idx : $("#review_idx").val(),
-					reviewReply_idx : $("#reviewReply_idx").val(),
-					id : $("#id").val(),
-					complain_id : $("#dm_complain_id").val(),
-					dm_content : $("#dm_content").val()
-				},
-				dataType:"json",
-				success:function(data){
-					console.log(data.result);
-					console.log(data.msg);
-					if(data.result > 0){
-						alert(data.msg);
+			if($("#dm_content").val()==""){
+				alert("메세지를 입력해주세요.");
+				$("#dm_content").focus();
+			}else{
+				$.ajax({
+					url:"./dm_write_rev_revRe_del",
+					type:"post",
+					data:{
+						review_idx : $("#review_idx").val(),
+						reviewReply_idx : $("#reviewReply_idx").val(),
+						id : $("#id").val(),
+						complain_id : $("#dm_complain_id").val(),
+						dm_content : $("#dm_content").val()
+					},
+					dataType:"json",
+					success:function(data){
+						console.log(data.result);
+						console.log(data.msg);
+						if(data.result > 0){
+							alert(data.msg);
+							self.close();
+						}
+					},
+					error:function(error){
+						console.log(error);
 					}
-				},
-				error:function(error){
-					console.log(error);
-				}
-			});
+				});
+			}
 		});
 	</script>
 </html>

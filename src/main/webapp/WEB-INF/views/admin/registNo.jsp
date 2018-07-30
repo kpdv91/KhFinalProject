@@ -27,6 +27,15 @@
 		</div>
 	</body>
 	<script>
+	
+		var cate = "가게";
+		var alarmuserid="${sessionScope.loginId}";
+		var windowOpener = window.opener;
+	
+		$("#win_exit").click(function () {
+			self.close();
+		});
+	
 		function contentCnt() {
 			var cnt = $("#dm_content").val();
 			$("#contentCnt").html(cnt.length+"/300");
@@ -46,9 +55,9 @@
 						dm_content : $("#dm_content").val()
 					},
 					dataType:"json",
-					success:function(data){
-						console.log(data);			
+					success:function(data){	
 						alert(data.msg);
+						windowOpener.location.href="./alarmtimeline?id="+alarmuserid+"&cate="+cate;
 						self.close();
 					},
 					error:function(error){

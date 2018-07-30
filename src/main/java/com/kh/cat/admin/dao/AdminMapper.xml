@@ -70,22 +70,40 @@
 	</update>
 	
 	<!-- 게시물 삭제시 신고당한 사람에게 쪽지 -->
-	<insert id="review_del_dm" parameterType="String">
+	<insert id="review_del_dm" parameterType="dm" useGeneratedKeys="true" keyProperty="dm_idx" keyColumn="dm_idx">
 		INSERT INTO dm(dm_idx, id, dm_id, dm_content, dm_date)
-			VALUES(seq_dm.NEXTVAL, #{param2}, #{param1}, #{param3}, SYSDATE)
+			VALUES(seq_dm.NEXTVAL, #{id}, #{dm_id}, #{dm_content}, SYSDATE)
+	</insert>
+	
+	<!-- 알람추가 -->
+	<insert id="review_del_dm_alarm" parameterType="dm">
+		INSERT INTO alarm(alarm_idx, alarm_id, alarm_cate, dm_idx, alarm_read)
+			VALUES(seq_alarm.NEXTVAL, #{dm_id}, '메세지', #{dm_idx}, 0)
 	</insert>
 	
 	<!-- 게시물 삭제시 신고한 사람에게 쪽지 -->
-	<insert id="review_del_dm2" parameterType="String">
+	<insert id="review_del_dm2" parameterType="dm" useGeneratedKeys="true" keyColumn="dm_idx" keyProperty="dm_idx">
 		INSERT INTO dm(dm_idx, id, dm_id, dm_content, dm_date)
-			VALUES(seq_dm.NEXTVAL, #{param2}, #{param1}, '신고한 게시물(리뷰)이 삭제되었습니다.', SYSDATE)
+			VALUES(seq_dm.NEXTVAL, #{id}, #{dm_id}, '신고한 게시물(리뷰)이 삭제되었습니다.', SYSDATE)
+	</insert>
+	
+	<!-- 알람추가 -->
+	<insert id="review_del_dm2_alarm" parameterType="dm">
+		INSERT INTO alarm(alarm_idx, alarm_id, alarm_cate, dm_idx, alarm_read)
+			VALUES(seq_alarm.NEXTVAL, #{dm_id}, '메세지', #{dm_idx}, 0)
 	</insert>
 	
 	<!-- 게시물(댓글) 삭제시 신고한 사람에게 쪽지 -->
-	<insert id="revReply_del_dm3">
+	<insert id="revReply_del_dm3" parameterType="dm" useGeneratedKeys="true" keyColumn="dm_idx" keyProperty="dm_idx">
 		INSERT INTO dm(dm_idx, id, dm_id, dm_content, dm_date)
-			VALUES(seq_dm.NEXTVAL, #{param2}, #{param1}, '신고한 게시물(댓글)이 삭제되었습니다.', SYSDATE)
+			VALUES(seq_dm.NEXTVAL, #{id}, #{dm_id}, '신고한 게시물(댓글)이 삭제되었습니다.', SYSDATE)
 	</insert>
+	
+	<insert id="revReply_del_dm3_alarm" parameterType="dm">
+		INSERT INTO alarm(alarm_idx, alarm_id, alarm_cate, dm_idx, alarm_read)
+			VALUES(seq_alarm.NEXTVAL, #{dm_id}, '메세지', #{dm_idx}, 0)
+	</insert>
+	
 	
 	 <!-- 등록 승인 시 쪽지 -->
 	<insert id="regY_dm_Write" parameterType="dm" useGeneratedKeys="true" keyProperty="dm_idx" keyColumn="dm_idx">

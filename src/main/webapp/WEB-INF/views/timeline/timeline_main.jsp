@@ -278,6 +278,18 @@
 			$("#complain_list").css("color","black");
 			$("#content").load(page,function(res, stat) {});
 			ajaxCall(page);
+		}else if("${cate}"=="신고"){
+			page = "resources/timelinehtml/complainList.html";
+			$("#dm_write").css("background-color","lightgray");
+			$("#dm_write").css("color","black");
+			$("#message").css("background-color","lightgray");
+			$("#message").css("color","black");
+			$("#store_regist_list").css("background-color","lightgray");
+			$("#store_regist_list").css("color","whblackite");
+			$("#complain_list").css("background-color","darkblue");
+			$("#complain_list").css("color","white");
+			$("#content").load(page,function(res, stat) {});
+			ajaxCall(page);
 		}
 	});
 	
@@ -1795,7 +1807,7 @@
 		function complain_move(complain_idx, rev_idx, revReply_idx, id, complain_id) {
 			console.log("클릭");   
 			console.log(rev_idx, revReply_idx, id, complain_id);  
-			var myWin= window.open("./comp_review_moveWin?complain_idx="+complain_idx+"&rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");		
+			var myWin= window.open("./comp_review_moveWin?complain_idx="+complain_idx+"&rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지1","width=500,height=500");		
 		}
 		
 		

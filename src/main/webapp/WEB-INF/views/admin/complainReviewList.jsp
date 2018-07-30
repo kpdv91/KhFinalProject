@@ -7,7 +7,7 @@
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> 
 		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script> -->
-		<title>Insert title here</title>
+		<title>신고된 리뷰/댓글</title>
 		<style>
 			/* #reviewListDiv{ margin-left: 0px; }
 			#review{ border: 1px solid #142e5b; width: 500px; height: auto;}
@@ -356,6 +356,8 @@ input[type=button]{
 	       		width: auto; height: 30px; }               
 	        button.btn{margin: 0px 30px; border-radius: 5px;'}
 	       	
+	       
+	       	
 		</style>
 	</head>
 	<body>
@@ -370,10 +372,16 @@ input[type=button]{
 		<div id="reviewListDiv"></div>
 	</body>
 	<script>
+		var cate = "신고";
+		var alarmuserid="${sessionScope.loginId}";
+		var windowOpener = window.opener;
+			
+	
 		$(document).ready(function () {
 			window.resizeTo(500, 500);
 			var rev_idx = ${rev_idx};
 			var revReply_idx = ${revReply_idx};
+			
 			$.ajax({
 				url:"./complain_review_move",
 				type:"post",
@@ -395,8 +403,11 @@ input[type=button]{
 					console.log(error);
 				} 
 			});
+			
+			//windowOpener.location.href="./alarmtimeline?id="+alarmuserid+"&cate="+cate;
 		});
-		
+		//게시물 삭제
+		var chk = 0;
 		$("#comp_rev_reply_del").click(function () {
 			console.log("클릭");
 			var rev_idx = ${rev_idx};
@@ -404,7 +415,8 @@ input[type=button]{
 			var id = "${id}";
 			var complain_id = "${complain_id}";
 			var option = "width=270, height=230";
-			var myWin= window.open("./rev_revRe_delDM?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지", option);
+			var myWin= window.open("./rev_revRe_delDM?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지2", option);	
+
 		});
 		
 		//신고취하
@@ -469,6 +481,7 @@ input[type=button]{
 		});
 		
 		var loginId = "${sessionScope.loginId}";
+		var idx = ""
 		//신고된 리뷰 리스트
 		function comp_reviewList(list){		 
 			var content = "";
@@ -489,6 +502,7 @@ input[type=button]{
 				content += "<div class='reviewReply' id='reviewReply"+item.review_idx+"'></div>";	
 				content += "<div class='bigPhoto' id='bigPhoto"+item.review_idx+"'></div><br/></div>";
 				
+				idx = item.review_idx;
 				hashtag(item.review_idx);//해시태그
 				starSelect(item.review_idx);//리뷰 별점
 
@@ -536,15 +550,22 @@ input[type=button]{
 	  		$("#starTd"+elem).css("pointer-events","none");
 		} 
 		
+		var profileSession="${sessionScope.loginProfile }";
+		
 		//신고된 댓글리스트
 		function comp_revReplyList(list) {
 			var content = "";
 			list.forEach(function(item){
 				var date = new Date(item.revreply_date);
 				content += "<div class='replyDiv' id='reply_divz'  style='border: 1px solid black;'>";
-				content +="<table>";
+				content +="<table id='revReply-table'>";
 				content +="<tr class='reply_table' id='reply_table"+item.revreply_idx+"'>";
-				content +="<td rowspan='2'><img id='reply_img' width='30px' height='30px' src='resources/upload/"+item.revreply_profile+"'/></td>";
+				if(item.revreply_profile == "resources/upload/0"){
+					content += "<td rowspan='2'><img id='reply_img' src='"+item.revreply_profile+"'/></td>";
+				}else{
+					content += "<td rowspan='2'><img id='reply_img' src='resources/img/member/noprofile.jpg'/></td>";
+				}
+				//content +="<td rowspan='2'><img id='reply_img' width='30px' height='30px' src='resources/upload/"+item.revreply_profile+"'/></td>";
 				content +="<td rowspan='2' id='reply_id'>"+item.id+"</td>";
 				content +="<td rowspan='2' id='reply_content'><textarea cols='40' rows='auto' style='resize: none;'"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
 				content +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td></tr>";
@@ -553,6 +574,7 @@ input[type=button]{
 			});
 			$("#reviewListDiv").empty();
 			$("#reviewListDiv").append(content);		
+
 		}
 		
 		

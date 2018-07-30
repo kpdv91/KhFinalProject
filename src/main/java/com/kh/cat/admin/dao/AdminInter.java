@@ -36,13 +36,13 @@ public interface AdminInter {
 
 	int review_del(String rev_idx);//리뷰 삭제
 
-	int review_del_dm(String complain_id, String loginId, String dm_content);//게시물 삭제시 신고당한 사람에게 쪽지
+	int review_del_dm(DMDTO dto);//게시물 삭제시 신고당한 사람에게 쪽지
 
-	void review_del_dm2(String id, String loginId);//게시물 삭제시 신고한 사람에게 쪽지
+	void review_del_dm2(DMDTO dto2);//게시물 삭제시 신고한 사람에게 쪽지
 
 	ArrayList<RevReplyDTO> comp_revReplyList(String rev_idx);//신고된 리뷰댓글 리스트
 
-	void revReply_del_dm3(String id, String loginId);
+	void revReply_del_dm3(DMDTO dto2);
 
 	int complainDel2(String revReply, String id);
 
@@ -65,6 +65,12 @@ public interface AdminInter {
 	int dm_write(DMDTO dto);//쪽지보내기
 
 	void alarm_dm(DMDTO dto);//쪽지보낼 때 알람 등록
+
+	void review_del_dm2_alarm(DMDTO dto2);//리뷰 삭제시 쪽지보내기 알람 추가하기(신고한사람)
+
+	void revReply_del_dm3_alarm(DMDTO dto2);//리뷰댓글 삭제시 쪽지보내기 알람 추가(신고한사람)
+
+	void review_del_dm_alarm(DMDTO dto);//신고받은 사람 쪽지보내고 알람추가
 
 	
 

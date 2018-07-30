@@ -5,7 +5,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-		<title>Insert title here</title>
+		<title>리뷰/댓글 쪽지</title>
 		<style>
 			
 			div#dm_div{position: relative; top:5px; left:5px; width: 265px; height: 230px;}
@@ -35,7 +35,11 @@
 		$(document).ready(function () {
 			window.resizeTo(300, 300);
 		});
-	
+		
+		var cate = "신고";
+		var alarmuserid="${sessionScope.loginId}";
+		var windowOpener = window.opener;
+		//location.href="./alarmtimeline?id="+alarmuserid+"&cate="+cate;
 	
 		function contentCnt() {
 			var cnt = $("#dm_content").val();
@@ -44,7 +48,7 @@
 		
 	
 		$("#win_exit").click(function () {
-			history.back();
+			self.close();
 		});
 		
 		//쪽지 보내기
@@ -69,7 +73,7 @@
 						console.log(data.msg);
 						if(data.result > 0){
 							alert(data.msg);
-							self.close();
+							windowOpener.location.href="./alarmtimeline?id="+alarmuserid+"&cate="+cate;
 						}
 					},
 					error:function(error){

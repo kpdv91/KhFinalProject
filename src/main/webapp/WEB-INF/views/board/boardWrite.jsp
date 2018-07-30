@@ -7,7 +7,7 @@
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>Insert title here</title>
 		<style>
-            div#board{position: relative; top: 50px; left: 400px; border: 1px solid black; width: 720px; height: 1000px;}
+            div#board{position: relative; top: 50px; left: 400px; border: none; width: 720px; height: 1000px;}
             table, th, td{border: 1px solid black; border-collapse: collapse;}
             table[name="boardWrite_table"]{position: absolute; top: 30px; left: 10px; width: 700px; height: 500px;}     
 			th[name="th_boardWrite_cate"]{width: 100px; height: 30px; background-color: lightskyblue;}  

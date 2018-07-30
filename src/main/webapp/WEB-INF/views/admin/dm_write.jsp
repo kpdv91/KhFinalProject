@@ -7,11 +7,12 @@
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>Insert title here</title>
 		<style>
-			div#dm_div{position: relative; top:5px; left:5px; width: 265px; height: 230px;}
+			div#dm_div{position: relative; top:35px; left:80px; width: 265px; height: 230px;}
 			div#dm_div_content{position: absolute; top: 30px; left: 7px;}
-			div#div_btn{position: absolute; top: 200px; left: 152px;}  
-			span#contentCnt{position: absolute; top: 190px; left: 7px; color: gray; font-size: 10px;}
+			div#div_btn{position: absolute; top: 215px; left: 152px;}  
+			span#contentCnt{position: absolute; top: 190px; left: 225px; color: gray; font-size: 10px;}
 			textarea#dm_content{resize: none;}
+			span#chk{position: absolute; top: 195px; left: 5px; font-size: 12px; color: red;}
 		</style>
 	</head>
 	<body>                                 
@@ -19,6 +20,7 @@
 			&nbsp;받는 사람 : <input type="text" id="user1"/><br/>
 			<input type="hidden" readonly="readonly" value="${sessionScope.loginId }" id="user2"/><br/>
 			<div id="dm_div_content"><textarea rows="10" cols="34" id="dm_content" onkeyup="contentCnt()" maxlength="300"></textarea></div>
+			<span id="chk"></span>
 			<span id="contentCnt">0/300</span>
 			<div id="div_btn">
 				<button id="dm_exit">닫기</button>
@@ -36,7 +38,7 @@
 		}
 		
 		//받는 사람 아이디 있는지 체크
-		$("#user1").focusout(function () {
+		$("#user1").keyup(function () {
 			$.ajax({
 				url : "./rest/overlay",
 				type : "get",
@@ -47,12 +49,11 @@
 				success : function (data) {
 					console.log(data);
 					if(data.use != "N"){
-						$("#user1").val("");
-						alert("아이디X");
+						$("#chk").html("아이디가 존재하지 않습니다.");
+						overlay = false;
 					}else{
 						overlay = true;
-						alert("아이디O");
-						$("#dm_content").focus();
+						$("#chk").html("");
 					}
 				},
 				error : function (error) {
@@ -66,12 +67,12 @@
 			var user1 = $("#user1").val();
 			var dm_content = $("#dm_content").val();
 			if(user1 == ""){
-				alert("받는사람의 아이디를 입력해주세요.");
+				$("#chk").html("받는사람의 아이디를 입력해주세요.");
 			}else if(dm_content == ""){
-				alert("메세지를 입력해주세요.");
+				$("#chk").html("메세지를 입력해주세요.");
 				$("#dm.content").focus();
 			}else if(overlay == false){
-				alert("받는 사람 아이디 확인");
+				$("#chk").html("아이디가 존재하지 않습니다.");
 			}else{
 				$.ajax({
 					url : "./dm_write",

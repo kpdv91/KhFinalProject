@@ -374,8 +374,7 @@ input[type=button]{
 	<script>
 		var cate = "신고";
 		var alarmuserid="${sessionScope.loginId}";
-		var windowOpener = window.opener;
-			
+		var windowOpener = window.opener;	
 	
 		$(document).ready(function () {
 			window.resizeTo(500, 500);
@@ -407,18 +406,18 @@ input[type=button]{
 			//windowOpener.location.href="./alarmtimeline?id="+alarmuserid+"&cate="+cate;
 		});
 		//게시물 삭제
-		var chk = 0;
 		$("#comp_rev_reply_del").click(function () {
 			console.log("클릭");
 			var rev_idx = ${rev_idx};
 			var revReply_idx = ${revReply_idx};
 			var id = "${id}";
 			var complain_id = "${complain_id}";
-			var option = "width=270, height=230";
+			var option = "width=400, height=300";
 			var myWin= window.open("./rev_revRe_delDM?rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지2", option);	
 
+				
 		});
-		
+
 		//신고취하
 		$("#comp_cancel").click(function () {
 			console.log("클릭");

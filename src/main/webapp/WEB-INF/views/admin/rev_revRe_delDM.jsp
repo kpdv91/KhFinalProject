@@ -8,11 +8,12 @@
 		<title>리뷰/댓글 쪽지</title>
 		<style>
 			
-			div#dm_div{position: relative; top:5px; left:5px; width: 265px; height: 230px;}
+			div#dm_div{position: relative; top:35px; left:80px; width: 265px; height: 230px;}
 			div#dm_div_content{position: absolute; top: 30px; left: 7px;}
-			div#div_btn{position: absolute; top: 200px; left: 152px;}  
-			span#contentCnt{position: absolute; top: 190px; left: 7px; color: gray; font-size: 10px;}
+			div#div_btn{position: absolute; top: 215px; left: 152px;}  
+			span#contentCnt{position: absolute; top: 190px; left: 225px; color: gray; font-size: 10px;}
 			textarea#dm_content{resize: none;}
+			span#chk{position: absolute; top: 195px; left: 5px; font-size: 12px; color: red;}
 		</style>
 	</head>
 	<body>
@@ -23,6 +24,7 @@
 		<div id="dm_div">
 			&nbsp;받는 사람 : <input type="text" id="dm_complain_id" readonly="readonly" value="${complain_id }"/><br/>
 			<div id="dm_div_content"><textarea rows="10" cols="34" id="dm_content" onkeyup="contentCnt()" maxlength="300"></textarea></div>
+			<span id="chk"></span>
 			<span id="contentCnt">0/300</span>
 			<div id="div_btn">
 				<button id="win_exit">닫기</button>
@@ -33,7 +35,7 @@
 	</body>
 	<script>
 		$(document).ready(function () {
-			window.resizeTo(300, 300);
+			window.resizeTo(420, 350);
 		});
 		
 		var cate = "신고";
@@ -51,10 +53,19 @@
 			self.close();
 		});
 		
+		
+		$("#dm_content").focusout(function () {
+			if($("#dm_content").val()==""){
+				$("#chk").html("메세지를 입력해주세요.");
+				$("#dm_content").focus();
+			}else{
+				$("#chk").html("");
+			}
+		});
 		//쪽지 보내기
 		$("#dm_write").click(function () {
 			if($("#dm_content").val()==""){
-				alert("메세지를 입력해주세요.");
+				$("#chk").html("메세지를 입력해주세요.");
 				$("#dm_content").focus();
 			}else{
 				$.ajax({
@@ -73,7 +84,9 @@
 						console.log(data.msg);
 						if(data.result > 0){
 							alert(data.msg);
-							windowOpener.location.href="./alarmtimeline?id="+alarmuserid+"&cate="+cate;
+							opener.window.close();
+							opener.opener.window.location.href="./alarmtimeline?id="+alarmuserid+"&cate="+cate;
+							self.close();
 						}
 					},
 					error:function(error){

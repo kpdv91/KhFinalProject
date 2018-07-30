@@ -170,7 +170,7 @@
 		$("#dm_write").click(function () {
 			var url = "./dm_writePage";
 			var name = "쪽지보내기";
-			var option = "width=270, height=230, resizeable=no";
+			var option = "width=400, height=300, resizeable=no";
 					
 			var myWin= window.open(url, name, option);
 		});
@@ -1839,6 +1839,9 @@
 			location.href="./storeDetail?store_idx="+store_idx;
 		}
 		
+		var cate = "가게";
+		var alarmuserid="${sessionScope.loginId}";
+		
 		//가게 등록 승인  클릭이벤트
 		function registYes(store_idx, id) {
 			console.log(store_idx, id);
@@ -1854,6 +1857,7 @@
 					console.log(data);			
 					alert(data.msg);
 					//location.href="./storeRegistList";
+					location.href="./alarmtimeline?id="+alarmuserid+"&cate="+cate;
 				},
 				error:function(error){
 					console.log(error);
@@ -1865,7 +1869,7 @@
 		function registNo(store_idx, id) {
 			console.log(store_idx, id);
 			var myWin= window.open("./registNoWin?store_idx="+store_idx+
-					"&id="+id,"가게 등록 거절","width=270,height=230");	
+					"&id="+id,"가게 등록 거절","width=400,height=300");	
 		}
 		//회원정보 사진 클릭
 		var profileck=0;

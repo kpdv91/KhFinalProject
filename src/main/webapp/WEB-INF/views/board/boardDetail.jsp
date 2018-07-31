@@ -120,9 +120,9 @@
 			$("#boardReply_write").css("display","none");
 		}
 		
-		$("#boardReply_content").on("keyup", function () {
+		/* $("#boardReply_content").on("keyup", function () {
 			  $(this).height(50).height( $(this).prop("scrollHeight")+12 );	
-		});
+		}); */
 		
 		
 
@@ -135,20 +135,28 @@
 			location.href="./boardListPage";
 		});
 			
-		
+		var cate = "${dto.board_cate}";
 		//댓글 리스트
 		$(document).ready(function () {
-			$.ajax({
-				type : "post",
-				url : "./boardReplyList",
-				data : { idx : $("#board_idx").val() },
-				dataType : "json",
-				success : function (data) {
-					reply(data.list);
-					$("#reply_content1").height($("#boardReply_content").height()).height($("#reply_content1").prop("scrollHeight")+12 );
-				},
-				error : function (error) { console.log(error); }
-			});
+			if(cate == '문의사항'){
+				$.ajax({
+					type : "post",
+					url : "./boardReplyList",
+					data : { idx : $("#board_idx").val() },
+					dataType : "json",
+					success : function (data) {
+						console.log(data.replyCnt);
+						if(data.replyCnt == 1){
+							$("#boardReply_content").attr("readonly", "readonly");
+							$("#replyWrite").attr("disabled","true");
+							
+						}
+						reply(data.list);
+						$("#reply_content1").height($("#boardReply_content").height()).height($("#reply_content1").prop("scrollHeight")+12 );
+					},
+					error : function (error) { console.log(error); }
+				});
+			}
 		});
 		
 		//댓글 리스트 메소드
@@ -271,7 +279,6 @@
 					},
 					dataType : "json",
 					success : function (data) {
-						console.log(data.replyCnt);
 						if(data.replyCnt > 0){
 							alert("댓글은 1개만 등록할 수 있습니다.");
 							$("#boardReply_content").val("");

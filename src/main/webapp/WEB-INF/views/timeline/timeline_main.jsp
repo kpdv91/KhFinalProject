@@ -29,10 +29,12 @@
 			#dm_write{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#store_regist_list{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#complain_list{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}  
-			button#complain_move{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
-			button#store_regist_move{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
-			button#store_regist_yes{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
-			button#store_regist_no{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
+			button#complain_move{background-color: #2637a4; color: white; border: none; border-radius: 3px; cursor: pointer;}
+			button#store_regist_move{background-color: #2637a4; color: white; border: none; border-radius: 3px; cursor: pointer;}
+			button#store_regist_yes{background-color: #2637a4; color: white; border: none; border-radius: 3px; cursor: pointer;}
+			button#store_regist_no{background-color: #2637a4; color: white; border: none; border-radius: 3px; cursor: pointer;}
+			td.comp_detail1{cursor: pointer;}
+			td#comp_content{text-align: left;}
 			
 			#content{position: absolute; width: 600px;height: auto;left : 400px;}
 			hr{margin-top:200px;}
@@ -1784,7 +1786,7 @@
 					content += "</tr>";
 					content += "<tr>";
 					content +="<td style='display: none;'>신고 내용 : </td>";
-					content +="<td style='display: none;' colspan='5' align='left'>"+item.complain_content+"</td>";
+					content +="<td id='comp_content' style='display: none;' colspan='5'>"+item.complain_content+"</td>";
 					content += "</tr>";
 				}
 			});		

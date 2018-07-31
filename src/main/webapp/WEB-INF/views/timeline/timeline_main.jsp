@@ -1214,7 +1214,7 @@
 					if(d.update.profile!=0){
 						$("#updateprofile").empty();
 						$("#updateprofile").append("<img id='updateprofilephoto' src='resources/upload/"+d.update.profile+"' height=150px width=150px/>");
-						$("#updateprofile").append("<input id='profilename' type='text' value='resources/upload/"+d.update.profile+"'/>")
+						$("#updateprofile").append("<input id='profilename' type='hidden' value='resources/upload/"+d.update.profile+"'/>")
 					}
 					console.log(d);
 					$("#userId").val(userid);
@@ -1269,14 +1269,12 @@
 			        });
 				}else{
 					$("#content").empty();
-					$("#content").append("<div>좋야요한 가게가 없습니다</div>");
+					$("#content").append("<div id='container'>좋야요한 가게가 없습니다</div>");
 				}
 				
 			},
 			error:function(e){
 				console.log(e);
-				$("#content").empty();
-				$("#content").append("<div id='container'>좋야요한 가게가 없습니다</div>");
 			}
 		});
 	}
@@ -1350,14 +1348,13 @@
 			            }
 			        });
 				}else{
-					$("#content").append("<div>작성한 댓글이 없습니다</div>");
+					$("#content").empty();
+					$("#content").append("<div id='container'>작성한 댓글이 없습니다</div>");
 				}
 				
 			},
 			error:function(e){
 				console.log(e);
-				$("#content").empty();
-				$("#content").append("<div id='container'>작성한 댓글이 없습니다</div>");
 			}
 		});
 	}
@@ -1524,7 +1521,9 @@
 						$("#storeLike"+idx).attr("src","resources/img/storeLike/heart2.png");
 					}else if(data.msg == "찜 취소했습니다."){
 						$("#storeLike"+idx).attr("src","resources/img/storeLike/heart.png");
-						$("#store"+idx).remove();
+						if(userid=="${id}"){
+							$("#store"+idx).remove();
+						}						
 					} 
 				},
 				error:function(e){

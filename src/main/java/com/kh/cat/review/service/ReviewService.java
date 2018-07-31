@@ -273,6 +273,7 @@ public class ReviewService {
 		logger.info("리뷰작성 50포인트");
 		inter = sqlSession.getMapper(ReviewInter.class);
 		inter.review_point(loginId);
+		inter.review_pointList(loginId);
 	}
 	
 	//사진 포함 100포인트
@@ -286,6 +287,7 @@ public class ReviewService {
 		logger.info("리뷰작성 100포인트");
 		inter = sqlSession.getMapper(ReviewInter.class);
 		inter.photoReview_point(loginId);
+		inter.photoReview_pointList(loginId);
 	}
 	
 	//좋아요 받을 시 포인트 적립
@@ -302,9 +304,11 @@ public class ReviewService {
 		logger.info("아이디 : {}", id);
 		
 		if(likeCnt == 10) {
-			inter.likePoint(id);
+			inter.likePoint(id);//좋아요 10개면 포인트 1000 지급
+			inter.likePointList(id);
 		}else if(likeCnt>10) {
-			inter.likePointt(id);
+			inter.likePointt(id);//좋아요 10개 이상부터는 1개당 100포인트 지급
+			inter.likePointListt(id);
 		}
 	}
 

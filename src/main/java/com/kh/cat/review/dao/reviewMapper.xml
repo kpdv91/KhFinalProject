@@ -174,10 +174,18 @@
 	 	UPDATE member SET pointcnt = pointcnt + 50 WHERE id=#{param1}
 	 </update>
 	 
+	 <insert id="review_pointList">
+	 	INSERT INTO pointlist VALUES(seq_pointList.NEXTVAL, #{param1}, 50, '증가', '리뷰작성', SYSDATE)
+	 </insert>
+	 
 	 <!-- 포인트 적립(사진 포함 : 100) -->
 	 <update id="photoReview_point">
 	 	UPDATE member SET pointcnt = pointcnt + 100 WHERE id=#{param1}
 	 </update>
+	 
+	 <insert id="photoReview_pointList">
+	 	INSERT INTO pointlist VALUES(seq_pointList.NEXTVAL, #{param1}, 100, '증가', '리뷰작성', SYSDATE)
+	 </insert>
 	 
 	 <!-- 좋아요 수 조회 -->
 	 <select id="review_likeCnt" resultType="Review">
@@ -189,9 +197,19 @@
 	 	UPDATE member SET pointcnt = pointcnt + 1000 WHERE id=#{param1}
 	 </update>
 	 
+	 <insert id="likePointList">
+	 	INSERT INTO pointlist VALUES(seq_pointList.NEXTVAL, #{param1}, 1000, '증가', '좋아요', SYSDATE)
+	 </insert>
+	 
+	 <!-- 좋아요 10개 이상일 때 1개당 100포인트 적립 -->
 	 <update id="likePointt">
 	 	UPDATE member SET pointcnt = pointcnt + 100 WHERE id = #{param1}
 	 </update>
+	 
+	 <insert id="likePointListt">
+	 	INSERT INTO pointlist VALUES(seq_pointList.NEXTVAL, #{param1}, 100, '증가', '좋아요', SYSDATE)
+	 </insert>
+	 
 	 
 	 <!-- 신고하기 -->
 	 <insert id="complain" parameterType="complain">

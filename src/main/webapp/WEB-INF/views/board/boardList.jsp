@@ -9,7 +9,7 @@
 		<script src="resources/js/zer0boxPaging.js" type="text/javascript"></script>
 		<title>Insert title here</title>
 		<style>
-			div#tableDiv{position: relative; top: 50px; left: 400px; border: 1px solid black; width: 740px; height: 1000px;}    
+			div#tableDiv{position: relative; top: 50px; left: 400px; border: none; width: 740px; height: 1000px;}    
 			 
 			table, th, td{border-top: 1px solid black; border-bottom: 1px solid black; border-collapse: collapse;}
 			td{/* border-top: 1px solid red; */ border-bottom: 1px solid lightgray;}
@@ -23,8 +23,8 @@
 			a:link{text-decoration: none; color: #000000;}
 			a:visited{text-decoration: none; color: #000000;}
 			a:active{text-decoration: none; color: #000000;}			 			
-			
-			button#write{position: absolute; top:15px; left: 656px; width:auto; height: 30px; background-color: lightskyblue; border: none; border-radius: 2px;}
+			  
+			button#write{position: absolute; top:15px; left: 608px; width:auto; height: 30px; background-color: lightskyblue; border: none; border-radius: 2px;}
 		</style>
 	</head>
 	<body>

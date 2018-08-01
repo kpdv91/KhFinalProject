@@ -121,7 +121,6 @@ public class StoreService {
 			String uploadFile = files.next();
 			MultipartFile file = multi.getFile(uploadFile);
 			String oriFileName = file.getOriginalFilename();
-			logger.info("실제 파일 이름 : " +oriFileName);
 			if(!oriFileName.equals("")) {
 				String newFileName = System.currentTimeMillis()+oriFileName.substring(oriFileName.lastIndexOf("."));
 				try {

@@ -27,12 +27,14 @@
 				width: 1000px;
 				position: absolute;
 			}
-			#contFrame th, td{
+			#contFrame td{
 				border-bottom: solid 2px #F2F2F2;
 				padding: 10px;
 
 			}
 			#contFrame th{
+				border-bottom: solid 2px #F2F2F2;
+				padding: 10px;
 				width: 150px;
 				
 			}

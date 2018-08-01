@@ -420,7 +420,7 @@ public class CommonService {
 			}		
 			int end = page*10;
 			int start = end-9;
-			ArrayList<Integer> reviewpage = inter.timlinepagereview(id,start,end);
+			ArrayList<Integer> reviewpage = inter.timlinepagereviewreply(id,start,end);
 			set = new HashSet<Integer>(reviewpage);
 			reviewpage = new ArrayList<Integer>(set);
 			

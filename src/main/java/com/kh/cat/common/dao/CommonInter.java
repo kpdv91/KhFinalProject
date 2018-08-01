@@ -140,4 +140,6 @@ public interface CommonInter {
 
 	ArrayList<AlarmDTO> alarmlist(String id, int start, int end);
 
+	ArrayList<Integer> timlinepagereviewreply(String id, int start, int end);
+
 }

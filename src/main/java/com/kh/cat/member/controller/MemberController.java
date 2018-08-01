@@ -34,6 +34,8 @@ public class MemberController {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		hash = encoder.encode(pass);
 		logger.info("회원 가입 요청");
+		
+		logger.info("profile : {}",map.get("hiddenProfile"));
 		logger.info("id : {}",map.get("userId"));
 		logger.info("pw : {}",map.get("userPw"));
 		logger.info("name : {}",map.get("userName"));

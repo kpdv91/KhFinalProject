@@ -30,7 +30,9 @@
  		if(filePath != ""){
 			var content = "";//img 태그
 			var elem = window.opener.document.getElementById("profile");
-			content ="<img width='150' height='150' src='${path}'/>";
+			content +="<input type='hidden' name='hiddenProfile' value='${path}'/><br/>";
+			content +="<img name='memberProfile' width='150' height='150' src='${path}'/>";
+			
 /* 			content +="<input id='${path}' type='button' value='삭제' onclick='del(this)'>"; 
 			content +="<br/>";*/
 			elem.innerHTML = content;

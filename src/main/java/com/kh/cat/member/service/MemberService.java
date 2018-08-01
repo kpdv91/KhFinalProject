@@ -54,11 +54,11 @@ public class MemberService {
 		dto.setName(map.get("userName"));
 		dto.setEmail(map.get("userEmail"));
 		dto.setPhone(map.get("userPhone"));
-		//dto.setProfile(map.get("profile"));
+		dto.setProfile(map.get("hiddenProfile"));
 		
-		for(String key:fileList.keySet()) {//map에서 키를 뽑아온다.
+		/*for(String key:fileList.keySet()) {//map에서 키를 뽑아온다.
 			dto.setProfile(key);
-		}
+		}*/
 		
 		int success = inter.join(dto);
 		logger.info("결과값 : {}",success);

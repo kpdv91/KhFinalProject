@@ -165,7 +165,7 @@ public class StoreService {
 		StoreDTO dto = new StoreDTO();
 		
 		if(storePhoto.equals("")) {
-			storePhoto="storeD.jpg";
+			storePhoto="storeD.png";
 		}
 		dto.setId(loginId);
 		dto.setStore_photo(storePhoto);

@@ -323,6 +323,8 @@ public class AdminService {
 				inter.revReply_del_dm3_alarm(dto2);//신고한사람 알람추가
 				int revReply_del = inter.revReply_del(revReply_idx);//신고된 댓글 삭제
 				inter.complainDel2(revReply_idx, id);//신고내역 지우기
+				//int reviewIdx = inter.reviewIdxChk(revReply_idx);
+				//inter.replyCntDown(reviewIdx);
 				map.put("result", revReply_del);
 				map.put("msg", "신고된 댓글이 삭제되었습니다.");
 			}

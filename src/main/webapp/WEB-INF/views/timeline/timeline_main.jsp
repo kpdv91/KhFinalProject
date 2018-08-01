@@ -15,7 +15,7 @@
 			#profile{position: absolute;width: 100%;height: 200px;top:150px;}
 			#fallow{background-color: lightgray;border:1px solid black;width: 90px;position: absolute;left: 650px;top: 70px;cursor: pointer;}
 			#dm{background-color: lightgray;border:1px solid black;width: 110px;position: absolute;left: 750px;top: 70px;cursor: pointer;}
-			#myreview{background-color: darkblue;color : white;border:1px solid black;position: absolute;width:100px;left: 510px;top: 130px;cursor: pointer;}
+			#myreview{background-color: #2637a4;color : white;border:1px solid black;position: absolute;width:100px;left: 510px;top: 130px;cursor: pointer;}
 			#likereview{background-color: lightgray;border:1px solid black;position: absolute;width:100px;left: 610px;top: 130px;cursor: pointer;}
 			#likestore{background-color: lightgray;border:1px solid black;position: absolute;width:100px;left: 710px;top: 130px;cursor: pointer;}
 			#friend{background-color: lightgray;border:1px solid black;position: absolute;width:120px;left: 810px;top: 130px;cursor: pointer;}
@@ -35,6 +35,9 @@
 			button#store_regist_no{background-color: #2637a4; color: white; border: none; border-radius: 3px; cursor: pointer;}
 			td.comp_detail1{cursor: pointer;}
 			td#comp_content{text-align: left;}
+			
+			#starBtn{border: none; background-color: #33aaaaff; cursor: pointer;}             
+			
 			
 			#content{position: absolute; width: 600px;height: auto;left : 400px;}
 			hr{margin-top:200px;}
@@ -56,7 +59,7 @@
 			#hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;margin-right: 5px;}
 			#fallowlist{border: 1px solid #33aaaaff;display:none;position:absolute;left:810px;width:410px;top:154px;background-color:white;z-index:15;}
 			.followbtn{border:1px solid lightgray;}
-			#follower{background-color:darkblue;color:white;width:50px;}
+			#follower{background-color:#2637a4;color:white;width:50px;}
 			#following{width:50px;position:absolute;left:50px;top:0px;}
 			.friendprofile{width:60px;height:60px;float:left;}
 			.followdiv{width:200px;float:left;padding:1px;}
@@ -243,7 +246,7 @@
 		}else if("${cate}"=="메세지"){
 			console.log("ddd");
 			page = "resources/timelinehtml/messagebox.html";
-			$("#message").css("background-color","darkblue");
+			$("#message").css("background-color","#2637a4");
 			$("#message").css("color","white");
 			$("#update").css("background-color","lightgray");
 			$("#update").css("color","black");
@@ -274,7 +277,7 @@
 			$("#dm_write").css("color","black");
 			$("#message").css("background-color","lightgray");
 			$("#message").css("color","black");
-			$("#store_regist_list").css("background-color","darkblue");
+			$("#store_regist_list").css("background-color","#2637a4");
 			$("#store_regist_list").css("color","white");
 			$("#complain_list").css("background-color","lightgray");
 			$("#complain_list").css("color","black");
@@ -288,7 +291,7 @@
 			$("#message").css("color","black");
 			$("#store_regist_list").css("background-color","lightgray");
 			$("#store_regist_list").css("color","whblackite");
-			$("#complain_list").css("background-color","darkblue");
+			$("#complain_list").css("background-color","#2637a4");
 			$("#complain_list").css("color","white");
 			$("#content").load(page,function(res, stat) {});
 			ajaxCall(page);
@@ -380,7 +383,7 @@
 				dataType:"json",
 				success:function(d){
 					//console.log(d.followlist.length);
-					$("#friend").css("background-color","darkblue");
+					$("#friend").css("background-color","#2637a4");
 					$("#friend").css("color","white");
 					var content = "<div id='userfallow'>";
 					content += "<div class='followbtn' id='follower' onclick='follower("+showPage+")'>팔로워</div><div class='followbtn' id='following' onclick='following("+showPage+")'>팔로잉</div>";				
@@ -440,7 +443,7 @@
 			success:function(d){
 				$("#following").css("background-color","lightgray");
 				$("#following").css("color","black");
-				$("#follower").css("background-color","darkblue");
+				$("#follower").css("background-color","#2637a4");
 				$("#follower").css("color","white");
 				console.log(d.followlist.length);
 				if(d.followlist.length==0){
@@ -530,7 +533,7 @@
 				//console.log(d.following.length);
 				$("#follower").css("background-color","lightgray");
 				$("#follower").css("color","black");
-				$("#following").css("background-color","darkblue");
+				$("#following").css("background-color","#2637a4");
 				$("#following").css("color","white");
 				if(d.following.length==0){
 					var content = "";
@@ -973,7 +976,7 @@
 	$(".userdetail").click(function(e) {
 		if(e.target.id == "message") {
 			page = "resources/timelinehtml/messagebox.html";
-			$("#message").css("background-color","darkblue");
+			$("#message").css("background-color","#2637a4");
 			$("#message").css("color","white");
 			$("#update").css("background-color","lightgray");
 			$("#update").css("color","black");
@@ -1000,7 +1003,7 @@
 			ajaxCall(page);
 		} else if(e.target.id == "coupon") {
 			page = "resources/timelinehtml/couponbox.html";
-			$("#coupon").css("background-color","darkblue");
+			$("#coupon").css("background-color","#2637a4");
 			$("#coupon").css("color","white");
 			$("#update").css("background-color","lightgray");
 			$("#update").css("color","black");
@@ -1022,7 +1025,7 @@
 			ajaxCall(page);
 		} else if(e.target.id == "point"){
 			page = "resources/timelinehtml/pointbox.html";
-			$("#point").css("background-color","darkblue");
+			$("#point").css("background-color","#2637a4");
 			$("#point").css("color","white");
 			$("#update").css("background-color","lightgray");
 			$("#update").css("color","black");
@@ -1044,7 +1047,7 @@
 			ajaxCall(page);
 		}else if(e.target.id == "update") {
 			page = "resources/timelinehtml/userupdate.html";
-			$("#update").css("background-color","darkblue");
+			$("#update").css("background-color","#2637a4");
 			$("#update").css("color","white");
 			$("#coupon").css("background-color","lightgray");
 			$("#coupon").css("color","black");
@@ -1066,7 +1069,7 @@
 			ajaxCall(page);
 		}else if(e.target.id == "myreview") {
 			page = "reviewlist";
-			$("#myreview").css("background-color","darkblue");
+			$("#myreview").css("background-color","#2637a4");
 			$("#myreview").css("color","white");
 			$("#coupon").css("background-color","lightgray");
 			$("#coupon").css("color","black");
@@ -1087,7 +1090,7 @@
 	    	ajaxCall(page);
 		}else if(e.target.id == "likereview") {
 			page = "likereview";
-				$("#likereview").css("background-color","darkblue");
+				$("#likereview").css("background-color","#2637a4");
 				$("#likereview").css("color","white");
 				$("#coupon").css("background-color","lightgray");
 				$("#coupon").css("color","black");
@@ -1108,7 +1111,7 @@
 		    	ajaxCall(page);
 			}else if(e.target.id == "timeline_reply"){
 				page = "timeline_reply";
-					$("#timeline_reply").css("background-color","darkblue");
+					$("#timeline_reply").css("background-color","#2637a4");
 					$("#timeline_reply").css("color","white");
 					$("#coupon").css("background-color","lightgray");
 					$("#coupon").css("color","black");
@@ -1135,7 +1138,7 @@
 				$("#message").css("color","black");
 				$("#store_regist_list").css("background-color","lightgray");
 				$("#store_regist_list").css("color","black");
-				$("#complain_list").css("background-color","darkblue");
+				$("#complain_list").css("background-color","#2637a4");
 				$("#complain_list").css("color","white");
 				$("#content").load(page,function(res, stat) {});
 				ajaxCall(page);
@@ -1145,7 +1148,7 @@
 					$("#dm_write").css("color","black");
 					$("#message").css("background-color","lightgray");
 					$("#message").css("color","black");
-					$("#store_regist_list").css("background-color","darkblue");
+					$("#store_regist_list").css("background-color","#2637a4");
 					$("#store_regist_list").css("color","white");
 					$("#complain_list").css("background-color","lightgray");
 					$("#complain_list").css("color","black");
@@ -1153,7 +1156,7 @@
 					ajaxCall(page);
 				}else if(e.target.id == "likestore"){
 					page = "likestore";
-						$("#likestore").css("background-color","darkblue");
+						$("#likestore").css("background-color","#2637a4");
 						$("#likestore").css("color","white");
 						$("#coupon").css("background-color","lightgray");
 						$("#coupon").css("color","black");
@@ -1174,7 +1177,7 @@
 				    	ajaxCall(page);
 				}else if(e.target.id == "total"){
 					page = "resources/timelinehtml/statList.html";
-					$("#total").css("background-color","darkblue");
+					$("#total").css("background-color","#2637a4");
 					$("#total").css("color","white");
 					$("#coupon").css("background-color","lightgray");
 					$("#coupon").css("color","black");
@@ -1613,7 +1616,7 @@
 		if(page==null){
 			page=1;
 		}
-		$("#send").css("background-color","darkblue");
+		$("#send").css("background-color","#2637a4");
 		$("#send").css("color","white");
 		$("#receive").css("background-color","lightgray");
 		$("#receive").css("color","black");
@@ -1647,7 +1650,7 @@
 		if(page==null){
 			page=1;
 		}
-		$("#receive").css("background-color","darkblue");
+		$("#receive").css("background-color","#2637a4");
 		$("#receive").css("color","white");
 		$("#send").css("background-color","lightgray");
 		$("#send").css("color","black");
@@ -1792,9 +1795,10 @@
 			});		
 			$("#complail_tbody").empty();
 			$("#complail_tbody").append(content);//내용 붙이기
-			
+
 			$(".comp_detail1").click(function () {
 				console.log("클릭");
+				
 				if(flag == false){
 					$(this).parent().next().children('td').css("display", "");
 					flag = true;
@@ -2036,7 +2040,7 @@
 			var content = "";
 			list.forEach(function(item){
 				content += "<tr><td>"+item.store_name+"</td>";
-				content += "<td><input type='button' value='보기' onclick='moveStat("+item.store_idx+",\""+item.store_name+"\")'></td></tr>";
+				content += "<td><input id='starBtn' type='button' value='보기' onclick='moveStat("+item.store_idx+",\""+item.store_name+"\")'></td></tr>";
 				
 			})
 			$("#storeList").append(content);

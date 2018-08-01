@@ -76,6 +76,7 @@
 	});
 	
 	 $("#comp").click(function(){
+		 if($("#complain_content").val()!=""){			 
 		$.ajax({
 			url:"./complain",
 			type:"post",
@@ -96,6 +97,11 @@
 			},
 			error:function(e){console.log(e);}
 		});
+		 }
+		 else{
+			 alert("내용을 입력해 주세요");
+			 $("#complain_content").focus();
+		 }
 	}); 
 
 	

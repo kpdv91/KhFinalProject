@@ -314,6 +314,7 @@
 		$("#review_storeName").val("${sessionScope.store_Name}");
 		$("#review_storeName").attr("readonly",true);
 		$("#search").css("pointer-events", "none");
+		 $("#review_storeidx").val("${sessionScope.store_Idx}");
 	}
 	var loginId="";
 	if("${sessionScope.loginProfile}" == "0"){
@@ -329,7 +330,8 @@
 	
 	$("#reviewWriteCancel").click(function(){
 		<%
-		session.removeAttribute("store_Name");		
+		session.removeAttribute("store_Name");
+		session.removeAttribute("store_Idx");
 		%>
 		location.href="./";
 	});
@@ -388,6 +390,7 @@
 		}else{			
 			<%
 				session.removeAttribute("store_Name");		
+			session.removeAttribute("store_Idx");
 			%>
 			$("#sendForm").submit();			
 		}

@@ -217,6 +217,7 @@ public class StoreService {
 			StoreDTO storeDto = inter.storeDetail(store_idx);
 			System.out.println("store_name"+storeDto.getStore_name());
 			session.setAttribute("store_Name", storeDto.getStore_name());
+			session.setAttribute("store_Idx", storeDto.getStore_idx());
 			mav.addObject("storeDetail", storeDto);//가게 기본 정보
 			mav.addObject("storeHash", inter.storeHash(store_idx));//해쉬태그 
 			

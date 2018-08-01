@@ -8,11 +8,11 @@
 	#nav ul li{list-style: none;  display: inline;	padding: 0px 10px;}
 	#nav a{text-decoration: none; color: white; }    
 	#mainFrame{position: relative;background-color: white; width:100%; height: 80px;
-		min-width: 1500px;max-width: 1600px;bottom: 8px;}
+		min-width: 1500px;bottom: 8px;}
 	#logoBox{position:absolute;top:10px;left: 10%;}
 	#searchBox{position:absolute;top:20px;left: 35%;}
 	#menuFrame{position: relative;background-color: #2637a4;width:100%; height: 50px;
-		min-width: 1500px;max-width: 1600px;}
+		min-width: 1500px;}
 	#menuBox{position:absolute;top:0px;left: 1000px;}	  
 	input:-ms-input-placeholder{color:#a8a8a8;}
 	input:-webkit-input-placeholder{color:#a8a8a8;}

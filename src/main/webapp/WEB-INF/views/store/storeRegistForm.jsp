@@ -1,3 +1,4 @@
+<%@page import="com.kh.cat.store.service.StoreService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -11,23 +12,67 @@
 		
 		<title>가게 등록</title>
 		<style>
-		#regist table,tr,td,th{
-			border: solid 1px black;
+		#regist table{
+			font-size: 15px;
+			width: 700px;
 		}
-		#regist input{
+		#regist th, td{
+			border-top: solid 2px #2637a4;
+			border-bottom: solid 30px white;
+			padding: 10px;
+		}
+		#regist th{
+			background-color: #2637a4;
+			font-weight: normal;
+			color: white;
+			width: 150px;
+		}
+		#regist .nof td{
+			border-top: solid 2px white;
+		}
+
+		#regist input[type="text"]{
 			margin: 3px 0px 3px 6px;
+			font-size: 15px;
 		}
+		#regist input[type="button"]{
+			cursor: pointer;
+			vertical-align: middle;
+            background-color: #33aaaaff;
+            color: white;
+            outline: 0px;
+            border: 0px;
+            padding: 5px 5px;
+            font-size: 15px;
+		}
+		#regist input[type="file"]{
+			background-color:#F2F2F2;
+		}
+		
 		#regist{
 			position: relative;
-			width:800px;
+			width:100%;
 			top: 50px;
 			left: 25%;
 		}
+		.hashTag{
+            border: 2px solid #33aaaaff;
+            font-size: 15px;
+            width: auto;          
+            text-align: center; 
+            float: left;
+            margin-left: 20px;
+            margin-bottom: 5px;
+            padding-left: 10px;
+        }
+        .menuP{
+        	 float: left;
+        }
 		</style>
 	</head>
 	<body>
+	<input type="hidden" id="fileCnt" value="0">
 		<div id="regist">
-			<h3>맛집 등록 요청</h3>
 			<table>
 				<tr>
 					<th>대표사진</th>
@@ -38,7 +83,7 @@
 						</form>
 					</td>
 				</tr>
-				<tr>
+				<tr class="nof">
 					<td></td>
 					<td>
 						<div id="sPhotoShow"></div>
@@ -46,11 +91,11 @@
 				</tr>
 				<tr>
 					<th>상호명</th>
-					<td><input type="text" name="store_name" placeholder="상호명" maxlength="20" size="40" /></td>
+					<td><input type="text" name="store_name" maxlength="20" size="40" /></td>
 				</tr>
 				<tr>
 					<th>대표자</th>
-					<td><input type="text" name="store_ceo" placeholder="대표자" maxlength="10" onkeyup="testChk(this)" /></td>
+					<td><input type="text" name="store_ceo" maxlength="10" onkeyup="testChk(this)" /></td>
 				</tr>
 				<tr>
 					<th>전화번호</th>
@@ -64,36 +109,36 @@
 					<th>주소</th>
 					<td>
 						<input type="button" onclick="searchAddr()" value="주소 검색">
-						<input type="text" name="store_addr" id="address" placeholder="주소" readonly="readonly" size="40">
-						<input type="text" name="store_addr_D" placeholder="상세 주소" maxlength="30" size="50"/>
+						<input type="text" name="store_addr" id="address" placeholder="주소" readonly="readonly" size="45"><br>
+						<input type="text" name="store_addr_D" placeholder="상세 주소" maxlength="30" size="55"/>
 						<br>
 						<div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
 					</td>
 				</tr>
 				<tr>
 					<th>음식 종류</th>
-					<td><input type="text" name="store_food" placeholder="ex) 한식, 퓨전, 고기집" maxlength="20"/></td>
+					<td><input type="text" name="store_food" placeholder="ex) 한식, 퓨전, 고기집" size="40" maxlength="20"/></td>
 				</tr>
 				<tr>
 					<th>예상 예산(2인기준)</th>
-					<td><input type="text" name="store_price" placeholder="ex) 45000" maxlength="6" onkeyup="numChk(this)"/>원</td>
+					<td><input type="text" name="store_price" placeholder="ex) 45000"  size="5" maxlength="6" onkeyup="numChk(this)"/>원</td>
 				</tr>
 				<tr>
 					<th>영업 시간</th>
-					<td><input type="text" name="store_time" placeholder="ex) 평일, 토요일: 11:00~20:00/일요일, 공휴일:09:00~18:00" maxlength="50"/></td>
+					<td><input type="text" name="store_time" placeholder="ex) 평일, 토요일: 11:00~20:00/일요일, 공휴일:09:00~18:00" size="55" maxlength="30"/></td>
 				</tr>
 				<tr>
 					<th>휴무일</th>
-					<td><input type="text" name="store_rest" placeholder="ex) 매달 셋째주 일요일" maxlength="50"/></td>
+					<td><input type="text" name="store_rest" placeholder="ex) 매달 셋째주 일요일" size="55" maxlength="30"/></td>
 				</tr>
 				<tr>
 					<th>해시 태그</th>
 					<td>
-						<input type="text" id="tag" name="store_tag" placeholder="ex) 줄서는맛집" maxlength="20" onkeyup="testChk(this)" />
+						<input type="text" id="tag" name="store_tag" placeholder="ex) 줄서는맛집" maxlength="10" onkeyup="testChk(this)" />
 						<input type="button" onclick="tagAdd()" value="추가">
 					</td>
 				</tr>
-				<tr>
+				<tr  class="nof">
 					<td></td>
 					<td>
 						<div id="tags">
@@ -106,14 +151,14 @@
 						<input type="button" onclick="menuPhotoUp()" value="사진 추가">
 					</td>
 				</tr>
-				<tr>
+				<tr  class="nof">
 					<td></td>
 					<td>
 						<div id="editable"></div>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2">
+					<td colspan="2" align="center">
 						<input type="button" onclick="storeRegist()" value="등록 요청">
 					</td>
 				</tr>
@@ -121,6 +166,8 @@
 		</div>
 	</body>
 	<script>
+	var fileCnt = document.getElementById('fileCnt');
+
 	var upload = document.getElementById('sPhoto');
 	var holder = document.getElementById('sPhotoShow');
 	storeD();
@@ -170,7 +217,7 @@
 	function storeD() {
 		$("#sPhoto").val("");
 		holder.innerHTML = '<img alt="기본사진"'
-		+'src="resources/img/store/storeD.jpg" width="400" height="270">';
+		+'src="resources/img/store/storeD.png" width="400" height="270">';
 		
 		$.ajax({
 			url:"./photoDel",
@@ -186,7 +233,11 @@
 	
 	//메뉴사진 업로드 창
 	function menuPhotoUp() {
-		var myWin = window.open("./menuPhotoForm","메뉴판 사진 추가","width=400, height=100");
+		if(fileCnt.value<10){
+			var myWin = window.open("./menuPhotoForm","메뉴판 사진 추가","width=400, height=100");
+		}else{
+			alert("메뉴사진은 최대 10개까지 등록 가능합니다.")
+		}
 	}
 	
 	//메뉴 사진 삭제
@@ -201,6 +252,7 @@
 				console.log(data);
 				if(data.success>0){
 					$(elem).parent().remove();
+					fileCnt.value=data.fileCnt;
 				}
 			},
 			error:function(e){
@@ -301,11 +353,11 @@
 				tagList.pop();
 				alert("중복되는 태그가 있습니다");
 			}
-			//"<img alt='x이미지' src='resources/img/store/delImg.jpg' width='15' height='15' onclick='tagDel(this)'>"
-			else{
-				$("#tags").append("<div>"
-						+"<input type='text' class='tag' readonly='readonly' value='#"+hTag+"'>"
-						+"<input type='button' value='-' onclick='tagDel(this)'>"
+			else{		
+				$("#tags").append("<div class='hashTag'>#"
+						+hTag+" "
+						+"<input type='hidden' class='tag' readonly='readonly' value='#"+hTag+"'>"
+						+"<input type='button' class='tagDel' value=' - ' onclick='tagDel(this)'>"
 						+"</div>");
 				console.log(tagList);
 			}
@@ -321,19 +373,11 @@
 	}
 	
 	var regNumber = /^[0-9]*$/;
-	var tChk = /[^\w\s]/i;
+	var tChk = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
 	
 	function numChk(e) {
 		if(!regNumber.test($(e).val())){
 			alert("숫자만 입력하세요");
-			$(e).val("");
-		}
-	}
-	
-	function tChk(e) {
-		alert("d");
-		if(tChk.test($(e).val())){
-			alert("특수문자 입력 불가.");
 			$(e).val("");
 		}
 	}
@@ -344,8 +388,6 @@
 			$(e).val("");
 		}
 	}
-	
-	var blank_pattern = /^\s+|\s+$/g;
 
 	//등록요청
     function storeRegist() {

@@ -203,12 +203,15 @@ public class BoardService {
 		inter = sqlSession.getMapper(BoardInter.class);
 		
 		ArrayList<BoardReplyDTO> list = inter.boardReplyList(Integer.parseInt(idx));
-		//int replyCnt = inter.replyCnt(Integer.parseInt(idx));
+		logger.info("리스트 : {}", list);
+		int replyCnt = inter.replyCnt(Integer.parseInt(idx));
 		
-		//if(replyCnt > 0) {
-			//map.put("replyCnt", replyCnt);
+		if(replyCnt > 0) {
+			map.put("replyCnt", replyCnt);
+		}
+		logger.info("replyCnt : {}", replyCnt);
 		map.put("list", list);
-		//}
+		
 		return map;
 	}
 

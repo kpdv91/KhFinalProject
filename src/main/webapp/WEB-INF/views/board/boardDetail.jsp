@@ -6,8 +6,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 		<title>Insert title here</title>
-		<style>
-            div#board{position: relative; top: 50px; left: 400px; border: 1px solid black; width: 720px; height: 1000px;}                 
+		<style>    
+            div#board{position: relative; top: 50px; left: 400px; border: none; width: 720px; height: 1000px;}                 
             table, th, td{border: 1px solid black; border-collapse: collapse;}   
             table#board_table{position: absolute; top: 30px; left: 10px; width: 700px; height: 500px;}             
        		/* 게시판 작성 테이블 */
@@ -24,8 +24,8 @@
             textarea#board_content{resize: none; width: 100%; height: 100%; border: none;}
             /* 목록,수정,삭제 버튼 */
             button#list_btn{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 545px; left: 565px;}
-            button#delete{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 545px; left: 615px;} 
-            button#update{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 545px; left: 665px;}
+            button#delete{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 545px; left: 665px;} 
+            button#update{position: absolute; border: none; background-color: lightskyblue; color:black; border-radius: 2px; font-size: 15px; top: 545px; left: 615px;}
     	
     	
     		/* 댓글 CSS */
@@ -36,12 +36,12 @@
     		td#replyTd_user_name{width: 100px; height: 50px; text-align: center;}   
     		td#replyTd_content{width: 500px; height: 50px;}
     		textarea#boardReply_content{width: 100%; height: 100%; border: none; overflow: hidden; resize: none;}
-     		td#replyTd_write{width: 100px; height: 50px;}   
-    		button#replyWrite{width: 100%; height: 100%; border: none; outline: none; border-radius: 2px; background-color: lightskyblue;}
+     		td#replyTd_write{width: 100px; height: 50px; text-align: center;}   
+    		button#replyWrite{/* width: 100%; height: 100%;  */border: none; outline: none; border-radius: 2px; background-color: lightskyblue; }
     		/* 댓글 리스트 테이블 */
     		div#boardReply_list{position: absolute; top: 625px; left: 408px;}
     		table#boardReply_table{
-    			position: absolute; top: 300px; left: 10px; width: 700px; height: 100px;  
+    			position: absolute; top: 255px; left: 10px; width: 700px; height: 100px;  
     		}          
     		td#replyListTd_user_name{width: 100px; height: 100px;}
     		td#replyListTd_content{width: 500px; height: 100px;}/* white-space: pre; */
@@ -120,10 +120,9 @@
 			$("#boardReply_write").css("display","none");
 		}
 		
-		$("#boardReply_content").on("keyup", function () {
-			console.log($("#boardReply_content").height());
+		/* $("#boardReply_content").on("keyup", function () {
 			  $(this).height(50).height( $(this).prop("scrollHeight")+12 );	
-		});
+		}); */
 		
 		
 
@@ -136,25 +135,32 @@
 			location.href="./boardListPage";
 		});
 			
-		
+		var cate = "${dto.board_cate}";
 		//댓글 리스트
 		$(document).ready(function () {
-			$.ajax({
-				type : "post",
-				url : "./boardReplyList",
-				data : { idx : $("#board_idx").val() },
-				dataType : "json",
-				success : function (data) {
-					reply(data.list);
-					$("#reply_content1").height($("#boardReply_content").height()).height($("#reply_content1").prop("scrollHeight")+12 );
-				},
-				error : function (error) { console.log(error); }
-			});
+			if(cate == '문의사항'){
+				$.ajax({
+					type : "post",
+					url : "./boardReplyList",
+					data : { idx : $("#board_idx").val() },
+					dataType : "json",
+					success : function (data) {
+						console.log(data.replyCnt);
+						if(data.replyCnt == 1){
+							$("#boardReply_content").attr("readonly", "readonly");
+							$("#replyWrite").attr("disabled","true");
+							
+						}
+						reply(data.list);
+						$("#reply_content1").height($("#boardReply_content").height()).height($("#reply_content1").prop("scrollHeight")+12 );
+					},
+					error : function (error) { console.log(error); }
+				});
+			}
 		});
 		
 		//댓글 리스트 메소드
 		function reply(list) {
-			console.log(list); 
 			var content = "";
 			list.forEach(function(item, idx) {
 				var date = new Date(item.boardReply_date);
@@ -259,30 +265,36 @@
 		  
 		//댓글 작성
 		$("#replyWrite").click(function () {
-			$.ajax({
-				type : "post",
-				url : "./boardReplyWrite",
-				data : {
-					idx : $("#board_idx").val(),
-					id : $("#board_id").val(),
-					boardReply_content : $("#boardReply_content").val()
-				},
-				dataType : "json",
-				success : function (data) {
-					console.log(data.replyCnt);
-					if(data.replyCnt > 0){
-						alert("댓글 작성 안됨");
-					}else{
-						if(data.success > 0){
-							alert("댓글 작성 성공");
+			if($("#boardReply_content").val()==""){
+				alert("내용을 입력해주세요.");
+				$("#boardReply_content").focus();
+			}else{
+				$.ajax({
+					type : "post",
+					url : "./boardReplyWrite",
+					data : {
+						idx : $("#board_idx").val(),
+						id : $("#board_id").val(),
+						boardReply_content : $("#boardReply_content").val()
+					},
+					dataType : "json",
+					success : function (data) {
+						if(data.replyCnt > 0){
+							alert("댓글은 1개만 등록할 수 있습니다.");
+							$("#boardReply_content").val("");
+						}else{
+							if(data.success > 0){
+								alert("댓글이 작성 되었습니다.");
+								location.href="boardDetail?idx="+$("#board_idx").val();
+							}
 						}
+						
+					},
+					error : function (error) {
+						console.log(error);
 					}
-					location.href="boardDetail?idx="+$("#board_idx").val();
-				},
-				error : function (error) {
-					console.log(error);
-				}
-			});
+				});
+			}
 		});
 		
 		//게시판삭제

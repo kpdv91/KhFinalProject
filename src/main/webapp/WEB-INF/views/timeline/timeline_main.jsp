@@ -29,10 +29,12 @@
 			#dm_write{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#store_regist_list{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#complain_list{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}  
-			button#complain_move{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
-			button#store_regist_move{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
-			button#store_regist_yes{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
-			button#store_regist_no{background-color: #2637a4; color: white; border: none; border-radius: 3px;}
+			button#complain_move{background-color: #2637a4; color: white; border: none; border-radius: 3px; cursor: pointer;}
+			button#store_regist_move{background-color: #2637a4; color: white; border: none; border-radius: 3px; cursor: pointer;}
+			button#store_regist_yes{background-color: #2637a4; color: white; border: none; border-radius: 3px; cursor: pointer;}
+			button#store_regist_no{background-color: #2637a4; color: white; border: none; border-radius: 3px; cursor: pointer;}
+			td.comp_detail1{cursor: pointer;}
+			td#comp_content{text-align: left;}
 			
 			#content{position: absolute; width: 600px;height: auto;left : 400px;}
 			hr{margin-top:200px;}
@@ -170,7 +172,7 @@
 		$("#dm_write").click(function () {
 			var url = "./dm_writePage";
 			var name = "쪽지보내기";
-			var option = "width=270, height=230, resizeable=no";
+			var option = "width=400, height=300, resizeable=no";
 					
 			var myWin= window.open(url, name, option);
 		});
@@ -276,6 +278,18 @@
 			$("#store_regist_list").css("color","white");
 			$("#complain_list").css("background-color","lightgray");
 			$("#complain_list").css("color","black");
+			$("#content").load(page,function(res, stat) {});
+			ajaxCall(page);
+		}else if("${cate}"=="신고"){
+			page = "resources/timelinehtml/complainList.html";
+			$("#dm_write").css("background-color","lightgray");
+			$("#dm_write").css("color","black");
+			$("#message").css("background-color","lightgray");
+			$("#message").css("color","black");
+			$("#store_regist_list").css("background-color","lightgray");
+			$("#store_regist_list").css("color","whblackite");
+			$("#complain_list").css("background-color","darkblue");
+			$("#complain_list").css("color","white");
 			$("#content").load(page,function(res, stat) {});
 			ajaxCall(page);
 		}
@@ -1214,7 +1228,7 @@
 					if(d.update.profile!=0){
 						$("#updateprofile").empty();
 						$("#updateprofile").append("<img id='updateprofilephoto' src='resources/upload/"+d.update.profile+"' height=150px width=150px/>");
-						$("#updateprofile").append("<input id='profilename' type='text' value='resources/upload/"+d.update.profile+"'/>")
+						$("#updateprofile").append("<input id='profilename' type='hidden' value='resources/upload/"+d.update.profile+"'/>")
 					}
 					console.log(d);
 					$("#userId").val(userid);
@@ -1269,14 +1283,12 @@
 			        });
 				}else{
 					$("#content").empty();
-					$("#content").append("<div>좋야요한 가게가 없습니다</div>");
+					$("#content").append("<div id='container'>좋야요한 가게가 없습니다</div>");
 				}
 				
 			},
 			error:function(e){
 				console.log(e);
-				$("#content").empty();
-				$("#content").append("<div id='container'>좋야요한 가게가 없습니다</div>");
 			}
 		});
 	}
@@ -1350,14 +1362,13 @@
 			            }
 			        });
 				}else{
-					$("#content").append("<div>작성한 댓글이 없습니다</div>");
+					$("#content").empty();
+					$("#content").append("<div id='container'>작성한 댓글이 없습니다</div>");
 				}
 				
 			},
 			error:function(e){
 				console.log(e);
-				$("#content").empty();
-				$("#content").append("<div id='container'>작성한 댓글이 없습니다</div>");
 			}
 		});
 	}
@@ -1524,7 +1535,9 @@
 						$("#storeLike"+idx).attr("src","resources/img/storeLike/heart2.png");
 					}else if(data.msg == "찜 취소했습니다."){
 						$("#storeLike"+idx).attr("src","resources/img/storeLike/heart.png");
-						$("#store"+idx).remove();
+						if(userid=="${id}"){
+							$("#store"+idx).remove();
+						}						
 					} 
 				},
 				error:function(e){
@@ -1773,7 +1786,7 @@
 					content += "</tr>";
 					content += "<tr>";
 					content +="<td style='display: none;'>신고 내용 : </td>";
-					content +="<td style='display: none;' colspan='5' align='left'>"+item.complain_content+"</td>";
+					content +="<td id='comp_content' style='display: none;' colspan='5'>"+item.complain_content+"</td>";
 					content += "</tr>";
 				}
 			});		
@@ -1795,7 +1808,7 @@
 		function complain_move(complain_idx, rev_idx, revReply_idx, id, complain_id) {
 			console.log("클릭");   
 			console.log(rev_idx, revReply_idx, id, complain_id);  
-			var myWin= window.open("./comp_review_moveWin?complain_idx="+complain_idx+"&rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지","width=500,height=500");		
+			var myWin= window.open("./comp_review_moveWin?complain_idx="+complain_idx+"&rev_idx="+rev_idx+"&revReply_idx="+revReply_idx+"&id="+id+"&complain_id="+complain_id, "신고 리뷰 페이지1","width=500,height=500");		
 		}
 		
 		
@@ -1827,6 +1840,9 @@
 			location.href="./storeDetail?store_idx="+store_idx;
 		}
 		
+		var cate = "가게";
+		var alarmuserid="${sessionScope.loginId}";
+		
 		//가게 등록 승인  클릭이벤트
 		function registYes(store_idx, id) {
 			console.log(store_idx, id);
@@ -1842,6 +1858,7 @@
 					console.log(data);			
 					alert(data.msg);
 					//location.href="./storeRegistList";
+					location.href="./alarmtimeline?id="+alarmuserid+"&cate="+cate;
 				},
 				error:function(error){
 					console.log(error);
@@ -1853,7 +1870,7 @@
 		function registNo(store_idx, id) {
 			console.log(store_idx, id);
 			var myWin= window.open("./registNoWin?store_idx="+store_idx+
-					"&id="+id,"가게 등록 거절","width=270,height=230");	
+					"&id="+id,"가게 등록 거절","width=400,height=300");	
 		}
 		//회원정보 사진 클릭
 		var profileck=0;

@@ -81,9 +81,7 @@
     </delete>
     
 	<update id="userupdate" parameterType="member">
-		UPDATE member 
-		<if test=""></if>
-		SET name=#{name},email=#{email},phone=#{phone},profile=#{profile} WHERE id = #{id}
+		UPDATE member SET name=#{name},email=#{email},phone=#{phone},profile=#{profile} WHERE id = #{id}
 	</update>
 	
 	<update id="userpwupdate" parameterType="member">

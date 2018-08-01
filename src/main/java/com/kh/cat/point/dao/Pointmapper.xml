@@ -44,6 +44,7 @@
 				 #{couponBox_name}, #{couponBox_price})
 	</insert>
 	
+	<!-- 포인트리스트 추가 -->
 	<insert id="pointListAdd">
 		INSERT INTO pointlist VALUES(seq_pointList.NEXTVAL, #{param1}, #{param2}, '감소', '쿠폰구매', SYSDATE)
 	</insert>

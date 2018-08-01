@@ -105,6 +105,14 @@ public interface ReviewInter {
 
 	int replyAllCnt(String review_idx);
 
+	void likePointList(String id);//좋아요 10개 되면 1000포인트 지급되면 포인트리스트에 추가하기
+
+	void likePointListt(String id);//포인트 지급되면 포인트리스트에 추가하기(좋아요 당 100 포인트)
+
+	void review_pointList(String loginId);
+
+	void photoReview_pointList(String loginId);
+
 
 
 

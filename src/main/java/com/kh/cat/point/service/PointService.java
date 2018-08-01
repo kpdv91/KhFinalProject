@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.cat.dto.CouponBoxDTO;
 import com.kh.cat.point.dao.PointInter;
@@ -30,6 +31,7 @@ public class PointService {
 	}*/
 
 	//쿠폰 구매
+	@Transactional
 	public HashMap<String, Object> couponPurchase(String price, String name, String loginId) {
 		logger.info("couponPurchase 서비스 실행");
 		inter = sqlSession.getMapper(PointInter.class);

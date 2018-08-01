@@ -13,7 +13,6 @@ public class PreCheck extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		System.out.println("controller 요청 전에 실행 -- preHandle()");
 		System.out.println("세션 검사");
 		RequestDispatcher rd = request.getRequestDispatcher("loginForm");
 		HttpSession session = request.getSession();
@@ -34,14 +33,11 @@ public class PreCheck extends HandlerInterceptorAdapter {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView mav) throws Exception {
-		System.out.println("controller 요청 후에서 부터 뷰 전송 사이에 실행 -- postHandle()");
-		System.out.println("mav를 이용해서 특정페이지에 특정 데이터 전송가능");
 	}
 
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		System.out.println("controller 요청 처리 완료 후에 실행 -- afterCompletion()");
 	}
 	
 }

@@ -1,81 +1,182 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<style>
-    div{
-        width: 300px;
-        padding: 5%;
-        margin-top: 7%;
-        position: absolute;
-        background-color: #163D7B;
-        margin: -150px 0 0 -75px;
-        top: 50%;
-        left: 30%;      
-    }
-    table,th,td{
-		border-collapse: collapse;
-        padding: 5px;
-        color: aliceblue;
-	}
-    input[type=button] { 
-       /*  border:solid 1px blue;
-        background-color: #088A85;
-        color: aliceblue; */
-        background-color: #33aaaaff;
-     	color: white;
-        border: 0px;
-    }
-    #idresult {
-    	font-size: 10px;
-    }
-    #find {
-    	position: 
-    }  
-	</style>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!doctype html>
+<html lang="kr">
+	<head>
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<meta charset="UTF-8">
+	<title>ID 찾기 폼</title>
+
+<style rel="stylesheet">
+body {
+   font: 13px/20px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+   color: #333333;
+   /* background: #596778; */
+}
+
+.signUp {
+   position: relative;
+   margin: 50px auto;
+   width: 280px;
+   padding: 33px 25px 29px;
+   background: #FFFFFF;
+   border-bottom: 1px solid #C4C4C4;
+   border-radius: 5px;
+   -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+}
+
+.signUp:before,
+.signUp:after {
+   content: '';
+   position: absolute;
+   bottom: 1px;
+   left: 0;
+   right: 0;
+   height: 10px;
+   background: inherit;
+   border-bottom: 1px solid #D2D2D2;
+   border-radius: 4px;
+}
+
+.signUp:after {
+   bottom: 3px;
+   border-color: #DCDCDC;
+}
+
+.signUpTitle {
+   margin: -25px -25px 25px;
+   padding: 15px 25px;
+   line-height: 35px;
+   font-size: 26px;
+   font-weight: 300;
+   color: #777;
+   text-align: center;
+   text-shadow: 0 1px rgba(255, 255, 255, 0.75);
+   background: #F7F7F7;
+}
+
+.signUpTitle:before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   height: 8px;
+   background: #C4E17F;
+   border-radius: 5px 5px 0 0;
+   background-image: -webkit-linear-gradient(left, #C4E17F, #C4E17F 12.5%, #F7FDCA 12.5%, #F7FDCA 25%, #FECF71 25%, #FECF71 37.5%, #F0776C 37.5%, #F0776C 50%, #DB9DBE 50%, #db9CBE 62.5%, #C49CDE 62.5%, #C49CDE 75%, #669AE1 75%, #669AE1 87.5%, #62C2E4 87.5%, #62C2E4);
+   background-image: -moz-linear-gradient(left, #c4e17f, #C4E17F 12.5%, #F7FDCA 12.5%, #F7FDCA 25%, #FECF71 25%, #FECF71 37.5%, #F0776C 37.5%, #F0776C 50%, #DB9DBE 50%, #DB9CBE 62.5%, #C49CDE 62.5%, #C49CDE 75%, #669AE1 75%, #669AE1 87.5%, #62C2E4 87.5%, #62C2E4);
+   background-image: -o-linear-gradient(left, #C4E17F, #C4E17F 12.5%, #F7FDCC 12.5%, #F7FDCA 25%, #FECF71 25%, #FECF71 37.5%, #F0776C 37.5%, #F0776C 50%, #DB9DBE 50%, #DB9DBE 62.5%, #C49CDE 62.5%, #C49CDE 75%, #669AE1 75%, #669AE1 87.5%, #62C2E4 87.5%, #62C2E4);
+   background-image: linear-gradient(to right, #C4E17F, #C4E17F 12.5%, #F7FDCA 12.5%, #F7FDCA 25%, #FECF71 25%, #FECF71 37.5%, #F0776C 37.5%, #F0776C 50%, #DB9DBE 50%, #DB9CBE 62.5%, #c49cde 62.5%, #C49CDE 75%, #669AE1 75%, #669AE1 87.5%, #62c2e4 87.5%, #62C2E4);
+}
+
+input {
+   font-family: inherit;
+   color: inherit;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+}
+
+.signUpInput {
+   width: 100%;
+   height: 50px;
+   margin-bottom: 25px;
+   padding: 0 15px 2px;
+   font-size: 17px;
+   background: white;
+   border: 2px solid #EBEBEB;
+   border-radius: 4px;
+   -webkit-box-shadow: inset 0 -2px #EBEBEB;
+   box-shadow: inset 0 -2px #EBEBEB;
+}
+
+.signUpInput:focus {
+   border-color: #62C2E4;
+   outline: none;
+   -webkit-box-shadow: inset 0 -2px #62C2E4;
+   box-shadow: inset 0 -2px #62C2E4;
+}
+
+.lt-ie9 .signUpInput {
+   line-height: 48px;
+}
+
+.signUpButton {
+   position: relative;
+   vertical-align: top;
+   width: 100%;
+   height: 54px;
+   padding: 0;
+   font-size: 22px;
+   color: white;
+   text-align: center;
+   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+   background: #F0776C;
+   border: 0;
+   border-bottom: 2px solid #D76B60;
+   border-radius: 5px;
+   cursor: pointer;
+   -webkit-box-shadow: inset 0 -2px #D76B60;
+   box-shadow: inset 0 -2px #D76B60;
+}
+
+.signUpButton:active {
+   top: 1px;
+   outline: none;
+   -webkit-box-shadow: none;
+   box-shadow: none;
+}
+
+:-moz-placeholder {
+   color: #AAAAAA;
+   font-weight: 300;
+}
+
+::-moz-placeholder {
+   color: #AAAAAA;
+   opacity: 1;
+   font-weight: 300;
+}
+
+::-webkit-input-placeholder {
+   color: #AAAAAA;
+   font-weight: 300;
+}
+
+:-ms-input-placeholder {
+   color: #AAAAAA;
+   font-weight: 300;
+}
+
+::-moz-focus-inner {
+   border: 0;
+   padding: 0;
+}
+</style>
 </head>
 <body>
-<div>
-    <table>
-   	     <tr>
-            <td>이름 &nbsp&nbsp&nbsp&nbsp : </td>
-            <td><input type="text" name="nameSearch" id="nameSearch" placeholder="이름"></td>
-         </tr>
-         <tr>
-            <td>이메일 &nbsp&nbsp: </td>
-            <td><input type="email" name="emailSearch" id="emailSearch" placeholder="이메일"></td>            
-         </tr>
-         <tr>
-           <td colspan="3">
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-            &nbsp&nbsp&nbsp&nbsp
-            
-           <input id="find" type="button" value="찾기">
-           
-           </td>
-         </tr>
-         <tr>
-         	<td colspan="3">
-         		<span id="idresult"></span>
-         	</td>
-         </tr>
-   </table>
-</div>
+
+<form class="signUp" id="signupForm">
+   <h1 class="signUpTitle">ID 찾기</h1>
+   <input type="text" class="signUpInput" name="nameSearch" id="nameSearch"  placeholder="이름"/>
+   <input type="email" class="signUpInput" name="emailSearch" id="emailSearch" placeholder="이메일"/>
+   <input type="button" id="find" type="button" value="찾기" class="signUpButton">
+   <br/>
+   <br/>
+   <span id="idresult" class="btn btn-primary btn-block btn-large"></span>
+</form>
+
 </body>
+
 <script>
 
 	var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; //이메일 정규식
 
 	
-	$(function() {
+	//$(function() {
 	    $("#find").click(function() {
 	       if($("#nameSearch").val() == ""){
 	         $("#nameSearch").focus();
@@ -101,19 +202,30 @@
 	                 success : function(data) {
 	                   //alert(data.findId);
 	                    $("#idresult").empty();
-	                	$("#idresult").append(data.findId);
-	               },
+	                    $("#idresult").hide();
+	                    $("#idresult").fadeIn(1000);
+	                    $("#idresult").append(data.findId);
+	               	},
 	               error : function(error) {
 	                   //alert("다시 작성해주세요.");
 	                   $("#idresult").empty();
-	            	   $("#idresult").append("일치하는 정보가 없습니다.");
+	                   var txt = "일치하는 정보가 없습니다.";
+	            	   //$("#idresult").append(txt);
+	            	  // $(txt).appendTo('#idresult').fadeIn("slow");
+	            	   //txt.hide().fadeIn(2000);
+	            	  /*  $(function(){
+	            		   var ex_show_3000 = $("#find");
+	            		   var ex_box_3f = $('.ex_box_3f');
+	            		   ex_show_3000.click(function(){
+	            		     ex_box_3f.fadeIn(3000);
+	            		   }); */
 	               }
 	           }); 
 	      	}
 	    });
-	});
-	
-	
- 
+	 //});
+	 
 </script>
+
+
 </html>

@@ -140,7 +140,7 @@
 	};
 	
 	function pwFind() {
-		var myWin= window.open("./pwFindWin", "PW 찾기","width=500,height=500");	
+		var myWin= window.open("./pwFindWin", "PW 찾기","width=500,height=550");	
 	}
 	
 	function popupOpen(){

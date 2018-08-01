@@ -1913,11 +1913,21 @@
 				});
 			}			
 		}
+		
+		var regNumber = /^[0-9]*$/;
+		
 		//회원정보 수정 저장
 		function updatesave(){
 			if($("#CurrentUserPw").val()==""){//비밀번호
-	        	alert("비밀번호를 입력해주세요!!");
+	        	alert("현재 비밀번호를 입력해주세요!!");
 	        	$("#CurrentUserPw").focus();
+			//}else if($("input[name='userPw']").val()==""){//비밀번호
+			}else if($("#userPw").val()==""){//비밀번호
+	        	alert("비밀번호를 입력해주세요!!");
+	        	$("#userPw").focus();
+	        }else if($("#userPwChk").val()==""){//비밀번호확인
+	        	alert("비밀번호확인을 입력해주세요!!");
+	        	$("#userPwChk").focus();
 	        }else if($("#userName").val()==""){//이름
 	        	alert("이름을 입력해주세요!!");
 	        	$("#userName").focus();
@@ -1932,7 +1942,31 @@
 	        	$("#hp2").focus(); 
 	        }else if($("#hp3").val()==""){//핸드폰번호
 	        	alert("핸드폰번호를 입력해주세요!!");
-	        	$("#hp3").focus();	        
+	        	$("#hp3").focus();
+	        }else if(!regNumber.test($("input[name='hp1']").val())){
+	        	alert("휴대폰 번호 앞자리는 숫자만 가능합니다.");
+				$("input[name='hp1']").val("");
+				$("input[name='hp1']").focus();
+	        }else if(!regNumber.test($("input[name='hp2']").val())){
+	        	alert("휴대폰 번호 중간자리는 숫자만 가능합니다.");
+				$("input[name='hp2']").val("");
+				$("input[name='hp2']").focus();
+	        }else if(!regNumber.test($("input[name='hp3']").val())){
+	        	alert("휴대폰 번호 마지막자리는 숫자만 가능합니다.");
+				$("input[name='hp3']").val("");
+				$("input[name='hp3']").focus();
+	        }else if($("input[name='hp1']").val().length<3){
+	        	alert("휴대폰 번호 앞자리는 3자리 이상만 가능합니다.");
+	        	$("input[name='hp1']").val("");
+				$("input[name='hp1']").focus();
+	        }else if($("input[name='hp2']").val().length<3){
+	        	alert("휴대폰 번호 중간자리는 3자리 이상만 가능합니다.");
+	        	$("input[name='hp2']").val("");
+				$("input[name='hp2']").focus();
+	        }else if($("input[name='hp3']").val().length<4){
+	        	alert("휴대폰 번호 마지막자리는 4자리만 가능합니다.");
+	        	$("input[name='hp3']").val("");
+				$("input[name='hp3']").focus();
 	        }else{
 	        	if($("#userPw").val()!=""||$("#userPw").val()!=""){
 	        		if($("#userPw").val().length<8 || $("#userPw").val().length>16){	//비밀번호 유효성
@@ -2013,6 +2047,9 @@
 		function chgMail(){
 			$("#overlayMail").css("display","inline");
 		}
+		
+		var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; //이메일 정규식
+		
 		//Email 중복 확인
 	    function emailcheck(){
 	        data ={};
@@ -2028,8 +2065,16 @@
 	            data: reqData,
 	            success:function(d){
 	                console.log(d);
+	                if(exptext.test($("#userEmail").val())==false){//이메일 형식이 알파벳+숫자@알파벳+숫자.알파벳+숫자 형식이 아닐경우
+		        		alert("이메일 형식이 올바르지 않습니다.");
+		        		$("#userEmail").val("");
+		        		$("#userEmail").focus();
+	        			return false;
+	            	}
 	                if(reqUrl=="./rest/overlayMail"){
 	                    if(d.use == "Y"){
+	                        alert("사용 가능한 이메일 입니다.");
+	                    }else if(d.use == "O"){
 	                        alert("사용 가능한 이메일 입니다.");
 	                    }else{
 	                        alert("누군가가 사용 하고 있는 이메일 입니다.");

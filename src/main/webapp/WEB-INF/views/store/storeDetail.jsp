@@ -61,6 +61,17 @@
 			#menuD{
 			border: solid 2px #2637a4;
 			}
+			
+			#back{
+				cursor: pointer;
+				vertical-align: middle;
+				border: 2px solid #33aaaaff; 
+	            background-color: white;
+	            outline: 0px;
+	            padding: 5px 5px;
+	            font-size: 15px;
+	            border-radius: 3px;
+			}
 		</style>
 	</head>
 	<body>
@@ -68,11 +79,14 @@
 			<img src="resources/upload/store/${storeDetail.store_photo}"  width="250" height="160"/>
 		</div>
 		<div id="detailFrame">
-		<span id="title">${storeDetail.store_name}</span>
+		<span id="title">
+			${storeDetail.store_name}
+			<c:if test="${sessionScope.loginId == '관리자' }">
+					<button id="back" onclick="backBtn()">승인/거절 하기</button>
+			</c:if>
+		</span>
 			<div id="infoFrame">
-				<c:if test="${sessionScope.loginId == '관리자' }">
-					<button id="back" onclick="backBtn()">뒤로가기</button>
-				</c:if>
+				
 				<div style="position: absolute; left: -40px;">
 					<ul>
 						<li class="tab" id="defau" onclick="divSnH(this)">정보</li>

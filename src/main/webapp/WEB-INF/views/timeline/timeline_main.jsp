@@ -36,6 +36,9 @@
 			td.comp_detail1{cursor: pointer;}
 			td#comp_content{text-align: left;}
 			
+			#starBtn{border: none; background-color: #33aaaaff; cursor: pointer;}             
+			
+			
 			#content{position: absolute; width: 600px;height: auto;left : 400px;}
 			hr{margin-top:200px;}
 			
@@ -1792,9 +1795,10 @@
 			});		
 			$("#complail_tbody").empty();
 			$("#complail_tbody").append(content);//내용 붙이기
-			
+
 			$(".comp_detail1").click(function () {
 				console.log("클릭");
+				
 				if(flag == false){
 					$(this).parent().next().children('td').css("display", "");
 					flag = true;
@@ -2002,7 +2006,7 @@
 			var content = "";
 			list.forEach(function(item){
 				content += "<tr><td>"+item.store_name+"</td>";
-				content += "<td><input type='button' value='보기' onclick='moveStat("+item.store_idx+",\""+item.store_name+"\")'></td></tr>";
+				content += "<td><input id='starBtn' type='button' value='보기' onclick='moveStat("+item.store_idx+",\""+item.store_name+"\")'></td></tr>";
 				
 			})
 			$("#storeList").append(content);

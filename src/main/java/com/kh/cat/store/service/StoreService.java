@@ -14,6 +14,7 @@ import java.util.Iterator;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -203,16 +204,21 @@ public class StoreService {
 	}
 
 	//맛집 상세 보기
-	public ModelAndView storeDetail(int store_idx, String aut, int registSF) {
+	public ModelAndView storeDetail(int store_idx, String aut, int registSF, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		inter = sqlSession.getMapper(StoreInter.class);
+		
+		
 		
 		if(registSF==0 && !aut.equals("admin")) {
 			mav.addObject("message", "아직 등록된 맛집이 아닙니다.");//메뉴사진 리스트	
 			mav.setViewName("main");
 		}else {
-			
-			mav.addObject("storeDetail", inter.storeDetail(store_idx));//가게 기본 정보
+			StoreDTO storeDto = inter.storeDetail(store_idx);
+			System.out.println("store_name"+storeDto.getStore_name());
+			session.setAttribute("store_Name", storeDto.getStore_name());
+			session.setAttribute("store_Idx", storeDto.getStore_idx());
+			mav.addObject("storeDetail", storeDto);//가게 기본 정보
 			mav.addObject("storeHash", inter.storeHash(store_idx));//해쉬태그 
 			
 			ArrayList<MenuDTO> dtoList = inter.menuPhoto(store_idx);

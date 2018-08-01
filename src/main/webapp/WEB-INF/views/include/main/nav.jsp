@@ -7,13 +7,13 @@
 <style>
 	#nav ul li{list-style: none;  display: inline;	padding: 0px 10px;}
 	#nav a{text-decoration: none; color: white; }    
-	#mainFrame{position: relative;background-color: white; width:100%; height: 80px;
-		min-width: 1500px;bottom: 8px;}
+	#mainFrame{position: relative;background-color: white; width:100%; height: 120px;;
+		min-width: 1400px;}
 	#logoBox{position:absolute;top:10px;left: 10%;}
 	#searchBox{position:absolute;top:20px;left: 35%;}
 	#menuFrame{position: relative;background-color: #2637a4;width:100%; height: 50px;
-		min-width: 1500px;}
-	#menuBox{position:absolute;top:0px;left: 1000px;}	  
+		min-width: 1400px;top:20%;}
+	#menuBox{position:absolute;top:0px;left: 70%;}	  
 	input:-ms-input-placeholder{color:#a8a8a8;}
 	input:-webkit-input-placeholder{color:#a8a8a8;}
 	input:-moz-input-placeholder{color:#a8a8a8;}            
@@ -22,13 +22,13 @@
 	#nav select{font-size: 15px; width: 110px; padding: 10px; border:0px; border-right:1px solid #2637a4; outline: none; height: 45px; text-align: center;}
 	#nav #search_content{font-size: 15px; width: 235px; padding: 10px; border: 0px; outline: none; }
 	#nav button{font-size: 15px; width: 50px; height: 100%; border: 0px; background-color: #2637a4; outline: none; float: right; color:#ffffff;}
-	#profileimg{width: 80px;height : 80px;position:absolute;left:1450px;top:1px;cursor: pointer;}
+	#profileimg{width: 80px;height : 80px;position:absolute;left:85%;top:1px;cursor: pointer;}
 	.btn{background-color:blue; color:white;width:80px;border: 2px solid white;cursor: pointer;}
 	#proimg{width: 50px;height : 50px;}
-	#profileck{background-color:white;border: 1px solid #2637a4;position:absolute;left:1350px;width:175px;top:80px;z-index:3;}
+	#profileck{background-color:white;border: 1px solid #2637a4;position:absolute;left:86%;width:175px;top:80px;z-index:3;}
 	#profileuserid{margin-left:70px;top:5px;position:absolute;}
-	#alarm{background-color:#088A85;width:50px;height:25px;position:absolute;left:1370px;top:40px;text-align: center;color:white;font-size: 20px;cursor:pointer;}
-	#alarmlist{text-align: center;display:none;width:300px;position:absolute;left:1120px;top:65px;background-color:white;border:1px solid #2637a4;z-index:1;}
+	#alarm{background-color:#088A85;width:50px;height:25px;position:absolute;left:80%;top:40px;text-align: center;color:white;font-size: 20px;cursor:pointer;}
+	#alarmlist{text-align: center;display:none;width:300px;position:absolute;left:63%;top:65px;background-color:white;border:1px solid #2637a4;z-index:1;}
 	.alarmlistdiv{border:1px solid #2637a4;cursor:pointer;width:300px;z-index:2;}
 </style>
 

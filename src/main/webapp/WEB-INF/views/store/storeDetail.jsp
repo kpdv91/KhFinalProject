@@ -75,7 +75,7 @@
 		</style>
 	</head>
 	<body>
-		<div style="position: absolute; left: 120px; top: 200px;">
+		<div style="position: absolute; left: 1%; top: 33%;">
 			<img src="resources/upload/store/${storeDetail.store_photo}"  width="250" height="160"/>
 		</div>
 		<div id="detailFrame">
@@ -180,11 +180,13 @@
 	
 
 		<br><br><br><br>
+		
 		<c:import url="/WEB-INF/views/review/reviewList.jsp">
 			<c:param name="idx" value="${storeDetail.store_idx}"/>
 		</c:import>
 	</body>
 	<script>
+	
 	//뒤로가기 버튼 클릭이벤트
 	var cate = "가게";
 	var alarmuserid="${sessionScope.loginId}";

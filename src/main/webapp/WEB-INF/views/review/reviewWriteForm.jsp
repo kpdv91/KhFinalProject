@@ -309,7 +309,6 @@
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c7f29813d0150c2927c1529f7d432392&libraries=services"></script>
 	<script>
 	//console.log(store_name);
-	console.log("store_Name : "+"${sessionScope.store_Name}");
 	if("${sessionScope.store_Name}" != ""){
 		$("#review_storeName").val("${sessionScope.store_Name}");
 		$("#review_storeName").attr("readonly",true);
@@ -318,11 +317,9 @@
 	}
 	var loginId="";
 	if("${sessionScope.loginProfile}" == "0"){
-		console.log("${sessionScope.loginProfile}");
 		$("#profileImage").attr("src","resources/img/member/noprofile.jpg");
 		$("#profileHidden").val("resources/img/member/noprofile.jpg");
 	}else{
-		console.log("${sessionScope.loginProfile}");
 	}
 	var loginId = "${sessionScope.loginId}";
 	//console.log(loginId);

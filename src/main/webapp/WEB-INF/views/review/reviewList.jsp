@@ -275,7 +275,7 @@ input[type=button]{
 				cursor: pointer;
 			}
 			.idSpan:hover{
-				color: navy;
+				color: #33aaaaff;
 			}
 		</style>
 		
@@ -326,7 +326,6 @@ input[type=button]{
 	
 	//리뷰 리스트 ajax	
 	function listCall(elem,page){
-		console.log(elem+"/"+page);
 		$.ajax({
 			url:"./reviewList/5/"+page,
 			type:"post",
@@ -336,7 +335,6 @@ input[type=button]{
 				"range":elem
 				},
 			success:function(d){
-				console.log(d.reviewList);
 				 $("#reviewListDiv").empty();
 				printList(d.reviewList);
 				atagCreate(d.reviewList);
@@ -351,7 +349,6 @@ input[type=button]{
 	                maxPage : d.range,
 	                clickAction : function(e){
 	                    //console.log(e);
-	                    console.log($(this).attr('page'));
 	                    listCall(elem,$(this).attr('page'));
 	                }
 	            });

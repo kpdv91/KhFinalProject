@@ -23,13 +23,14 @@
 	#nav #search_content{font-size: 15px; width: 235px; padding: 10px; border: 0px; outline: none; }
 	#nav button{font-size: 15px; width: 50px; height: 100%; border: 0px; background-color: #2637a4; outline: none; float: right; color:#ffffff;}
 	#profileimg{width: 80px;height : 80px;position:absolute;left:85%;top:1px;cursor: pointer;}
-	.btn{background-color:blue; color:white;width:80px;border: 2px solid white;cursor: pointer;}
+	.btn{background-color:#2637a4; color:white;width:80px;border: 2px solid white;cursor: pointer;}
 	#proimg{width: 50px;height : 50px;}
 	#profileck{background-color:white;border: 1px solid #2637a4;position:absolute;left:86%;width:175px;top:80px;z-index:3;}
 	#profileuserid{margin-left:70px;top:5px;position:absolute;}
-	#alarm{background-color:#088A85;width:50px;height:25px;position:absolute;left:80%;top:40px;text-align: center;color:white;font-size: 20px;cursor:pointer;}
+	#alarm{background-color:#2637a4;width:50px;height:25px;position:absolute;left:80%;top:40px;text-align: center;color:white;font-size: 20px;cursor:pointer;}
 	#alarmlist{text-align: center;display:none;width:300px;position:absolute;left:63%;top:65px;background-color:white;border:1px solid #2637a4;z-index:1;}
 	.alarmlistdiv{border:1px solid #2637a4;cursor:pointer;width:300px;z-index:2;}
+	#contain{text-align: center;}
 </style>
 
 <nav id="nav">
@@ -210,7 +211,7 @@ var showPage=1;
 				$("#alarmlist").css("display","inline");
 				if(d.list.length>0){
 					alarmlist(d.list);
-					$("#container").zer0boxPaging({
+					$("#contain").zer0boxPaging({
 			            viewRange : 5,
 			            currPage : d.currPage,
 			            maxPage : d.range,
@@ -245,7 +246,7 @@ var showPage=1;
 		})
 		$("#alarmlist").empty();
 		$("#alarmlist").append(content);
-		$("#alarmlist").append("<div id='container'></div>");
+		$("#alarmlist").append("<div id='contain'></div>");
 	}
 	function alarmtime(id){
 		var alarmuserid=$("#alarmid").val();

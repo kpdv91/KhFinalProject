@@ -159,14 +159,14 @@
 	 		</when>
 	 		<when test="sort.equals('별점 순')">
 	 		SELECT * FROM
-				(SELECT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt ,
+				(SELECT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt,store_photo,
 				ROW_NUMBER() OVER(ORDER BY store_star DESC) AS rnum 
 					FROM store WHERE store_regist=1 AND store_revCnt > 4 AND store_addr LIKE '%'||#{map}||'%' AND store_name LIKE '%'||#{content}||'%')
 				WHERE rnum BETWEEN #{start} AND #{end}
 	 		</when>
 			<otherwise>
 				SELECT * FROM
-				(SELECT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt ,ROW_NUMBER() OVER(
+				(SELECT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt,store_photo,ROW_NUMBER() OVER(
 				<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
 				<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
 				<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
@@ -181,7 +181,7 @@
 		<choose>
 			<when test="sort.equals('별점 순')">
 				SELECT * FROM 
-				(SELECT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt,
+				(SELECT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt,store_photo,
 				ROW_NUMBER() OVER(ORDER BY store_star DESC) AS rnum 
 						FROM store WHERE store_regist=1 AND store_revCnt > 4 AND store_addr LIKE '%'||#{map}||'%' AND
 				<foreach collection="content" item="content" index="index" open="(" close=")" separator="OR">
@@ -191,7 +191,7 @@
 			</when>
 			<otherwise>
 			SELECT * FROM 
-			(SELECT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt,ROW_NUMBER() OVER(
+			(SELECT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt,store_photo,ROW_NUMBER() OVER(
 			<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
 			<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>
 			<if test="sort.equals('조회수 순')">ORDER BY store_bhit DESC</if>
@@ -208,8 +208,8 @@
 	<select id="storeSearch_Hash" resultType="store" parameterType="hashmap">
 		<choose>
 			<when test="sort.equals('별점 순')">
-				SELECT DISTINCT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt FROM
-				(SELECT sto.store_idx,sto.store_name,sto.store_addr,sto.store_revdate,sto.store_star,sto.store_bhit,sto.store_revCnt
+				SELECT DISTINCT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt,store_photo FROM
+				(SELECT sto.store_idx,sto.store_name,sto.store_addr,sto.store_revdate,sto.store_star,sto.store_bhit,sto.store_revCnt,sto.store_photo
 					,ROW_NUMBER() OVER(ORDER BY store_star DESC) AS rnum
 					FROM (SELECT * FROM store WHERE store_regist=1 AND store_revCnt > 4 AND store_addr LIKE '%'||#{map}||'%') sto, 
 					(SELECT * FROM hash WHERE 
@@ -219,8 +219,8 @@
 				) hashtag WHERE sto.store_idx=hashtag.store_idx) WHERE rnum BETWEEN #{start} AND #{end}
 			</when>
 			<otherwise>
-				SELECT DISTINCT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt FROM
-				(SELECT sto.store_idx,sto.store_name,sto.store_addr,sto.store_revdate,sto.store_star,sto.store_bhit,sto.store_revCnt
+				SELECT DISTINCT store_idx,store_name,store_addr,store_revdate,store_star,store_bhit,store_revCnt,store_photo FROM
+				(SELECT sto.store_idx,sto.store_name,sto.store_addr,sto.store_revdate,sto.store_star,sto.store_bhit,sto.store_revCnt,sto.store_photo
 					,ROW_NUMBER() OVER(
 					<if test="sort.equals('리뷰 최신 순')">ORDER BY store_revdate DESC</if>
 					<if test="sort.equals('별점 순')">ORDER BY store_star DESC</if>

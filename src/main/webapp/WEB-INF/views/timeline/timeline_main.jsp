@@ -797,7 +797,7 @@
 			var reply = "";
 			reply += "<div class='replyDiv' id='reply'><table  id='reply_table'>";
 			if(loginid != ""){			
-			reply += "<tr><td><img width='30px' height='30px' src='resources/upload/"+profileSession+"'/></td>";
+			reply += "<tr><td><img width='30px' height='30px' src='"+profileSession+"'/></td>";
 			reply += "<td id='reply_loginId'>"+loginid+"</td><td><textarea id='reply_textarea"+idx+"' class='reply_textarea' maxlength='100'></textarea></td>";
 			reply += "<td><input id='replyWrite' type='button' value='작성' onclick='replyWrite(this,"+idx+")'/></td></tr>"
 			}

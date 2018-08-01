@@ -171,7 +171,7 @@ var showPage=1;
 		if(data.profile==0){
 			content +="<img id='proimg' src='resources/img/member/noprofile.jpg'>";
 		}else{
-		content +="<img id='proimg' src='resources/upload/"+data.profile+"'>";
+		content +="<img id='proimg' src='"+data.profile+"'>";
 		}
 		content += "<h3 id='profileuserid'>"+data.id+"</h3>";
 		content += "<h4>보유 포인트 : "+data.pointCnt+"point</h4>";

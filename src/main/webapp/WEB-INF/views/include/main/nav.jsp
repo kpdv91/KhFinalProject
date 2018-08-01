@@ -131,7 +131,7 @@ var showPage=1;
 					if(d.profileimg.profile==0){
 						$("#profileimg").attr("src",'resources/img/member/noprofile.jpg');
 					}else{
-						$("#profileimg").attr("src",'resources/upload/'+d.profileimg.profile);
+						$("#profileimg").attr("src",d.profileimg.profile);
 					}
 				},
 				error:function(e){

@@ -35,8 +35,9 @@
 </style>
 <body>
 	<div id="div1" >
+	<form action="join" id="join" method="post">
 		<div id="profile" name="profile">
-			<img alt="noprofile" src="resources/img/member/noprofile.jpg" height=150px width=150px>
+			<img name="memberProfile" id="memberProfile" alt="noprofile" src="resources/img/member/noprofile.jpg" height=150px width=150px>
 		</div>            
 		 <input type="button" onclick="FileUp()" value="사진찾기"/>            
 	</div>
@@ -44,7 +45,6 @@
 <div class="row">
 	<div class="col-xs-4 col-sm-4"></div>
 	 <div class="col-xs-4 col-sm-4" style="position:absolute; top:9%; left:38%;">
-	   <form action="join" id="join" method="post">
 	   
 	   <table class="table">
 	    <thead>

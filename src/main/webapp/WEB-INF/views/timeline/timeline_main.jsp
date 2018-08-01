@@ -1846,24 +1846,30 @@
 		//가게 등록 승인  클릭이벤트
 		function registYes(store_idx, id) {
 			console.log(store_idx, id);
-			$.ajax({
-				url:"./registYes",
-				type:"post",
-				data:{
-					store_idx : store_idx,
-					id : id
-				},
-				dataType:"json",
-				success:function(data){
-					console.log(data);			
-					alert(data.msg);
-					//location.href="./storeRegistList";
-					location.href="./alarmtimeline?id="+alarmuserid+"&cate="+cate;
-				},
-				error:function(error){
-					console.log(error);
-				}
-			});
+			var storeConfirm = confirm("승인하시겠습니까?");
+			if(storeConfirm){
+				$.ajax({
+					url:"./registYes",
+					type:"post",
+					data:{
+						store_idx : store_idx,
+						id : id
+					},
+					dataType:"json",
+					success:function(data){
+						console.log(data);			
+						//alert(data.msg);
+						//location.href="./storeRegistList";
+						location.href="./alarmtimeline?id="+alarmuserid+"&cate="+cate;
+					},
+					error:function(error){
+						console.log(error);
+					}
+				});
+			}else{
+				return;
+			}
+			
 		}
 		
 		//가게 등록 거절  클릭이벤트

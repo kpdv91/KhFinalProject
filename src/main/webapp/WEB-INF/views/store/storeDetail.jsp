@@ -166,11 +166,13 @@
 	
 
 		<br><br><br><br>
+		
 		<c:import url="/WEB-INF/views/review/reviewList.jsp">
 			<c:param name="idx" value="${storeDetail.store_idx}"/>
 		</c:import>
 	</body>
 	<script>
+	
 	//뒤로가기 버튼 클릭이벤트
 	var cate = "가게";
 	var alarmuserid="${sessionScope.loginId}";

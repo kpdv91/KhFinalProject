@@ -19,7 +19,15 @@
 	 	keyProperty="review_idx"
 	 	keyColumn="review_idx">
 	 	INSERT INTO review(review_idx,store_idx,id,review_storeName,review_star, review_content, review_likeCnt, review_date, review_profile,review_replyCnt)
-	 		VALUES(seq_review.NEXTVAL,#{store_idx},#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{review_profile},0)
+	 		VALUES(seq_review.NEXTVAL,
+	 		<if test="store_idx.equals(0)">
+	 			null,
+	 		</if>
+	 		<if test="!store_idx.equals(0)">
+	 			#{store_idx},
+	 		</if>
+	 		
+	 		#{id},#{review_storeName},#{review_star},#{review_content},0,SYSDATE,#{review_profile},0)
 	 </insert>
 	 <select id="starAvg" resultType="Double">
 	 	SELECT ROUND(AVG(review_star), 2) FROM review WHERE store_idx = #{param1}

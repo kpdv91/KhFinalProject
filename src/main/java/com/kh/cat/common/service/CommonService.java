@@ -407,26 +407,29 @@ public class CommonService {
 		int page = Integer.parseInt(params.get("page"));
 		ArrayList<Integer> review = inter.my_reply(id);
 		logger.info("review " + review.size());
-		logger.info("reviewlist" + review.get(0));
 		
 		HashSet<Integer> set = new HashSet<Integer>(review);
 		review = new ArrayList<Integer>(set);
-		int allCnt = review.size();
-		int range = allCnt%10 >0 ? Math.round(allCnt/10)+1 : allCnt/10;
-		if(page>range) {
-			page=range;
-		}		
-		int end = page*10;
-		int start = end-9;
-		ArrayList<Integer> reviewpage = inter.timlinepagereview(id,start,end);
-		set = new HashSet<Integer>(reviewpage);
-		reviewpage = new ArrayList<Integer>(set);
-		
-		// ArrayList<ReviewDTO> list = new ArrayList<ReviewDTO>();
 		ArrayList<ArrayList<ReviewDTO>> list = new ArrayList<ArrayList<ReviewDTO>>();
-		for (int i = 0; i < reviewpage.size(); i++) {
-			list.add(inter.timelinelikereview(reviewpage.get(i)));
-		}
+		int range = 0;
+		if(review.size()>0) {
+			int allCnt = review.size();
+			range = allCnt%10 >0 ? Math.round(allCnt/10)+1 : allCnt/10;
+			if(page>range) {
+				page=range;
+			}		
+			int end = page*10;
+			int start = end-9;
+			ArrayList<Integer> reviewpage = inter.timlinepagereview(id,start,end);
+			set = new HashSet<Integer>(reviewpage);
+			reviewpage = new ArrayList<Integer>(set);
+			
+			// ArrayList<ReviewDTO> list = new ArrayList<ReviewDTO>();
+			
+			for (int i = 0; i < reviewpage.size(); i++) {
+				list.add(inter.timelinelikereview(reviewpage.get(i)));
+			}
+		}		
 		map.put("list", list);
 		map.put("range", range);
 		map.put("currPage",page);
@@ -501,23 +504,26 @@ public class CommonService {
 		String id = params.get("id");
 		int page = Integer.parseInt(params.get("page"));
 		ArrayList<Integer> likestore = inter.likestore(id);
-		logger.info("store 개수 " + likestore.size());
-		logger.info("storeidx" + likestore.get(0));
-		int allCnt = likestore.size();
-		int range = allCnt%6 >0 ? Math.round(allCnt/6)+1 : allCnt/6;
-		if(page>range) {
-			page=range;
-		}		
-		int end = page*6;
-		int start = end-5;
-		ArrayList<Integer> likestorepage = inter.timlinepagestore(id,start,end);
-		// ArrayList<ReviewDTO> list = new ArrayList<ReviewDTO>();
+		
 		ArrayList<ArrayList<StoreDTO>> list = new ArrayList<ArrayList<StoreDTO>>();
 		ArrayList<ArrayList<HashDTO>> list_hash = new ArrayList<ArrayList<HashDTO>>();
-		for (int i = 0; i < likestorepage.size(); i++) {
-			list.add(inter.timelinelikestore(likestorepage.get(i)));
-			list_hash.add(inter.likestorehash(likestorepage.get(i)));
-		}
+		int range = 0;
+		if(likestore.size()>0) {
+			int allCnt = likestore.size();
+			range = allCnt%6 >0 ? Math.round(allCnt/6)+1 : allCnt/6;
+			if(page>range) {
+				page=range;
+			}		
+			int end = page*6;
+			int start = end-5;
+			ArrayList<Integer> likestorepage = inter.timlinepagestore(id,start,end);
+			// ArrayList<ReviewDTO> list = new ArrayList<ReviewDTO>();
+			
+			for (int i = 0; i < likestorepage.size(); i++) {
+				list.add(inter.timelinelikestore(likestorepage.get(i)));
+				list_hash.add(inter.likestorehash(likestorepage.get(i)));
+			}
+		}		
 		map.put("list", list);
 		map.put("list_hash", list_hash);
 		map.put("range", range);

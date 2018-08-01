@@ -8,7 +8,7 @@
         #div1 {height : 200px;width : 200px;float : left;}
          #selPicture{position: absolute; left:50px;}
          #updateprofile {height : 128px;width : 128px;border : 1px solid black;text-align: center;}
-         button, input[type='button'] {margin-top: 5px;background-color: #33aaaaff;color: white;border: 0px;}
+         #confirm,#deleteid{margin-top: 5px;background-color: #33aaaaff;color: white;border: 0px;}
          #bottom{text-align: center;}
          #updatecontent{color:red;}
          #overlayMail{display:none;}
@@ -64,7 +64,7 @@
    </table>
         <div id="bottom">
             <button id="confirm" onclick="updatesave()">확인</button>
-            <input type="button" value="탈퇴하기" onclick="window.open('./leaveForm','회원 탈퇴','width=500,height=500,location=no,status=no,scrollbars=yes');">
+            <input id="deleteid" type="button" value="탈퇴하기" onclick="window.open('./leaveForm','회원 탈퇴','width=500,height=500,location=no,status=no,scrollbars=yes');">
       </div>
 </body>
 

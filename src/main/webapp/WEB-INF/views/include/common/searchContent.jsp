@@ -195,6 +195,10 @@
 						console.log(data.list);
 						console.log(data.list_hash);
 						$("#searchPage").empty();
+						if(val=="별점 순"){
+							$("#searchPage").append("<h2 align='center'>별점 순은 리뷰가 5개 이상인 가게부터 정렬됩니다.</h2>");
+						}
+						
 						storePrintList(data.list,data.list_hash);
 						
 						showPage = data.currPage;

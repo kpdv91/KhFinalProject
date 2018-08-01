@@ -94,6 +94,11 @@
 	<select id="getaut" resultType="String" parameterType="String">
 		SELECT aut FROM member WHERE id=#{param1}
 	</select>
+	
+	<!-- 이메일 가져오기 -->
+	<select id="getemail" resultType="String" parameterType="String">
+		SELECT id FROM member WHERE email=#{param1}
+	</select>
 
 </mapper>
 

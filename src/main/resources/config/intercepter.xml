@@ -13,10 +13,6 @@
 		<mvc:interceptor>
 			<!-- 인터셉터할 요청 -->
 			<mvc:mapping path="/storeRegistForm"/>
-			<mvc:mapping path="/couponShopPage"/>
-			<mvc:mapping path="/couponPurchase"/>
-			<mvc:mapping path="/boardWritePage"/>
-			<mvc:mapping path="/boardWrite"/>
 			<mvc:mapping path="/receivelist"/>			
 			<mvc:mapping path="/reviewWritePage"/>			
 			<mvc:mapping path="/sendlist"/>		
@@ -37,6 +33,24 @@
 			<mvc:mapping path="/review_delete"/>
 			<mvc:mapping path="/Revreply_delete"/>
 			<mvc:mapping path="/Revreply_update"/>
+			<mvc:mapping path="/dm_writePage"/>
+			
+			<!-- board -->
+			<mvc:mapping path="/boardWritePage"/>
+			<mvc:mapping path="/boardWrite"/>
+			<mvc:mapping path="/boardUpdate"/>
+			<mvc:mapping path="/boardDelete"/>
+			<mvc:mapping path="/updateForm"/>
+			<!-- boardReply -->
+			<mvc:mapping path="/boardReplyWrite"/>
+			<mvc:mapping path="/boardReplyUpdate"/>
+			<mvc:mapping path="/boardReplyDelete"/>
+			<!-- coupon -->
+			<mvc:mapping path="/couponShopPage"/>
+			<mvc:mapping path="/couponPurchase"/>
+			<!-- admin -->
+
+			
 					
 			<!-- 인터셉터 한 내용에 대한 클래스 매핑 -->
 			<bean class="com.kh.cat.common.service.PreCheck"></bean>

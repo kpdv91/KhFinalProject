@@ -2,6 +2,8 @@ package com.kh.cat.member.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +38,11 @@ public class AjaxController {
     //중복체크
     @RequestMapping(value="/overlayMail")
     public  @ResponseBody Map<String, String> 
-        overlayMail(@RequestParam("email") String email){
+        overlayMail(@RequestParam("email") String email,HttpSession session){
         
         logger.info("중복이메일 체크 : {}",email);
         
-        return service.overlayMail(email);
+        return service.overlayMail(email,session);
     }
     
 

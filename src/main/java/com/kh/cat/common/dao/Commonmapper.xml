@@ -155,7 +155,7 @@
 	 		<when test="mainStore==3">
 	 		SELECT * FROM (SELECT * FROM store ORDER BY store_revdate DESC)
 	 			<![CDATA[WHERE ROWNUM <= 3]]>
-	 			AND store_regist=1
+	 			AND store_regist=1 AND store_revCnt > 0
 	 		</when>
 	 		<when test="sort.equals('별점 순')">
 	 		SELECT * FROM

@@ -215,8 +215,8 @@
 	<div id ="formDiv">
 	<input type="hidden" name="review_idx" value="${review_updateForm.review_idx }"/>
 	<div id="review_profile">
-		<img id="profileImage"  width='80px' height='80px'  src="resources/upload/${sessionScope.loginProfile }"/>
-		<input id="profileHidden" type="hidden" name='review_profile' value="resources/upload/${sessionScope.loginProfile }"/>
+		<img id="profileImage"  width='80px' height='80px'  src="${sessionScope.loginProfile }"/>
+		<input id="profileHidden" type="hidden" name='review_profile' value="${sessionScope.loginProfile }"/>
 	</div>
 	<br/>
 	작성자 : <input id="user_Id" name="id" type="text" value="${ sessionScope.loginId}" readonly/>
@@ -275,7 +275,7 @@
 	function printHash(hash,elem){
 		tag="";
 		hash.forEach(function(item){
-			tag += "<div class='hashTag' id='hashTag'>#"+item.hash_tag+
+			tag += "<div class='hashTag' id='hashTag'>"+item.hash_tag+
 			"<button onclick='hashDel(this)' class='hashDel'>-</button>"+
 			"<input type='hidden' name='hash_tag' value='"+item.hash_tag+"'/></div>";				
 		});
@@ -333,6 +333,7 @@
 		location.href="./";
 	});
 	$(document).ready(function(){
+		console.log("${sessionScope.loginProfile}");
 		$("#Logo").css("pointer-events","none");
 		$("#searchBtn").css("pointer-events","none");
 		$("#search_content").css("pointer-events","none");

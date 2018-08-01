@@ -335,6 +335,7 @@ input[type=button]{
 				"range":elem
 				},
 			success:function(d){
+				console.log(d.reviewList);
 				 $("#reviewListDiv").empty();
 				 if(d.reviewList == ""){
 				 	$("#reviewListDiv").append("<h3>작성한 리뷰가 없습니다</h3>");

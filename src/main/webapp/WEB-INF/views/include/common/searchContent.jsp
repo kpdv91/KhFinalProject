@@ -245,7 +245,7 @@
 					content += "<tr><td style='border-top: 2px solid #142e5b; height:70px;' id='"+item.store_idx+"' colspan='3'>";
 					
 					list_hash[index].forEach(function(item){
-						content += "<div id='storehashtag'>#"+item.hash_tag+"</div>";
+						content += "<div id='storehashtag'>"+item.hash_tag+"</div>";
 					});
 					content += "</td></tr>";
 				}else{

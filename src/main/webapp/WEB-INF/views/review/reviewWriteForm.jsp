@@ -333,6 +333,7 @@
 		location.href="./";
 	});
 	$(document).ready(function(){
+		console.log("${sessionScope.loginProfile}");
 		$("#Logo").css("pointer-events","none");
 		$("#searchBtn").css("pointer-events","none");
 		$("#search_content").css("pointer-events","none");

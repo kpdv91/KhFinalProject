@@ -64,7 +64,7 @@
 		</style>
 	</head>
 	<body>
-		<div style="position: absolute; left: 120px; top: 200px;">
+		<div style="position: absolute; left: 1%; top: 33%;">
 			<img src="resources/upload/store/${storeDetail.store_photo}"  width="250" height="160"/>
 		</div>
 		<div id="detailFrame">

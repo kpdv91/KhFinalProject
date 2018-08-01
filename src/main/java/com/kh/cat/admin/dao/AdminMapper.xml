@@ -177,6 +177,10 @@
 	<select id="storeRegistAllCnt" resultType="Integer">
 		SELECT COUNT(*) FROM store WHERE store_regist=0
 	</select>
+	
+	<!-- <select id="reviewIdxChk" resultType="Integer">
+		SELECT review_idx FROM review WHERE revReply = #{param1}
+	</select> -->
 </mapper>
 
 

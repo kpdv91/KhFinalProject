@@ -66,6 +66,7 @@ public class StoreService {
 			fileList.put(newFileName, oriFileName);
 			logger.info("저장할 파일 갯수 : {}",fileList.size());
 			mav.addObject("path",detailPath+newFileName);
+			mav.addObject("fileCnt",fileList.size());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -94,6 +95,7 @@ public class StoreService {
 			success=1;
 		}
 		map.put("success", success);
+		map.put("fileCnt", fileList.size());
 		System.out.println(fileList);
 		return map;
 	}

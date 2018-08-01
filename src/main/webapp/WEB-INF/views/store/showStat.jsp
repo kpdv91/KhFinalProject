@@ -10,20 +10,33 @@
 
 		<title>가게 통계 페이지</title>
 		<style>
+		#Line_Controls_Chart{
+			position: relative;
+			top:70px;
+		}
 		#statCate{
 			position: absolute;
-			left: 5%;
-			top:15%;
+			left: 50px;
+			top:70px;
 			z-index: 1;
 		}
 		#statCate input{
 			display: block;
 			margin: 50px 0px;
+			cursor: pointer;
+			vertical-align: middle;
+            background-color: #33aaaaff;
+            color: white;
+            outline: 0px;
+            border: 0px;
+            padding: 5px 5px;
+            font-size: 15px;
 		}
+		#title{font-size: 50px; position: absolute;border-bottom: solid 2px #2637a4;left: 200px;}
 		</style>
 	</head>
 	<body>
-		<h4>${store_name}</h4>
+		<span id="title">${store_name}</span>
 		<div id="Line_Controls_Chart">
 		<div id=statCate>
 			<input type="button" value="ALL" onclick="reDrow('all')">

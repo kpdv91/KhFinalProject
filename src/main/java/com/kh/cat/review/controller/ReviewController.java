@@ -64,7 +64,6 @@ public class ReviewController {
 		String loginId = (String) request.getSession().getAttribute("loginId");
 		String profile = (String) request.getSession().getAttribute("loginProfile");
 		logger.info(map.get("review_idx"));
-		
 		if(map.get("review_idx") != "") {
 			return service.review_update(hash_tag, review_photo, map, loginId);
 		}else {

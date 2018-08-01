@@ -308,6 +308,13 @@
 	</body>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c7f29813d0150c2927c1529f7d432392&libraries=services"></script>
 	<script>
+	//console.log(store_name);
+	console.log("store_Name : "+"${sessionScope.store_Name}");
+	if("${sessionScope.store_Name}" != ""){
+		$("#review_storeName").val("${sessionScope.store_Name}");
+		$("#review_storeName").attr("readonly",true);
+		$("#search").css("pointer-events", "none");
+	}
 	var loginId="";
 	if("${sessionScope.loginProfile}" == "0"){
 		console.log("${sessionScope.loginProfile}");
@@ -321,6 +328,9 @@
 	var div = "";//div 추가 변수
 	
 	$("#reviewWriteCancel").click(function(){
+		<%
+		session.removeAttribute("store_Name");		
+		%>
 		location.href="./";
 	});
 	$(document).ready(function(){
@@ -335,6 +345,7 @@
 	document.onkeydown = function(e){
 	      key = (e) ? e.keyCode : event.keyCode;
 	      if(key==116){
+	    	  alert("새로고침을 할 수 없습니다. 취소를 눌러주세요.");
 	         if(e){
 	            e.preventDefault();
 	         }
@@ -343,8 +354,13 @@
 	            event.returnValue = false;
 	         }
 	      }
-	      document.onkeydown = LockF5;
+	     
 	}
+	document.addEventListener('keydown', function(event) {
+	    if (event.keyCode === 13) {
+	        event.preventDefault();
+	    }
+	}, true);
 	//오른쪽마우스 막기
 	document.oncontextmenu = function(e){
 	     if(e){
@@ -369,16 +385,18 @@
 			$("#review_storeName").focus
 		}else if($("#starScore").text()=="" || $("#starScore").text()=="0"){
 			alert("별점을 작성 해 주세요");
-		}else{
-			console.log("else 진입");
-			$("#sendForm").submit();
+		}else{			
+			<%
+				session.removeAttribute("store_Name");		
+			%>
+			$("#sendForm").submit();			
 		}
 		
 	});
 	
 	//해시태그 추가 버튼시 div 생성
 	$("#add").click(function(){
-		if($("#hash").val() != ""){
+		if($("#hash").val() != "#"){
 		div = "<div class='hashTag' id='hashTag'>"+$("#hash").val()+
 		"<button onclick='hashDel(this)' class='hashDel'>-</button>"+
 		"<input type='hidden' name='hash_tag' value='"+$("#hash").val()+"'/></div>";		

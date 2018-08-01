@@ -275,7 +275,7 @@ input[type=button]{
 				cursor: pointer;
 			}
 			.idSpan:hover{
-				color: navy;
+				color: #33aaaaff;
 			}
 		</style>
 		
@@ -326,7 +326,6 @@ input[type=button]{
 	
 	//리뷰 리스트 ajax	
 	function listCall(elem,page){
-		console.log(elem+"/"+page);
 		$.ajax({
 			url:"./reviewList/5/"+page,
 			type:"post",
@@ -336,14 +335,15 @@ input[type=button]{
 				"range":elem
 				},
 			success:function(d){
-				console.log(d.reviewList);
 				 $("#reviewListDiv").empty();
+				 if(d.reviewList == ""){
+				 	$("#reviewListDiv").append("<h3>작성한 리뷰가 없습니다</h3>");
+				 	$("#review_range").css("display","none");
+				 }else{
+					 
 				printList(d.reviewList);
 				atagCreate(d.reviewList);
 				showPage = d.currPage;
-				if(d.reviewList == ""){
-				$("#review_range").css("display","none");
-				}
 				
 				$("#container").zer0boxPaging({
 	                viewRange : 5,
@@ -351,10 +351,10 @@ input[type=button]{
 	                maxPage : d.range,
 	                clickAction : function(e){
 	                    //console.log(e);
-	                    console.log($(this).attr('page'));
 	                    listCall(elem,$(this).attr('page'));
 	                }
 	            });
+				 }
 
 			},
 			error:function(e){console.log(e);}
@@ -419,7 +419,6 @@ input[type=button]{
 	//댓글 리스트
 	function replySelect(idx,page){
 		$("#reviewReply"+idx).toggle(100,function(){
-			console.log(page);
 			replyAjax(idx,page);
 		});
 	}
@@ -456,12 +455,11 @@ input[type=button]{
 	
 	//댓글 리스트 출력
 	 function replylist(list,idx){
-		 console.log("replylist");
 			var reply = "";
 			reply += "<div class='replyDiv' id='reply'><table  id='reply_table'>";
 			if(loginId != ""){			
 			reply += "<tr class='replyWriteTr'><td>";
-			if(profileSession == 0){
+			if(profileSession == "0"){
 				reply += "<img width='30px' height='30px' src='resources/img/member/noprofile.jpg'/></td>";
 			}else{
 				reply += "<img width='30px' height='30px' src='resources/upload/"+profileSession+"'/></td>";
@@ -474,13 +472,13 @@ input[type=button]{
 				var date = new Date(item.revreply_date);
 				reply +="<tr class='reply_table' id='reply_table"+item.revreply_idx+"'>";
 				reply +="<td rowspan='2'><input type='hidden' value='"+item.revreply_idx+"'/>";
-				if(item.revreply_profile == "resources/upload/0"){
+				if(item.revreply_profile != "resources/upload/0"){
 					reply += "<img id='reply_img' src='"+item.revreply_profile+"'/></td>";
 				}else{
 					reply += "<img id='reply_img' src='resources/img/member/noprofile.jpg'/></td>";
 				}
 				
-				reply +="<td rowspan='2' id='reply_id'><span id='"+item.id+"' onclick='timelineLoc(id)'>"+item.id+"</span></td>";
+				reply +="<td rowspan='2' id='reply_id'><span class='idSpan' id='"+item.id+"' onclick='timelineLoc(id)'>"+item.id+"</span></td>";
 				reply +="<td rowspan='2' id='reply_content'><textarea class='reply_textarea' id='reply_textarea"+item.revreply_idx+"' readonly>"+item.revreply_content+"</textarea></td>";
 				reply +="<td id='reply_date'>"+date.toLocaleDateString("ko-KR")+"</td></tr><tr>";
 				reply+="<td  class='reply_btn' >";
@@ -602,6 +600,7 @@ input[type=button]{
 		console.log(idx+"/"+loginId);
 		if(loginId == ""){
 			alert("로그인이 필요한 서비스 입니다.");
+			location.href="./loginForm";
 		}else{		
 		$.ajax({
 			url:"./reviewLike",

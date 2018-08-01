@@ -349,11 +349,11 @@ input[type=button]{
 	       	div#btnDiv{position: relative; width: 500px; height: 50px;  
 	       		text-align: center; padding-top: 21px;}         	                 
 	       	button#blackListBtn{background-color: #2637a4; color: white; border: none;
-	       		width: auto; height: 30px; }                                   
+	       		width: auto; height: 30px; cursor: pointer;}                                   
 	       	button#comp_rev_reply_del{background-color: #2637a4; color: white; border: none;
-	       		width: auto; height: 30px; } 
+	       		width: auto; height: 30px; cursor: pointer;} 
 	       	button#comp_cancel{background-color: #2637a4; color: white; border: none;
-	       		width: auto; height: 30px; }               
+	       		width: auto; height: 30px; cursor: pointer;}               
 	        button.btn{margin: 0px 30px; border-radius: 5px;'}
 	       	
 	       
@@ -439,6 +439,7 @@ input[type=button]{
 					console.log(data);
 					if(data.result > 0){
 						alert(data.msg);
+						opener.window.location.href="./alarmtimeline?id="+alarmuserid+"&cate="+cate;
 						self.close();
 					}
 				},
@@ -471,6 +472,8 @@ input[type=button]{
 					console.log(data);
 					if(data.result > 0){
 						alert(data.msg);
+						opener.window.location.href="./alarmtimeline?id="+alarmuserid+"&cate="+cate;
+						self.close();
 					}
 				},
 				error : function(error){

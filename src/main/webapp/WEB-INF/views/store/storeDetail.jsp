@@ -10,40 +10,109 @@
 		<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c7f29813d0150c2927c1529f7d432392&libraries=services"></script>
 		<title>맛집 상세보기</title>
 		<style>
-			#detailFrame{position: relative;top: 50px; left: 20%;height: 600px;}
-			#infoFrame{width:1000px; height: 100px;}
-			#infoFrame ul{width: 500px; float: left;}
-			#infoFrame ul li{list-style: none;  display: inline;	padding: 0px 10px; border: solid 2px #2637a4; font-size: x-large; width: 100px;}
-			#contFrame{width: 1000px; height: 400px; border: solid 2px #2637a4;}
+			#detailFrame{position: relative;top: 50px; left: 20%;height: 700px;}
+			#infoFrame{width:1000px; height: 100px;position: absolute;top: 70px;}
+			#infoFrame ul{width: 500px;}
+			#infoFrame li{list-style: none;  display: inline; padding: 0px 10px; border: solid 2px #2637a4; font-size: x-large; width: 100px;}
+			#contFrame{width: 1000px; height: 500px; border: solid 2px #2637a4;position: absolute;top: 130px;}
 			.divChg{display: none;}
-			#detailFrame table, tr, td, th{border: solid 1px black;}
+			
+			.tab{cursor: pointer;}
+			#contFrame table{
+				font-size: 17px;
+				width: 700px;
+				height: 500px;
+				border: 0px;
+				border-collapse: collapse;
+				width: 1000px;
+				position: absolute;
+			}
+			#contFrame td{
+				border-bottom: solid 2px #F2F2F2;
+				padding: 10px;
+
+			}
+			#contFrame th{
+				border-bottom: solid 2px #F2F2F2;
+				padding: 10px;
+				width: 150px;
+				
+			}
+			#title{font-size: 50px; position: absolute;border-bottom: solid 2px #2637a4;}
+			.hashTag{
+			border: 2px solid #33aaaaff;
+            font-size: 17px;
+            width: auto;          
+            text-align: center; 
+            float: left;
+            margin-right: 10px;
+            margin-bottom: 5px;
+            padding: 0px 10px;
+			}
+			
+			#menu{
+				 text-align: center;
+				 padding: 5px;
+			}
+			#menu img{
+			 vertical-align: middle;
+			}
+			.menuBtn{
+			cursor: pointer;
+			}
+			#menuD{
+			border: solid 2px #2637a4;
+			}
+			
+			#back{
+				cursor: pointer;
+				vertical-align: middle;
+				border: 2px solid #33aaaaff; 
+	            background-color: white;
+	            outline: 0px;
+	            padding: 5px 5px;
+	            font-size: 15px;
+	            border-radius: 3px;
+			}
 		</style>
 	</head>
 	<body>
+		<div style="position: absolute; left: 1%; top: 33%;">
+			<img src="resources/upload/store/${storeDetail.store_photo}"  width="250" height="160"/>
+		</div>
 		<div id="detailFrame">
-		<span id="title">${storeDetail.store_name}</span>
+		<span id="title">
+			${storeDetail.store_name}
+			<c:if test="${sessionScope.loginId == '관리자' }">
+					<button id="back" onclick="backBtn()">승인/거절 하기</button>
+			</c:if>
+		</span>
 			<div id="infoFrame">
-				<c:if test="${sessionScope.loginId == '관리자' }">
-					<button id="back" onclick="backBtn()">뒤로가기</button>
-				</c:if>
-				<ul style="left: 0px">
-					<li class="tab" id="defau" onclick="divSnH(this)">정보</li>
-					<li class="tab" onclick="divSnH(this)">메뉴</li>
-					<li class="tab" onclick="divSnH(this)">위치</li>
-				</ul>
 				
-				<ul style="left: 500px">
-					<li>별점 ${storeDetail.store_star}</li>
-					<li>조회 ${storeDetail.store_bHit}</li>
-					<li>리뷰 ${storeDetail.store_revCnt}</li>
-					<li id="likeCnt">찜수 ${storeDetail.store_storeLikeCnt}</li>
-					<li><img id="storeLike" alt="찜하트" src="" width="30px" onclick="storeLike()"></li>
-				</ul>
+				<div style="position: absolute; left: -40px;">
+					<ul>
+						<li class="tab" id="defau" onclick="divSnH(this)">정보</li>
+						<li class="tab" onclick="divSnH(this)">메뉴</li>
+						<li class="tab" onclick="divSnH(this)">위치</li>
+					</ul>
+				</div>
+				<div style="position: absolute; top: 0px; right: -30px; ">
+					<ul>
+						<li>별점 ${storeDetail.store_star}</li>
+						<li>조회 ${storeDetail.store_bHit}</li>
+						<li>리뷰 ${storeDetail.store_revCnt}</li>
+						<li id="likeCnt">찜수 ${storeDetail.store_storeLikeCnt}</li>
+					</ul>
+				</div>
+				<div style="position: absolute; top: 15px; right: 10px; ">
+					<img class="tab"  id="storeLike" alt="찜하트" src="" width="35px" onclick="storeLike()">
+				</div>
 			</div>
 			
 			<div id="contFrame">
 				<div class="divChg" id="info">
-					<table style="float: left;">
+
+					<table>
 						<tr>
 							<th>주소</th>
 							<td>
@@ -84,25 +153,25 @@
 							<th>해시 태그</th>
 							<td>
 								<c:forEach items="${storeHash}" var="tag">
-									<span>#${tag.hash_tag}</span>
+								<div class='hashTag'>${tag.hash_tag}</div>
 								</c:forEach>
 							</td>
 						</tr>
 					</table>
-					<img src="resources/upload/store/${storeDetail.store_photo}"  width="400" height="270"/>
 				</div>
 				<div class="divChg" id="menu">
-					<div>
-						<input type="hidden" id="currMenuSrc" value="">
-						<input type="button" onclick="nextPreMenu(0)" value="<">
-						<img id="menuD" alt="menu1" src="resources/upload/store/${storeMenuD}" width="200" height="200">
-						<input type="button" onclick="nextPreMenu(1)" value=">">
+					<div id="menuB">
+						<img src="resources/img/store/leftArrow.png" class="menuBtn" onclick="nextPreMenu(0)" width="50">
+						<img id="menuD" alt="menu0" src="resources/upload/store/${storeMenuD}" width="270" height="360">
+						<img src="resources/img/store/rightArrow.png" class="menuBtn" onclick="nextPreMenu(1)" width="50">
 					</div>
-					<c:set var="i" value="1"/>
-					<c:forEach items="${storeMenu}" var="menu">
-						<img alt="메뉴" id="menu${i}" src="resources/upload/store/${menu}" width="50" height="50" onclick="menuShow(this)">
-						<c:set var="i" value="${i+1}"/>
-					</c:forEach>
+					<div id="menuS">
+						<c:set var="i" value="0"/>
+						<c:forEach items="${storeMenu}" var="menu">
+							<img alt="메뉴" id="menu${i}" class="menuImg" src="resources/upload/store/${menu}" width="60" height="80" onclick="menuShow(this)">
+							<c:set var="i" value="${i+1}"/>
+						</c:forEach>
+					</div>
 				</div>
 				<div class="divChg" id="loca">
 					<div id="map" style="width:100%;height:100%;"></div>
@@ -113,11 +182,13 @@
 	
 
 		<br><br><br><br>
+		
 		<c:import url="/WEB-INF/views/review/reviewList.jsp">
 			<c:param name="idx" value="${storeDetail.store_idx}"/>
 		</c:import>
 	</body>
 	<script>
+	
 	//뒤로가기 버튼 클릭이벤트
 	var cate = "가게";
 	var alarmuserid="${sessionScope.loginId}";
@@ -218,35 +289,45 @@
 		zoom=true;
 	});
 	
+	//이전 , 다음 메뉴판
+	$(".menuImg").css("border","solid 2px white");
+	$("#menu0").css("border","solid 2px red");
+	var currMenu="";
+	var currMenuNum=0;
+	var menuSize = ${storeMenu.size()};
+	if(menuSize<2){
+		$(".menuBtn").css("visibility","hidden");
+	}
+	
 	//메뉴판 선택
 	function menuShow(e) {
 		$("#menuD").attr("src",$(e).attr("src"));
 		$("#menuD").attr("alt",$(e).attr("id"));
+		$(".menuImg").css("border","solid 2px white");
+		$(e).css("border","solid 2px red");
 	}
 	
-	//이전 , 다음 메뉴판
-	var currMenu="";
-	var currMenuNum=0;
-	var menuSize = ${storeMenu.size()};
 	function nextPreMenu(pm) {
 		currMenu = $("#menuD").attr("alt");
 		currMenuNum = parseInt(currMenu[4]);
 		if(pm==1){
-			if(currMenuNum<menuSize){
+			if(currMenuNum<menuSize-1){
 				currMenuNum += 1;
 			}else{
-				currMenuNum = 1;
+				currMenuNum = 0;
 			}
 		}else{
-			if(currMenuNum>1){
+			if(currMenuNum>0){
 				currMenuNum -= 1;
 			}else{
-				currMenuNum = menuSize;
+				currMenuNum = menuSize-1;
 			}
 		}
 		currMenu = "menu"+currMenuNum;
 		$("#menuD").attr("alt",currMenu);
-		$("#menuD").attr("src",$("#"+currMenu).attr("src"))
+		$("#menuD").attr("src",$("#"+currMenu).attr("src"));
+		$(".menuImg").css("border","solid 2px white");
+		$("#"+currMenu).css("border","solid 2px red");
 	}
 	
 	//찜 확인

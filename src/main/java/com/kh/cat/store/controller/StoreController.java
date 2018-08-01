@@ -89,11 +89,13 @@ public class StoreController {
 	
 	//맛집 상세보기
 	@RequestMapping(value = "/storeDetail", method = RequestMethod.GET)
-	public ModelAndView storeDetail(@RequestParam("store_idx") int store_idx, HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView storeDetail(@RequestParam("store_idx") int store_idx, HttpServletRequest request, HttpServletResponse response,HttpSession session) {
 		logger.info("가게 상세 페이지 요청.");
+		
+		
+		
 		String aut = (String) request.getSession().getAttribute("loginAut");
 		int registSF = storeService.registSF(store_idx);//등록 여부 판단
-		
 		if(aut==null) {//비로그인시 권한을 unLogin 처리
 			aut="unLogin";	
 		}
@@ -109,7 +111,7 @@ public class StoreController {
 				storeService.storeUphits(store_idx);//조회수 증가
 			}
 		}
-		return storeService.storeDetail(store_idx,aut,registSF);
+		return storeService.storeDetail(store_idx,aut,registSF,session);
 	}
 	
 	//찜 확인

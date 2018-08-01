@@ -145,11 +145,9 @@
 					data : { idx : $("#board_idx").val() },
 					dataType : "json",
 					success : function (data) {
-						console.log(data.replyCnt);
 						if(data.replyCnt == 1){
 							$("#boardReply_content").attr("readonly", "readonly");
 							$("#replyWrite").attr("disabled","true");
-							
 						}
 						reply(data.list);
 						$("#reply_content1").height($("#boardReply_content").height()).height($("#reply_content1").prop("scrollHeight")+12 );
@@ -299,27 +297,34 @@
 		
 		//게시판삭제
 		var idx = ${dto.board_idx};
+		
 		$("#delete").click(function () {
-			$.ajax({
-				type : "post",
-				url : "./boardDelete",
-				data : {
-					idx : idx
-				},
-				dataType : "json",
-				success : function (data) {
-					if(data.success>0){
-						console.log(data.success);
-						alert("삭제 성공");
-						location.href="./boardListPage";
-					}else{
-						alert("삭제 실패");
+			var delConfirm = confirm("삭제 하시겠습니까?");
+			if(delConfirm){
+				$.ajax({
+					type : "post",
+					url : "./boardDelete",
+					data : {
+						idx : idx
+					},
+					dataType : "json",
+					success : function (data) {
+						if(data.success>0){
+							console.log(data.success);
+							location.href="./boardListPage";
+						}else{
+							alert("삭제 실패");
+						}
+					},
+					error : function (error) {
+						console.log(error);
 					}
-				},
-				error : function (error) {
-					console.log(error);
-				}
-			});
+				});
+			}else{
+				return;
+			}
+			
+			
 		});
 		
 	</script>

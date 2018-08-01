@@ -67,7 +67,7 @@ public class MemberService {
 		String msg = "회원가입에 실패 했습니다.";
 		
 		if(success == 1) {//회원가입 성공시
-			page ="main";
+			page ="member/loginForm";
 			msg = "회원가입에 성공 했습니다.";
 		}
 		//Model + view 한꺼번에 담을 수 있다.
@@ -102,14 +102,17 @@ public class MemberService {
 			if(success) {//로그인 성공시     ------------------->id,pw가 맞다
 				String profile = inter.getprofile(id);//프로필 가져오기 -logger확인없음
 				String aut = inter.getaut(id);//권한 가져오기
+				String email = inter.getemail(id);//이메일 가져오기
 				//msg = "로그인 성공";
 				page = "main";
 				session.setAttribute("loginId", id);
 				session.setAttribute("loginProfile", profile);	
 				session.setAttribute("loginAut", aut);
+				session.setAttribute("loginEmail", email);
 				logger.info("세션값 체크 : {}", session.getAttribute("loginId"));
 				logger.info("세션값 체크 : {}", session.getAttribute("loginProfile"));
 				logger.info("세션값 체크 : {}", session.getAttribute("loginAut"));
+				logger.info("세션값 체크 : {}", session.getAttribute("loginEmail"));
 				logger.info("이동할 페이지 : {}", page);			
 			}else {//--------------->id가 있지만 pw가 안맞다
 				String msg = "비밀번호가 일치하지 않습니다.";
@@ -141,13 +144,30 @@ public class MemberService {
    
     
     //이메일 중복 체크
-    public Map<String, String> overlayMail(String email) {
+    public Map<String, String> overlayMail(String email,HttpSession session) {
     	inter = sqlSession.getMapper(MemberInter.class);
         Map<String, String> json = new HashMap<String, String>();
-        String use = "N";        
-        if(inter.overlayMail(email) == null){
+        String mail = inter.getemail(email);
+        String use = "N";
+        //logger.info("세션에 담긴 이메일 확인 : {}",session.getAttribute("loginEmail"));
+        logger.info("세션에 담긴 아이디 확인 : {}",session.getAttribute("loginId"));
+        //logger.info("테스트 : {}",mail.equals("가"));
+        //logger.info("조건문 확인 : {}",mail.equals(session.getAttribute("loginId")));
+        /*if(mail == session.getAttribute("loginId")) {
+    		use = "O";
+    	}*/
+        /*if(inter.overlayMail(email) == null){//중복되는 이메일 주소가 없을때
             use = "Y";
-        }        
+        }*/
+        if(mail != null) {//입력한 메일주소에 해당하는 ID가 있을때
+        	if(mail.equals(session.getAttribute("loginId"))){//세션에 있는 ID랑 일치한다면
+        		use = "O";
+        	}
+        	
+        }else {//입력한 메일주소에 해당하는 ID가 없을때
+        	use = "Y";
+        }
+        
         json.put("use", use);
         return json;
     }
@@ -355,7 +375,7 @@ public class MemberService {
 				      messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
 				      messageHelper.setText(content);  // 메일 내용
 		    	  }  
-		    	  map.put("msg", "입력한 이메일로 임시비밀번호 전송");
+		    	  map.put("msg", "해당 이메일로 임시비밀번호가 전송되었습니다.");
 		    	  map.put("changeResult", pwChange);
 		      }else {
 		    	  map.put("msg", "일치하는 정보가 없습니다.");
@@ -442,8 +462,9 @@ public class MemberService {
 		logger.info("아이디 : "+id+" / 평문화 비밀번호 : "+pw);
 		logger.info("아이디 : "+id+" / 암호화 비밀번호 : "+hash);
 		
-		String page = "member/leaveForm";		
-		String message = "아이디 혹은 비밀번호가 일치하지 않습니다.";
+		String page = "member/leaveForm";
+		//String page = "redirect:/leaveForm";
+		String message = "비밀번호가 일치하지 않습니다.";
 		if(hash!=null) {//hash 값이 있다->id가 유효하다.
 			boolean success = encoder.matches(pw, hash);//암호화 시켜서 hash값과 비교
 			logger.info("일치 여부 : "+success);//비밀번호가 맞았다 

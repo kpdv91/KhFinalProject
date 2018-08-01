@@ -13,6 +13,8 @@
 			span#contentCnt{position: absolute; top: 190px; left: 225px; color: gray; font-size: 10px;}
 			textarea#dm_content{resize: none;}
 			span#chk{position: absolute; top: 195px; left: 5px; font-size: 12px; color: red;}
+			button#dm_exit{cursor: pointer;}
+			button#dm_write{cursor: pointer;}
 		</style>
 	</head>
 	<body>                                 

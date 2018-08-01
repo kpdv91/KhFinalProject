@@ -72,6 +72,8 @@ public interface AdminInter {
 
 	void review_del_dm_alarm(DMDTO dto);//신고받은 사람 쪽지보내고 알람추가
 
+	//int reviewIdxChk(String revReply_idx);//리뷰댓글 삭제시 리뷰idx 조회
+
 	
 
 	

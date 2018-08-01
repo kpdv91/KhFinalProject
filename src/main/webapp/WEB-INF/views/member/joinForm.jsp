@@ -173,12 +173,12 @@
             	        $("input[name='userId']").focus();
             	        return false;
                 	}
-                	if(!idReg.test( $("input[name='userId']").val() )){	//id 유효성
-	                   	alert("아이디는 5~20자리의 영문자 또는 숫자이어야 합니다.");
-	                   	$("#userId").val("");
-	                   	$("input[name='userId']").focus();
-	                   	return false;
-                	}
+              		if($("input[name='userId']").val() == "") {
+            	        alert("아이디를 입력해주세요.");
+            	        $("#userId").val("");
+            	        $("input[name='userId']").focus();
+            	        return false;
+                	} 
                     if(d.use == "Y"){
                         chkSum ++;
                         alert("사용 가능한 아이디 입니다.");
@@ -341,6 +341,11 @@
         	alert("휴대폰 번호 마지막자리는 4자리만 가능합니다.");
         	$("input[name='hp3']").val("");
 			$("input[name='hp3']").focus();
+        }else if(!idReg.test( $("input[name='userId']").val() )){	//id 유효성
+            alert("아이디는 5~20자리의 영문자 또는 숫자이어야 합니다.");
+            $("#userId").val("");
+            $("input[name='userId']").focus();
+            return false;
         }else{	
 
 			//핸드폰 번호 합치기

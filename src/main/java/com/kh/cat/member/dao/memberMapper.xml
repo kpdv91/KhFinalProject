@@ -81,7 +81,9 @@
     </delete>
     
 	<update id="userupdate" parameterType="member">
-		UPDATE member SET name=#{name},email=#{email},phone=#{phone},profile=#{profile} WHERE id = #{id}
+		UPDATE member 
+		<if test=""></if>
+		SET name=#{name},email=#{email},phone=#{phone},profile=#{profile} WHERE id = #{id}
 	</update>
 	
 	<update id="userpwupdate" parameterType="member">
@@ -91,6 +93,11 @@
 	<!-- 권한 가져오기 -->
 	<select id="getaut" resultType="String" parameterType="String">
 		SELECT aut FROM member WHERE id=#{param1}
+	</select>
+	
+	<!-- 이메일 가져오기 -->
+	<select id="getemail" resultType="String" parameterType="String">
+		SELECT id FROM member WHERE email=#{param1}
 	</select>
 
 </mapper>

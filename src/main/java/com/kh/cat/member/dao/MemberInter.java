@@ -36,4 +36,6 @@ public interface MemberInter {
 
 	String getaut(String id); //권한 가져오기
 
+	String getemail(String email); //이메일 가져오기
+
 }

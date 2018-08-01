@@ -116,6 +116,10 @@
     var str=document.getElementById("userId");
 	
 	var special_pattern = /[~!@\#$%<>^&*\()\-=+_\’]/gi;
+	
+	var idReg = /^[A-za-z0-9]{5,20}/g; //ID 정규식
+	
+	var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; //이메일 정규식
        
 	//var imgLen = $("#profile img").length;
 	     
@@ -160,12 +164,20 @@
                 	if(special_pattern.test(str.value)==true){
                 		alert("특수문자는 사용할 수 없습니다.");
                 		$("#userId").val("");
+                		$("input[name='userId']").focus();
                 		return false;
                 	}
               		if($("input[name='userId']").val().indexOf(" ") >= 0) {
             	        alert("아이디에 공백을 사용할 수 없습니다.");
             	        $("#userId").val("");
+            	        $("input[name='userId']").focus();
             	        return false;
+                	}
+                	if(!idReg.test( $("input[name='userId']").val() )){	//id 유효성
+	                   	alert("아이디는 5~20자리의 영문자 또는 숫자이어야 합니다.");
+	                   	$("#userId").val("");
+	                   	$("input[name='userId']").focus();
+	                   	return false;
                 	}
                     if(d.use == "Y"){
                         chkSum ++;
@@ -174,6 +186,7 @@
                     }else{
                         alert("누군가가 사용 하고 있는 아이디 입니다.");
                         $("#userId").val("");
+                        $("input[name='userId']").focus();
                     }
                 }else{
                     if(d.success == 1){
@@ -207,6 +220,12 @@
             data: reqData,
             success:function(d){
                 console.log(d);
+            	if(exptext.test($("input[name='userEmail']").val())==false){//이메일 형식이 알파벳+숫자@알파벳+숫자.알파벳+숫자 형식이 아닐경우
+	        		alert("이메일 형식이 올바르지 않습니다.");
+	        		$("#userEmail").val("");
+	        		$("input[name='userEmail']").focus();
+        			return false;
+            	}
                 if(reqUrl=="./rest/overlayMail"){
                     if(d.use == "Y"){
                         chkMail ++;
@@ -215,6 +234,7 @@
                     }else{
                         alert("누군가가 사용 하고 있는 이메일 입니다.");
                         $("#userEmail").val("");
+                        $("input[name='userEmail']").focus();
                     }
                 }else{
                     if(d.success == 1){
@@ -248,11 +268,11 @@
 	 }
 	
 
-	var idReg = /^[A-za-z0-9]{5,20}/g; //ID 정규식
 	
-	var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; //이메일 정규식
 
 	var pwChkVal=0;
+	
+	var regNumber = /^[0-9]*$/;
 	
 	//회원 가입 클릭시
 	$("#joinId").click(function(){
@@ -283,11 +303,6 @@
         }else if($("#hp3").val()==""){//핸드폰번호
         	alert("핸드폰번호를 입력해주세요!!");
             $("input[name='hp3']").focus();
-        /* }else if($("input[name='userId']").val().indexOf(" ") >= 0) {
-            alert("아이디에 공백을 사용할 수 없습니다.")
-            $("input[name='userId']").focus(); */
-        }else if($("input[name='userPw']").val().length<8 || $("input[name='userPw']").val().length>16){	//비밀번호 유효성
-           	alert("비밀번호는 8~16자를 입력해주세요.");
         }else if(chkSum<1){
         	alert("아이디 중복체크 확인이 필요 합니다.");
         }else if(chkMail<1){
@@ -299,20 +314,39 @@
         }else if(pwChkVal==0){
             alert("비밀번호를 확인 하세요.");
         }else if(pwVal==0){
-        	alert("비밀번호값이 변경 되었습니다. 다시 확인 해주세요.");    
-        }else if(exptext.test($("input[name='userEmail']").val())==false){//이메일 형식이 알파벳+숫자@알파벳+숫자.알파벳+숫자 형식이 아닐경우
-    		alert("이메일 형식이 올바르지 않습니다.");
-    		$("input[name='userEmail']").focus();
-    		return false;
-        }else if(!idReg.test( $("input[name='userId']").val() )){	//id 유효성
-           	alert("아이디는 5~20자리의 영문자 또는 숫자이어야 합니다.");
-           	$("input[name='userId']").focus();
-           	return false;
+        	alert("비밀번호값이 변경 되었습니다. 다시 확인 해주세요.");   
+        }else if($("input[name='userPw']").val().length<8 || $("input[name='userPw']").val().length>16){	//비밀번호 유효성
+           	alert("비밀번호는 8~16자를 입력해주세요.");
+        }else if(!regNumber.test($("input[name='hp1']").val())){
+        	alert("휴대폰 번호 앞자리는 숫자만 가능합니다.");
+			$("input[name='hp1']").val("");
+			$("input[name='hp1']").focus();
+        }else if(!regNumber.test($("input[name='hp2']").val())){
+        	alert("휴대폰 번호 중간자리는 숫자만 가능합니다.");
+			$("input[name='hp2']").val("");
+			$("input[name='hp2']").focus();
+        }else if(!regNumber.test($("input[name='hp3']").val())){
+        	alert("휴대폰 번호 마지막자리는 숫자만 가능합니다.");
+			$("input[name='hp3']").val("");
+			$("input[name='hp3']").focus();
+        }else if($("input[name='hp1']").val().length<3){
+        	alert("휴대폰 번호 앞자리는 3자리 이상만 가능합니다.");
+        	$("input[name='hp1']").val("");
+			$("input[name='hp1']").focus();
+        }else if($("input[name='hp2']").val().length<3){
+        	alert("휴대폰 번호 중간자리는 3자리 이상만 가능합니다.");
+        	$("input[name='hp2']").val("");
+			$("input[name='hp2']").focus();
+        }else if($("input[name='hp3']").val().length<4){
+        	alert("휴대폰 번호 마지막자리는 4자리만 가능합니다.");
+        	$("input[name='hp3']").val("");
+			$("input[name='hp3']").focus();
         }else{	
 
 			//핸드폰 번호 합치기
 	    	var phone = $("#hp1").val()+"-"+$("#hp2").val()+"-"+$("#hp3").val();
 		    	console.log("phone", phone);
+		    	
 		    	$("#userPhone").val(phone);//userPhone에 합친 값 넣었음
 				$("#join").submit();//submit
 				}

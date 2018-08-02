@@ -330,7 +330,12 @@
 		session.removeAttribute("store_Name");
 		session.removeAttribute("store_Idx");
 		%> --%>
-		location.href="./";
+		if("${sessionScope.store_Idx}" == ""){
+			location.href="./";
+		}else{
+			location.href="storeDetail?store_idx="+"${sessionScope.store_Idx}";
+		}
+		
 	});
 	$(document).ready(function(){
 		console.log("${sessionScope.loginProfile}");

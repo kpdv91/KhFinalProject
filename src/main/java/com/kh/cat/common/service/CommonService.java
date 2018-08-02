@@ -318,7 +318,7 @@ public class CommonService {
 		
 		//총 게시물 수 => 생성 가능 페이지 수
 		int allCnt = 0;
-		if(params.get("search_content").equals("")) {
+		if(params.get("search_content").equals("") && mapSearch.equals("전체")) {
 			allCnt=inter.allCount(search_content_Map);
 			System.out.println("전체 가게 수 : "+allCnt);
 		}else {
@@ -348,6 +348,7 @@ public class CommonService {
 		//페이징 시작,끝
 		search_content_Map.put("start", start);
 		search_content_Map.put("end", end);
+		System.out.println("오오오오오"+allCnt+"/"+start+"/"+end);
 
 		ArrayList<StoreDTO> result = inter.storeSearch_And(search_content_Map);
 		if (result.isEmpty()) {

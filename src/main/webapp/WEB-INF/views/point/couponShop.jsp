@@ -46,29 +46,35 @@
 	
 	//printList 구매 버튼 
 	$(".coupon_btn").click(function (e) {
-		console.log($(this).attr("id"));
-		console.log($(this).attr("name"));
-		$.ajax({ 
-			type : "post",
-			url : "./couponPurchase",
-			data : {
-				price : $(this).attr("id"),
-				name : $(this).attr("name")
-			},
-			dataType : "json",
-			success : function (data) {
-				console.log(data);
-				if(data.couponPurchaseMsg > 0/*  && data.couponBoxMsg > 0 */){
-					alert(data.msg);
-				}else{
-					alert(data.msg);
+		var confirmz = confirm("구매하시겠습니까?");
+		if(confirmz){
+			$.ajax({ 
+				type : "post",
+				url : "./couponPurchase",
+				data : {
+					price : $(this).attr("id"),
+					name : $(this).attr("name")
+				},
+				dataType : "json",
+				success : function (data) {
+					console.log(data);
+					if(data.couponPurchaseMsg > 0/*  && data.couponBoxMsg > 0 */){
+						alert(data.msg);
+					}else{
+						alert(data.msg);
+					}
+					
+				},
+				error : function (error) {
+					console.log(error);
 				}
-				
-			},
-			error : function (error) {
-				console.log(error);
-			}
-		});
+			});
+		}else{
+			return;
+		}
+		//console.log($(this).attr("id"));
+		//console.log($(this).attr("name"));
+		
 	});
 	
 	

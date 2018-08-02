@@ -170,6 +170,8 @@
 
 	var upload = document.getElementById('sPhoto');
 	var holder = document.getElementById('sPhotoShow');
+	
+	var storePhoto="";
 	storeD();
 	
 	//대표사진 변화시 func
@@ -203,7 +205,9 @@
 	            data : formData,
 	            processData : false,
 	            contentType : false,
-	            success : function(data) {},
+	            success : function(data) {
+	            	storePhoto = data.storePhoto;
+	            },
 	            error : function(error) {
 	                console.log(error);
 	                console.log(error.status);
@@ -222,8 +226,10 @@
 		$.ajax({
 			url:"./photoDel",
 			type:"get",
+			data:{"storePhoto":storePhoto},
 			success:function(data){
 				console.log(data);
+				storePhoto = data.storePhoto;
 			},
 			error:function(e){
 				console.log(e);
@@ -470,7 +476,8 @@
 					"store_food":$("input[name='store_food']").val(),
 					"store_price":$("input[name='store_price']").val(),
 					"store_time":$("input[name='store_time']").val(),
-					"store_rest":$("input[name='store_rest']").val()		
+					"store_rest":$("input[name='store_rest']").val(),
+					"store_photo":storePhoto
 					},
 				success:function(data){
 					console.log(data);

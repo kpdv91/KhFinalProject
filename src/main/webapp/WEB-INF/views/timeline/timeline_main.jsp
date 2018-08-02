@@ -12,7 +12,7 @@
 		<style>
 			#profileim{position: absolute;width: 100px;height: 100px;left: 400px;top: 65px;}
 			#timelineuserId{position: absolute;width: 150px;height: 60px;text-align: center;left: 500px;top: 50px;}
-			#profile{position: absolute;width: 100%;height: 200px;top:150px;}
+			#profile{position: absolute;width: 100%;height: 200px;top:178px;}
 			#fallow{background-color: lightgray;border:1px solid black;width: 90px;position: absolute;left: 650px;top: 70px;cursor: pointer;}
 			#dm{background-color: lightgray;border:1px solid black;width: 110px;position: absolute;left: 750px;top: 70px;cursor: pointer;}
 			#myreview{background-color: #2637a4;color : white;border:1px solid black;position: absolute;width:100px;left: 510px;top: 130px;cursor: pointer;}

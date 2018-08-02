@@ -70,10 +70,10 @@ public class StoreController {
 		
 	//대표 사진 초기화
 	@RequestMapping(value = "/photoDel")
-	public @ResponseBody HashMap<String, Object> photoDel(HttpSession session) {
+	public @ResponseBody HashMap<String, Object> photoDel(@RequestParam("storePhoto") String storePhoto,HttpSession session) {
 		logger.info("대표 사진 초기화 요청.");
 		String root = session.getServletContext().getRealPath("/");
-		return storeService.photoDel(root);
+		return storeService.photoDel(storePhoto,root);
 	}
 	
 	//맛집 등록

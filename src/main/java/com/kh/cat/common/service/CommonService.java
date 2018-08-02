@@ -642,4 +642,13 @@ public class CommonService {
 
 	}
 
+	public HashMap<String, Object> alarmcnt(Map<String, String> params) {
+		inter = sqlSession.getMapper(CommonInter.class);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		String id = params.get("id");
+		int alarmCnt = inter.alarmcnt(id);
+		map.put("cnt", alarmCnt);
+		return map;
+	}
+
 }

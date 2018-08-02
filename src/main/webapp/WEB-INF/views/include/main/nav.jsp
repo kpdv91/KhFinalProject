@@ -31,6 +31,7 @@
 	#alarmlist{text-align: center;display:none;width:300px;position:absolute;left:63%;top:65px;background-color:white;border:1px solid #2637a4;z-index:1;}
 	.alarmlistdiv{border:1px solid #2637a4;cursor:pointer;width:300px;z-index:2;}
 	#contain{text-align: center;}
+	#alarmcnt{background-color:red;width:25px;height:25px;position:absolute;left:78.5%;top:40px;text-align: center;color:white;}
 </style>
 
 <nav id="nav">
@@ -73,6 +74,7 @@
             <button id='searchBtn' type="button" onclick="search()">검색</button>
        	</div>
        	<c:if test="${sessionScope.loginId != null}">
+       		<div id="alarmcnt"></div>
 			<div id="alarm" onclick="alarmclick()">알람</div>
 			<div id="alarmlist">알람이 없습니다</div>
        		<div> 					
@@ -115,7 +117,6 @@ var showPage=1;
 			search();
         }
 	}
-
 	
 	$( document ).ready(function() {		
 	    if(loginid != ""){	    	
@@ -133,6 +134,27 @@ var showPage=1;
 					}else{
 						$("#profileimg").attr("src",d.profileimg.profile);
 					}
+				},
+				error:function(e){
+					console.log(e);
+				}
+			});
+	    	
+	    	$.ajax({
+				url:"./alarmcnt",
+				type:"post",
+				data:{
+					id : loginid
+				},
+				dataType:"json",
+				success:function(d){
+					//console.log(d);
+					if(d.cnt != 0){
+						$("#alarmcnt").html(d.cnt);
+					}else{
+						$("#alarmcnt").remove();
+					}
+					
 				},
 				error:function(e){
 					console.log(e);

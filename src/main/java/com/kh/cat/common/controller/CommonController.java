@@ -238,4 +238,9 @@ public class CommonController {
 		logger.info("알람 읽기 요청");		
 		return commonservice.alarmread(params);
 	}
+	@RequestMapping(value = "/alarmcnt")
+	public @ResponseBody HashMap<String, Object> alarmcnt(@RequestParam Map<String,String> params) {
+		logger.info("알람 개수 요청");		
+		return commonservice.alarmcnt(params);
+	}
 }

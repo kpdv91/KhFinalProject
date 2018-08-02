@@ -326,11 +326,16 @@
 	var div = "";//div 추가 변수
 	
 	$("#reviewWriteCancel").click(function(){
-		<%
+		<%-- <%
 		session.removeAttribute("store_Name");
 		session.removeAttribute("store_Idx");
-		%>
-		location.href="./";
+		%> --%>
+		if("${sessionScope.store_Idx}" == ""){
+			location.href="./";
+		}else{
+			location.href="storeDetail?store_idx="+"${sessionScope.store_Idx}";
+		}
+		
 	});
 	$(document).ready(function(){
 		console.log("${sessionScope.loginProfile}");
@@ -386,10 +391,10 @@
 		}else if($("#starScore").text()=="" || $("#starScore").text()=="0"){
 			alert("별점을 작성 해 주세요");
 		}else{			
-			<%
+<%-- 			<%
 				session.removeAttribute("store_Name");		
 			session.removeAttribute("store_Idx");
-			%>
+			%> --%>
 			$("#sendForm").submit();			
 		}
 		

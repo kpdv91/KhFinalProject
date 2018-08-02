@@ -23,6 +23,9 @@
 		</div>
 	</body>
 	<script>
-
+	<%
+	session.removeAttribute("store_Name");		
+	session.removeAttribute("store_Idx");
+%>
 	</script>
 </html>

@@ -1880,7 +1880,7 @@
 		function registNo(store_idx, id) {
 			console.log(store_idx, id);
 			var myWin= window.open("./registNoWin?store_idx="+store_idx+
-					"&id="+id,"가게 등록 거절","width=400,height=300");	
+					"&id="+id,"가게 등록 거절","width=500,height=300");	
 		}
 		//회원정보 사진 클릭
 		var profileck=0;

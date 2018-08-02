@@ -8,7 +8,7 @@
 		<title>Insert title here</title>
 		<style>
 			#searchPage{
-				width:1200px;
+				width:1150px;
 				height: 500px;
 			}
 			.storeTable{
@@ -58,6 +58,10 @@
 	        	margin-left: 950px;
 	        	cursor: pointer;
 	        }
+	        .store_De{
+	        	float: left;
+	        	margin-right: 18px;
+	        }
 		</style>
 	</head>
 	<body>
@@ -91,22 +95,30 @@
 					content += "<div id='tableLine' style='width:1000px; height:5px;'></div>";
 				}
 				content += "<table class='storeTable' style='cursor:pointer;'>";
-				content += "<tr><td colspan='3'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' onclick=location.href='storeDetail?store_idx="+item.store_idx+"' /></td></tr>";
-				content += "<tr><td>상호명</td>";
+				
+				content += "<tr><td style='border-bottom: 2px solid #142e5b; height:50px;' colspan='5'>";
+				content += "<div class='store_De'>별점 : "+item.store_star+"</div>";
+				content += "<div class='store_De'>조회수 : "+item.store_bHit+"</div>";
+				content += "<div class='store_De'>리뷰수 : "+item.store_revCnt+"</div>";
+				content += "<div class='store_De'>찜 : "+item.store_storeLikeCnt+"</div>";
+				content += "</td></tr>";
+				
+				content += "<tr><td colspan='5'><img class='storeImg' src='resources/upload/store/"+item.store_photo+"' onclick=location.href='storeDetail?store_idx="+item.store_idx+"' /></td></tr>";
+				content += "<tr><td colspan='3'>상호명</td>";
 				content += "<th><span onclick=location.href='storeDetail?store_idx="+item.store_idx+"'>"+item.store_name+"</span></th>";
 				content += "<td rowspan='2'><img class='storeLikeImg' id='storeLike"+item.store_idx+"' width='30px' height='30px' src='resources/img/storeLike/heart.png' onclick='storeLike("+item.store_idx+")'/></td></tr>";
-				content += "<tr><td>주소</td>";
+				content += "<tr><td colspan='3'>주소</td>";
 				content += "<th>"+item.store_addr+"</th></tr>";
 				
 				if(list_hash[index].length != 0){
-					content += "<tr><td style='border-top: 2px solid #142e5b; height:70px;' id='"+item.store_idx+"' colspan='3'>";
+					content += "<tr><td style='border-top: 2px solid #142e5b; height:70px;' id='"+item.store_idx+"' colspan='5'>";
 					
 					list_hash[index].forEach(function(item){
 						content += "<div id='storehashtag'>"+item.hash_tag+"</div>";
 					});
 					content += "</td></tr>";
 				}else{
-					content += "<tr><td style='border-top: 2px solid #142e5b; height:70px;' id='"+item.store_idx+"' colspan='3'>";
+					content += "<tr><td style='border-top: 2px solid #142e5b; height:70px;' id='"+item.store_idx+"' colspan='5'>";
 					content += "해시태그가 없습니다.</td></tr>";
 				}
 				

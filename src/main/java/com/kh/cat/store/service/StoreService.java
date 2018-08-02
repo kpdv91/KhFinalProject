@@ -40,7 +40,6 @@ public class StoreService {
 	CommonInter commonInter;
 	
 	HashMap<String, String> fileList = new HashMap<String, String>();
-	String storePhoto = "";
 
 	//메뉴 사진 업로드
 	public ModelAndView menuUpload(MultipartFile file, String root) {
@@ -48,7 +47,6 @@ public class StoreService {
 		String detailPath = "resources/upload/store/";
 		String fullPath = root+detailPath;
 		logger.info(fullPath);
-		logger.info("대표사진 : {}",storePhoto);
 		//1. 폴더가 없을 경우 폴더 생성
 		File dir = new File(fullPath);
 		if(!dir.exists()) {
@@ -105,7 +103,7 @@ public class StoreService {
 	public HashMap<String, Object> photoUpload(MultipartHttpServletRequest multi, String root) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
-		photoDel(root);//먼저 초기화
+		photoDel("",root);//먼저 초기화
 		
 		String detailPath = "resources/upload/store/";
 		String fullPath = root+detailPath;
@@ -127,7 +125,7 @@ public class StoreService {
 					byte[] bytes =  file.getBytes();//multupartFilr에서 부터 바이트 추출
 					Path filePath = Paths.get(fullPath+newFileName);//파일 생성 경로
 					Files.write(filePath, bytes);
-					storePhoto = newFileName;
+					map.put("storePhoto", newFileName);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -138,7 +136,7 @@ public class StoreService {
 	}
 	
 	//대표 사진 초기화, 삭제
-	public HashMap<String, Object> photoDel(String root) {
+	public HashMap<String, Object> photoDel(String storePhoto, String root) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		if(!storePhoto.equals("")) {
@@ -151,7 +149,7 @@ public class StoreService {
 			}else {
 				logger.info("이미 삭제되었거나 파일업로드를 취소하였습니다.");
 			}
-			storePhoto="";
+			map.put("storePhoto", "");
 		}
 		return map;
 	}
@@ -163,7 +161,7 @@ public class StoreService {
 		commonInter = sqlSession.getMapper(CommonInter.class);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		StoreDTO dto = new StoreDTO();
-		
+		String storePhoto = data.get("store_photo");
 		if(storePhoto.equals("")) {
 			storePhoto="storeD.png";
 		}
@@ -199,7 +197,6 @@ public class StoreService {
 	//파일리스트 리셋
 	public void listReset() {
 		fileList.clear();
-		storePhoto = "";
 	}
 
 	//맛집 상세 보기

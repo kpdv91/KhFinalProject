@@ -29,6 +29,13 @@
 		<c:import url="/WEB-INF/views/include/main/footer.jsp"/>
 	</body>
 	<script>
+	$(document).ready(function(){
+		<%
+		session.removeAttribute("store_Name");		
+		session.removeAttribute("store_Idx");
+		%>
+	});
+	
 		var message= "${message}";
 			
 			if(message!=""){

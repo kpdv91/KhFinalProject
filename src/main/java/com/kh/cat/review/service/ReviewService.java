@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -106,7 +107,7 @@ public class ReviewService {
 	
 	//리뷰 작성
 	@Transactional
-	public String write(String review_storeidx, ArrayList<String> hash_tag, ArrayList<String> review_photo, HashMap<String, String> map, String loginId) {
+	public String write(String review_storeidx, ArrayList<String> hash_tag, ArrayList<String> review_photo, HashMap<String, String> map, String loginId, HttpSession session) {
 		logger.info("리뷰 작성 서비스 도착");
 		ModelAndView mav = new ModelAndView();
 		String page = "redirect:/reviewWritePage";
@@ -152,7 +153,13 @@ public class ReviewService {
 		}
 		
 		fileList.clear();
-		return "redirect:/";
+		System.out.println(session.getAttribute("store_Idx"));
+		if(session.getAttribute("store_Idx") == null) {
+			return "redirect:/";
+		}else {
+			return "redirect:/storeDetail?store_idx="+session.getAttribute("store_Idx");
+		}
+		
 	}
 	
 	//리뷰 상호명 검색

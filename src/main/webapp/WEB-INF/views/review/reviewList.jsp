@@ -298,6 +298,7 @@ input[type=button]{
 	</body>
 
 	<script>
+	
 
 	showPage = 1;//보여줄 페이지
 	var loginId = "${sessionScope.loginId}";

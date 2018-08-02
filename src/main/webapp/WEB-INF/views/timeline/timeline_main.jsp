@@ -25,7 +25,7 @@
 			#message{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#coupon{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#point{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
-			#total{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
+			#totalt{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#dm_write{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#store_regist_list{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}
 			#complain_list{background-color: lightgray;border:1px solid black;width:180px;text-align: center;}  
@@ -58,7 +58,7 @@
 			.storeImg{width: 250px;height: 100px;}
 			#hashtag{border: 2px solid #33aaaaff;font-size: 14px;width: auto;text-align: center;float: left;padding: 0px 5px;margin-right: 5px;}
 			#fallowlist{border: 1px solid #33aaaaff;display:none;position:absolute;left:810px;width:410px;top:154px;background-color:white;z-index:15;}
-			.followbtn{border:1px solid lightgray;}
+			.followbtn{border:1px solid lightgray;cursor: pointer;}
 			#follower{background-color:#2637a4;color:white;width:50px;}
 			#following{width:50px;position:absolute;left:50px;top:0px;}
 			.friendprofile{width:60px;height:60px;float:left;}
@@ -164,7 +164,7 @@
 				<div id="message">쪽지함</div>
 				<div id="coupon">구매한 쿠폰</div>
 				<div id="point">포인트내역</div>
-				<div id="total">통계</div>
+				<div id="totalt">통계</div>
 			</c:if>
 		</div>
 		
@@ -254,8 +254,8 @@
 	    	$("#coupon").css("color","black");
 	    	$("#point").css("background-color","lightgray");
 	    	$("#point").css("color","black");
-	    	$("#total").css("background-color","lightgray");
-	    	$("#total").css("color","black");
+	    	$("#totalt").css("background-color","lightgray");
+	    	$("#totalt").css("color","black");
 	    	$("#myreview").css("background-color","lightgray");
 	    	$("#myreview").css("color","black");
 	    	$("#likereview").css("background-color","lightgray");
@@ -984,8 +984,8 @@
 	    	$("#coupon").css("color","black");
 	    	$("#point").css("background-color","lightgray");
 	    	$("#point").css("color","black");
-	    	$("#total").css("background-color","lightgray");
-	    	$("#total").css("color","black");
+	    	$("#totalt").css("background-color","lightgray");
+	    	$("#totalt").css("color","black");
 	    	$("#myreview").css("background-color","lightgray");
 	    	$("#myreview").css("color","black");
 	    	$("#likereview").css("background-color","lightgray");
@@ -1011,8 +1011,8 @@
 	    	$("#message").css("color","black");
 	    	$("#point").css("background-color","lightgray");
 	    	$("#point").css("color","black");
-	    	$("#total").css("background-color","lightgray");
-	    	$("#total").css("color","black");
+	    	$("#totalt").css("background-color","lightgray");
+	    	$("#totalt").css("color","black");
 	    	$("#myreview").css("background-color","lightgray");
 	    	$("#myreview").css("color","black");
 	    	$("#likereview").css("background-color","lightgray");
@@ -1033,8 +1033,8 @@
 	    	$("#message").css("color","black");
 	    	$("#coupon").css("background-color","lightgray");
 	    	$("#coupon").css("color","black");
-	    	$("#total").css("background-color","lightgray");
-	    	$("#total").css("color","black");
+	    	$("#totalt").css("background-color","lightgray");
+	    	$("#totalt").css("color","black");
 	    	$("#myreview").css("background-color","lightgray");
 	    	$("#myreview").css("color","black");
 	    	$("#likereview").css("background-color","lightgray");
@@ -1055,8 +1055,8 @@
 	    	$("#message").css("color","black");
 	    	$("#point").css("background-color","lightgray");
 	    	$("#point").css("color","black");
-	    	$("#total").css("background-color","lightgray");
-	    	$("#total").css("color","black");
+	    	$("#totalt").css("background-color","lightgray");
+	    	$("#totalt").css("color","black");
 	    	$("#myreview").css("background-color","lightgray");
 	    	$("#myreview").css("color","black");
 	    	$("#likereview").css("background-color","lightgray");
@@ -1077,8 +1077,8 @@
 	    	$("#message").css("color","black");
 	    	$("#point").css("background-color","lightgray");
 	    	$("#point").css("color","black");
-	    	$("#total").css("background-color","lightgray");
-	    	$("#total").css("color","black");
+	    	$("#totalt").css("background-color","lightgray");
+	    	$("#totalt").css("color","black");
 	    	$("#update").css("background-color","lightgray");
 	    	$("#update").css("color","black");
 	    	$("#likereview").css("background-color","lightgray");
@@ -1098,8 +1098,8 @@
 		    	$("#message").css("color","black");
 		    	$("#point").css("background-color","lightgray");
 		    	$("#point").css("color","black");
-		    	$("#total").css("background-color","lightgray");
-		    	$("#total").css("color","black");
+		    	$("#totalt").css("background-color","lightgray");
+		    	$("#totalt").css("color","black");
 		    	$("#update").css("background-color","lightgray");
 		    	$("#update").css("color","black");
 		    	$("#myreview").css("background-color","lightgray");
@@ -1119,8 +1119,8 @@
 			    	$("#message").css("color","black");
 			    	$("#point").css("background-color","lightgray");
 			    	$("#point").css("color","black");
-			    	$("#total").css("background-color","lightgray");
-			    	$("#total").css("color","black");
+			    	$("#totalt").css("background-color","lightgray");
+			    	$("#totalt").css("color","black");
 			    	$("#update").css("background-color","lightgray");
 			    	$("#update").css("color","black");
 			    	$("#myreview").css("background-color","lightgray");
@@ -1164,8 +1164,8 @@
 				    	$("#message").css("color","black");
 				    	$("#point").css("background-color","lightgray");
 				    	$("#point").css("color","black");
-				    	$("#total").css("background-color","lightgray");
-				    	$("#total").css("color","black");
+				    	$("#totalt").css("background-color","lightgray");
+				    	$("#totalt").css("color","black");
 				    	$("#update").css("background-color","lightgray");
 				    	$("#update").css("color","black");
 				    	$("#myreview").css("background-color","lightgray");
@@ -1175,10 +1175,10 @@
 				    	$("#likereview").css("background-color","lightgray");
 				    	$("#likereview").css("color","black");
 				    	ajaxCall(page);
-				}else if(e.target.id == "total"){
+				}else if(e.target.id == "totalt"){
 					page = "resources/timelinehtml/statList.html";
-					$("#total").css("background-color","#2637a4");
-					$("#total").css("color","white");
+					$("#totalt").css("background-color","#2637a4");
+					$("#totalt").css("color","white");
 					$("#coupon").css("background-color","lightgray");
 					$("#coupon").css("color","black");
 			    	$("#message").css("background-color","lightgray");

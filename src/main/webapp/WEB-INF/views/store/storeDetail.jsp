@@ -104,7 +104,7 @@
 						<li id="likeCnt">찜수 ${storeDetail.store_storeLikeCnt}</li>
 					</ul>
 				</div>
-				<div style="position: absolute; top: 15px; right: 10px; ">
+				<div style="position: absolute; top: 15px; right: 0px; ">
 					<img class="tab"  id="storeLike" alt="찜하트" src="" width="35px" onclick="storeLike()">
 				</div>
 			</div>
